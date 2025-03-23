@@ -296,14 +296,15 @@ export default function Home() {
                     height: { xs: '280px', sm: '320px', md: '400px' },
                   }}
                 >
-                  <Image
-                    src="/mike-in-newtown.png"
+                  <Box
+                    component="img"
+                    src="./mike-in-newtown.png"
                     alt="Michael Lynn"
-                    fill
-                    style={{
+                    sx={{
+                      width: '100%',
+                      height: '100%',
                       objectFit: 'contain',
                     }}
-                    priority
                   />
                 </Box>
               </motion.div>
