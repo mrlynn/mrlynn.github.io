@@ -35,7 +35,6 @@ const menuItems = [
   { text: 'Home', icon: <HomeIcon />, path: '/' },
   { text: 'Projects', icon: <WorkIcon />, path: '/projects' },
   { text: 'Videos', icon: <YouTubeIcon />, path: '/videos' },
-  { text: 'Blog', icon: <ArticleIcon />, path: '/blog' },
   { text: 'Resume', icon: <ArticleIcon />, path: '/resume' },
   { text: 'Contact', icon: <ContactIcon />, path: '/contact' },
 ];

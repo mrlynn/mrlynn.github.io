@@ -28,7 +28,6 @@ const pages = [
   { title: 'Home', path: '/' },
   { title: 'Projects', path: '/projects' },
   { title: 'Videos', path: '/videos' },
-  { title: 'Blog', path: '/blog' },
 ];
 
 function HideOnScroll(props) {
