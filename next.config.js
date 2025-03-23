@@ -1,3 +1,11 @@
+const withMDX = require('@next/mdx')({
+  extension: /\.mdx?$/,
+  options: {
+    remarkPlugins: [require('remark-gfm')],
+    rehypePlugins: [require('rehype-slug'), require('rehype-prism-plus')],
+  },
+});
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
@@ -5,6 +13,7 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-}
+  pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
+};
 
-module.exports = nextConfig 
+module.exports = withMDX(nextConfig); 

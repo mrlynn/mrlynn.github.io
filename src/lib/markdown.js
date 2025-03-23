@@ -11,9 +11,8 @@ const BLOG_DIR = path.join(process.cwd(), 'src/content/blog');
 const mdxOptions = {
   mdxOptions: {
     remarkPlugins: [remarkGfm],
-    rehypePlugins: [rehypeSlug, rehypePrism],
+    rehypePlugins: [rehypeSlug, [rehypePrism, { ignoreMissing: true }]],
     format: 'mdx',
-    development: process.env.NODE_ENV === 'development',
   },
   parseFrontmatter: true,
 };
@@ -29,6 +28,19 @@ export async function getAllPosts() {
             const filePath = path.join(BLOG_DIR, file);
             const source = fs.readFileSync(filePath, 'utf8');
             const { data, content } = matter(source);
+            
+            // Validate and format the date
+            if (data.date) {
+              const date = new Date(data.date);
+              if (isNaN(date.getTime())) {
+                console.warn(`Invalid date in ${file}: ${data.date}`);
+                data.date = new Date().toISOString();
+              }
+            } else {
+              console.warn(`No date found in ${file}`);
+              data.date = new Date().toISOString();
+            }
+
             const mdxSource = await serialize(content, {
               ...mdxOptions,
               scope: data,
@@ -58,6 +70,19 @@ export async function getPostBySlug(slug) {
     const filePath = path.join(BLOG_DIR, `${slug}.mdx`);
     const source = fs.readFileSync(filePath, 'utf8');
     const { data, content } = matter(source);
+
+    // Validate and format the date
+    if (data.date) {
+      const date = new Date(data.date);
+      if (isNaN(date.getTime())) {
+        console.warn(`Invalid date in ${slug}.mdx: ${data.date}`);
+        data.date = new Date().toISOString();
+      }
+    } else {
+      console.warn(`No date found in ${slug}.mdx`);
+      data.date = new Date().toISOString();
+    }
+
     const mdxSource = await serialize(content, {
       ...mdxOptions,
       scope: data,
