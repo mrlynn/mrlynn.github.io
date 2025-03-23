@@ -14,7 +14,9 @@ export default function ProjectsSection() {
     <Box
       sx={{
         py: 12,
-        background: 'radial-gradient(circle at center, rgba(5, 102, 141, 0.1) 0%, rgba(4, 30, 43, 0) 70%)',
+        background: theme.palette.mode === 'dark'
+          ? 'radial-gradient(circle at center, rgba(5, 102, 141, 0.1) 0%, rgba(4, 30, 43, 0) 70%)'
+          : 'radial-gradient(circle at center, rgba(5, 102, 141, 0.05) 0%, rgba(4, 30, 43, 0) 70%)',
       }}
     >
       <Container maxWidth="lg">
@@ -44,9 +46,13 @@ export default function ProjectsSection() {
                   height: '100%',
                   display: 'flex',
                   flexDirection: 'column',
-                  background: 'rgba(6, 39, 54, 0.9)',
+                  background: theme.palette.mode === 'dark'
+                    ? 'rgba(6, 39, 54, 0.9)'
+                    : theme.palette.background.paper,
                   backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(255,255,255,0.1)',
+                  border: `1px solid ${theme.palette.mode === 'dark'
+                    ? 'rgba(255,255,255,0.1)'
+                    : 'rgba(0,0,0,0.1)'}`,
                   transition: 'transform 0.3s ease-in-out',
                   '&:hover': {
                     transform: 'translateY(-8px)',
@@ -95,7 +101,7 @@ export default function ProjectsSection() {
                     component="h3"
                     gutterBottom
                     sx={{
-                      color: theme.palette.text.primary,
+                      color: theme.palette.mode === 'dark' ? '#ffffff' : '#000000',
                       fontWeight: 600,
                     }}
                   >
@@ -103,8 +109,10 @@ export default function ProjectsSection() {
                   </Typography>
                   <Typography
                     variant="body2"
-                    color="text.secondary"
-                    sx={{ mb: 2 }}
+                    sx={{ 
+                      mb: 2,
+                      color: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)'
+                    }}
                   >
                     {project.description}
                   </Typography>
@@ -116,7 +124,7 @@ export default function ProjectsSection() {
                         sx={{
                           m: 0.5,
                           background: theme.palette.background.gradient,
-                          color: 'white',
+                          color: '#ffffff',
                           fontSize: { xs: '0.75rem', sm: '0.875rem' },
                           height: { xs: 24, sm: 32 },
                           '&:hover': {
@@ -137,9 +145,13 @@ export default function ProjectsSection() {
                         target="_blank"
                         disabled={project.private}
                         sx={{
-                          color: project.private ? 'text.secondary' : theme.palette.text.primary,
+                          color: project.private 
+                            ? theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'
+                            : theme.palette.mode === 'dark' ? '#ffffff' : '#000000',
                           '&:hover': {
-                            color: project.private ? 'text.secondary' : theme.palette.secondary.light,
+                            color: project.private 
+                              ? theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'
+                              : theme.palette.secondary.main,
                           },
                         }}
                       >

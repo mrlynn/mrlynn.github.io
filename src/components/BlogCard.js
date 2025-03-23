@@ -29,8 +29,15 @@ export default function BlogCard({ post, index }) {
           height: '100%',
           borderRadius: 2,
           overflow: 'hidden',
-          background: theme.palette.background.paper,
-          boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+          background: theme.palette.mode === 'dark'
+            ? theme.palette.background.paper
+            : '#ffffff',
+          boxShadow: theme.palette.mode === 'dark'
+            ? '0 4px 20px rgba(0,0,0,0.2)'
+            : '0 4px 20px rgba(0,0,0,0.1)',
+          border: `1px solid ${theme.palette.mode === 'dark'
+            ? 'rgba(255,255,255,0.1)'
+            : 'rgba(0,0,0,0.1)'}`,
           transition: 'transform 0.3s ease-in-out',
           '&:hover': {
             transform: 'translateY(-5px)',
@@ -81,7 +88,7 @@ export default function BlogCard({ post, index }) {
             gutterBottom
             sx={{
               fontWeight: 600,
-              color: 'text.primary',
+              color: theme.palette.mode === 'dark' ? '#ffffff' : '#000000',
               mb: 2,
             }}
           >
@@ -91,8 +98,10 @@ export default function BlogCard({ post, index }) {
           {/* Date and Read Time */}
           <Typography
             variant="body2"
-            color="text.secondary"
-            sx={{ mb: 2 }}
+            sx={{
+              mb: 2,
+              color: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)',
+            }}
           >
             {formattedDate}
             {post.readTime && ` • ${post.readTime}`}
@@ -101,12 +110,12 @@ export default function BlogCard({ post, index }) {
           {/* Excerpt */}
           <Typography
             variant="body1"
-            color="text.secondary"
             sx={{
               display: '-webkit-box',
               WebkitLineClamp: 3,
               WebkitBoxOrient: 'vertical',
               overflow: 'hidden',
+              color: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)',
             }}
           >
             {post.excerpt || 'No excerpt available'}

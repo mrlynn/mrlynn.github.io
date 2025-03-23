@@ -3,7 +3,7 @@
 export const videos = [
   {
     title: "Introducing MongoDB-RAG",
-    thumbnail: "./images/videos/mongodb-rag.jpg",
+    thumbnail: `https://img.youtube.com/vi/8PTATSNl1WU/maxresdefault.jpg`,
     videoId: "8PTATSNl1WU",
     platform: "youtube",
     description: "Learn how to build a Retrieval Augmented Generation (RAG) application using MongoDB Atlas Vector Search and LangChain.",
@@ -12,7 +12,7 @@ export const videos = [
   },
   {
     title: "Application Driven Analytics - Promo",
-    thumbnail: "./images/videos/analytics-promo.jpg",
+    thumbnail: `https://img.youtube.com/vi/PlzYzpEnh3g/maxresdefault.jpg`,
     videoId: "PlzYzpEnh3g",
     platform: "youtube",
     description: "Join us for a thrilling demonstration of application-driven analytics using real launch data from multiple devices generating one million metrics per second.",
@@ -21,7 +21,7 @@ export const videos = [
   },
   {
     title: "Exploring Prisma, an open source next-generation ORM | MongoDB Podcast",
-    thumbnail: "./images/videos/prisma-podcast.jpg",
+    thumbnail: `https://img.youtube.com/vi/Ze1K5CSa3cU/maxresdefault.jpg`,
     videoId: "Ze1K5CSa3cU",
     platform: "youtube",
     description: "Prisma can be used in any Node.js or TypeScript backend application. This can be a REST API, a GraphQL API, a gRPC API, or anything else that needs a database.",
@@ -30,7 +30,7 @@ export const videos = [
   },
   {
     title: "Swift Heroes Digital 2020 - Swift and MongoDB",
-    thumbnail: "./images/videos/swift-heroes.jpg",
+    thumbnail: `https://img.youtube.com/vi/Ebt9MXVU9ek/maxresdefault.jpg`,
     videoId: "Ebt9MXVU9ek",
     platform: "youtube",
     description: "MongoDB is a document database with the scalability and flexibility that developers want with the querying and indexing that they need. Fortunately, MongoDB is now available for Swift developers with variants available as a Core Data replacement as well as a Server-side persistence layer. In this talk, I'll provide an overview of MongoDB and talk about how Swift developers can begin to incorporate MongoDB into their application stack.",
@@ -39,7 +39,7 @@ export const videos = [
   },
   {
     title: "Fitbod - A trainer in your pocket",
-    thumbnail: "./images/videos/fitbod.png",
+    thumbnail: "/images/videos/fitbod.png",
     videoId: "7273710351059848490",
     platform: "tiktok",
     description: "A quick overview of Fitbod, the AI-powered personal trainer app that creates personalized workouts based on your available equipment and fitness goals.",

@@ -37,7 +37,9 @@ export default function VideosSection() {
     <Box
       sx={{
         py: 12,
-        background: 'linear-gradient(135deg, rgba(5, 102, 141, 0.1) 0%, rgba(165, 190, 0, 0.1) 100%)',
+        background: theme.palette.mode === 'dark'
+          ? 'linear-gradient(135deg, rgba(5, 102, 141, 0.1) 0%, rgba(165, 190, 0, 0.1) 100%)'
+          : 'linear-gradient(135deg, rgba(5, 102, 141, 0.05) 0%, rgba(165, 190, 0, 0.05) 100%)',
       }}
     >
       <Container maxWidth="lg">
@@ -87,9 +89,13 @@ export default function VideosSection() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
                 sx={{
-                  background: 'rgba(6, 39, 54, 0.9)',
+                  background: theme.palette.mode === 'dark'
+                    ? 'rgba(6, 39, 54, 0.9)'
+                    : theme.palette.background.paper,
                   backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(255,255,255,0.1)',
+                  border: `1px solid ${theme.palette.mode === 'dark'
+                    ? 'rgba(255,255,255,0.1)'
+                    : 'rgba(0,0,0,0.1)'}`,
                   overflow: 'hidden',
                   height: '100%',
                   display: 'flex',
@@ -156,7 +162,7 @@ export default function VideosSection() {
                     variant="h6"
                     gutterBottom
                     sx={{
-                      color: 'text.primary',
+                      color: theme.palette.mode === 'dark' ? '#ffffff' : '#000000',
                       fontWeight: 600,
                       fontSize: '1.1rem',
                       lineHeight: 1.4,
@@ -166,8 +172,11 @@ export default function VideosSection() {
                   </Typography>
                   <Typography
                     variant="body2"
-                    color="text.secondary"
-                    sx={{ opacity: 0.9, mb: 2 }}
+                    sx={{ 
+                      opacity: 0.9, 
+                      mb: 2,
+                      color: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)'
+                    }}
                   >
                     {video.description}
                   </Typography>
@@ -179,7 +188,7 @@ export default function VideosSection() {
                         sx={{
                           m: 0.5,
                           background: theme.palette.background.gradient,
-                          color: 'white',
+                          color: '#ffffff',
                           fontSize: { xs: '0.75rem', sm: '0.875rem' },
                           height: { xs: 24, sm: 32 },
                           '&:hover': {
