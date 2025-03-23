@@ -6,6 +6,7 @@ import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import { useRef, useState, useEffect } from 'react';
 import ProjectsSection from '@/components/ProjectsSection';
 import VideosSection from '@/components/VideosSection';
+import GitHubActivity from '@/components/GitHubActivity';
 import { projects } from '@/data/projects';
 import Image from 'next/image';
 
@@ -313,11 +314,11 @@ export default function Home() {
         </Container>
       </Box>
 
-      {/* Projects Section */}
-      <ProjectsSection />
-
-      {/* Videos Section */}
-      <VideosSection />
+      <Container maxWidth="lg" sx={{ py: 8 }}>
+        <ProjectsSection />
+        <GitHubActivity />
+        <VideosSection />
+      </Container>
     </Box>
   );
 }
