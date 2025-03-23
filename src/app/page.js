@@ -7,7 +7,9 @@ import { useRef, useState, useEffect } from 'react';
 import ProjectsSection from '@/components/ProjectsSection';
 import VideosSection from '@/components/VideosSection';
 import GitHubActivity from '@/components/GitHubActivity';
+import Timeline from '@/components/Timeline';
 import { projects } from '@/data/projects';
+import { timelineEvents } from '@/data/timeline';
 import Image from 'next/image';
 
 // Create motion components using motion.create()
@@ -295,16 +297,26 @@ export default function Home() {
                     position: 'relative',
                     width: { xs: '280px', sm: '320px', md: '400px' },
                     height: { xs: '280px', sm: '320px', md: '400px' },
+                    borderRadius: '16px',
+                    overflow: 'hidden',
+                    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
                   }}
                 >
                   <Box
                     component="img"
-                    src="./mike-in-newtown.png"
+                    src="./mike-mexico.jpg"
                     alt="Michael Lynn"
                     sx={{
                       width: '100%',
                       height: '100%',
-                      objectFit: 'contain',
+                      objectFit: 'cover',
+                      objectPosition: 'top center',
+                      borderRadius: '16px',
+                      transition: 'transform 0.3s ease',
+                      '&:hover': {
+                        transform: 'scale(1.02)',
+                      },
                     }}
                   />
                 </Box>
@@ -312,6 +324,11 @@ export default function Home() {
             </Grid>
           </Grid>
         </Container>
+      </Box>
+
+      {/* Timeline Section */}
+      <Box sx={{ py: 8, background: 'rgba(0, 0, 0, 0.2)' }}>
+        <Timeline events={timelineEvents} />
       </Box>
 
       <Container maxWidth="lg" sx={{ py: 8 }}>

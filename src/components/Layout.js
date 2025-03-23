@@ -141,10 +141,10 @@ export default function Layout({ children }) {
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <Image
-              src="/letter-m.svg"
+              src="/letter-m-circle.svg"
               alt="M Logo"
-              width={24}
-              height={24}
+              width={26}
+              height={26}
               style={{
                 filter: theme.palette.mode === 'dark' ? 'invert(1)' : 'none'
               }}
