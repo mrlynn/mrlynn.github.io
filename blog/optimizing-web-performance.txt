@@ -1,0 +1,713 @@
+3:I[5613,[],""]
+5:I[1778,[],""]
+6:I[7408,["782","static/chunks/782-69c100c0f47cc610.js","496","static/chunks/496-77bcdc4d34d5ccd7.js","293","static/chunks/293-98700356d5512606.js","570","static/chunks/570-e3069b08865275ab.js","59","static/chunks/59-328946ccb3593e21.js","915","static/chunks/915-3df1ba99429bd842.js","486","static/chunks/486-834284a862e7f089.js","185","static/chunks/app/layout-d738231d9f565d5f.js"],"ThemeProvider"]
+7:I[6060,["782","static/chunks/782-69c100c0f47cc610.js","496","static/chunks/496-77bcdc4d34d5ccd7.js","293","static/chunks/293-98700356d5512606.js","570","static/chunks/570-e3069b08865275ab.js","59","static/chunks/59-328946ccb3593e21.js","915","static/chunks/915-3df1ba99429bd842.js","486","static/chunks/486-834284a862e7f089.js","185","static/chunks/app/layout-d738231d9f565d5f.js"],""]
+4:["slug","optimizing-web-performance","d"]
+0:["Oxpw8u1bN8_yjmUIotofO",[[["",{"children":["blog",{"children":[["slug","optimizing-web-performance","d"],{"children":["__PAGE__?{\"slug\":\"optimizing-web-performance\"}",{}]}]}]},"$undefined","$undefined",true],["",{"children":["blog",{"children":[["slug","optimizing-web-performance","d"],{"children":["__PAGE__",{},["$L1","$L2",null]]},["$","$L3",null,{"parallelRouterKey":"children","segmentPath":["children","blog","children","$4","children"],"loading":"$undefined","loadingStyles":"$undefined","loadingScripts":"$undefined","hasLoading":false,"error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","notFoundStyles":"$undefined","styles":null}]]},["$","$L3",null,{"parallelRouterKey":"children","segmentPath":["children","blog","children"],"loading":"$undefined","loadingStyles":"$undefined","loadingScripts":"$undefined","hasLoading":false,"error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","notFoundStyles":"$undefined","styles":null}]]},[null,["$","html",null,{"lang":"en","className":"__variable_942053","children":["$","body",null,{"style":{"margin":0,"padding":0},"children":["$","$L6",null,{"children":["$","$L7",null,{"children":["$","$L3",null,{"parallelRouterKey":"children","segmentPath":["children"],"loading":"$undefined","loadingStyles":"$undefined","loadingScripts":"$undefined","hasLoading":false,"error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":"404"}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],"notFoundStyles":[],"styles":null}]}]}]}]}],null]],[[["$","link","0",{"rel":"stylesheet","href":"/mrlynn.github.io/_next/static/css/6fe4f3793fe34819.css","precedence":"next","crossOrigin":""}]],"$L8"]]]]
+9:I[4456,["722","static/chunks/25b8c134-9cea7678c76b6e0d.js","377","static/chunks/71d5b6fe-81ebb93f770fbbe6.js","782","static/chunks/782-69c100c0f47cc610.js","496","static/chunks/496-77bcdc4d34d5ccd7.js","598","static/chunks/598-b433fbdad3be9653.js","193","static/chunks/193-dc938164ce3f9a8e.js","817","static/chunks/817-d8475cda86231a97.js","125","static/chunks/125-704c98bab0dc2db3.js","308","static/chunks/app/blog/%5Bslug%5D/page-ac582dd0cc07b541.js"],""]
+a:T688d,/*@jsxRuntime automatic @jsxImportSource react*/
+const {Fragment: _Fragment, jsx: _jsx, jsxs: _jsxs} = arguments[0];
+const {useMDXComponents: _provideComponents} = arguments[0];
+function _createMdxContent(props) {
+  const _components = Object.assign({
+    h1: "h1",
+    p: "p",
+    h2: "h2",
+    ul: "ul",
+    li: "li",
+    strong: "strong",
+    ol: "ol",
+    h3: "h3",
+    pre: "pre",
+    code: "code",
+    span: "span",
+    blockquote: "blockquote"
+  }, _provideComponents(), props.components);
+  return _jsxs(_Fragment, {
+    children: [_jsx(_components.h1, {
+      id: "optimizing-web-performance",
+      children: "Optimizing Web Performance"
+    }), "\n", _jsx(_components.p, {
+      children: "Web performance is crucial for user experience and business success. In this post, we'll explore various techniques to optimize your web applications."
+    }), "\n", _jsx(_components.h2, {
+      id: "why-performance-matters",
+      children: "Why Performance Matters"
+    }), "\n", _jsx(_components.p, {
+      children: "Performance impacts both user experience and business metrics:"
+    }), "\n", _jsxs(_components.ul, {
+      children: ["\n", _jsxs(_components.li, {
+        children: [_jsx(_components.strong, {
+          children: "User Experience"
+        }), ": Faster sites lead to happier users"]
+      }), "\n", _jsxs(_components.li, {
+        children: [_jsx(_components.strong, {
+          children: "SEO"
+        }), ": Google considers performance in rankings"]
+      }), "\n", _jsxs(_components.li, {
+        children: [_jsx(_components.strong, {
+          children: "Conversion Rates"
+        }), ": Better performance often means better conversions"]
+      }), "\n", _jsxs(_components.li, {
+        children: [_jsx(_components.strong, {
+          children: "Cost"
+        }), ": Optimized sites use fewer resources"]
+      }), "\n"]
+    }), "\n", _jsx(_components.h2, {
+      id: "key-performance-metrics",
+      children: "Key Performance Metrics"
+    }), "\n", _jsx(_components.p, {
+      children: "The Core Web Vitals are essential metrics to track:"
+    }), "\n", _jsxs(_components.ol, {
+      children: ["\n", _jsxs(_components.li, {
+        children: ["\n", _jsx(_components.p, {
+          children: _jsx(_components.strong, {
+            children: "Largest Contentful Paint (LCP)"
+          })
+        }), "\n", _jsxs(_components.ul, {
+          children: ["\n", _jsx(_components.li, {
+            children: "Measures loading performance"
+          }), "\n", _jsx(_components.li, {
+            children: "Should be under 2.5 seconds"
+          }), "\n"]
+        }), "\n"]
+      }), "\n", _jsxs(_components.li, {
+        children: ["\n", _jsx(_components.p, {
+          children: _jsx(_components.strong, {
+            children: "First Input Delay (FID)"
+          })
+        }), "\n", _jsxs(_components.ul, {
+          children: ["\n", _jsx(_components.li, {
+            children: "Measures interactivity"
+          }), "\n", _jsx(_components.li, {
+            children: "Should be under 100 milliseconds"
+          }), "\n"]
+        }), "\n"]
+      }), "\n", _jsxs(_components.li, {
+        children: ["\n", _jsx(_components.p, {
+          children: _jsx(_components.strong, {
+            children: "Cumulative Layout Shift (CLS)"
+          })
+        }), "\n", _jsxs(_components.ul, {
+          children: ["\n", _jsx(_components.li, {
+            children: "Measures visual stability"
+          }), "\n", _jsx(_components.li, {
+            children: "Should be under 0.1"
+          }), "\n"]
+        }), "\n"]
+      }), "\n"]
+    }), "\n", _jsx(_components.h2, {
+      id: "optimization-techniques",
+      children: "Optimization Techniques"
+    }), "\n", _jsx(_components.h3, {
+      id: "1-image-optimization",
+      children: "1. Image Optimization"
+    }), "\n", _jsx(_components.pre, {
+      className: "language-jsx",
+      children: _jsxs(_components.code, {
+        className: "language-jsx code-highlight",
+        children: [_jsxs(_components.span, {
+          className: "code-line",
+          children: [_jsx(_components.span, {
+            className: "token keyword module",
+            children: "import"
+          }), " ", _jsx(_components.span, {
+            className: "token imports",
+            children: _jsx(_components.span, {
+              className: "token maybe-class-name",
+              children: "Image"
+            })
+          }), " ", _jsx(_components.span, {
+            className: "token keyword module",
+            children: "from"
+          }), " ", _jsx(_components.span, {
+            className: "token string",
+            children: "'next/image'"
+          }), _jsx(_components.span, {
+            className: "token punctuation",
+            children: ";"
+          }), "\n"]
+        }), _jsx(_components.span, {
+          className: "code-line",
+          children: "\n"
+        }), _jsxs(_components.span, {
+          className: "code-line",
+          children: [_jsx(_components.span, {
+            className: "token keyword",
+            children: "function"
+          }), " ", _jsx(_components.span, {
+            className: "token function",
+            children: _jsx(_components.span, {
+              className: "token maybe-class-name",
+              children: "OptimizedImage"
+            })
+          }), _jsx(_components.span, {
+            className: "token punctuation",
+            children: "("
+          }), _jsx(_components.span, {
+            className: "token punctuation",
+            children: ")"
+          }), " ", _jsx(_components.span, {
+            className: "token punctuation",
+            children: "{"
+          }), "\n"]
+        }), _jsxs(_components.span, {
+          className: "code-line",
+          children: ["  ", _jsx(_components.span, {
+            className: "token keyword control-flow",
+            children: "return"
+          }), " ", _jsx(_components.span, {
+            className: "token punctuation",
+            children: "("
+          }), "\n"]
+        }), _jsxs(_components.span, {
+          className: "code-line",
+          children: ["    ", _jsxs(_components.span, {
+            className: "token tag",
+            children: [_jsxs(_components.span, {
+              className: "token tag",
+              children: [_jsx(_components.span, {
+                className: "token punctuation",
+                children: "<"
+              }), _jsx(_components.span, {
+                className: "token class-name",
+                children: "Image"
+              })]
+            }), "\n"]
+          })]
+        }), _jsx(_components.span, {
+          className: "code-line",
+          children: _jsxs(_components.span, {
+            className: "token tag",
+            children: ["      ", _jsx(_components.span, {
+              className: "token attr-name",
+              children: "src"
+            }), _jsxs(_components.span, {
+              className: "token attr-value",
+              children: [_jsx(_components.span, {
+                className: "token punctuation attr-equals",
+                children: "="
+              }), _jsx(_components.span, {
+                className: "token punctuation",
+                children: "\""
+              }), "/path/to/image.jpg", _jsx(_components.span, {
+                className: "token punctuation",
+                children: "\""
+              })]
+            }), "\n"]
+          })
+        }), _jsx(_components.span, {
+          className: "code-line",
+          children: _jsxs(_components.span, {
+            className: "token tag",
+            children: ["      ", _jsx(_components.span, {
+              className: "token attr-name",
+              children: "alt"
+            }), _jsxs(_components.span, {
+              className: "token attr-value",
+              children: [_jsx(_components.span, {
+                className: "token punctuation attr-equals",
+                children: "="
+              }), _jsx(_components.span, {
+                className: "token punctuation",
+                children: "\""
+              }), "Description", _jsx(_components.span, {
+                className: "token punctuation",
+                children: "\""
+              })]
+            }), "\n"]
+          })
+        }), _jsx(_components.span, {
+          className: "code-line",
+          children: _jsxs(_components.span, {
+            className: "token tag",
+            children: ["      ", _jsx(_components.span, {
+              className: "token attr-name",
+              children: "width"
+            }), _jsxs(_components.span, {
+              className: "token script language-javascript",
+              children: [_jsx(_components.span, {
+                className: "token script-punctuation punctuation",
+                children: "="
+              }), _jsx(_components.span, {
+                className: "token punctuation",
+                children: "{"
+              }), _jsx(_components.span, {
+                className: "token number",
+                children: "800"
+              }), _jsx(_components.span, {
+                className: "token punctuation",
+                children: "}"
+              })]
+            }), "\n"]
+          })
+        }), _jsx(_components.span, {
+          className: "code-line",
+          children: _jsxs(_components.span, {
+            className: "token tag",
+            children: ["      ", _jsx(_components.span, {
+              className: "token attr-name",
+              children: "height"
+            }), _jsxs(_components.span, {
+              className: "token script language-javascript",
+              children: [_jsx(_components.span, {
+                className: "token script-punctuation punctuation",
+                children: "="
+              }), _jsx(_components.span, {
+                className: "token punctuation",
+                children: "{"
+              }), _jsx(_components.span, {
+                className: "token number",
+                children: "600"
+              }), _jsx(_components.span, {
+                className: "token punctuation",
+                children: "}"
+              })]
+            }), "\n"]
+          })
+        }), _jsx(_components.span, {
+          className: "code-line",
+          children: _jsxs(_components.span, {
+            className: "token tag",
+            children: ["      ", _jsx(_components.span, {
+              className: "token attr-name",
+              children: "quality"
+            }), _jsxs(_components.span, {
+              className: "token script language-javascript",
+              children: [_jsx(_components.span, {
+                className: "token script-punctuation punctuation",
+                children: "="
+              }), _jsx(_components.span, {
+                className: "token punctuation",
+                children: "{"
+              }), _jsx(_components.span, {
+                className: "token number",
+                children: "75"
+              }), _jsx(_components.span, {
+                className: "token punctuation",
+                children: "}"
+              })]
+            }), "\n"]
+          })
+        }), _jsx(_components.span, {
+          className: "code-line",
+          children: _jsxs(_components.span, {
+            className: "token tag",
+            children: ["      ", _jsx(_components.span, {
+              className: "token attr-name",
+              children: "loading"
+            }), _jsxs(_components.span, {
+              className: "token attr-value",
+              children: [_jsx(_components.span, {
+                className: "token punctuation attr-equals",
+                children: "="
+              }), _jsx(_components.span, {
+                className: "token punctuation",
+                children: "\""
+              }), "lazy", _jsx(_components.span, {
+                className: "token punctuation",
+                children: "\""
+              })]
+            }), "\n"]
+          })
+        }), _jsxs(_components.span, {
+          className: "code-line",
+          children: [_jsxs(_components.span, {
+            className: "token tag",
+            children: ["    ", _jsx(_components.span, {
+              className: "token punctuation",
+              children: "/>"
+            })]
+          }), "\n"]
+        }), _jsxs(_components.span, {
+          className: "code-line",
+          children: ["  ", _jsx(_components.span, {
+            className: "token punctuation",
+            children: ")"
+          }), _jsx(_components.span, {
+            className: "token punctuation",
+            children: ";"
+          }), "\n"]
+        }), _jsxs(_components.span, {
+          className: "code-line",
+          children: [_jsx(_components.span, {
+            className: "token punctuation",
+            children: "}"
+          }), "\n"]
+        })]
+      })
+    }), "\n", _jsx(_components.h3, {
+      id: "2-code-splitting",
+      children: "2. Code Splitting"
+    }), "\n", _jsx(_components.pre, {
+      className: "language-jsx",
+      children: _jsxs(_components.code, {
+        className: "language-jsx code-highlight",
+        children: [_jsxs(_components.span, {
+          className: "code-line",
+          children: [_jsx(_components.span, {
+            className: "token keyword module",
+            children: "import"
+          }), " ", _jsx(_components.span, {
+            className: "token imports",
+            children: "dynamic"
+          }), " ", _jsx(_components.span, {
+            className: "token keyword module",
+            children: "from"
+          }), " ", _jsx(_components.span, {
+            className: "token string",
+            children: "'next/dynamic'"
+          }), _jsx(_components.span, {
+            className: "token punctuation",
+            children: ";"
+          }), "\n"]
+        }), _jsx(_components.span, {
+          className: "code-line",
+          children: "\n"
+        }), _jsxs(_components.span, {
+          className: "code-line",
+          children: [_jsx(_components.span, {
+            className: "token keyword",
+            children: "const"
+          }), " ", _jsx(_components.span, {
+            className: "token maybe-class-name",
+            children: "HeavyComponent"
+          }), " ", _jsx(_components.span, {
+            className: "token operator",
+            children: "="
+          }), " ", _jsx(_components.span, {
+            className: "token function",
+            children: "dynamic"
+          }), _jsx(_components.span, {
+            className: "token punctuation",
+            children: "("
+          }), _jsx(_components.span, {
+            className: "token punctuation",
+            children: "("
+          }), _jsx(_components.span, {
+            className: "token punctuation",
+            children: ")"
+          }), " ", _jsx(_components.span, {
+            className: "token arrow operator",
+            children: "=>"
+          }), " ", _jsx(_components.span, {
+            className: "token keyword module",
+            children: "import"
+          }), _jsx(_components.span, {
+            className: "token punctuation",
+            children: "("
+          }), _jsx(_components.span, {
+            className: "token string",
+            children: "'./HeavyComponent'"
+          }), _jsx(_components.span, {
+            className: "token punctuation",
+            children: ")"
+          }), _jsx(_components.span, {
+            className: "token punctuation",
+            children: ","
+          }), " ", _jsx(_components.span, {
+            className: "token punctuation",
+            children: "{"
+          }), "\n"]
+        }), _jsxs(_components.span, {
+          className: "code-line",
+          children: ["  ", _jsx(_components.span, {
+            className: "token function-variable function",
+            children: "loading"
+          }), _jsx(_components.span, {
+            className: "token operator",
+            children: ":"
+          }), " ", _jsx(_components.span, {
+            className: "token punctuation",
+            children: "("
+          }), _jsx(_components.span, {
+            className: "token punctuation",
+            children: ")"
+          }), " ", _jsx(_components.span, {
+            className: "token arrow operator",
+            children: "=>"
+          }), " ", _jsxs(_components.span, {
+            className: "token tag",
+            children: [_jsxs(_components.span, {
+              className: "token tag",
+              children: [_jsx(_components.span, {
+                className: "token punctuation",
+                children: "<"
+              }), "p"]
+            }), _jsx(_components.span, {
+              className: "token punctuation",
+              children: ">"
+            })]
+          }), _jsx(_components.span, {
+            className: "token plain-text",
+            children: "Loading..."
+          }), _jsxs(_components.span, {
+            className: "token tag",
+            children: [_jsxs(_components.span, {
+              className: "token tag",
+              children: [_jsx(_components.span, {
+                className: "token punctuation",
+                children: "</"
+              }), "p"]
+            }), _jsx(_components.span, {
+              className: "token punctuation",
+              children: ">"
+            })]
+          }), _jsx(_components.span, {
+            className: "token punctuation",
+            children: ","
+          }), "\n"]
+        }), _jsxs(_components.span, {
+          className: "code-line",
+          children: [_jsx(_components.span, {
+            className: "token punctuation",
+            children: "}"
+          }), _jsx(_components.span, {
+            className: "token punctuation",
+            children: ")"
+          }), _jsx(_components.span, {
+            className: "token punctuation",
+            children: ";"
+          }), "\n"]
+        })]
+      })
+    }), "\n", _jsx(_components.h3, {
+      id: "3-caching-strategies",
+      children: "3. Caching Strategies"
+    }), "\n", _jsx(_components.pre, {
+      className: "language-javascript",
+      children: _jsxs(_components.code, {
+        className: "language-javascript code-highlight",
+        children: [_jsxs(_components.span, {
+          className: "code-line",
+          children: [_jsx(_components.span, {
+            className: "token comment",
+            children: "// Example of implementing caching headers"
+          }), "\n"]
+        }), _jsxs(_components.span, {
+          className: "code-line",
+          children: [_jsx(_components.span, {
+            className: "token keyword module",
+            children: "export"
+          }), " ", _jsx(_components.span, {
+            className: "token keyword",
+            children: "async"
+          }), " ", _jsx(_components.span, {
+            className: "token keyword",
+            children: "function"
+          }), " ", _jsx(_components.span, {
+            className: "token function",
+            children: "getStaticProps"
+          }), _jsx(_components.span, {
+            className: "token punctuation",
+            children: "("
+          }), _jsx(_components.span, {
+            className: "token punctuation",
+            children: ")"
+          }), " ", _jsx(_components.span, {
+            className: "token punctuation",
+            children: "{"
+          }), "\n"]
+        }), _jsxs(_components.span, {
+          className: "code-line",
+          children: ["  ", _jsx(_components.span, {
+            className: "token keyword control-flow",
+            children: "return"
+          }), " ", _jsx(_components.span, {
+            className: "token punctuation",
+            children: "{"
+          }), "\n"]
+        }), _jsxs(_components.span, {
+          className: "code-line",
+          children: ["    ", _jsx(_components.span, {
+            className: "token literal-property property",
+            children: "props"
+          }), _jsx(_components.span, {
+            className: "token operator",
+            children: ":"
+          }), " ", _jsx(_components.span, {
+            className: "token punctuation",
+            children: "{"
+          }), "\n"]
+        }), _jsxs(_components.span, {
+          className: "code-line",
+          children: ["      ", _jsx(_components.span, {
+            className: "token literal-property property",
+            children: "data"
+          }), _jsx(_components.span, {
+            className: "token operator",
+            children: ":"
+          }), " ", _jsx(_components.span, {
+            className: "token keyword control-flow",
+            children: "await"
+          }), " ", _jsx(_components.span, {
+            className: "token function",
+            children: "fetchData"
+          }), _jsx(_components.span, {
+            className: "token punctuation",
+            children: "("
+          }), _jsx(_components.span, {
+            className: "token punctuation",
+            children: ")"
+          }), _jsx(_components.span, {
+            className: "token punctuation",
+            children: ","
+          }), "\n"]
+        }), _jsxs(_components.span, {
+          className: "code-line",
+          children: ["    ", _jsx(_components.span, {
+            className: "token punctuation",
+            children: "}"
+          }), _jsx(_components.span, {
+            className: "token punctuation",
+            children: ","
+          }), "\n"]
+        }), _jsxs(_components.span, {
+          className: "code-line",
+          children: ["    ", _jsx(_components.span, {
+            className: "token literal-property property",
+            children: "revalidate"
+          }), _jsx(_components.span, {
+            className: "token operator",
+            children: ":"
+          }), " ", _jsx(_components.span, {
+            className: "token number",
+            children: "3600"
+          }), _jsx(_components.span, {
+            className: "token punctuation",
+            children: ","
+          }), " ", _jsx(_components.span, {
+            className: "token comment",
+            children: "// Revalidate every hour"
+          }), "\n"]
+        }), _jsxs(_components.span, {
+          className: "code-line",
+          children: ["  ", _jsx(_components.span, {
+            className: "token punctuation",
+            children: "}"
+          }), _jsx(_components.span, {
+            className: "token punctuation",
+            children: ";"
+          }), "\n"]
+        }), _jsxs(_components.span, {
+          className: "code-line",
+          children: [_jsx(_components.span, {
+            className: "token punctuation",
+            children: "}"
+          }), "\n"]
+        })]
+      })
+    }), "\n", _jsx(_components.h2, {
+      id: "performance-monitoring",
+      children: "Performance Monitoring"
+    }), "\n", _jsx(_components.p, {
+      children: "Tools for monitoring performance:"
+    }), "\n", _jsxs(_components.ol, {
+      children: ["\n", _jsxs(_components.li, {
+        children: [_jsx(_components.strong, {
+          children: "Lighthouse"
+        }), ": Built into Chrome DevTools"]
+      }), "\n", _jsxs(_components.li, {
+        children: [_jsx(_components.strong, {
+          children: "WebPageTest"
+        }), ": Detailed performance analysis"]
+      }), "\n", _jsxs(_components.li, {
+        children: [_jsx(_components.strong, {
+          children: "Google Analytics"
+        }), ": Real user metrics"]
+      }), "\n", _jsxs(_components.li, {
+        children: [_jsx(_components.strong, {
+          children: "New Relic"
+        }), ": Application performance monitoring"]
+      }), "\n"]
+    }), "\n", _jsx(_components.h2, {
+      id: "best-practices",
+      children: "Best Practices"
+    }), "\n", _jsx(_components.p, {
+      children: "Here are some essential performance optimization practices:"
+    }), "\n", _jsxs(_components.ol, {
+      children: ["\n", _jsxs(_components.li, {
+        children: ["\n", _jsx(_components.p, {
+          children: _jsx(_components.strong, {
+            children: "Minimize HTTP Requests"
+          })
+        }), "\n", _jsxs(_components.ul, {
+          children: ["\n", _jsx(_components.li, {
+            children: "Combine CSS/JS files"
+          }), "\n", _jsx(_components.li, {
+            children: "Use image sprites"
+          }), "\n", _jsx(_components.li, {
+            children: "Enable HTTP/2"
+          }), "\n"]
+        }), "\n"]
+      }), "\n", _jsxs(_components.li, {
+        children: ["\n", _jsx(_components.p, {
+          children: _jsx(_components.strong, {
+            children: "Optimize Assets"
+          })
+        }), "\n", _jsxs(_components.ul, {
+          children: ["\n", _jsx(_components.li, {
+            children: "Compress images"
+          }), "\n", _jsx(_components.li, {
+            children: "Minify code"
+          }), "\n", _jsx(_components.li, {
+            children: "Use CDNs"
+          }), "\n"]
+        }), "\n"]
+      }), "\n", _jsxs(_components.li, {
+        children: ["\n", _jsx(_components.p, {
+          children: _jsx(_components.strong, {
+            children: "Implement Caching"
+          })
+        }), "\n", _jsxs(_components.ul, {
+          children: ["\n", _jsx(_components.li, {
+            children: "Browser caching"
+          }), "\n", _jsx(_components.li, {
+            children: "Service workers"
+          }), "\n", _jsx(_components.li, {
+            children: "CDN caching"
+          }), "\n"]
+        }), "\n"]
+      }), "\n", _jsxs(_components.li, {
+        children: ["\n", _jsx(_components.p, {
+          children: _jsx(_components.strong, {
+            children: "Reduce Server Load"
+          })
+        }), "\n", _jsxs(_components.ul, {
+          children: ["\n", _jsx(_components.li, {
+            children: "Use static generation"
+          }), "\n", _jsx(_components.li, {
+            children: "Implement pagination"
+          }), "\n", _jsx(_components.li, {
+            children: "Optimize database queries"
+          }), "\n"]
+        }), "\n"]
+      }), "\n"]
+    }), "\n", _jsx(_components.h2, {
+      id: "conclusion",
+      children: "Conclusion"
+    }), "\n", _jsx(_components.p, {
+      children: "Performance optimization is an ongoing process. Regular monitoring and optimization can significantly improve your site's performance and user experience."
+    }), "\n", _jsxs(_components.blockquote, {
+      children: ["\n", _jsxs(_components.p, {
+        children: [_jsx(_components.strong, {
+          children: "Remember"
+        }), ": Performance optimization is not just about speed; it's about providing the best possible user experience."]
+      }), "\n"]
+    }), "\n", _jsx(_components.p, {
+      children: "Happy optimizing! ⚡"
+    })]
+  });
+}
+function MDXContent(props = {}) {
+  const {wrapper: MDXLayout} = Object.assign({}, _provideComponents(), props.components);
+  return MDXLayout ? _jsx(MDXLayout, Object.assign({}, props, {
+    children: _jsx(_createMdxContent, props)
+  })) : _createMdxContent(props);
+}
+return {
+  default: MDXContent
+};
+b:["Performance","Web Development","Optimization"]
+2:["$","$L9",null,{"post":{"title":"Optimizing Web Performance","date":"2024-03-18","tags":["Performance","Web Development","Optimization"],"excerpt":"Learn essential techniques for optimizing web performance and improving user experience.","coverImage":"/images/blog/performance.jpg","readTime":"6 min read","slug":"optimizing-web-performance","content":{"compiledSource":"$a","frontmatter":{},"scope":{"title":"Optimizing Web Performance","date":"2024-03-18","tags":"$b","excerpt":"Learn essential techniques for optimizing web performance and improving user experience.","coverImage":"/images/blog/performance.jpg","readTime":"6 min read"}}}}]
+8:[["$","meta","0",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","1",{"charSet":"utf-8"}],["$","title","2",{"children":"Michael Lynn - Creative Developer"}],["$","meta","3",{"name":"description","content":"Pushing the boundaries of web development with innovative solutions and creative coding"}],["$","link","4",{"rel":"icon","href":"/mrlynn.github.io/favicon.ico","type":"image/x-icon","sizes":"16x16"}],["$","meta","5",{"name":"next-size-adjust"}]]
+1:null
