@@ -1,0 +1,83 @@
+export const projects = [
+  {
+    title: 'MongoDB Atlas Deployer',
+    description: 'A web application for rapid provisioning and management of MongoDB Atlas clusters for workshops and training events.',
+    image: '/images/projects/atlas-deployer.png',
+    tags: ['Next.js', 'MongoDB', 'React'],
+    demoUrl: 'https://deployer.mongodb.com',
+    private: true,
+    color: '#05668D', // Lapis Lazuli
+  },
+  {
+    title: 'Design Reviewer',
+    description: 'An AI-powered design review system that helps teams maintain consistency and best practices.',
+    image: '/images/projects/design-reviewer.png',
+    tags: ['AI', 'UX/UI', 'Analytics'],
+    demoUrl: 'https://mrlynn.github.io',
+    private: true,
+    color: '#679436', // Asparagus
+  },
+  {
+    title: 'DevRel Planner',
+    description: 'A comprehensive planning tool for Developer Relations teams to manage activities and track impact.',
+    image: '/images/projects/devrel-planner.png',
+    tags: ['React', 'Data Viz', 'Planning'],
+    demoUrl: 'https://planner.mongodb.com',
+    private: true,
+    color: '#427AA1', // UCLA Blue
+  },
+  {
+    title: 'MermaidGPT',
+    description: 'Transform your ideas into clear, professional diagrams using natural language and AI.',
+    image: '/images/projects/mermaid-gpt.png',
+    tags: ['AI', 'Diagrams', 'Documentation'],
+    demoUrl: 'https://mermaidgpt.com',
+    private: false,
+    color: '#05668D',
+  },
+  {
+    title: 'LightningHire',
+    description: 'AI-Powered Resume Evaluation System for streamlined hiring processes.',
+    image: '/images/projects/lightninghire.png',
+    tags: ['AI', 'HR Tech', 'Analytics'],
+    demoUrl: 'https://lightninghire.com',
+    private: false,
+    color: '#679436',
+  },
+  {
+    title: 'MongoDB-RAG',
+    description: 'The easiest way to build RAG applications with MongoDB - a lightweight NPM package for vector search and document ingestion.',
+    image: '/images/projects/mongodb-rag.png',
+    tags: ['MongoDB', 'AI', 'Vector Search'],
+    demoUrl: 'https://mongodb.com/rag',
+    private: false,
+    color: '#427AA1',
+  },
+  {
+    title: 'PDEffer',
+    description: 'Document Analysis & PDF Converter with AI-powered analysis capabilities.',
+    image: '/images/projects/pdeffer.png',
+    tags: ['AI', 'Document Processing', 'PDF'],
+    demoUrl: 'https://pdeffer.com',
+    private: false,
+    color: '#05668D',
+  },
+  {
+    title: 'Sellers Edge',
+    description: 'Handle MongoDB Objections with Confidence - AI-powered sales assistant for perfect responses.',
+    image: '/images/projects/sellers_edge.png',
+    tags: ['AI', 'Sales', 'MongoDB'],
+    demoUrl: 'https://mdbse.vercel.app',
+    private: true,
+    color: '#679436',
+  },
+  {
+    title: 'MongoDBank',
+    description: 'An example of MongoDB in the Financial Services Industry',
+    image: '/images/projects/mongodbank.png',
+    tags: ['AI', 'Sales', 'MongoDB', 'Financial Services'],
+    demoUrl: 'https://mongodbank.vercel.app',
+    private: false,
+    color: '#679436',
+  }
+]; 

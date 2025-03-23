@@ -1,0 +1,103 @@
+---
+title: Getting Started with Next.js
+date: '2024-03-20'
+tags: ['Next.js', 'React', 'Web Development']
+excerpt: Learn how to build modern web applications with Next.js and React, from setup to deployment.
+coverImage: '/images/blog/nextjs-starter.jpg'
+readTime: '5 min read'
+---
+
+# Getting Started with Next.js
+
+Next.js is a powerful framework for building React applications. It provides a great developer experience with features like server-side rendering, static site generation, and API routes out of the box.
+
+## Why Next.js?
+
+Next.js offers several advantages over traditional React applications:
+
+- **Server-Side Rendering**: Better performance and SEO
+- **Static Site Generation**: Fast page loads and reduced server load
+- **API Routes**: Build backend functionality directly in your Next.js app
+- **File-System Based Routing**: Intuitive and easy to understand
+- **Built-in CSS Support**: Including CSS Modules and Sass
+
+## Setting Up Your First Project
+
+To create a new Next.js project, run:
+
+```bash
+npx create-next-app@latest my-next-app
+```
+
+This will prompt you with some configuration options. Here's what I recommend:
+
+```bash
+Would you like to use TypeScript? › Yes
+Would you like to use ESLint? › Yes
+Would you like to use Tailwind CSS? › Yes
+Would you like to use `src/` directory? › Yes
+Would you like to use App Router? › Yes
+Would you like to customize the default import alias? › No
+```
+
+## Project Structure
+
+A typical Next.js project structure looks like this:
+
+```
+my-next-app/
+├── src/
+│   ├── app/
+│   │   ├── page.tsx
+│   │   ├── layout.tsx
+│   │   └── globals.css
+│   ├── components/
+│   └── lib/
+├── public/
+├── package.json
+└── next.config.js
+```
+
+## Creating Your First Page
+
+In the App Router, pages are created by adding files to the `app` directory. Here's a simple example:
+
+```tsx
+// src/app/page.tsx
+export default function Home() {
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <h1>Welcome to My Next.js App</h1>
+    </main>
+  );
+}
+```
+
+## Adding API Routes
+
+API routes are created by adding files to the `app/api` directory:
+
+```tsx
+// src/app/api/hello/route.ts
+import { NextResponse } from 'next/server';
+
+export async function GET() {
+  return NextResponse.json({ message: 'Hello from the API!' });
+}
+```
+
+## Deployment
+
+Next.js applications can be deployed to various platforms:
+
+1. **Vercel**: The creators of Next.js offer the best deployment experience
+2. **Netlify**: Great for static sites
+3. **AWS**: Using services like Amplify or Elastic Beanstalk
+
+## Conclusion
+
+Next.js is an excellent choice for building modern web applications. Its features and developer experience make it a joy to work with, while its performance optimizations ensure your applications run smoothly.
+
+> **Tip**: Check out the [Next.js documentation](https://nextjs.org/docs) for more detailed information and examples.
+
+Happy coding! 🚀 
