@@ -45,5 +45,15 @@ export const videos = [
     description: "A quick overview of Fitbod, the AI-powered personal trainer app that creates personalized workouts based on your available equipment and fitness goals.",
     category: "Product Demo",
     tags: ["Mobile", "AI", "Fitness"]
+  },
+  ,
+  {
+    title: "Michael Lynn - MongoDB Keynote",
+    thumbnail: "https://img.youtube.com/vi/hSNNXFOxfiQ/maxresdefault.jpg",
+    videoId: "hSNNXFOxfiQ?si=RoWZAgf_S-4LvXqg&t=2159",
+    platform: "tiktok",
+    description: "In this MongoDB keynote, Principal Developer Advocate Michael Lynn demonstrates how MongoDB Atlas’s Data Federation simplifies real-time integration of internal data with external sources, enabling businesses to build dynamic, unified data applications.",
+    category: "Conference Keynote",
+    tags: ["MongoDB", "Data Federation", "Keynote"]
   }
 ]; 

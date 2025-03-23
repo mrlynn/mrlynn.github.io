@@ -73,6 +73,16 @@ const skills = [
 export default function Resume() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isDark = theme.palette.mode === 'dark';
+
+  const paperStyle = {
+    p: { xs: 2, sm: 3 },
+    mb: { xs: 2, sm: 3 },
+    background: isDark ? 'rgba(6, 39, 54, 0.9)' : 'rgba(255, 255, 255, 0.9)',
+    backdropFilter: 'blur(10px)',
+    border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
+    color: theme.palette.text.primary,
+  };
 
   return (
     <Container maxWidth="lg">
@@ -84,15 +94,16 @@ export default function Resume() {
           sx={{
             fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
             lineHeight: 1.2,
+            color: theme.palette.text.primary,
           }}
         >
           Professional Experience
         </Typography>
         <Typography 
           variant="h6" 
-          color="text.secondary"
           sx={{
             fontSize: { xs: '1rem', sm: '1.25rem' },
+            color: theme.palette.text.secondary,
           }}
         >
           A track record of technical leadership and innovation in developer advocacy and solutions architecture
@@ -107,29 +118,24 @@ export default function Resume() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              sx={{
-                p: { xs: 2, sm: 3 },
-                mb: { xs: 2, sm: 3 },
-                background: 'rgba(6, 39, 54, 0.9)',
-                backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255,255,255,0.1)',
-              }}
+              sx={paperStyle}
             >
               <Typography 
                 variant="h5" 
                 gutterBottom
                 sx={{
                   fontSize: { xs: '1.5rem', sm: '1.75rem' },
+                  color: theme.palette.text.primary,
                 }}
               >
                 {exp.title}
               </Typography>
               <Typography 
                 variant="subtitle1" 
-                color="text.secondary" 
                 gutterBottom
                 sx={{
                   fontSize: { xs: '0.875rem', sm: '1rem' },
+                  color: theme.palette.text.secondary,
                 }}
               >
                 {exp.company} | {exp.location} | {exp.period}
@@ -139,6 +145,7 @@ export default function Resume() {
                 paragraph
                 sx={{
                   fontSize: { xs: '0.875rem', sm: '1rem' },
+                  color: theme.palette.text.primary,
                 }}
               >
                 {exp.description}
@@ -159,6 +166,7 @@ export default function Resume() {
                       primaryTypographyProps={{
                         sx: {
                           fontSize: { xs: '0.875rem', sm: '1rem' },
+                          color: theme.palette.text.primary,
                         }
                       }}
                     />
@@ -174,10 +182,7 @@ export default function Resume() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
             sx={{
-              p: { xs: 2, sm: 3 },
-              background: 'rgba(6, 39, 54, 0.9)',
-              backdropFilter: 'blur(10px)',
-              border: '1px solid rgba(255,255,255,0.1)',
+              ...paperStyle,
               position: { xs: 'sticky', md: 'static' },
               top: { xs: 16, sm: 24 },
               zIndex: 1,
@@ -188,6 +193,7 @@ export default function Resume() {
               gutterBottom
               sx={{
                 fontSize: { xs: '1.5rem', sm: '1.75rem' },
+                color: theme.palette.text.primary,
               }}
             >
               Skills & Expertise
@@ -209,7 +215,7 @@ export default function Resume() {
                   sx={{
                     m: 0.5,
                     background: theme.palette.background.gradient,
-                    color: 'white',
+                    color: isDark ? 'white' : 'black',
                     fontSize: { xs: '0.75rem', sm: '0.875rem' },
                     height: { xs: 24, sm: 32 },
                     '&:hover': {

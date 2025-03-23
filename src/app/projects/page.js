@@ -1,16 +1,17 @@
 'use client';
 
 import { useState } from 'react';
-import { Box, Button, Container, Typography, Grid, Paper, Chip, Stack, Tooltip } from '@mui/material';
+import { Box, Button, Container, Typography, Grid, Paper, Chip, Stack, Tooltip, useTheme, useMediaQuery  } from '@mui/material';
 import { motion } from 'framer-motion';
 import { GitHub as GitHubIcon, Launch as LaunchIcon, Lock as LockIcon } from '@mui/icons-material';
-import { useTheme } from '@mui/material';
 import { projects } from '@/data/projects';
 
 const MotionPaper = motion(Paper);
 
 export default function Projects() {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isDark = theme.palette.mode === 'dark';
   const [selectedTags, setSelectedTags] = useState([]);
 
   // Get unique tags from all projects
@@ -88,33 +89,20 @@ export default function Projects() {
           <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap sx={{ gap: { xs: 0.5, sm: 1 } }}>
             {allTags.map((tag) => (
               <Chip
-                key={tag}
-                label={tag}
-                onClick={() => handleTagClick(tag)}
-                sx={{
-                  m: 0.5,
-                  background: selectedTags.includes(tag) 
-                    ? theme.palette.background.gradient
-                    : theme.palette.mode === 'dark'
-                      ? 'rgba(255,255,255,0.05)'
-                      : 'rgba(0,0,0,0.05)',
-                  color: selectedTags.includes(tag) 
-                    ? '#ffffff'
-                    : theme.palette.mode === 'dark' 
-                      ? '#ffffff' 
-                      : '#000000',
-                  fontSize: { xs: '0.75rem', sm: '0.875rem' },
-                  height: { xs: 24, sm: 32 },
-                  '&:hover': {
-                    opacity: 0.9,
-                    background: selectedTags.includes(tag)
-                      ? theme.palette.background.gradient
-                      : theme.palette.mode === 'dark'
-                        ? 'rgba(255,255,255,0.1)'
-                        : 'rgba(0,0,0,0.1)',
-                  },
-                }}
-              />
+              key={tag}
+              label={tag}
+              onClick={() => handleTagClick(tag)}
+              sx={{
+                m: 0.5,
+                background: theme.palette.background.gradient,
+                color: isDark ? 'white' : 'black',
+                fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                height: { xs: 24, sm: 32 },
+                '&:hover': {
+                  opacity: 0.9,
+                },
+              }}
+            />
             ))}
           </Stack>
         </Box>

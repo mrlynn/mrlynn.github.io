@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Container, Grid, Typography, Card, CardMedia, CardContent, CardActions, Button, useTheme, Tooltip, Chip, Stack } from '@mui/material';
+import { Box, Container, Grid, Typography, Card, CardMedia, CardContent, CardActions, Button, useTheme, Tooltip, Chip, Stack, useMediaQuery } from '@mui/material';
 import { motion } from 'framer-motion';
 import { GitHub as GitHubIcon, Launch as LaunchIcon, Lock as LockIcon } from '@mui/icons-material';
 import { projects } from '@/data/projects';
@@ -9,6 +9,8 @@ const MotionCard = motion.create(Card);
 
 export default function ProjectsSection() {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isDark = theme.palette.mode === 'dark';
 
   return (
     <Box
@@ -109,7 +111,7 @@ export default function ProjectsSection() {
                   </Typography>
                   <Typography
                     variant="body2"
-                    sx={{ 
+                    sx={{
                       mb: 2,
                       color: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)'
                     }}
@@ -118,13 +120,16 @@ export default function ProjectsSection() {
                   </Typography>
                   <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap sx={{ gap: { xs: 0.5, sm: 1 } }}>
                     {project.tags.map((tag) => (
+
+
+
                       <Chip
                         key={tag}
                         label={tag}
                         sx={{
                           m: 0.5,
                           background: theme.palette.background.gradient,
-                          color: '#ffffff',
+                          color: isDark ? 'white' : 'black',
                           fontSize: { xs: '0.75rem', sm: '0.875rem' },
                           height: { xs: 24, sm: 32 },
                           '&:hover': {
@@ -132,6 +137,11 @@ export default function ProjectsSection() {
                           },
                         }}
                       />
+
+
+
+
+
                     ))}
                   </Stack>
                 </CardContent>
@@ -145,11 +155,11 @@ export default function ProjectsSection() {
                         target="_blank"
                         disabled={project.private}
                         sx={{
-                          color: project.private 
+                          color: project.private
                             ? theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'
                             : theme.palette.mode === 'dark' ? '#ffffff' : '#000000',
                           '&:hover': {
-                            color: project.private 
+                            color: project.private
                               ? theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'
                               : theme.palette.secondary.main,
                           },

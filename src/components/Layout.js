@@ -25,16 +25,19 @@ import {
   YouTube as YouTubeIcon,
   LightMode,
   DarkMode,
-  Menu as MenuIcon
+  Menu as MenuIcon,
+  Palette as PaletteIcon
 } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTheme as useCustomTheme } from '../theme/ThemeContext';
+import Image from 'next/image';
 
 const menuItems = [
   { text: 'Home', icon: <HomeIcon />, path: '/' },
   { text: 'Projects', icon: <WorkIcon />, path: '/projects' },
   { text: 'Videos', icon: <YouTubeIcon />, path: '/videos' },
+  { text: 'Art', icon: <PaletteIcon />, path: '/art' },
   { text: 'Resume', icon: <ArticleIcon />, path: '/resume' },
   { text: 'Contact', icon: <ContactIcon />, path: '/contact' },
 ];
@@ -136,23 +139,37 @@ export default function Layout({ children }) {
         }}
       >
         <Toolbar sx={{ justifyContent: 'space-between' }}>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ 
-              fontWeight: 700,
-              color: theme.palette.mode === 'dark' ? 'white' : 'black',
-            }}
-          >
-            ML
-          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Image
+              src="/letter-m.svg"
+              alt="M Logo"
+              width={24}
+              height={24}
+              style={{
+                filter: theme.palette.mode === 'dark' ? 'invert(1)' : 'none'
+              }}
+            />
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{ 
+                fontWeight: 700,
+                color: theme.palette.mode === 'dark' ? 'white' : 'black',
+              }}
+            >
+              Michael Lynn
+            </Typography>
+          </Box>
           {isMobile ? (
             <IconButton
               color="inherit"
               aria-label="open drawer"
               edge="start"
               onClick={handleDrawerToggle}
-              sx={{ mr: 2 }}
+              sx={{ 
+                mr: 2,
+                color: theme.palette.mode === 'dark' ? 'white' : 'black',
+              }}
             >
               <MenuIcon />
             </IconButton>

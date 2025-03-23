@@ -121,7 +121,7 @@ export default function VideosPage() {
                       ? 'rgba(255,255,255,0.05)'
                       : 'rgba(0,0,0,0.05)',
                   color: selectedTags.includes(tag)
-                    ? '#ffffff'
+                    ? theme.palette.background.gradient
                     : theme.palette.mode === 'dark'
                       ? '#ffffff'
                       : '#000000',
