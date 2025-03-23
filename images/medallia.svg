@@ -1,0 +1,77 @@
+<svg version="1.1" id="Layer_1" xmlns:x="ns_extend;" xmlns:i="ns_ai;" xmlns:graph="ns_graphs;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 380.6 85" style="enable-background:new 0 0 380.6 85;" xml:space="preserve">
+ <style type="text/css">
+  .st0{fill-rule:evenodd;clip-rule:evenodd;fill:#364045;}
+	.st1{fill-rule:evenodd;clip-rule:evenodd;fill:#4050C6;}
+	.st2{filter:url(#Adobe_OpacityMaskFilter);}
+	.st3{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFFFF;}
+	.st4{mask:url(#mask-2_1_);fill-rule:evenodd;clip-rule:evenodd;fill:#364045;}
+ </style>
+ <metadata>
+  <sfw xmlns="ns_sfw;">
+   <slices>
+   </slices>
+   <sliceSourceBounds bottomLeftOrigin="true" height="85" width="380.6" x="-132.4" y="-29.6">
+   </sliceSourceBounds>
+  </sfw>
+ </metadata>
+ <desc>
+  Created with Sketch.
+ </desc>
+ <g id="TEMPLATES">
+  <g id="_x31_440-R4-Home" transform="translate(-100.000000, -27.000000)">
+   <g id="Header">
+    <g id="Medallia-Logo" transform="translate(100.000000, 27.000000)">
+     <polygon id="Fill-1" class="st0" points="62.5,9.8 37.7,42.4 13,9.8 0,9.8 0,83.6 14.2,83.6 14.2,35.1 37.2,64 38,64 61.3,34.9 
+					61.3,83.6 75.5,83.6 75.5,9.8 				">
+     </polygon>
+     <polygon id="Fill-2" class="st0" points="284.6,83.6 298.6,83.6 298.6,5.6 284.6,9.8 				">
+     </polygon>
+     <polygon id="Fill-3" class="st0" points="258.6,83.6 272.6,83.6 272.6,5.6 258.6,9.8 				">
+     </polygon>
+     <g id="Group-17" transform="translate(25.611940, 0.113831)">
+      <path id="Fill-4" class="st0" d="M150.5,71.4l-0.6,0.2c0,0-3.2,1.1-6.4,1.1h-0.5c-1.5,0-4.9,0-7.8-2.2c-3.3-2.6-5-7.3-5-14.1
+						c0-10.5,4.9-16.7,13.2-16.7c2.1,0,4.3,0.4,6.6,1.2l0.5,0.2V71.4z M150.5,28.7l-1-0.3c-2.6-0.7-5.7-1.1-8.6-1.1
+						c-4.8,0-11.6,1-17,5.7c-5.7,5-8.6,13.1-8.6,24.1c0,9.9,2.7,17.3,8,21.9c4.4,3.8,10.5,5.7,18.2,5.7c9.4,0,18.1-2.8,22.4-4.5
+						l0.4-0.1V5.9l-13.8,3.8V28.7z">
+      </path>
+      <polygon id="Fill-6" class="st0" points="284.8,83.5 298.8,83.5 298.8,26.6 284.8,30.9 					">
+      </polygon>
+      <polygon id="Fill-8" class="st1" points="282.4,9.8 292.5,20 302.5,9.9 292.5,-0.1 					">
+      </polygon>
+      <path id="Fill-10" class="st0" d="M206.7,69.9c0,0-3.5,4.5-11.8,4.5c-5.1,0-8.3-2.8-8.3-7.4c0-6.1,6.1-8.2,11.7-8.2
+						c5.3,0,8.4,0.7,8.4,0.7V69.9z M195.9,27.2c-10.3,0-17.5,4-17.5,4v11.5h0.1c2.3-0.9,7.7-3.7,16.8-3.7c4.5,0,7.6,1,9.5,2.9
+						c1.9,2,1.9,6,1.9,8.4c0,0-4.3-1.1-9.4-1.1c-16,0-24.7,6.9-24.7,17.8s9.1,17.6,19.3,17.6c10.2,0,15.9-4.4,15.9-4.4v3H221v-8.7
+						v-3.7V48.8C221,29.4,206.7,27.2,195.9,27.2L195.9,27.2z">
+      </path>
+      <g id="Group-14" transform="translate(75.283582, 8.278607)">
+       <g id="Clip-13">
+       </g>
+       <defs>
+        <filter id="Adobe_OpacityMaskFilter" filterUnits="userSpaceOnUse" x="231.1" y="18.9" width="48.6" height="57.5">
+         <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0">
+         </feColorMatrix>
+        </filter>
+       </defs>
+       <mask maskUnits="userSpaceOnUse" x="231.1" y="18.9" width="48.6" height="57.5" id="mask-2_1_">
+        <g class="st2">
+         <polygon id="path-1_1_" class="st3" points="231.1,18.9 279.7,18.9 279.7,76.4 231.1,76.4 								">
+         </polygon>
+        </g>
+       </mask>
+       <path id="Fill-12" class="st4" d="M265.4,61.6c0,0-3.5,4.5-11.8,4.5c-5.1,0-8.3-2.8-8.3-7.4c0-6.1,6.1-8.2,11.7-8.2
+							c5.3,0,8.4,0.7,8.4,0.7V61.6z M254.5,18.9c-10.3,0-17.5,4-17.5,4v11.5h0.1c2.3-0.9,7.7-3.7,16.8-3.7c4.5,0,7.6,1,9.5,2.9
+							c1.9,2,1.9,6,1.9,8.4c0,0-4.3-1.1-9.4-1.1c-16,0-24.7,6.9-24.7,17.8s9.1,17.6,19.3,17.6c10.2,0,15.9-4.4,15.9-4.4v3h13.4v-8.7
+							v-3.7V40.5C279.7,21.2,265.3,18.9,254.5,18.9L254.5,18.9z">
+       </path>
+      </g>
+      <path id="Fill-15" class="st0" d="M72.8,51c0-1.3,0.2-3.8,1.4-6c1.5-2.8,4.9-6.2,10.6-6.2c5.7,0,8.8,3.4,10.1,6.2
+						c1,2.3,1.1,4.7,1.1,6H72.8z M108.4,55.1c0-10-2.4-17.3-7.2-21.8c-3.9-3.7-9.4-6.1-16.4-6.1c-6.5,0-12.7,2.2-17.2,6.1
+						c-5.9,5.1-8.9,12.8-8.9,22.9c0,25.8,19.3,28.6,27.6,28.6c8.1,0,15.6-2.9,18.6-4.3V68.9c-2,1.2-8.1,4.4-16.3,4.4
+						c-4.4,0-10.4-1.6-13.8-6.9c-1.4-2.1-1.9-4.2-2.1-5.4h35.6C108.3,61,108.4,57.6,108.4,55.1L108.4,55.1z">
+      </path>
+     </g>
+    </g>
+   </g>
+  </g>
+ </g>
+</svg>
