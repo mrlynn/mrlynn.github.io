@@ -1,5 +1,5 @@
-import { getPostBySlug, getAllPosts } from '@/lib/markdown';
-import BlogPost from '@/components/BlogPost';
+import { getAllPosts, getPostBySlug } from '../../../lib/markdown';
+import BlogPost from '../../../components/BlogPost';
 
 export async function generateStaticParams() {
   const posts = await getAllPosts();

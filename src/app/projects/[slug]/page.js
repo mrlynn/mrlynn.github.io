@@ -1,6 +1,6 @@
 import { Box, Container, Typography, Button } from '@mui/material';
 import { GitHub as GitHubIcon, Launch as LaunchIcon, ArrowBack as ArrowBackIcon } from '@mui/icons-material';
-import { projects } from '@/data/projects';
+import { projects } from '../../../data/projects';
 import Link from 'next/link';
 import ProjectDetailClient from './ProjectDetailClient';
 
