@@ -5,7 +5,7 @@ import { Box, Container, Typography, Grid, Paper, Chip, Stack, Tooltip } from '@
 import { motion } from 'framer-motion';
 import { YouTube as YouTubeIcon, MusicNote as TikTokIcon } from '@mui/icons-material';
 import { useTheme } from '@mui/material';
-import { videos } from '@/data/videos';
+import { videos } from '../../data/videos';
 
 const MotionPaper = motion(Paper);
 

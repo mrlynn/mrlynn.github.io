@@ -3,7 +3,7 @@
 import { Box, Container, Grid, Typography, Card, CardMedia, CardContent, CardActions, Button, useTheme, Tooltip, Chip, Stack, useMediaQuery } from '@mui/material';
 import { motion } from 'framer-motion';
 import { GitHub as GitHubIcon, Launch as LaunchIcon, Lock as LockIcon } from '@mui/icons-material';
-import { projects } from '@/data/projects';
+import { projects } from '../data/projects';
 
 const MotionCard = motion.create(Card);
 
@@ -120,9 +120,6 @@ export default function ProjectsSection() {
                   </Typography>
                   <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap sx={{ gap: { xs: 0.5, sm: 1 } }}>
                     {project.tags.map((tag) => (
-
-
-
                       <Chip
                         key={tag}
                         label={tag}
@@ -137,11 +134,6 @@ export default function ProjectsSection() {
                           },
                         }}
                       />
-
-
-
-
-
                     ))}
                   </Stack>
                 </CardContent>

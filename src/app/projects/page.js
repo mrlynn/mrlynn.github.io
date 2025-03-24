@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Box, Button, Container, Typography, Grid, Paper, Chip, Stack, Tooltip, useTheme, useMediaQuery  } from '@mui/material';
 import { motion } from 'framer-motion';
 import { GitHub as GitHubIcon, Launch as LaunchIcon, Lock as LockIcon } from '@mui/icons-material';
-import { projects } from '@/data/projects';
+import { projects } from '../../data/projects';
 
 const MotionPaper = motion(Paper);
 

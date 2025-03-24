@@ -4,12 +4,12 @@ import { Box, Container, Typography, Button, Grid, Paper, Stack, useTheme } from
 import { GitHub as GitHubIcon, LinkedIn as LinkedInIcon, Code as CodeIcon, Terminal as TerminalIcon, Cloud as CloudIcon } from '@mui/icons-material';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
-import ProjectsSection from '@/components/ProjectsSection';
-import VideosSection from '@/components/VideosSection';
-import GitHubActivity from '@/components/GitHubActivity';
-import Timeline from '@/components/Timeline';
-import { projects } from '@/data/projects';
-import { timelineEvents } from '@/data/timeline';
+import ProjectsSection from '../components/ProjectsSection';
+import VideosSection from '../components/VideosSection';
+import GitHubActivity from '../components/GitHubActivity';
+import Timeline from '../components/Timeline';
+import { projects } from '../data/projects';
+import { timelineEvents } from '../data/timeline';
 import Image from 'next/image';
 
 // Create motion components using motion.create()
