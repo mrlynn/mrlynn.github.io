@@ -1,9 +1,12 @@
 'use client';
 
-import { Box, Paper, Typography, useTheme } from '@mui/material';
+import { Box, Paper, Typography, useTheme, Button } from '@mui/material';
 import GitHubCalendar from 'react-github-calendar';
 import { motion } from 'framer-motion';
 import Section from './Section';
+import Link from 'next/link';
+import { GitHub as GitHubIcon, Launch as LaunchIcon, Lock as LockIcon, ArrowForward as ArrowForwardIcon } from '@mui/icons-material';
+
 
 const MotionPaper = motion(Paper);
 
@@ -47,6 +50,25 @@ export default function GitHubActivity() {
           }}
         />
       </MotionPaper>
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 6 }}>
+          <Button
+            component={Link}
+            href="https://github.com/mrlynn"
+            variant="outlined"
+            size="large"
+            endIcon={<ArrowForwardIcon />}
+            sx={{
+              borderColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)',
+              color: theme.palette.mode === 'dark' ? '#ffffff' : '#000000',
+              '&:hover': {
+                borderColor: theme.palette.mode === 'dark' ? '#ffffff' : '#000000',
+                backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
+              },
+            }}
+          >
+            View More
+          </Button>
+        </Box>
     </Section>
   );
 } 

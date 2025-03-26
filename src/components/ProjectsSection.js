@@ -2,8 +2,9 @@
 
 import { Box, Container, Grid, Typography, Card, CardMedia, CardContent, CardActions, Button, useTheme, Tooltip, Chip, Stack, useMediaQuery } from '@mui/material';
 import { motion } from 'framer-motion';
-import { GitHub as GitHubIcon, Launch as LaunchIcon, Lock as LockIcon } from '@mui/icons-material';
+import { GitHub as GitHubIcon, Launch as LaunchIcon, Lock as LockIcon, ArrowForward as ArrowForwardIcon } from '@mui/icons-material';
 import { projects } from '../data/projects';
+import Link from 'next/link';
 
 const MotionCard = motion.create(Card);
 
@@ -166,6 +167,25 @@ export default function ProjectsSection() {
             </Grid>
           ))}
         </Grid>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 6 }}>
+          <Button
+            component={Link}
+            href="/projects"
+            variant="outlined"
+            size="large"
+            endIcon={<ArrowForwardIcon />}
+            sx={{
+              borderColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)',
+              color: theme.palette.mode === 'dark' ? '#ffffff' : '#000000',
+              '&:hover': {
+                borderColor: theme.palette.mode === 'dark' ? '#ffffff' : '#000000',
+                backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
+              },
+            }}
+          >
+            View More Projects
+          </Button>
+        </Box>
       </Container>
     </Box>
   );
