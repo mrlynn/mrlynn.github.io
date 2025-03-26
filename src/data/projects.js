@@ -12,8 +12,8 @@ export const projects = [
     title: 'Design Reviewer',
     description: 'An AI-powered design review system that helps teams maintain consistency and best practices.',
     image: '/images/projects/design-reviewer.png',
-    tags: ['AI', 'UX/UI', 'Analytics'],
-    demoUrl: 'https://mrlynn.github.io',
+    tags: ['AI', 'UX/UI', 'Analytics', 'React','Next.js'],
+    demoUrl: 'https://app.mongodbdesign.com',
     private: true,
     color: '#679436', // Asparagus
   },
