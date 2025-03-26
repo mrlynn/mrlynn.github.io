@@ -1,0 +1,85 @@
+---
+title: "MongoDB Atlas Deployer"
+description: "A web application for rapid provisioning and management of MongoDB Atlas clusters for workshops and training events."
+image: "/images/projects/atlas-deployer.png"
+tags: ["Next.js", "MongoDB", "React"]
+demoUrl: "https://deployer.mongodb.com"
+private: true
+color: "#05668D"
+date: "2024-03-20"
+author: "Michael Lynn"
+technologies: ["React", "Next.js", "MongoDB Atlas", "Material UI"]
+githubUrl: "https://github.com/mongodb/atlas-deployer"
+---
+
+# MongoDB Atlas Deployer
+
+## Overview
+The MongoDB Atlas Deployer is a powerful web application designed to streamline the process of creating and managing MongoDB Atlas clusters for workshops and training events. This tool significantly reduces the time and complexity involved in setting up development environments for large-scale training sessions.
+
+## Features
+- **One-Click Cluster Creation**: Create fully configured MongoDB Atlas clusters with predefined settings
+- **Bulk Operations**: Deploy multiple clusters simultaneously for workshop participants
+- **Resource Management**: Monitor and manage cluster resources efficiently
+- **Cost Optimization**: Automatic cleanup of unused resources
+- **Role-Based Access**: Secure access control for different user roles
+- **Audit Logging**: Track all operations for compliance and troubleshooting
+
+## Technical Details
+
+### Architecture
+The application is built using a modern tech stack:
+- Frontend: Next.js with React and Material UI
+- Backend: Node.js with Express
+- Database: MongoDB Atlas
+- Authentication: OAuth 2.0 with MongoDB Atlas
+
+### Key Components
+1. **Cluster Management Service**
+   - Handles cluster creation, configuration, and deletion
+   - Implements retry logic and error handling
+   - Manages resource quotas and limits
+
+2. **User Interface**
+   - Responsive design for all device sizes
+   - Real-time status updates
+   - Interactive cluster management dashboard
+
+3. **Security Layer**
+   - Role-based access control
+   - API key management
+   - Audit logging
+
+## Challenges & Solutions
+
+### Challenge 1: Resource Management
+Managing multiple clusters simultaneously while ensuring optimal resource utilization was a significant challenge.
+
+**Solution**: Implemented a sophisticated resource management system that:
+- Monitors cluster usage patterns
+- Automatically scales resources based on demand
+- Provides alerts for resource constraints
+
+### Challenge 2: User Experience
+Creating a user-friendly interface for complex cluster operations was crucial.
+
+**Solution**: Developed an intuitive UI with:
+- Step-by-step wizards for common operations
+- Clear status indicators
+- Comprehensive error messages
+- Interactive documentation
+
+## Results
+The MongoDB Atlas Deployer has successfully:
+- Reduced cluster setup time by 90%
+- Minimized human error in cluster configuration
+- Improved resource utilization
+- Enhanced workshop participant experience
+- Streamlined training event preparation
+
+## Future Enhancements
+1. Integration with additional cloud providers
+2. Advanced monitoring and analytics
+3. Custom template support
+4. Automated backup and restore
+5. Cost optimization recommendations 
