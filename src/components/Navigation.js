@@ -26,6 +26,7 @@ import { useTheme } from '../theme/ThemeContext';
 
 const pages = [
   { title: 'Home', path: '/' },
+  { title: 'Blog', path: '/blog' },
   { title: 'Projects', path: '/projects' },
   { title: 'Videos', path: '/videos' },
   { title: 'Art', path: '/art' },

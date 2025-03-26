@@ -1,0 +1,103 @@
+---
+title: "Boosting productivity with Cursor"
+description: "Discover how Cursor's powerful rules system can streamline your coding workflow, enforce consistency, and help your team code smarter and faster."
+date: "2025-03-26"
+author: "Michael Lynn"
+image: "https://g1iqxazqvchnaxls.public.blob.vercel-storage.com/andreas-klassen-gZB-i-dA6ns-unsplash-9rCf7ECaFLPjHDujdeDj5fsIkqnSil.jpg"
+tags: ["cursor","ai","coding","productivity"]
+---
+
+### Elevating your coding workflow with Cursor
+
+I was today years old when I discovered the amazing power of Cursor's rules... I've been using [Cursor](https://cursor.dev/) for a few months now, and it has completely transformed my approach to coding. But, probably like you, I found that I hit a bit of a wall with productivity.  I was wrestling with token limits, context sizes and constantly correcting the same errors made by the AI assistant. 
+
+Along comes [Cursor Rules](https://cursor.dev/docs/rules)... mind blowing.
+
+Cursor Rules allow you to define custom behaviors for your coding assistant, aligning its output precisely with your project requirements and personal coding style. There are two main types:
+
+##### 1. Global Rules
+These rules apply universally across all projects, reflecting your personal coding preferences. Think of them as your AI coding assistant's baseline habits.
+
+Example global rules might include:
+
+- Always use TypeScript
+- Prefer async/await patterns
+- Maintain clean code principles
+
+##### 2. Project Rules
+These are project-specific and live in `.mdc` files within your project's `.cursor/rules` directory. They help Cursor adapt its behavior specifically for the project at hand. These rules integrate seamlessly into your development environment and sync automatically across your team.
+
+Here's how a typical `.mdc` file might look:
+
+```yaml
+# File patterns: *.tsx, *.ts
+
+## React Guidelines
+- Use functional components
+- Always define explicit prop types
+- Follow standard React conventions
+
+## Style
+- Use Tailwind CSS
+- Adhere strictly to the team's style guide
+
+@file ../tsconfig.json
+@file ../tailwind.config.js
+```
+
+![curor's project rules](/images/blog/project-rules.png)
+
+
+### Benefits of using Cursor Rules
+
+**Increased Productivity**  
+Automating mundane tasks frees up mental space, allowing developers to focus on complex, high-value work.
+
+**Consistent Codebase**  
+Uniformity reduces confusion, making code easier to read, review, and maintain.
+
+**Reduced Errors**  
+Catch potential mistakes early in development, significantly cutting down debugging time.
+
+### How Cursor Rules work
+
+Cursor Rules operate using semantic descriptions, file pattern matching, automatic rule attachment, and reference files. Each rule clearly states when and how it should be applied, enhancing clarity and ease of maintenance.
+
+- **Semantic Descriptions:** Clearly outline the context or scenario for applying each rule.
+- **File Pattern Matching:** Use glob patterns (e.g., `*.tsx`) to specify where rules apply.
+- **Automatic Attachment:** Cursor automatically uses relevant rules based on context and file types.
+- **Reference Files:** Include key project files like `tsconfig.json` to provide better context.
+
+### Creating your Cursor Rules
+
+To start benefiting from Cursor Rules, follow these straightforward steps:
+
+#### Set up Global Rules
+Navigate to **Cursor Settings > General > Rules for AI** to configure universal settings applicable across your projects.
+
+#### Configure Project Rules
+Access **Cursor Settings > General > Project Rules**, click on **'Add Rule'**, and create your `.mdc` file. Define a clear description and relevant glob patterns, then add your rule content.
+
+### Writing effective Cursor Rules
+
+Here's how to create rules that are clear, effective, and easy to maintain:
+
+- Keep rules straightforward and jargon-free.
+- Be specific about your project's coding style.
+- Provide concrete examples directly from your codebase.
+- Update and refine rules regularly as your project evolves.
+
+Think of writing a Cursor Rule as explaining a best practice or coding standard to a new colleague: clarity and simplicity are key.
+
+### Resources to boost your Cursor skills
+
+- [Anthropic's Guide to Clear AI Instructions](https://www.anthropic.com/guides/clear-instructions-ai)
+- [Learn Effective AI Communication](https://www.cursor.so/ai-communication-guide)
+- [Cursor User Community](https://www.cursor.so/community): Share tips, rules, and insights
+
+## Final Thoughts
+
+Cursor Rules are an essential tool for maximizing your coding efficiency and project consistency. By investing a little time in setting up these rules, you create a coding environment that's productive, error-resistant, and welcoming to newcomers.
+
+Start experimenting with Cursor Rules today, and watch your coding workflow transform!
+

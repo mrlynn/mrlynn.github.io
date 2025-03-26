@@ -2,6 +2,7 @@
 
 import { Box, Container, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { format } from 'date-fns';
 
 const HeroSection = styled(Box)(({ theme }) => ({
   position: 'relative',
@@ -32,31 +33,59 @@ const HeroContent = styled(Box)(({ theme }) => ({
 }));
 
 const BlogLayout = ({ children, title, description, image, date, author }) => {
+  // Add JSON-LD schema
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: title,
+    description: description,
+    image: image,
+    datePublished: date,
+    author: {
+      '@type': 'Person',
+      name: author,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Michael Lynn',
+      logo: {
+        '@type': 'ImageObject',
+        url: `${process.env.NEXT_PUBLIC_SITE_URL}/images/logo.png`,
+      },
+    },
+  };
+
   return (
-    <Box>
-      <HeroSection
-        sx={{
-          backgroundImage: `url(${image})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      >
-        <HeroContent>
-          <Typography variant="h1" component="h1" gutterBottom>
-            {title}
-          </Typography>
-          <Typography variant="h5" component="h2" gutterBottom>
-            {description}
-          </Typography>
-          <Typography variant="subtitle1">
-            By {author} • {new Date(date).toLocaleDateString()}
-          </Typography>
-        </HeroContent>
-      </HeroSection>
-      <Container maxWidth="md" sx={{ py: 8 }}>
-        {children}
-      </Container>
-    </Box>
+    <Container maxWidth="lg">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <Box>
+        <HeroSection
+          sx={{
+            backgroundImage: `url(${image})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        >
+          <HeroContent>
+            <Typography variant="h1" component="h1" gutterBottom>
+              {title}
+            </Typography>
+            <Typography variant="h5" component="h2" gutterBottom>
+              {description}
+            </Typography>
+            <Typography variant="subtitle1">
+              By {author} • {new Date(date).toLocaleDateString()}
+            </Typography>
+          </HeroContent>
+        </HeroSection>
+        <Container maxWidth="md" sx={{ py: 8 }}>
+          {children}
+        </Container>
+      </Box>
+    </Container>
   );
 };
 

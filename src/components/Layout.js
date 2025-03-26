@@ -24,6 +24,7 @@ import {
   ContactMail as ContactIcon,
   YouTube as YouTubeIcon,
   LightMode,
+  Book as BookIcon,
   DarkMode,
   Menu as MenuIcon,
   Palette as PaletteIcon
@@ -39,6 +40,7 @@ const menuItems = [
   { text: 'Videos', icon: <YouTubeIcon />, path: '/videos' },
   { text: 'Art', icon: <PaletteIcon />, path: '/art' },
   { text: 'Resume', icon: <ArticleIcon />, path: '/resume' },
+  { text: 'Blog', icon: <BookIcon />, path: '/blog' },
   { text: 'Contact', icon: <ContactIcon />, path: '/contact' },
 ];
 

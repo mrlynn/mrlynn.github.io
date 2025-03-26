@@ -12,7 +12,13 @@ const withMDX = require('@next/mdx')({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: [], // Add any external image domains you need here
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
+    unoptimized: true, // This allows serving local images directly
   },
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
   webpack: (config) => {
