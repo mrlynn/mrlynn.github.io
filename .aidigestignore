@@ -1,0 +1,7 @@
+out/*
+.next
+build/
+public
+.cursor
+content/*
+node_modules

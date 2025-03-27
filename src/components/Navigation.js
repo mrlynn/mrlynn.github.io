@@ -1,210 +1,237 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  Button,
-  IconButton,
-  Box,
+import { useState } from 'react';
+import { 
+  AppBar, 
+  Toolbar, 
+  Button, 
+  IconButton, 
+  Box, 
+  Menu, 
+  MenuItem, 
   Container,
-  useScrollTrigger,
-  Slide,
-  useTheme as useMuiTheme,
-  Menu,
-  MenuItem,
+  useMediaQuery,
+  useTheme,
   Drawer,
   List,
   ListItem,
+  ListItemIcon,
   ListItemText,
+  Divider
 } from '@mui/material';
-import { Menu as MenuIcon, LightMode, DarkMode } from '@mui/icons-material';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useTheme } from '../theme/ThemeContext';
+import {
+  Home as HomeIcon,
+  Work as WorkIcon,
+  MoreVert as MoreIcon,
+  Menu as MenuIcon,
+  LightMode,
+  DarkMode,
+  YouTube as YouTubeIcon,
+  Palette as PaletteIcon,
+  Article as ArticleIcon,
+  ContactMail as ContactIcon,
+  Book as BookIcon
+} from '@mui/icons-material';
+import { usePathname, useRouter } from 'next/navigation';
+import { useTheme as useCustomTheme } from '../theme/ThemeContext';
+import Image from 'next/image';
 
-const pages = [
-  { title: 'Home', path: '/' },
-  { title: 'Blog', path: '/blog' },
-  { title: 'Projects', path: '/projects' },
-  { title: 'Videos', path: '/videos' },
-  { title: 'Art', path: '/art' },
-];
-
-function HideOnScroll(props) {
-  const { children } = props;
-  const trigger = useScrollTrigger();
-
-  return (
-    <Slide appear={false} direction="down" in={!trigger}>
-      {children}
-    </Slide>
-  );
-}
-
-export default function Navigation() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const theme = useMuiTheme();
-  const { isDarkMode, toggleTheme } = useTheme();
+const Navigation = () => {
+  const router = useRouter();
   const pathname = usePathname();
+  const theme = useTheme();
+  const { isDarkMode, toggleTheme } = useCustomTheme();
+  const [moreAnchorEl, setMoreAnchorEl] = useState(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-  const handleMobileMenuToggle = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
+  const handleMoreClick = (event) => {
+    setMoreAnchorEl(event.currentTarget);
   };
+
+  const handleMoreClose = () => {
+    setMoreAnchorEl(null);
+  };
+
+  const handleNavigation = (path) => {
+    router.push(path);
+    handleMoreClose();
+    setMobileMenuOpen(false);
+  };
+
+  // Primary navigation items
+  const primaryItems = [
+    { text: 'Home', icon: <HomeIcon />, path: '/' },
+    { text: 'Projects', icon: <WorkIcon />, path: '/projects' },
+    { text: 'Blog', icon: <BookIcon />, path: '/blog' },
+  ];
+
+  // Secondary navigation items (in More dropdown)
+  const secondaryItems = [
+    { text: 'Videos', icon: <YouTubeIcon />, path: '/videos' },
+    { text: 'Art', icon: <PaletteIcon />, path: '/art' },
+    { text: 'Resume', icon: <ArticleIcon />, path: '/resume' },
+    { text: 'Contact', icon: <ContactIcon />, path: '/contact' }
+  ];
+
+  const mobileMenuItems = [...primaryItems, ...secondaryItems];
 
   return (
     <>
-      <HideOnScroll>
-        <AppBar
-          position="fixed"
-          sx={{
-            background: theme.palette.mode === 'dark' 
-              ? 'rgba(6, 39, 54, 0.9)'
-              : 'rgba(255, 255, 255, 0.9)',
-            backdropFilter: 'blur(10px)',
-            borderBottom: `1px solid ${theme.palette.mode === 'dark' 
-              ? 'rgba(255,255,255,0.1)'
-              : 'rgba(0,0,0,0.1)'}`,
-            borderRadius: 0,
-          }}
-        >
-          <Container maxWidth="lg">
-            <Toolbar disableGutters>
-              <Typography
-                variant="h6"
-                component={Link}
-                href="/"
+      <AppBar
+        position="fixed"
+        sx={{
+          background: theme.palette.mode === 'dark'
+            ? 'rgba(18, 18, 18, 0.8)'
+            : 'rgba(255, 255, 255, 0.8)',
+          backdropFilter: 'blur(10px)',
+          borderBottom: `1px solid ${theme.palette.mode === 'dark'
+            ? 'rgba(255,255,255,0.1)'
+            : 'rgba(0,0,0,0.1)'}`,
+        }}
+      >
+        <Container maxWidth="lg">
+          <Toolbar sx={{ justifyContent: 'space-between' }}>
+            {/* Logo and Name */}
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Image
+                src="/letter-m-circle.svg"
+                alt="M Logo"
+                width={26}
+                height={26}
+                style={{
+                  filter: theme.palette.mode === 'dark' ? 'invert(1)' : 'none'
+                }}
+              />
+              <Button
+                onClick={() => handleNavigation('/')}
                 sx={{
-                  mr: 4,
                   fontWeight: 700,
                   color: theme.palette.mode === 'dark' ? 'white' : 'black',
-                  textDecoration: 'none',
-                  background: theme.palette.background.gradient,
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
                 }}
               >
                 Michael Lynn
-              </Typography>
+              </Button>
+            </Box>
 
-              {/* Desktop Navigation */}
-              <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                {pages.map((page) => (
+            {/* Desktop Navigation */}
+            {!isMobile && (
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                {/* Primary Navigation */}
+                {primaryItems.map((item) => (
                   <Button
-                    key={page.path}
-                    component={Link}
-                    href={page.path}
+                    key={item.path}
+                    startIcon={item.icon}
+                    onClick={() => handleNavigation(item.path)}
                     sx={{
                       mx: 1,
-                      color: pathname === page.path ? 'primary.main' : 'text.primary',
-                      position: 'relative',
-                      '&::after': {
-                        content: '""',
-                        position: 'absolute',
-                        bottom: 0,
-                        left: '50%',
-                        transform: pathname === page.path ? 'translateX(-50%)' : 'translateX(-50%) scaleX(0)',
-                        height: '2px',
-                        width: '100%',
-                        background: theme.palette.background.gradient,
-                        transition: 'transform 0.3s ease',
-                      },
-                      '&:hover::after': {
-                        transform: 'translateX(-50%) scaleX(1)',
-                      },
+                      color: pathname === item.path ? 'primary.main' : 'text.primary',
                     }}
                   >
-                    {page.title}
+                    {item.text}
                   </Button>
                 ))}
-              </Box>
 
-              {/* Theme Toggle Button */}
-              <IconButton
-                onClick={toggleTheme}
-                sx={{
-                  mr: { xs: 1, md: 2 },
-                  color: theme.palette.mode === 'dark' ? 'white' : 'black',
-                }}
-              >
-                {isDarkMode ? <LightMode /> : <DarkMode />}
-              </IconButton>
-
-              {/* Mobile Menu Button */}
-              <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-                <IconButton
-                  size="large"
-                  aria-label="menu"
-                  aria-controls="menu-appbar"
+                {/* More Dropdown */}
+                <Button
+                  aria-controls="more-menu"
                   aria-haspopup="true"
-                  onClick={handleMobileMenuToggle}
-                  color="inherit"
+                  onClick={handleMoreClick}
+                  endIcon={<MoreIcon />}
+                  sx={{ mx: 1 }}
+                >
+                  More
+                </Button>
+                <Menu
+                  id="more-menu"
+                  anchorEl={moreAnchorEl}
+                  keepMounted
+                  open={Boolean(moreAnchorEl)}
+                  onClose={handleMoreClose}
+                >
+                  {secondaryItems.map((item) => (
+                    <MenuItem
+                      key={item.path}
+                      onClick={() => handleNavigation(item.path)}
+                      selected={pathname === item.path}
+                    >
+                      {item.text}
+                    </MenuItem>
+                  ))}
+                </Menu>
+
+                {/* Theme Toggle */}
+                <IconButton onClick={toggleTheme} sx={{ ml: 1 }}>
+                  {isDarkMode ? <LightMode /> : <DarkMode />}
+                </IconButton>
+              </Box>
+            )}
+
+            {/* Mobile Menu Button */}
+            {isMobile && (
+              <Box sx={{ display: 'flex' }}>
+                <IconButton
+                  onClick={toggleTheme}
+                  sx={{ mr: 1 }}
+                >
+                  {isDarkMode ? <LightMode /> : <DarkMode />}
+                </IconButton>
+                <IconButton
+                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                  sx={{ color: 'text.primary' }}
                 >
                   <MenuIcon />
                 </IconButton>
               </Box>
-            </Toolbar>
-          </Container>
-        </AppBar>
-      </HideOnScroll>
+            )}
+          </Toolbar>
+        </Container>
+      </AppBar>
 
-      {/* Mobile Navigation Drawer */}
+      {/* Mobile Menu Drawer */}
       <Drawer
         anchor="right"
         open={mobileMenuOpen}
-        onClose={handleMobileMenuToggle}
+        onClose={() => setMobileMenuOpen(false)}
         sx={{
           '& .MuiDrawer-paper': {
-            width: '250px',
+            width: 280,
             background: theme.palette.mode === 'dark'
-              ? 'rgba(6, 39, 54, 0.95)'
+              ? 'rgba(18, 18, 18, 0.95)'
               : 'rgba(255, 255, 255, 0.95)',
             backdropFilter: 'blur(10px)',
           },
         }}
       >
-        <List sx={{ pt: 8 }}>
-          {pages.map((page) => (
-            <ListItem
-              key={page.path}
-              component={Link}
-              href={page.path}
-              onClick={handleMobileMenuToggle}
-              sx={{
-                color: pathname === page.path ? 'primary.main' : 'text.primary',
-                '&:hover': {
-                  background: theme.palette.mode === 'dark'
-                    ? 'rgba(255,255,255,0.05)'
-                    : 'rgba(0,0,0,0.05)',
-                },
-              }}
-            >
-              <ListItemText primary={page.title} />
-            </ListItem>
-          ))}
-          <ListItem
-            button
-            onClick={() => {
-              toggleTheme();
-              handleMobileMenuToggle();
-            }}
-            sx={{
-              color: 'text.primary',
-              '&:hover': {
-                background: theme.palette.mode === 'dark'
-                  ? 'rgba(255,255,255,0.05)'
-                  : 'rgba(0,0,0,0.05)',
-              },
-            }}
-          >
-            <ListItemText 
-              primary={isDarkMode ? 'Light Mode' : 'Dark Mode'} 
-              secondary={isDarkMode ? 'Switch to light theme' : 'Switch to dark theme'}
-            />
-          </ListItem>
-        </List>
+        <Box sx={{ pt: 8 }}>
+          <List>
+            {mobileMenuItems.map((item) => (
+              <ListItem
+                button
+                key={item.path}
+                onClick={() => handleNavigation(item.path)}
+                selected={pathname === item.path}
+                sx={{
+                  '&.Mui-selected': {
+                    backgroundColor: theme.palette.mode === 'dark'
+                      ? 'rgba(255,255,255,0.1)'
+                      : 'rgba(0,0,0,0.1)',
+                  },
+                }}
+              >
+                <ListItemIcon sx={{ 
+                  color: pathname === item.path ? 'primary.main' : 'inherit'
+                }}>
+                  {item.icon}
+                </ListItemIcon>
+                <ListItemText primary={item.text} />
+              </ListItem>
+            ))}
+          </List>
+        </Box>
       </Drawer>
     </>
   );
-} 
+};
+
+export default Navigation;
