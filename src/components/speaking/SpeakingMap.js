@@ -89,7 +89,32 @@ export default function SpeakingMap({ engagements }) {
           const geocoder = new maps.Geocoder();
           let bounds = new maps.LatLngBounds();
 
-          for (const engagement of engagements) {
+          console.log('Original engagements:', engagements.map(e => ({
+            title: e.title,
+            date: e.date,
+            parsedDate: new Date(e.date)
+          })));
+
+          // Sort engagements by date (newest first)
+          const sortedEngagements = [...engagements].sort((a, b) => {
+            // Ensure we have valid dates
+            const dateA = a.date ? new Date(a.date) : new Date(0);
+            const dateB = b.date ? new Date(b.date) : new Date(0);
+            
+            // Handle invalid dates
+            if (isNaN(dateA.getTime())) return 1;
+            if (isNaN(dateB.getTime())) return -1;
+            
+            return dateB.getTime() - dateA.getTime();
+          });
+
+          console.log('Sorted engagements:', sortedEngagements.map(e => ({
+            title: e.title,
+            date: e.date,
+            parsedDate: new Date(e.date)
+          })));
+
+          for (const engagement of sortedEngagements) {
             if (!engagement.location) {
               console.log(`Skipping engagement without location: ${engagement.title}`);
               continue;

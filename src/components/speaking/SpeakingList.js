@@ -15,9 +15,16 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import EventIcon from '@mui/icons-material/Event';
 
 export default function SpeakingList({ engagements }) {
+  // Sort engagements by date (newest first)
+  const sortedEngagements = [...engagements].sort((a, b) => {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    return dateB - dateA;
+  });
+
   return (
     <List>
-      {engagements.map((engagement, index) => {
+      {sortedEngagements.map((engagement, index) => {
         const {
           title,
           date,
@@ -112,7 +119,7 @@ export default function SpeakingList({ engagements }) {
                 />
               </ListItemSecondaryAction>
             </ListItem>
-            {index < engagements.length - 1 && <Divider variant="inset" component="li" />}
+            {index < sortedEngagements.length - 1 && <Divider variant="inset" component="li" />}
           </Box>
         );
       })}

@@ -13,7 +13,7 @@ import {
   Link,
   Divider,
 } from '@mui/material';
-import { format, isToday, isFuture, isPast } from 'date-fns';
+import { format, isToday, isFuture, isPast, parseISO } from 'date-fns';
 import { MDXRemote } from 'next-mdx-remote';
 import CloseIcon from '@mui/icons-material/Close';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
@@ -46,19 +46,24 @@ export default function EventDetailsModal({ open, onClose, event }) {
     content,
   } = event;
 
-  const eventDateTime = new Date(`${date}T${time}`);
-  const formattedDate = format(eventDateTime, 'MMMM d, yyyy');
-  const formattedTime = format(eventDateTime, 'h:mm a');
+  // Safely parse the date
+  const parsedDate = date ? parseISO(date) : null;
+  
+  // Format date and time if available
+  const formattedDate = parsedDate ? format(parsedDate, 'MMMM d, yyyy') : 'Date TBD';
+  const formattedTime = time || 'Time TBD';
 
   const getEventStatus = () => {
-    if (isToday(eventDateTime)) {
+    if (!parsedDate) return { label: 'TBD', color: 'default', show: true };
+    
+    if (isToday(parsedDate)) {
       return {
         label: 'Live Now',
         color: 'success',
         show: true
       };
     }
-    if (isFuture(eventDateTime)) {
+    if (isFuture(parsedDate)) {
       return {
         label: 'Upcoming',
         color: 'primary',
@@ -68,7 +73,7 @@ export default function EventDetailsModal({ open, onClose, event }) {
     return {
       label: 'Past',
       color: 'default',
-      show: false // Set to true if you want to show past event badges
+      show: true
     };
   };
 

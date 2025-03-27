@@ -23,6 +23,13 @@ export async function getAllSpeakingEngagements() {
         // Use gray-matter to parse the post metadata section
         const { data, content } = matter(fileContents);
 
+        // Ensure date is a valid Date object
+        const date = new Date(data.date);
+        const now = new Date();
+        
+        // Add isUpcoming flag
+        const isUpcoming = date >= now;
+
         // Serialize the MDX content
         const mdxSource = await serialize(content);
 
@@ -30,12 +37,25 @@ export async function getAllSpeakingEngagements() {
         return {
           slug,
           ...data,
+          date: date.toISOString(), // Ensure consistent date format
+          isUpcoming,
           content: mdxSource
         };
       })
   );
 
-  return engagements.sort((a, b) => new Date(b.date) - new Date(a.date));
+  // Sort engagements by date
+  return engagements.sort((a, b) => {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    
+    // For upcoming events, sort by nearest future date first
+    if (dateA >= new Date() && dateB >= new Date()) {
+      return dateA - dateB;
+    }
+    // For past events, sort by most recent first
+    return dateB - dateA;
+  });
 }
 
 export async function getSpeakingEngagementBySlug(slug) {

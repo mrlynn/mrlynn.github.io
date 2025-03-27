@@ -9,6 +9,15 @@ import VideocamIcon from '@mui/icons-material/Videocam';
 import EventDetailsModal from './EventDetailsModal';
 import { useState } from 'react';
 
+// Helper function to sort engagements by date
+export const sortEngagements = (engagements) => {
+  return [...engagements].sort((a, b) => {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    return dateB - dateA;
+  });
+};
+
 export default function SpeakingCard({ engagement }) {
   const [modalOpen, setModalOpen] = useState(false);
   const {

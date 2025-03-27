@@ -1,7 +1,7 @@
 'use client';
 
 import { Box, Container, Typography, Button, Grid, Paper, Stack, useTheme } from '@mui/material';
-import { GitHub as GitHubIcon, LinkedIn as LinkedInIcon, Code as CodeIcon, Terminal as TerminalIcon, Cloud as CloudIcon } from '@mui/icons-material';
+import { GitHub as GitHubIcon, LinkedIn as LinkedInIcon, BookOutlined as BookOutlinedIcon, Code as CodeIcon, Terminal as TerminalIcon, Cloud as CloudIcon } from '@mui/icons-material';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import ProjectsSection from '../components/ProjectsSection';
@@ -57,22 +57,28 @@ const techCards = [
 ];
 
 function CyclingTitle() {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentTitle, setCurrentTitle] = useState(titles[0]);
   const theme = useTheme();
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % titles.length);
+      let newTitle;
+      do {
+        // Pick a random title
+        newTitle = titles[Math.floor(Math.random() * titles.length)];
+      } while (newTitle === currentTitle); // Make sure it's not the same as current
+
+      setCurrentTitle(newTitle);
     }, 3000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [currentTitle]);
 
   return (
     <Box sx={{ height: '3.5rem', display: 'flex', justifyContent: 'center', mb: 4 }}>
       <AnimatePresence mode="wait">
         <motion.div
-          key={currentIndex}
+          key={currentTitle}
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -20, opacity: 0 }}
@@ -90,7 +96,7 @@ function CyclingTitle() {
               textAlign: 'center',
             }}
           >
-            {titles[currentIndex]}
+            {currentTitle}
           </Typography>
         </motion.div>
       </AnimatePresence>
@@ -276,7 +282,7 @@ export default function Home() {
                     GitHub
                   </Button>
                   <Button
-                    variant="outlined"
+                    variant="contained"
                     size="large"
                     startIcon={<LinkedInIcon />}
                     href="https://linkedin.com/in/mlynn"
@@ -284,6 +290,16 @@ export default function Home() {
                     rel="noopener noreferrer"
                   >
                     LinkedIn
+                  </Button>
+                  <Button
+                    variant="contained"
+                    size="large"
+                    startIcon={<BookOutlinedIcon />}
+                    href="/resume"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Resume
                   </Button>
                 </Stack>
               </motion.div>
