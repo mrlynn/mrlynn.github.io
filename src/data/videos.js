@@ -51,9 +51,32 @@ export const videos = [
     title: "Michael Lynn - MongoDB Keynote",
     thumbnail: "https://img.youtube.com/vi/hSNNXFOxfiQ/maxresdefault.jpg",
     videoId: "hSNNXFOxfiQ?si=RoWZAgf_S-4LvXqg&t=2159",
-    platform: "tiktok",
+    platform: "youtube",
     description: "In this MongoDB keynote, Principal Developer Advocate Michael Lynn demonstrates how MongoDB Atlas’s Data Federation simplifies real-time integration of internal data with external sources, enabling businesses to build dynamic, unified data applications.",
     category: "Conference Keynote",
     tags: ["MongoDB", "Data Federation", "Keynote"]
   }
+  ,
+  {
+    title: "MongoDB Data Modeling: Office Hours",
+    thumbnail: "https://img.youtube.com/vi/4mejPk9fimM/maxresdefault.jpg",
+    videoId: "4mejPk9fimM",
+    platform: "youtube",
+    description: "🚀 Join us live for a deep dive into the world of MongoDB data modeling! Tune in to Office Hours with Michael Lynn and Jesse Hall where they'll answer the questions users may have while getting started with MongoDB. They’ll also share data modeling insights, tips, and real-world scenarios to enhance your applications. Come prepared with your questions–we have answers!",
+    category: "Conference Keynote",
+    tags: ["MongoDB", "Data Modeling", "Video"]
+  }
+  ,
+  {
+    title: "Harmonizing AI and Atlas Vector Search",
+    thumbnail: "https://img.youtube.com/vi/RHzMQr5_VRc/maxresdefault.jpg",
+    videoId: "RHzMQr5_VRc",
+    platform: "youtube",
+    description: "🚀 In this episode of the MongoDB Podcast Live, Michael Lynn teams up with Pavel Duchovny, from MongoDB's Developer Relations, to dive deep into the intersection of AI, music, and data. They're set to explore 'Sync Scout' a project that works at the intersection of AI applications, music search and recommendation. This cutting-edge technology leverages MongoDB's powerful capabilities to transform the way music is associated with scenes and images, offering a glimpse into the future of personalized soundtracks",
+    category: "Podcast Keynote",
+    tags: ["MongoDB", "Podcast", "AI"]
+  }
 ]; 
+
+
+
