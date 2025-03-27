@@ -240,9 +240,11 @@ export default function Home() {
                   sx={{
                     fontSize: { xs: '2.5rem', md: '3.5rem' },
                     fontWeight: 600,
-                    background: theme.palette.background.gradient,
+                    background: theme.palette.background.gradientText,
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                    color: 'transparent',
                     mb: 2,
                   }}
                 >
