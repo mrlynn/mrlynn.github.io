@@ -31,7 +31,8 @@ import {
   Article as ArticleIcon,
   ContactMail as ContactIcon,
   Book as BookIcon,
-  RecordVoiceOver as SpeakingIcon
+  RecordVoiceOver as SpeakingIcon,
+  Podcasts as PodcastsIcon
 } from '@mui/icons-material';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTheme as useCustomTheme } from '../theme/ThemeContext';
@@ -66,6 +67,7 @@ const Navigation = () => {
     { text: 'Projects', icon: <WorkIcon />, path: '/projects' },
     { text: 'Blog', icon: <BookIcon />, path: '/blog' },
     { text: 'Speaking', icon: <SpeakingIcon />, path: '/speaking' },
+    { text: 'Podcasts', icon: <PodcastsIcon />, path: '/podcasts' },
   ];
 
   // Secondary navigation items (in More dropdown)
