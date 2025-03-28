@@ -4,6 +4,7 @@ import ProjectLayout from '../../../components/projects/ProjectLayout';
 import { mdxComponents } from '../../../components/mdx/MDXComponents';
 import { Typography, Box, Container } from '@mui/material';
 import Image from 'next/image';
+import ImageCarousel from '../../../components/projects/ImageCarousel';
 
 const components = {
   ...mdxComponents,
@@ -213,6 +214,11 @@ export default async function ProjectPage({ params }) {
       demoUrl={project.demoUrl}
       githubUrl={project.githubUrl}
     >
+      {project.screenshots?.length > 0 && (
+        <Box sx={{ mb: 6 }}>
+          <ImageCarousel images={project.screenshots} alt={project.title} />
+        </Box>
+      )}
       <Box sx={{ mt: 4 }}>
         <MDXRemote source={project.content} components={components} />
       </Box>
