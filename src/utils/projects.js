@@ -1,74 +1,57 @@
-import fs from 'fs';
-import path from 'path';
+import { readFileSync, readdirSync } from 'fs';
+import { join } from 'path';
 import matter from 'gray-matter';
 import { parseISO } from 'date-fns';
 
-const PROJECTS_DIR = path.join(process.cwd(), 'content/projects');
+const projectsDirectory = join(process.cwd(), 'content/projects');
 
 export async function getAllProjects() {
-  // Ensure the projects directory exists
-  if (!fs.existsSync(PROJECTS_DIR)) {
-    fs.mkdirSync(PROJECTS_DIR, { recursive: true });
-    return [];
-  }
+  const fileNames = readdirSync(projectsDirectory);
+  const allProjectsData = fileNames
+    .filter(fileName => fileName.endsWith('.mdx'))
+    .map(fileName => {
+      // Remove ".mdx" from file name to get id
+      const slug = fileName.replace(/\.mdx$/, '');
 
-  const files = fs.readdirSync(PROJECTS_DIR);
-  const projects = files
-    .filter((file) => file.endsWith('.mdx'))
-    .map((file) => {
-      const filePath = path.join(PROJECTS_DIR, file);
-      const fileContent = fs.readFileSync(filePath, 'utf8');
-      const { data, content } = matter(fileContent);
-      const slug = file.replace(/\.mdx$/, '');
+      // Read markdown file as string
+      const fullPath = join(projectsDirectory, fileName);
+      const fileContents = readFileSync(fullPath, 'utf8');
 
-      // Ensure the date is in ISO format
-      let date = data.date;
-      try {
-        date = parseISO(data.date).toISOString().split('T')[0];
-      } catch (error) {
-        console.error(`Error parsing date for project ${slug}:`, error);
-      }
+      // Use gray-matter to parse the post metadata section
+      const { data, content } = matter(fileContents);
 
+      // Combine the data with the id
       return {
         slug,
         ...data,
-        date,
-        content,
+        date: data.date ? parseISO(data.date) : new Date(),
+        content
       };
-    })
-    .sort((a, b) => new Date(b.date) - new Date(a.date));
+    });
 
-  return projects;
+  // Sort projects by date
+  return allProjectsData.sort((a, b) => b.date - a.date);
 }
 
 export async function getProjectBySlug(slug) {
-  const filePath = path.join(PROJECTS_DIR, `${slug}.mdx`);
+  const filePath = join(projectsDirectory, `${slug}.mdx`);
   
-  if (!fs.existsSync(filePath)) {
+  try {
+    const fileContents = readFileSync(filePath, 'utf8');
+    const { data, content } = matter(fileContents);
+
+    return {
+      slug,
+      ...data,
+      content
+    };
+  } catch (error) {
     return null;
   }
-
-  const fileContent = fs.readFileSync(filePath, 'utf8');
-  const { data, content } = matter(fileContent);
-
-  // Ensure the date is in ISO format
-  let date = data.date;
-  try {
-    date = parseISO(data.date).toISOString().split('T')[0];
-  } catch (error) {
-    console.error(`Error parsing date for project ${slug}:`, error);
-  }
-
-  return {
-    slug,
-    ...data,
-    date,
-    content,
-  };
 }
 
 export function getAllProjectSlugs() {
-  const files = fs.readdirSync(PROJECTS_DIR);
+  const files = readdirSync(projectsDirectory);
   return files
     .filter((file) => file.endsWith('.mdx'))
     .map((file) => file.replace(/\.mdx$/, ''));

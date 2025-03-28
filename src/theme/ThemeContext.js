@@ -30,24 +30,24 @@ export function ThemeProvider({ children }) {
     palette: {
       mode: isDarkMode ? 'dark' : 'light',
       primary: {
-        main: isDarkMode ? '#61dafb' : '#0070f3',
+        main: '#2563eb',
         light: isDarkMode ? '#80e4ff' : '#339af0',
         dark: isDarkMode ? '#0095cc' : '#003580',
       },
       secondary: {
-        main: isDarkMode ? '#50C878' : '#4CAF50',
+        main: '#679436',
         light: isDarkMode ? '#7dff9b' : '#80e27e',
         dark: isDarkMode ? '#2e7c44' : '#087f23',
       },
       background: {
-        default: isDarkMode ? '#121212' : '#ffffff',
-        paper: isDarkMode ? '#1e1e1e' : '#ffffff',
+        default: isDarkMode ? '#121212' : '#f5f5f5',
+        paper: isDarkMode ? '#1a1a1a' : '#ffffff',
         card: isDarkMode ? '#242424' : '#f8f9fa',
-        gradient: isDarkMode
-          ? 'linear-gradient(90deg, #61dafb 0%, #0070f3 100%)'
-          : 'linear-gradient(90deg, #0070f3 0%, #00a6ed 100%)',
+        gradient: isDarkMode 
+          ? 'linear-gradient(135deg, #2563eb 0%, #679436 100%)'
+          : 'linear-gradient(135deg, #2563eb 0%, #679436 100%)',
         gradientText: isDarkMode
-          ? 'linear-gradient(90deg, #61dafb 30%, #80e4ff 100%)'
+          ? 'linear-gradient(90deg,rgb(9, 139, 61) 30%, #80e4ff 100%)'
           : 'linear-gradient(90deg, #0070f3 30%, #339af0 100%)',
       },
       text: {

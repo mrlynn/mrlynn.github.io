@@ -1,12 +1,7 @@
-import { MDXRemote } from 'next-mdx-remote/rsc';
-import { getProjectBySlug, getAllProjects } from '../../../utils/projects';
-import ProjectLayout from '../../../components/projects/ProjectLayout';
-import { mdxComponents } from '../../../components/mdx/MDXComponents';
-import { Typography, Box, Container } from '@mui/material';
+import { Typography, Box } from '@mui/material';
 import Image from 'next/image';
 
-const components = {
-  ...mdxComponents,
+export const mdxComponents = {
   h1: (props) => (
     <Typography variant="h1" component="h1" gutterBottom {...props} />
   ),
@@ -131,91 +126,4 @@ const components = {
       </Box>
     );
   },
-};
-
-export async function generateMetadata({ params }) {
-  const project = await getProjectBySlug(params.slug);
-  if (!project) {
-    return {
-      title: 'Project Not Found',
-      description: 'The requested project could not be found.',
-    };
-  }
-
-  const ogImage = project.image || '/images/default-project-image.jpg';
-
-  return {
-    title: project.title,
-    description: project.description,
-    openGraph: {
-      title: project.title,
-      description: project.description,
-      type: 'article',
-      publishedTime: project.date,
-      authors: [project.author],
-      images: [
-        {
-          url: ogImage,
-          width: 1200,
-          height: 630,
-          alt: project.title,
-        },
-      ],
-      tags: project.tags,
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: project.title,
-      description: project.description,
-      images: [ogImage],
-    },
-    alternates: {
-      canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/projects/${params.slug}`,
-    },
-    authors: [{ name: project.author }],
-    keywords: project.tags?.join(', '),
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        'max-video-preview': -1,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
-      },
-    },
-  };
-}
-
-export default async function ProjectPage({ params }) {
-  const project = await getProjectBySlug(params.slug);
-  if (!project) {
-    return (
-      <Container maxWidth="lg">
-        <Typography variant="h4" component="h1" gutterBottom>
-          Project Not Found
-        </Typography>
-      </Container>
-    );
-  }
-
-  return (
-    <ProjectLayout
-      title={project.title}
-      description={project.description}
-      image={project.image}
-      date={project.date}
-      author={project.author}
-      tags={project.tags}
-      color={project.color}
-      technologies={project.technologies}
-      demoUrl={project.demoUrl}
-      githubUrl={project.githubUrl}
-    >
-      <Box sx={{ mt: 4 }}>
-        <MDXRemote source={project.content} components={components} />
-      </Box>
-    </ProjectLayout>
-  );
-} 
+}; 

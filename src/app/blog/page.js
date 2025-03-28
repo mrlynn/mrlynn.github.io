@@ -1,5 +1,6 @@
 import { getAllPosts } from '../../lib/blog';
 import BlogList from '../../components/blog/BlogList';
+import PageHeader from '../../components/PageHeader';
 
 export const metadata = {
   title: 'Blog | Michael Lynn',
@@ -9,5 +10,15 @@ export const metadata = {
 export default async function BlogPage() {
   const posts = await getAllPosts();
 
-  return <BlogList posts={posts} />;
+  return (
+    <>
+      <PageHeader
+        title="Blog Articles"
+        subtitle="A collection of blog articles and thoughts on software development, technology, and other topics."
+      />
+      <BlogList posts={posts} />
+    </>
+  );
 } 
+
+

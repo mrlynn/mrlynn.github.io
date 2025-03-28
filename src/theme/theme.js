@@ -13,8 +13,8 @@ const theme = (mode) => {
         default: isDark ? '#0a1929' : '#ffffff',
         paper: isDark ? '#0a1929' : '#ffffff',
         gradient: isDark
-          ? 'linear-gradient(45deg, #61dafb 30%, #0070f3 90%)'
-          : 'linear-gradient(45deg, #0070f3 30%, #61dafb 90%)',
+          ? 'linear-gradient(45deg,rgb(97, 251, 141) 30%, #0070f3 90%)'
+          : 'linear-gradient(45deg,rgb(29, 124, 19) 30%,rgb(97, 251, 141) 90%)',
       },
       text: {
         primary: isDark ? '#ffffff' : '#000000',

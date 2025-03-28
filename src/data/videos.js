@@ -76,7 +76,14 @@ export const videos = [
     category: "Podcast Keynote",
     tags: ["MongoDB", "Podcast", "AI"]
   }
+  ,
+  {
+    title: "Ep. 202 Unleashing Vector Search: An Exclusive AMA with Benjamin Flast",
+    thumbnail: "https://img.youtube.com/vi/n8a5_KXfbGI/maxresdefault.jpg",
+    videoId: "n8a5_KXfbGI",
+    platform: "youtube",
+    description: "🚀 In this captivating episode of the MongoDB Podcast Live, host Michael Lynn engages with Benjamin Flast, a pivotal member of the MongoDB product team. They delve into the intricacies of MongoDB's Vector Search, a cutting-edge feature enhancing the realm of AI and search functionalities. This episode offers a comprehensive Ask Me Anything (AMA) session, where Benjamin addresses a myriad of queries from listeners, shedding light on the nuances of vector search and its integration within MongoDB.",
+    category: "Podcast Keynote",
+    tags: ["MongoDB", "Podcast", "AI", "AMA"]
+  }
 ]; 
-
-
-

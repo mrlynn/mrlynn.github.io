@@ -44,6 +44,12 @@ export default async function sitemap() {
       changeFrequency: 'weekly',
       priority: 0.7,
     },
+    {
+      url: `${baseUrl}/podcasts`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
   ];
 
   return [...staticPages, ...blogUrls];

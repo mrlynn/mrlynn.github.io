@@ -11,14 +11,14 @@ const experiences = [
     company: 'MongoDB',
     location: 'Greater New York City Area',
     period: 'Mar 2018 - Present',
-    description: 'As a Principal Developer Advocate in the Instructional Developer Advocacy team at MongoDB, I empower developers and internal technical teams by delivering hands-on enablement content focused heavily on Artificial Intelligence (AI), MongoDB Atlas, and MongoDB Vector Search. I design labs, interactive workshops, and comprehensive training programs that simplify and demonstrate how developers can practically leverage these advanced technologies in real-world scenarios.',
+    description: 'In my current role at MongoDB, I\'m dedicated to empowering developers and internal technical teams by delivering hands-on enablement content focused heavily on Artificial Intelligence (AI), MongoDB Atlas, and MongoDB Vector Search. I actively design labs, interactive workshops, and comprehensive training programs that simplify and demonstrate how developers can practically leverage these advanced technologies in real-world scenarios.',
     responsibilities: [
-      'Artificial Intelligence & MongoDB Integration: Built practical demonstrations and sample applications to showcase how developers can implement AI-driven solutions using MongoDB Atlas, MongoDB Vector Search, and advanced AI techniques.',
-      'Vector Search Enablement: Created comprehensive learning resources and interactive labs that educate developers on MongoDB Vector Search, including semantic search use cases, retrieval-augmented generation (RAG) strategies, and integration with leading AI models.',
-      'Educational Content & Community Engagement: Produced technical screencasts, articles, podcasts, and live streams focused on AI implementation, MongoDB\'s innovative data platform capabilities, and emerging developer trends.',
-      'Technical Advisory & Mentorship: Mentored developers, founders, and technical stakeholders, assisting them in adopting and successfully integrating advanced MongoDB features and AI technologies.',
-      'MongoDB for Startups Program: Contributed to the launch and growth of the MongoDB for Startups initiative, guiding early-stage companies on integrating AI and MongoDB technologies effectively.',
-      'Build and nurture the MongoDB Developer Community through content, conference speaking, and curriculum designed to educate and inspire'
+      'Artificial Intelligence & MongoDB Integration: Built practical demonstrations and sample applications to showcase how developers can implement AI-driven solutions using MongoDB Atlas, MongoDB Vector Search, and advanced AI techniques, enabling more intelligent applications and improved user experiences.',
+      'Vector Search Enablement: Created comprehensive learning resources and interactive labs that educate developers on MongoDB Vector Search, including semantic search use cases, retrieval-augmented generation (RAG) strategies, and integration with leading AI models like OpenAI.',
+      'Educational Content & Community Engagement: Produced technical screencasts, articles, podcasts, and live streams focused explicitly on Data Modeling, AI implementation, MongoDB\'s innovative data platform capabilities, and emerging developer trends.',
+      'Technical Advisory & Mentorship: Mentored developers, founders, and technical stakeholders, assisting them in adopting and successfully integrating advanced MongoDB features and AI technologies into their software projects.',
+      'MongoDB for Startups Program: Contributed to the launch and growth of the MongoDB for Startups initiative, guiding early-stage companies.',
+      'Created and produced the MongoDB Podcast, featuring interviews with industry leaders and technical deep-dives into MongoDB technologies.'
     ]
   },
   {
@@ -28,12 +28,27 @@ const experiences = [
     period: 'Jan 2016 - Mar 2018',
     description: 'Responsible for guiding and informing customers and users throughout the process of designing and building reliable, scalable systems using MongoDB.',
     responsibilities: [
-      'Design systems, applications, and infrastructure for world\'s largest software development projects',
-      'Advise customers on architectures, patterns, and strategies for MongoDB best practices',
-      'Partner with sales team to ensure success in accounts ranging from startups to enterprises',
+      'Design systems, applications, and infrastructure to help drive some of the world\'s largest software development projects leveraging MongoDB',
+      'Advise customers on architectures, patterns, and strategies for making best use of MongoDB',
+      'Partner with our sales team to help ensure success in accounts ranging from small startups to large enterprises',
       'Lead proof of concept implementations from concept through execution',
-      'Translate technical concepts into business benefits for management and executives',
-      'Curate and deliver field enablement content to train MongoDB employees'
+      'Translate technical concepts and patterns into business benefits for management and executives',
+      'Work with the enablement team to produce and deliver content to educate newly hired MongoDB team members',
+      'Curate, develop and deliver field enablement and education content to train MongoDB employees'
+    ]
+  },
+  {
+    title: 'Co-Organizer - MongoDB Community User Group (PhillyMUG)',
+    company: 'MongoDB',
+    location: 'Philadelphia, PA',
+    period: 'Jun 2015 - Present',
+    description: 'Building and driving increased awareness of MongoDB\'s Database Platform and tools and related NoSQL technologies in and around the Philadelphia Area.',
+    responsibilities: [
+      'Organize and facilitate monthly meetup sessions for the Philadelphia MongoDB User Group',
+      'Identify and coordinate with speakers for technical presentations and workshops',
+      'Build and deliver technical presentations on MongoDB features and best practices',
+      'Foster a vibrant community of MongoDB developers in the Philadelphia region',
+      'Create hands-on workshops and learning opportunities for the local developer community'
     ]
   },
   {
@@ -53,7 +68,7 @@ const experiences = [
 const skills = [
   'Large Language Models (LLM)',
   'Data Modeling',
-  'AI/ML',
+  'Artificial Intelligence (AI)',
   'Vector Search',
   'MongoDB',
   'JavaScript',
@@ -65,9 +80,9 @@ const skills = [
   'Content Creation',
   'Team Leadership',
   'Community Building',
-  'Photoshop',
+  'Solutions Architecture',
   'Python',
-  'iOS Mobile Development'
+  'Technical Writing'
 ];
 
 export default function Resume() {
@@ -97,7 +112,7 @@ export default function Resume() {
             color: theme.palette.text.primary,
           }}
         >
-          Professional Experience
+          Professional Experience: Michael Lynn
         </Typography>
         <Typography 
           variant="h6" 

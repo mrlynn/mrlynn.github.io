@@ -2,7 +2,7 @@
 
 import { Box, Typography, useTheme } from '@mui/material';
 import { motion } from 'framer-motion';
-
+import { AnimatedTypography } from './common/AnimatedComponents';
 const MotionBox = motion(Box);
 
 export default function Section({ title, subtitle, children }) {

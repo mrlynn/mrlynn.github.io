@@ -1,10 +1,12 @@
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import { getPostBySlug, getAllPosts } from '../../../utils/blog';
 import BlogLayout from '../../../components/blog/BlogLayout';
+import { mdxComponents } from '../../../components/mdx/MDXComponents';
 import { Typography, Box, Container } from '@mui/material';
 import Image from 'next/image';
 
 const components = {
+  ...mdxComponents,
   h1: (props) => (
     <Typography variant="h1" component="h1" gutterBottom {...props} />
   ),
