@@ -1,9 +1,13 @@
+'use client';
+
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import { getPostBySlug, getAllPosts } from '../../../utils/blog';
 import BlogLayout from '../../../components/blog/BlogLayout';
 import { mdxComponents } from '../../../components/mdx/MDXComponents';
 import { Typography, Box, Container } from '@mui/material';
 import Image from 'next/image';
+import { useEffect } from 'react';
+import { trackContentView } from '../../lib/analytics';
 
 const components = {
   ...mdxComponents,
@@ -254,6 +258,11 @@ export default async function BlogPost({ params }) {
       </Container>
     );
   }
+
+  // Track blog post view
+  useEffect(() => {
+    trackContentView('blog', params.slug, post.title);
+  }, [params.slug, post.title]);
 
   return (
     <BlogLayout
