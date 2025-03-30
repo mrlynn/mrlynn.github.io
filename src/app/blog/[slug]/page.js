@@ -1,5 +1,9 @@
 import { getPostBySlug, getAllPosts } from '../../../utils/blog';
+<<<<<<< HEAD
 import { BlogLayout } from '../../../components/blog/BlogLayout';
+=======
+import BlogLayout from '../../../components/blog/BlogLayout';
+>>>>>>> 00ae68e0dff597081fbfcbcd9c2805c6b9342fa9
 import BlogPostContent from '../../../components/blog/BlogPostContent';
 import { Typography, Container } from '@mui/material';
 

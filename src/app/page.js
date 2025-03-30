@@ -8,6 +8,7 @@ import ProjectsSection from '../components/ProjectsSection';
 import VideosSection from '../components/VideosSection';
 import GitHubActivity from '../components/GitHubActivity';
 import Timeline from '../components/Timeline';
+import Certifications from '../components/Certifications';
 import { projects } from '../data/projects';
 import { timelineEvents } from '../data/timeline';
 import Image from 'next/image';
@@ -348,6 +349,9 @@ export default function Home() {
       <Box sx={{ py: 8, background: 'rgba(0, 0, 0, 0.2)' }}>
         <Timeline events={timelineEvents} />
       </Box>
+
+      {/* Certifications Section */}
+      <Certifications />
 
       <Container maxWidth="lg" sx={{ py: 8 }}>
         <ProjectsSection />

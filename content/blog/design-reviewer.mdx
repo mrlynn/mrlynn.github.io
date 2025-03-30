@@ -16,7 +16,7 @@ githubUrl: "https://github.com/mongodb/design-reviewer"
 # Design Reviewer
 
 ## Overview
-Design Reviewer is an innovative AI-powered system that revolutionizes the design review process by automatically analyzing design files and providing actionable feedback based on established design systems and best practices. This tool helps teams maintain consistency across their design assets while reducing the time spent on manual reviews.
+Design Reviewer is an innovative AI-powered system that revolutionizes the design review process by automatically analyzing design files and providing actionable feedback based on established design systems and best practices.  I wrote this in an attempt to codify design reviews and enable the developer advocates that execute them to leverage AI to assist them.
 
 ## Features
 - **Automated Design Analysis**: Instantly scan design files for consistency and compliance
@@ -26,23 +26,23 @@ Design Reviewer is an innovative AI-powered system that revolutionizes the desig
 - **Brand Consistency**: Validate against brand guidelines
 - **Collaborative Review**: Enable team members to provide feedback
 - **Analytics Dashboard**: Track design system adoption and compliance
+- **Transcription Support**: Convert design files to accessible formats for review
 
 ## Technical Details
 
 ### Architecture
 The application leverages a modern tech stack:
 - Frontend: Next.js with React and Material UI
-- AI Engine: Custom-trained models for design analysis
+- AI Engine: RAG 
 - Backend: Node.js with Express
-- Database: MongoDB for storing design patterns and feedback
-- Authentication: OAuth 2.0 with enterprise SSO
+- Database: MongoDB for storing design patterns, and vector embeddings
+- Authentication: OAuth 2.0
 
 ### Key Components
 1. **Design Analysis Engine**
-   - Pattern recognition for UI components
-   - Color scheme validation
-   - Typography consistency checking
-   - Layout analysis
+   - Utilizes RAG (Retrieval-Augmented Generation) for advanced pattern recognition
+   - Integrates with vector embeddings to understand context and intent
+   - Provides detailed reports on design compliance and best practices
 
 2. **Feedback System**
    - Inline comments and suggestions
@@ -59,19 +59,18 @@ The application leverages a modern tech stack:
 ## Challenges & Solutions
 
 ### Challenge 1: AI Accuracy
-Training AI models to accurately recognize design patterns and inconsistencies was a significant challenge.
+Building the RAG repository to ensure high accuracy in recognizing design patterns and inconsistencies was a significant challenge.
 
 **Solution**: Developed a hybrid approach that:
 - Uses multiple AI models for different aspects of design analysis
 - Implements human-in-the-loop validation
 - Continuously improves through user feedback
-- Maintains a comprehensive training dataset
 
 ### Challenge 2: Performance
-Processing large design files while maintaining real-time feedback was crucial.
+Processing large design files while maintaining real-time feedback was crucial. I haven't solved this problem yet... I need to implement quantization.
 
-**Solution**: Implemented:
-- Incremental analysis
+**Solution**: (to be) Implemented:
+- Quantize embeddings (MongoDB Vector Search)
 - Caching system for frequently accessed patterns
 - Parallel processing for multiple checks
 - Optimized rendering for large design files
