@@ -1,7 +1,7 @@
 'use client';
 
-import { Box, Container, Typography, Button, Grid, Paper, Stack, useTheme } from '@mui/material';
-import { GitHub as GitHubIcon, LinkedIn as LinkedInIcon, BookOutlined as BookOutlinedIcon, Code as CodeIcon, Terminal as TerminalIcon, Cloud as CloudIcon } from '@mui/icons-material';
+import { Box, Container, Typography, Button, Grid, Paper, Stack, useTheme, IconButton } from '@mui/material';
+import { GitHub as GitHubIcon, LinkedIn as LinkedInIcon, BookOutlined as BookOutlinedIcon, Code as CodeIcon, Terminal as TerminalIcon, Cloud as CloudIcon, ArrowDownward as ArrowDownwardIcon } from '@mui/icons-material';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import ProjectsSection from '../components/ProjectsSection';
@@ -17,6 +17,7 @@ import Image from 'next/image';
 const MotionBox = motion.create(Box);
 const MotionTypography = motion.create(Typography);
 const MotionPaper = motion.create(Paper);
+const MotionStack = motion(Stack);
 
 const titles = [
   "Creative Technologist",
@@ -65,9 +66,8 @@ function CyclingTitle() {
     const interval = setInterval(() => {
       let newTitle;
       do {
-        // Pick a random title
         newTitle = titles[Math.floor(Math.random() * titles.length)];
-      } while (newTitle === currentTitle); // Make sure it's not the same as current
+      } while (newTitle === currentTitle);
 
       setCurrentTitle(newTitle);
     }, 3000);
@@ -76,7 +76,16 @@ function CyclingTitle() {
   }, [currentTitle]);
 
   return (
-    <Box sx={{ height: '3.5rem', display: 'flex', justifyContent: 'center', mb: 4 }}>
+    <Box 
+      sx={{ 
+        minHeight: '3.5rem',
+        display: 'flex', 
+        justifyContent: 'center',
+        alignItems: 'center',
+        mb: 4,
+        position: 'relative',
+      }}
+    >
       <AnimatePresence mode="wait">
         <motion.div
           key={currentTitle}
@@ -95,6 +104,7 @@ function CyclingTitle() {
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               textAlign: 'center',
+              lineHeight: 1.2,
             }}
           >
             {currentTitle}
@@ -212,135 +222,471 @@ function FloatingProjectCards() {
   );
 }
 
+const heroBackgroundVariants = {
+  animate: {
+    backgroundPosition: ['0% 0%', '100% 100%'],
+    transition: {
+      duration: 20,
+      repeat: Infinity,
+      repeatType: 'reverse',
+    },
+  },
+};
+
+const ParticleBackground = () => (
+  <Box
+    sx={{
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      overflow: 'hidden',
+      zIndex: 1,
+    }}
+  >
+    {[...Array(50)].map((_, i) => (
+      <motion.div
+        key={i}
+        style={{
+          position: 'absolute',
+          width: Math.random() * 3 + 1,
+          height: Math.random() * 3 + 1,
+          backgroundColor: 'rgba(255, 255, 255, 0.5)',
+          borderRadius: '50%',
+          top: `${Math.random() * 100}%`,
+          left: `${Math.random() * 100}%`,
+        }}
+        animate={{
+          y: [0, 1000],
+          opacity: [1, 0],
+        }}
+        transition={{
+          duration: Math.random() * 10 + 10,
+          repeat: Infinity,
+          ease: "linear",
+          delay: Math.random() * 10,
+        }}
+      />
+    ))}
+  </Box>
+);
+
+const StatCard = ({ number, label }) => (
+  <MotionPaper
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    sx={{
+      p: 3,
+      backgroundColor: 'rgba(255,255,255,0.08)',
+      backdropFilter: 'blur(10px)',
+      border: '1px solid rgba(255,255,255,0.1)',
+      textAlign: 'center',
+      transition: 'all 0.3s ease',
+      '&:hover': {
+        transform: 'translateY(-5px)',
+        backgroundColor: 'rgba(255,255,255,0.12)',
+        boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
+      },
+    }}
+  >
+    <Typography
+      variant="h3"
+      sx={{
+        color: '#fff',
+        fontWeight: 700,
+        fontSize: { xs: '1.75rem', md: '2.25rem' },
+        mb: 1,
+        background: 'linear-gradient(135deg, #A5BE00 0%, #427AA1 100%)',
+        WebkitBackgroundClip: 'text',
+        WebkitTextFillColor: 'transparent',
+      }}
+    >
+      {number}
+    </Typography>
+    <Typography
+      variant="body2"
+      sx={{
+        color: 'rgba(255,255,255,0.8)',
+        textTransform: 'uppercase',
+        letterSpacing: 1.5,
+        fontSize: '0.75rem',
+        fontWeight: 500,
+      }}
+    >
+      {label}
+    </Typography>
+  </MotionPaper>
+);
+
 export default function Home() {
   const theme = useTheme();
-  const containerRef = useRef(null);
+  const ref = useRef(null);
   const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
+    target: ref,
+    offset: ["start start", "end start"],
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.5, 0]);
+  const stats = [
+    { number: '15+', label: 'Years Experience' },
+    { number: '200+', label: 'Tech Talks' },
+    { number: '50K+', label: 'Developers Reached' },
+    { number: '100+', label: 'Open Source Contributions' },
+  ];
 
   return (
-    <Box ref={containerRef}>
-      <Box
+    <Box ref={ref}>
+      {/* Hero Section */}
+      <MotionBox
+        component={motion.div}
+        variants={heroBackgroundVariants}
+        animate="animate"
         sx={{
           minHeight: '100vh',
-          pt: 12,
-          pb: 8,
-          background: 'linear-gradient(135deg, rgba(5, 102, 141, 0.1) 0%, rgba(165, 190, 0, 0.1) 100%)',
+          background: 'linear-gradient(-45deg, #062736, #427AA1, #679436, #A5BE00)',
+          backgroundSize: '400% 400%',
+          display: 'flex',
+          alignItems: 'center',
+          position: 'relative',
+          overflow: 'hidden',
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(6, 39, 54, 0.85)',
+            zIndex: 1,
+          },
         }}
       >
-        <Container maxWidth="lg">
-          <Grid container spacing={8} alignItems="center">
-            <Grid item xs={12} md={6}>
-              <motion.div
+        <ParticleBackground />
+        <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 2 }}>
+          <Grid container spacing={4} alignItems="center">
+            <Grid item xs={12} md={7}>
+              <MotionStack
+                spacing={4}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 0.8 }}
               >
+                <Box sx={{ mb: 2 }}>
+                  <Typography
+                    variant="overline"
+                    sx={{
+                      color: 'rgba(165, 190, 0, 0.8)',
+                      fontWeight: 500,
+                      letterSpacing: 3,
+                      mb: 2,
+                      display: 'block',
+                      fontSize: '0.75rem',
+                    }}
+                  >
+                    WELCOME TO MY WORLD
+                  </Typography>
+                  <Typography
+                    variant="h1"
+                    sx={{
+                      fontSize: { xs: '2.5rem', md: '4.5rem' },
+                      fontWeight: 800,
+                      color: '#fff',
+                      textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
+                      mb: 2,
+                      lineHeight: 1.1,
+                      letterSpacing: '-0.02em',
+                    }}
+                  >
+                    Michael Lynn
+                  </Typography>
+                </Box>
+                
+                <Box sx={{ transform: 'scale(1.1)', mb: 2 }}>
+                  <CyclingTitle />
+                </Box>
+                
                 <Typography
-                  variant="h1"
-                  gutterBottom
+                  variant="h6"
                   sx={{
-                    fontSize: { xs: '2.5rem', md: '3.5rem' },
-                    fontWeight: 600,
-                    background: theme.palette.background.gradientText,
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                    color: 'transparent',
-                    mb: 2,
-                  }}
-                >
-                  Michael Lynn
-                </Typography>
-
-                <CyclingTitle />
-
-                <Typography
-                  variant="body1"
-                  sx={{
-                    mb: 4,
-                    color: theme.palette.text.secondary,
+                    color: 'rgba(255,255,255,0.9)',
+                    maxWidth: '600px',
+                    lineHeight: 1.8,
+                    mb: 6,
                     fontSize: { xs: '1rem', md: '1.25rem' },
+                    fontWeight: 400,
                   }}
                 >
-                  Building bridges between developers and technology. Passionate about creating intuitive solutions and sharing knowledge through teaching and community engagement.
+                  Building bridges between developers and technology.
+                  Passionate about creating intuitive solutions and sharing
+                  knowledge through teaching and community engagement.
                 </Typography>
 
-                <Stack direction="row" spacing={2}>
+                <Stack direction="row" spacing={3} sx={{ mb: 8 }}>
                   <Button
                     variant="contained"
                     size="large"
                     startIcon={<GitHubIcon />}
                     href="https://github.com/mrlynn"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    sx={{
+                      backgroundColor: '#fff',
+                      color: '#062736',
+                      px: 4,
+                      py: 1.5,
+                      fontWeight: 600,
+                      '&:hover': {
+                        backgroundColor: 'rgba(255,255,255,0.9)',
+                        transform: 'translateY(-2px)',
+                        boxShadow: '0 5px 15px rgba(0,0,0,0.2)',
+                      },
+                      transition: 'all 0.3s ease',
+                    }}
                   >
                     GitHub
                   </Button>
                   <Button
-                    variant="contained"
+                    variant="outlined"
                     size="large"
                     startIcon={<LinkedInIcon />}
                     href="https://linkedin.com/in/mlynn"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    sx={{
+                      borderColor: 'rgba(255,255,255,0.6)',
+                      borderWidth: 2,
+                      color: '#fff',
+                      px: 4,
+                      py: 1.5,
+                      fontWeight: 600,
+                      '&:hover': {
+                        borderColor: '#fff',
+                        backgroundColor: 'rgba(255,255,255,0.1)',
+                        transform: 'translateY(-2px)',
+                        boxShadow: '0 5px 15px rgba(0,0,0,0.2)',
+                      },
+                      transition: 'all 0.3s ease',
+                    }}
                   >
                     LinkedIn
                   </Button>
-                  <Button
-                    variant="contained"
-                    size="large"
-                    startIcon={<BookOutlinedIcon />}
-                    href="/resume"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Resume
-                  </Button>
                 </Stack>
-              </motion.div>
+
+                <Grid container spacing={3}>
+                  {stats.map((stat, index) => (
+                    <Grid item xs={6} sm={3} key={stat.label}>
+                      <StatCard {...stat} />
+                    </Grid>
+                  ))}
+                </Grid>
+              </MotionStack>
             </Grid>
-            <Grid item xs={12} md={6} sx={{ display: 'flex', justifyContent: 'center' }}>
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
+            <Grid item xs={12} md={5}>
+              <MotionBox
+                initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
+                transition={{ duration: 0.8 }}
+                sx={{
+                  position: 'relative',
+                  height: { xs: '400px', md: '460px' },
+                  width: '100%',
+                  display: { xs: 'none', md: 'block' },
+                  mt: 4,
+                }}
               >
                 <Box
                   sx={{
                     position: 'relative',
-                    width: { xs: '280px', sm: '320px', md: '400px' },
-                    height: { xs: '280px', sm: '320px', md: '400px' },
-                    borderRadius: '16px',
+                    height: '100%',
+                    width: '100%',
+                    borderRadius: '24px',
                     overflow: 'hidden',
-                    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
+                    border: '4px solid rgba(255,255,255,0.1)',
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      background: 'linear-gradient(180deg, rgba(6,39,54,0) 0%, rgba(6,39,54,0.6) 100%)',
+                      zIndex: 1,
+                      opacity: 0.3,
+                      transition: 'all 0.3s ease',
+                    },
+                    '&:hover::before': {
+                      opacity: 0.1,
+                    },
+                    transform: 'perspective(1000px) rotateY(-5deg)',
+                    transition: 'all 0.5s ease',
+                    '&:hover': {
+                      transform: 'perspective(1000px) rotateY(0deg) translateY(-10px)',
+                      boxShadow: '0 30px 60px rgba(0,0,0,0.4)',
+                      '& + .quote-box': {
+                        transform: 'translateX(-50%) translateY(-5px)',
+                        backgroundColor: 'rgba(255,255,255,0.12)',
+                      },
+                    },
                   }}
                 >
-                  <Box
-                    component="img"
-                    src="./mike-mexico.jpg"
+                  <Image
+                    src="/mike-mexico.jpg"
                     alt="Michael Lynn"
-                    sx={{
-                      width: '100%',
-                      height: '100%',
+                    fill
+                    style={{
                       objectFit: 'cover',
-                      objectPosition: 'top center',
-                      borderRadius: '16px',
-                      transition: 'transform 0.3s ease',
-                      '&:hover': {
-                        transform: 'scale(1.02)',
-                      },
+                      objectPosition: 'center',
                     }}
+                    priority
                   />
                 </Box>
-              </motion.div>
+                <Box
+                  className="quote-box"
+                  component={motion.div}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                  sx={{
+                    position: 'absolute',
+                    bottom: -30,
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: '90%',
+                    p: 3,
+                    backgroundColor: 'rgba(255,255,255,0.08)',
+                    backdropFilter: 'blur(10px)',
+                    borderRadius: '16px',
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    textAlign: 'center',
+                    zIndex: 2,
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      backgroundColor: 'rgba(255,255,255,0.12)',
+                      transform: 'translateX(-50%) translateY(-5px)',
+                    },
+                  }}
+                >
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      color: 'white',
+                      fontWeight: 500,
+                      fontSize: '1.1rem',
+                      lineHeight: 1.6,
+                      textShadow: '0 2px 4px rgba(0,0,0,0.2)',
+                      fontStyle: 'italic',
+                      position: 'relative',
+                      '&::before': {
+                        content: '"\\201C"',
+                        position: 'absolute',
+                        top: -20,
+                        left: -10,
+                        fontSize: '3rem',
+                        color: 'rgba(255,255,255,0.2)',
+                        fontFamily: 'serif',
+                        lineHeight: 1,
+                      },
+                      '&::after': {
+                        content: '"\\201D"',
+                        position: 'absolute',
+                        bottom: -40,
+                        right: -10,
+                        fontSize: '3rem',
+                        color: 'rgba(255,255,255,0.2)',
+                        fontFamily: 'serif',
+                        lineHeight: 1,
+                      },
+                    }}
+                  >
+                    Empowering developers to build the future of technology
+                  </Typography>
+                </Box>
+              </MotionBox>
             </Grid>
+          </Grid>
+        </Container>
+        
+        <Box
+          sx={{
+            position: 'absolute',
+            bottom: 32,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            zIndex: 2,
+          }}
+        >
+          <motion.div
+            animate={{
+              y: [0, 10, 0],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          >
+            <IconButton
+              sx={{
+                color: 'white',
+                border: '2px solid white',
+                '&:hover': {
+                  backgroundColor: 'rgba(255,255,255,0.1)',
+                },
+              }}
+              onClick={() => window.scrollTo({
+                top: window.innerHeight,
+                behavior: 'smooth',
+              })}
+            >
+              <ArrowDownwardIcon />
+            </IconButton>
+          </motion.div>
+        </Box>
+      </MotionBox>
+
+      {/* Tech Cards Section */}
+      <Box sx={{ py: 10, backgroundColor: '#062736' }}>
+        <Container maxWidth="lg">
+          <Grid container spacing={4}>
+            {techCards.map((card, index) => (
+              <Grid item xs={12} md={4} key={card.title}>
+                <MotionPaper
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.2 }}
+                  sx={{
+                    p: 3,
+                    height: '100%',
+                    backgroundColor: 'rgba(255,255,255,0.05)',
+                    backdropFilter: 'blur(10px)',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    borderTop: `4px solid ${card.color}`,
+                    transition: 'transform 0.3s ease',
+                    '&:hover': {
+                      transform: 'translateY(-8px)',
+                    },
+                  }}
+                >
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      color: '#fff',
+                      mb: 2,
+                      fontWeight: 600,
+                    }}
+                  >
+                    {card.title}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color: 'rgba(255,255,255,0.7)',
+                      fontFamily: 'monospace',
+                      whiteSpace: 'pre-wrap',
+                    }}
+                  >
+                    {card.content}
+                  </Typography>
+                </MotionPaper>
+              </Grid>
+            ))}
           </Grid>
         </Container>
       </Box>
