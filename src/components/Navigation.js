@@ -32,7 +32,8 @@ import {
   ContactMail as ContactIcon,
   Book as BookIcon,
   RecordVoiceOver as SpeakingIcon,
-  Podcasts as PodcastsIcon
+  Podcasts as PodcastsIcon,
+  Instagram as InstagramIcon
 } from '@mui/icons-material';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTheme as useCustomTheme } from '../theme/ThemeContext';
@@ -74,6 +75,7 @@ const Navigation = () => {
   const secondaryItems = [
     { text: 'Videos', icon: <YouTubeIcon />, path: '/videos' },
     { text: 'Art', icon: <PaletteIcon />, path: '/art' },
+    { text: 'Social', icon: <InstagramIcon />, path: '/social' },
     { text: 'Resume', icon: <ArticleIcon />, path: '/resume' },
     { text: 'Contact', icon: <ContactIcon />, path: '/contact' }
   ];
