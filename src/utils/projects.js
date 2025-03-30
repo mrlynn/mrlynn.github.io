@@ -1,58 +1,49 @@
-import { readFileSync, readdirSync } from 'fs';
-import { join } from 'path';
-import matter from 'gray-matter';
+import { getAllMDXFiles, getMDXFileBySlug } from './mdx';
 import { parseISO } from 'date-fns';
 
-const projectsDirectory = join(process.cwd(), 'content/projects');
+const PROJECTS_DIR = 'content/projects';
 
 export async function getAllProjects() {
-  const fileNames = readdirSync(projectsDirectory);
-  const allProjectsData = fileNames
-    .filter(fileName => fileName.endsWith('.mdx'))
-    .map(fileName => {
-      // Remove ".mdx" from file name to get id
-      const slug = fileName.replace(/\.mdx$/, '');
-
-      // Read markdown file as string
-      const fullPath = join(projectsDirectory, fileName);
-      const fileContents = readFileSync(fullPath, 'utf8');
-
-      // Use gray-matter to parse the post metadata section
-      const { data, content } = matter(fileContents);
-
-      // Combine the data with the id
-      return {
-        slug,
-        ...data,
-        date: data.date ? parseISO(data.date) : new Date(),
-        content
-      };
-    });
-
+  const projects = await getAllMDXFiles(PROJECTS_DIR);
+  
   // Sort projects by date
-  return allProjectsData.sort((a, b) => b.date - a.date);
+  return projects.sort((a, b) => {
+    const dateA = parseISO(a.date || new Date().toISOString());
+    const dateB = parseISO(b.date || new Date().toISOString());
+    return dateB - dateA;
+  });
 }
 
 export async function getProjectBySlug(slug) {
-  const filePath = join(projectsDirectory, `${slug}.mdx`);
+  const project = await getMDXFileBySlug(PROJECTS_DIR, slug);
   
-  try {
-    const fileContents = readFileSync(filePath, 'utf8');
-    const { data, content } = matter(fileContents);
+  if (!project) return null;
 
-    return {
-      slug,
-      ...data,
-      content
-    };
-  } catch (error) {
-    return null;
+  // Ensure date is properly formatted
+  if (project.date) {
+    project.date = parseISO(project.date).toISOString();
   }
+
+  // Ensure tags is an array
+  if (!Array.isArray(project.tags)) {
+    project.tags = [];
+  }
+
+  // Ensure technologies is an array
+  if (!Array.isArray(project.technologies)) {
+    project.technologies = [];
+  }
+
+  console.log('Project data:', {
+    title: project.title,
+    hasContent: !!project.content,
+    contentType: typeof project.content,
+    contentPreview: JSON.stringify(project.content).substring(0, 100),
+  });
+
+  return project;
 }
 
 export function getAllProjectSlugs() {
-  const files = readdirSync(projectsDirectory);
-  return files
-    .filter((file) => file.endsWith('.mdx'))
-    .map((file) => file.replace(/\.mdx$/, ''));
+  return getAllProjects().then(projects => projects.map(project => project.slug));
 } 

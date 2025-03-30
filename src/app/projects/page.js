@@ -1,22 +1,23 @@
-import { getAllProjects } from '../../utils/projects';
-import ProjectList from '../../components/projects/ProjectList';
+import { getAllPosts } from '../../lib/blog';
+import BlogList from '../../components/blog/BlogList';
 import PageHeader from '../../components/PageHeader';
 
 export const metadata = {
   title: 'Projects | Michael Lynn',
-  description: 'A collection of my work and experiments in software development',
+  description: 'Software development projects and experiments by Michael Lynn',
 };
 
 export default async function ProjectsPage() {
-  const projects = await getAllProjects();
+  // Get only project posts
+  const projects = await getAllPosts('project');
 
   return (
     <>
       <PageHeader
         title="Projects"
-        subtitle="A showcase of my work in software development, from experimental prototypes to production applications. Each project represents a unique challenge and learning opportunity."
+        subtitle="A showcase of my work in software development, from experimental prototypes to production applications."
       />
-      <ProjectList projects={projects} />
+      <BlogList posts={projects} />
     </>
   );
 } 

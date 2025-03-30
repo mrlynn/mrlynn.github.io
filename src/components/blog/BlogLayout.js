@@ -3,6 +3,7 @@
 import { Box, Container, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { format } from 'date-fns';
+import Image from 'next/image';
 
 const HeroSection = styled(Box)(({ theme }) => ({
   position: 'relative',
@@ -62,13 +63,19 @@ const BlogLayout = ({ children, title, description, image, date, author }) => {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Box>
-        <HeroSection
-          sx={{
-            backgroundImage: `url(${image})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        >
+        <HeroSection>
+          {image && (
+            <Image
+              src={image}
+              alt={title}
+              fill
+              style={{
+                objectFit: 'cover',
+                objectPosition: 'center',
+              }}
+              priority
+            />
+          )}
           <HeroContent>
             <Typography variant="h1" component="h1" gutterBottom>
               {title}
@@ -89,4 +96,4 @@ const BlogLayout = ({ children, title, description, image, date, author }) => {
   );
 };
 
-export default BlogLayout; 
+export { BlogLayout }; 

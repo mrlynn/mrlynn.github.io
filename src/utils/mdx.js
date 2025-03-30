@@ -2,9 +2,6 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import { serialize } from 'next-mdx-remote/serialize';
-import rehypeSlug from 'rehype-slug';
-import rehypePrism from 'rehype-prism-plus';
-import remarkGfm from 'remark-gfm';
 
 const MDX_COMPONENTS_DIR = path.join(process.cwd(), 'src/components/mdx/includes');
 
@@ -55,77 +52,69 @@ export async function getMDXContent(filePath) {
       return null;
     }
 
-    const fileContents = fs.readFileSync(fullPath, 'utf8');
-    console.log('File contents loaded, length:', fileContents.length);
-    
-    // Process includes before parsing frontmatter
-    const processedContent = processMDXIncludes(fileContents, fullPath);
-    
-    // Parse frontmatter and content
-    const { data, content } = matter(processedContent);
-    console.log('Frontmatter parsed:', data);
+    const source = fs.readFileSync(fullPath, 'utf8');
+    const { data: frontmatter, content } = matter(source);
+    const processedContent = processMDXIncludes(content, filePath);
     
     // Serialize the MDX content
-    const mdxSource = await serialize(content, {
-      mdxOptions: {
-        remarkPlugins: [remarkGfm],
-        rehypePlugins: [rehypeSlug, [rehypePrism, { ignoreMissing: true }]],
-        format: 'mdx',
-      },
+    const mdxSource = await serialize(processedContent, {
       parseFrontmatter: true,
+      mdxOptions: {
+        development: process.env.NODE_ENV === 'development',
+      }
     });
 
-    console.log('MDX content serialized successfully');
-    console.log('Content type:', typeof mdxSource);
-    console.log('Content preview:', mdxSource.substring(0, 100));
-
     return {
-      frontmatter: data,
+      frontmatter,
       content: mdxSource,
+      slug: path.basename(filePath, path.extname(filePath)),
     };
   } catch (error) {
-    console.error(`Error processing MDX file ${filePath}:`, error);
-    console.error('Error stack:', error.stack);
+    console.error('Error processing MDX file:', error);
     return null;
   }
 }
 
 // Function to get all MDX files from a directory
 export async function getAllMDXFiles(directory) {
-  try {
-    const fullPath = path.join(process.cwd(), directory);
-    console.log('Reading directory:', fullPath);
-    
-    if (!fs.existsSync(fullPath)) {
-      console.error(`Directory not found: ${fullPath}`);
-      return [];
-    }
-
-    const files = fs.readdirSync(fullPath);
-    console.log('Found files:', files);
-    
-    const mdxFiles = await Promise.all(
-      files
-        .filter((file) => file.endsWith('.mdx'))
-        .map(async (file) => {
-          const filePath = path.join(directory, file);
-          const result = await getMDXContent(filePath);
-          
-          if (!result) {
-            return null;
-          }
-
-          return {
-            ...result.frontmatter,
-            slug: file.replace(/\.mdx$/, ''),
-            content: result.content,
-          };
-        })
-    );
-
-    return mdxFiles.filter(Boolean).sort((a, b) => new Date(b.date) - new Date(a.date));
-  } catch (error) {
-    console.error(`Error getting MDX files from ${directory}:`, error);
+  const fullPath = path.join(process.cwd(), directory);
+  
+  if (!fs.existsSync(fullPath)) {
+    fs.mkdirSync(fullPath, { recursive: true });
     return [];
   }
+
+  const files = fs.readdirSync(fullPath);
+  const mdxFiles = files.filter(file => file.endsWith('.mdx'));
+
+  const allContent = await Promise.all(
+    mdxFiles.map(async (file) => {
+      const filePath = path.join(directory, file);
+      const content = await getMDXContent(filePath);
+      if (!content) return null;
+
+      const slug = file.replace(/\.mdx$/, '');
+      return {
+        slug,
+        ...content.frontmatter,
+        content: content.content,
+      };
+    })
+  );
+
+  return allContent.filter(Boolean);
+}
+
+// Function to get a single MDX file by slug
+export async function getMDXFileBySlug(directory, slug) {
+  const filePath = path.join(directory, `${slug}.mdx`);
+  const content = await getMDXContent(filePath);
+  
+  if (!content) return null;
+
+  return {
+    slug,
+    ...content.frontmatter,
+    content: content.content,
+  };
 } 

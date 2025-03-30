@@ -1,148 +1,110 @@
-import { Container, Typography, Box, Stack, Chip, Link as MuiLink } from '@mui/material';
+import { Box, Container, Typography, Chip, Stack, Link, IconButton } from '@mui/material';
+import { GitHub as GitHubIcon, Launch as LaunchIcon } from '@mui/icons-material';
 import { format } from 'date-fns';
-import Link from 'next/link';
+import Image from 'next/image';
 
-const HeroSection = ({ children, sx }) => (
-  <Box
-    sx={{
-      position: 'relative',
-      height: '60vh',
-      minHeight: '400px',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      color: 'white',
-      textAlign: 'center',
-      '&::before': {
-        content: '""',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        background: 'rgba(0,0,0,0.5)',
-        zIndex: 1,
-      },
-      ...sx,
-    }}
-  >
-    <Box sx={{ position: 'relative', zIndex: 2, width: '100%' }}>
-      {children}
-    </Box>
-  </Box>
-);
-
-const HeroContent = ({ children }) => (
-  <Container maxWidth="md">
-    <Stack spacing={2}>{children}</Stack>
-  </Container>
-);
-
-export default function ProjectLayout({
-  children,
-  title,
-  description,
-  image,
-  date,
-  author,
-  tags,
-  color,
-  technologies,
-  demoUrl,
-  githubUrl,
-}) {
-  // Add JSON-LD schema
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'SoftwareApplication',
-    name: title,
-    description: description,
-    image: image,
-    datePublished: date,
-    author: {
-      '@type': 'Person',
-      name: author,
-    },
-    applicationCategory: 'DeveloperApplication',
-    operatingSystem: 'Web',
-    offers: {
-      '@type': 'Offer',
-      price: '0',
-      priceCurrency: 'USD',
-    },
-    technologies: technologies,
-  };
+export function ProjectLayout({ project, children }) {
+  const {
+    title,
+    description,
+    image,
+    date,
+    author,
+    tags = [],
+    color = 'primary',
+    technologies = [],
+    demoUrl,
+    githubUrl,
+  } = project;
 
   return (
-    <Container maxWidth="lg">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <Box>
-        <HeroSection
+    <Box>
+      {/* Hero Section with Image */}
+      {image && (
+        <Box
           sx={{
-            backgroundImage: `url(${image})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
+            position: 'relative',
+            width: '100%',
+            height: '400px',
+            mb: 6,
           }}
         >
-          <HeroContent>
+          <Image
+            src={image}
+            alt={title}
+            fill
+            style={{
+              objectFit: 'cover',
+              objectPosition: 'center',
+            }}
+            priority
+          />
+        </Box>
+      )}
+
+      {/* Project Info Section */}
+      <Box
+        sx={{
+          bgcolor: `${color}.main`,
+          color: `${color}.contrastText`,
+          py: 8,
+          mb: 6,
+        }}
+      >
+        <Container maxWidth="lg">
+          <Box sx={{ maxWidth: 800, mx: 'auto' }}>
             <Typography variant="h1" component="h1" gutterBottom>
               {title}
             </Typography>
-            <Typography variant="h5" component="h2" gutterBottom>
+            <Typography variant="subtitle1" gutterBottom>
               {description}
             </Typography>
-            <Stack direction="row" spacing={2} justifyContent="center" alignItems="center">
-              <Typography variant="subtitle1">
-                By {author} • {format(new Date(date), 'MMMM yyyy')}
-              </Typography>
-              {demoUrl && (
-                <MuiLink
-                  component={Link}
-                  href={demoUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  sx={{ color: 'white', textDecoration: 'underline' }}
-                >
-                  Live Demo
-                </MuiLink>
-              )}
-              {githubUrl && (
-                <MuiLink
-                  component={Link}
-                  href={githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  sx={{ color: 'white', textDecoration: 'underline' }}
-                >
-                  GitHub
-                </MuiLink>
-              )}
-            </Stack>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, justifyContent: 'center' }}>
+            <Stack direction="row" spacing={1} sx={{ mt: 2 }}>
               {tags.map((tag) => (
                 <Chip
                   key={tag}
                   label={tag}
-                  sx={{
-                    bgcolor: color,
-                    color: 'white',
-                    '&:hover': {
-                      bgcolor: color,
-                      opacity: 0.9,
-                    },
-                  }}
+                  size="small"
+                  sx={{ bgcolor: 'rgba(255, 255, 255, 0.2)' }}
                 />
               ))}
-            </Box>
-          </HeroContent>
-        </HeroSection>
-        <Container maxWidth="md" sx={{ py: 8 }}>
-          {children}
+            </Stack>
+            <Stack direction="row" spacing={2} sx={{ mt: 4 }}>
+              {githubUrl && (
+                <Link
+                  href={githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  sx={{ color: 'inherit' }}
+                >
+                  <IconButton color="inherit">
+                    <GitHubIcon />
+                  </IconButton>
+                </Link>
+              )}
+              {demoUrl && (
+                <Link
+                  href={demoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  sx={{ color: 'inherit' }}
+                >
+                  <IconButton color="inherit">
+                    <LaunchIcon />
+                  </IconButton>
+                </Link>
+              )}
+            </Stack>
+          </Box>
         </Container>
       </Box>
-    </Container>
+
+      {/* Project Content */}
+      <Container maxWidth="lg">
+        <Box sx={{ maxWidth: 800, mx: 'auto' }}>
+          {children}
+        </Box>
+      </Container>
+    </Box>
   );
 } 
