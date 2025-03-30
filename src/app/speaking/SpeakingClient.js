@@ -20,6 +20,7 @@ import SpeakingCard from '../../components/speaking/SpeakingCard';
 import SpeakingList from '../../components/speaking/SpeakingList';
 import SpeakingMap from '../../components/speaking/SpeakingMap';
 import SpeakingTable from '../../components/speaking/SpeakingTable';
+import PageHeader from '../../components/PageHeader';
 
 export default function SpeakingClient({ initialEngagements }) {
   const [view, setView] = useState('table');
@@ -76,30 +77,10 @@ export default function SpeakingClient({ initialEngagements }) {
   return (
     <Container maxWidth="lg">
       <Box sx={{ pt: 8, pb: 6 }}>
-        <Typography
-          variant="h2"
-          component="h1"
-          gutterBottom
-          sx={{
-            fontSize: { xs: '2rem', md: '2.5rem' },
-            fontWeight: 600,
-            mb: 2,
-          }}
-        >
-          Speaking Engagements
-        </Typography>
-        <Typography 
-          variant="h5" 
-          color="text.secondary"
-          sx={{
-            fontSize: { xs: '1.1rem', md: '1.25rem' },
-            fontWeight: 400,
-            mb: 4,
-          }}
-        >
-          {getSubtitleText()}
-        </Typography>
-
+      <PageHeader
+        title="Speaking Engagements"
+        subtitle="Some of the conferences, meetups, and workshops I've spoken at or will be speaking at."
+      />
         <Stack 
           direction="row" 
           spacing={2} 

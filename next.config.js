@@ -6,6 +6,9 @@ const withMDX = require('@next/mdx')({
       require('rehype-slug'),
       [require('rehype-prism-plus'), { ignoreMissing: true }],
     ],
+    providerImportSource: "@mdx-js/react",
+    jsx: true,
+    format: 'mdx',
   },
 });
 
@@ -21,6 +24,9 @@ const nextConfig = {
     unoptimized: true, // This allows serving local images directly
   },
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
+  experimental: {
+    mdxRs: true,
+  },
   webpack: (config) => {
     config.resolve.extensions = ['.js', '.jsx', '.json'];
     return config;
