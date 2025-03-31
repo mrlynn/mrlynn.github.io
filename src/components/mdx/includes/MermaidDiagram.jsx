@@ -9,12 +9,15 @@ import {
   IconButton,
   Tooltip,
   Stack,
-  Snackbar
+  Snackbar,
+  Collapse,
+  Button
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DownloadIcon from '@mui/icons-material/Download';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
+import CodeIcon from '@mui/icons-material/Code';
 import * as htmlToImage from 'html-to-image';
 
 const DiagramContainer = styled(Paper)(({ theme }) => ({
@@ -32,11 +35,33 @@ const ActionButtons = styled(Box)(({ theme }) => ({
   right: theme.spacing(2),
   display: 'flex',
   gap: theme.spacing(1),
-  opacity: 0,
-  transition: 'opacity 0.2s',
-  '&:hover': {
-    opacity: 1,
-  },
+  backgroundColor: 'rgba(255, 255, 255, 0.9)',
+  padding: theme.spacing(1),
+  borderRadius: theme.shape.borderRadius,
+  boxShadow: theme.shadows[1],
+  zIndex: 1,
+  '& .MuiIconButton-root': {
+    padding: theme.spacing(0.5),
+    '&:hover': {
+      backgroundColor: theme.palette.action.hover,
+    }
+  }
+}));
+
+const SourceCodeBox = styled(Box)(({ theme }) => ({
+  marginTop: theme.spacing(2),
+  padding: theme.spacing(2),
+  backgroundColor: theme.palette.grey[100],
+  borderRadius: theme.shape.borderRadius,
+  overflow: 'auto',
+  maxHeight: '400px',
+  '& pre': {
+    margin: 0,
+    whiteSpace: 'pre-wrap',
+    fontFamily: 'monospace',
+    fontSize: '0.875rem',
+    lineHeight: 1.5,
+  }
 }));
 
 const MermaidDiagram = ({ chart, title, caption }) => {
@@ -46,6 +71,7 @@ const MermaidDiagram = ({ chart, title, caption }) => {
   const [diagramSvg, setDiagramSvg] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [showSource, setShowSource] = useState(false);
 
   useEffect(() => {
     // Load mermaid dynamically
@@ -148,6 +174,10 @@ const MermaidDiagram = ({ chart, title, caption }) => {
     setSnackbarOpen(false);
   };
 
+  const handleToggleSource = () => {
+    setShowSource(!showSource);
+  };
+
   return (
     <DiagramContainer elevation={1}>
       {title && (
@@ -182,6 +212,11 @@ const MermaidDiagram = ({ chart, title, caption }) => {
         ) : (
           <>
             <ActionButtons>
+              <Tooltip title="Toggle Source Code">
+                <IconButton onClick={handleToggleSource} size="small">
+                  <CodeIcon />
+                </IconButton>
+              </Tooltip>
               <Tooltip title="Copy Mermaid Code">
                 <IconButton onClick={handleCopyCode} size="small">
                   <ContentCopyIcon />
@@ -211,6 +246,12 @@ const MermaidDiagram = ({ chart, title, caption }) => {
           </>
         )}
       </Box>
+
+      <Collapse in={showSource}>
+        <SourceCodeBox>
+          <pre>{chart}</pre>
+        </SourceCodeBox>
+      </Collapse>
       
       {caption && (
         <Typography 

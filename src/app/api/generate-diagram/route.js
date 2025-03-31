@@ -1,5 +1,7 @@
 // src/app/api/generate-diagram/route.js
 import { NextResponse } from 'next/server';
+import { rateLimiter } from '../../../lib/rateLimit';
+import { cookies } from 'next/headers';
 
 // Check for OpenAI API key
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
@@ -58,15 +60,34 @@ const validateMermaidSyntax = (code) => {
 };
 
 export async function POST(request) {
-  if (!OPENAI_API_KEY) {
-    return NextResponse.json(
-      { error: 'OpenAI API key is not configured' },
-      { status: 500 }
-    );
-  }
-
   try {
-    // Parse request body
+    // Get a unique identifier for the user (using a cookie)
+    const cookieStore = cookies();
+    let userId = cookieStore.get('diagram_user_id')?.value;
+
+    // If no user ID exists, create one
+    if (!userId) {
+      userId = Math.random().toString(36).substring(2);
+      cookieStore.set('diagram_user_id', userId, {
+        maxAge: 60 * 60 * 24 * 30, // 30 days
+        path: '/',
+      });
+    }
+
+    // Check rate limit
+    if (rateLimiter.isRateLimited(userId)) {
+      const remainingTime = rateLimiter.getResetTime(userId) - Date.now();
+      return NextResponse.json(
+        {
+          error: 'Rate limit exceeded',
+          remainingTime,
+          remainingRequests: 0,
+        },
+        { status: 429 }
+      );
+    }
+
+    // Get the request body
     const { prompt, diagramType } = await request.json();
 
     if (!prompt || prompt.trim() === '') {
@@ -218,11 +239,17 @@ Respond ONLY with the Mermaid diagram code and nothing else. Do not include any 
     // Validate and clean the code
     const cleanedMermaidCode = validateMermaidSyntax(mermaidCode);
 
-    return NextResponse.json({ mermaidCode: cleanedMermaidCode });
+    // Return success response with remaining requests
+    return NextResponse.json({
+      success: true,
+      mermaidCode: cleanedMermaidCode,
+      remainingRequests: rateLimiter.getRemainingRequests(userId),
+      resetTime: rateLimiter.getResetTime(userId),
+    });
   } catch (error) {
-    console.error('Error processing request:', error);
+    console.error('Error generating diagram:', error);
     return NextResponse.json(
-      { error: error.message || 'Error processing request' },
+      { error: 'Failed to generate diagram' },
       { status: 500 }
     );
   }
