@@ -7,17 +7,21 @@ export const pageview = (url) => {
     window.gtag('config', GA_TRACKING_ID, {
       page_path: url,
       send_page_view: true,
+      page_title: document.title,
+      page_location: window.location.href,
+      page_referrer: document.referrer,
     });
   }
 };
 
 // Event tracking
-export const event = ({ action, category, label, value }) => {
+export const event = ({ action, category, label, value, custom_parameters = {} }) => {
   if (typeof window.gtag === 'function') {
     window.gtag('event', action, {
       event_category: category,
       event_label: label,
       value: value,
+      ...custom_parameters,
     });
   }
 };
@@ -32,6 +36,7 @@ export const AnalyticsEvents = {
   BLOG_POST_VIEW: 'blog_post_view',
   PROJECT_VIEW: 'project_view',
   VIDEO_PLAY: 'video_play',
+  PODCAST_PLAY: 'podcast_play',
   
   // User interaction events
   BUTTON_CLICK: 'button_click',
@@ -52,6 +57,11 @@ export const trackContentView = (contentType, contentId, contentTitle) => {
     category: 'content',
     label: contentTitle,
     value: contentId,
+    custom_parameters: {
+      content_type: contentType,
+      content_id: contentId,
+      content_title: contentTitle,
+    },
   });
 };
 
@@ -64,6 +74,23 @@ export const trackVideoPlay = (videoId, videoTitle, platform) => {
     value: videoId,
     custom_parameters: {
       platform,
+      video_id: videoId,
+      video_title: videoTitle,
+    },
+  });
+};
+
+// Helper function to track podcast plays
+export const trackPodcastPlay = (podcastId, podcastTitle, platform) => {
+  event({
+    action: AnalyticsEvents.PODCAST_PLAY,
+    category: 'podcast',
+    label: podcastTitle,
+    value: podcastId,
+    custom_parameters: {
+      platform,
+      podcast_id: podcastId,
+      podcast_title: podcastTitle,
     },
   });
 };
@@ -77,6 +104,8 @@ export const trackError = (errorType, errorMessage, errorStack) => {
     value: errorType,
     custom_parameters: {
       stack: errorStack,
+      error_type: errorType,
+      error_message: errorMessage,
     },
   });
 }; 

@@ -88,6 +88,13 @@ export default function RootLayout({ children }) {
             gtag('config', '${GA_TRACKING_ID}', {
               page_path: window.location.pathname,
               send_page_view: true,
+              page_title: document.title,
+              page_location: window.location.href,
+              page_referrer: document.referrer,
+              transport_type: 'beacon',
+              anonymize_ip: true,
+              cookie_flags: 'SameSite=None;Secure',
+              debug_mode: process.env.NODE_ENV === 'development',
             });
           `}
         </Script>

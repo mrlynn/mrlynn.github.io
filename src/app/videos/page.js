@@ -5,6 +5,7 @@ import { Box, Container, Typography, Grid, Paper, Chip, Stack, Tooltip } from '@
 import { motion } from 'framer-motion';
 import { YouTube as YouTubeIcon, MusicNote as TikTokIcon } from '@mui/icons-material';
 import { useTheme } from '@mui/material';
+import { withAnalytics } from '../../components/withAnalytics';
 import { videos } from '../../data/videos';
 
 const MotionPaper = motion(Paper);
@@ -31,7 +32,7 @@ const getPlatformIcon = (platform) => {
   }
 };
 
-export default function VideosPage() {
+function VideosPage() {
   const theme = useTheme();
   const [selectedTags, setSelectedTags] = useState([]);
 
@@ -280,4 +281,6 @@ export default function VideosPage() {
       </Container>
     </Box>
   );
-} 
+}
+
+export default withAnalytics(VideosPage); 
