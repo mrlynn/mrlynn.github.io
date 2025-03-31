@@ -23,71 +23,57 @@ export default function PodcastEpisodes({ feedUrl, onMetadataLoad }) {
   const [visibleEpisodes, setVisibleEpisodes] = useState(EPISODES_PER_PAGE);
 
   useEffect(() => {
-    const fetchPodcastData = async () => {
+    const fetchEpisodes = async () => {
       try {
-        const response = await fetch(feedUrl);
-        const text = await response.text();
-        const parser = new DOMParser();
-        const xml = parser.parseFromString(text, 'text/xml');
+        setLoading(true);
+        setError(null);
+
+        // Try to fetch from Spotify first
+        const spotifyData = await fetchSpotifyPodcast(feedUrl);
         
-        // Parse podcast metadata
-        const channel = xml.querySelector('channel');
-        const podcastMetadata = {
-          title: channel.querySelector('title')?.textContent || '',
-          description: channel.querySelector('description')?.textContent || '',
-          imageUrl: channel.querySelector('image url')?.textContent || 
-                   channel.querySelector('itunes\\:image')?.getAttribute('href') || '',
-          lastBuildDate: channel.querySelector('lastBuildDate')?.textContent || '',
-          link: channel.querySelector('link')?.textContent || '',
-          author: channel.querySelector('itunes\\:author')?.textContent || ''
-        };
-        
-        // Notify parent component of metadata
-        if (onMetadataLoad) {
-          onMetadataLoad(podcastMetadata);
-        }
-        
-        // Parse episodes
-        const items = xml.querySelectorAll('item');
-        const parsedEpisodes = Array.from(items).map((item, index) => {
-          const title = item.querySelector('title')?.textContent || '';
-          const description = item.querySelector('description')?.textContent || '';
-          const pubDate = new Date(item.querySelector('pubDate')?.textContent || '');
-          const duration = item.querySelector('itunes\\:duration')?.textContent || '';
-          const link = item.querySelector('link')?.textContent || '';
-          const audioUrl = item.querySelector('enclosure')?.getAttribute('url') || '';
+        if (spotifyData) {
+          setEpisodes(spotifyData.episodes);
+          if (onMetadataLoad) {
+            onMetadataLoad(spotifyData.podcast);
+          }
+        } else {
+          // Fallback to RSS feed
+          const response = await fetch(feedUrl);
+          if (!response.ok) {
+            throw new Error('Failed to fetch podcast feed');
+          }
           
-          // Clean up description by removing HTML tags and converting entities
-          const cleanDescription = description
-            .replace(/<[^>]*>/g, '') // Remove HTML tags
-            .replace(/&nbsp;/g, ' ') // Replace &nbsp; with space
-            .replace(/&amp;/g, '&') // Replace &amp; with &
-            .replace(/&quot;/g, '"') // Replace &quot; with "
-            .replace(/&#39;/g, "'"); // Replace &#39; with '
+          const feedData = await response.text();
+          const parser = new DOMParser();
+          const xmlDoc = parser.parseFromString(feedData, 'text/xml');
+          
+          const items = xmlDoc.getElementsByTagName('item');
+          const parsedEpisodes = Array.from(items).map(item => ({
+            title: item.getElementsByTagName('title')[0]?.textContent || '',
+            description: item.getElementsByTagName('description')[0]?.textContent || '',
+            pubDate: item.getElementsByTagName('pubDate')[0]?.textContent || '',
+            duration: item.getElementsByTagName('itunes:duration')[0]?.textContent || '',
+            audioUrl: item.getElementsByTagName('enclosure')[0]?.getAttribute('url') || '',
+            episodeNumber: item.getElementsByTagName('itunes:episode')[0]?.textContent || '',
+            seasonNumber: item.getElementsByTagName('itunes:season')[0]?.textContent || '',
+          }));
 
-          return {
-            id: index,
-            title,
-            description: cleanDescription,
-            pubDate,
-            duration,
-            link,
-            audioUrl
-          };
-        });
-
-        setEpisodes(parsedEpisodes);
-        setLoading(false);
+          setEpisodes(parsedEpisodes);
+        }
       } catch (err) {
-        setError('Failed to load podcast episodes');
+        console.error('Error fetching episodes:', err);
+        setError(err.message);
+      } finally {
         setLoading(false);
       }
     };
 
-    fetchPodcastData();
+    if (feedUrl) {
+      fetchEpisodes();
+    }
   }, [feedUrl, onMetadataLoad]);
 
-  const loadMore = () => {
+  const handleLoadMore = () => {
     setVisibleEpisodes(prev => prev + EPISODES_PER_PAGE);
   };
 
@@ -100,94 +86,83 @@ export default function PodcastEpisodes({ feedUrl, onMetadataLoad }) {
   }
 
   if (error) {
-    return <Alert severity="error">{error}</Alert>;
+    return (
+      <Alert severity="error" sx={{ m: 2 }}>
+        {error}
+      </Alert>
+    );
+  }
+
+  if (!episodes.length) {
+    return (
+      <Alert severity="info" sx={{ m: 2 }}>
+        No episodes found
+      </Alert>
+    );
   }
 
   return (
-    <Stack spacing={3}>
+    <Box>
       {episodes.slice(0, visibleEpisodes).map((episode, index) => (
         <MotionCard
-          key={episode.id || episode.title}
+          key={episode.title}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: index * 0.1 }}
-          elevation={2}
-          sx={{
-            background: (theme) => theme.palette.mode === 'dark' 
-              ? 'rgba(0,0,0,0.2)' 
-              : 'rgba(255,255,255,0.8)',
-            backdropFilter: 'blur(10px)',
-            borderRadius: 2,
-          }}
+          sx={{ mb: 2 }}
         >
           <CardContent>
             <Typography variant="h6" gutterBottom>
               {episode.title}
             </Typography>
-            
-            <Stack direction="row" spacing={2} mb={2}>
-              <Chip 
-                label={new Date(episode.pubDate).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'short',
-                  day: 'numeric'
-                })}
-                size="small"
-                color="primary"
-                variant="outlined"
-              />
+            <Typography variant="body2" color="text.secondary" paragraph>
+              {episode.description}
+            </Typography>
+            <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+              {episode.episodeNumber && (
+                <Chip
+                  label={`Episode ${episode.episodeNumber}`}
+                  size="small"
+                />
+              )}
+              {episode.seasonNumber && (
+                <Chip
+                  label={`Season ${episode.seasonNumber}`}
+                  size="small"
+                />
+              )}
               {episode.duration && (
-                <Chip 
+                <Chip
                   label={episode.duration}
                   size="small"
-                  color="secondary"
-                  variant="outlined"
                 />
               )}
             </Stack>
-
-            <Typography 
-              variant="body2" 
-              color="text.secondary"
-              sx={{ 
-                mb: 2,
-                display: '-webkit-box',
-                WebkitLineClamp: 3,
-                WebkitBoxOrient: 'vertical',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis'
-              }}
-            >
-              {episode.description}
-            </Typography>
-
-            <Button
-              variant="contained"
-              href={episode.audioUrl || episode.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              size="small"
-            >
-              Listen to Episode
-            </Button>
+            {episode.audioUrl && (
+              <Button
+                variant="contained"
+                color="primary"
+                href={episode.audioUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                sx={{ mt: 2 }}
+              >
+                Listen Now
+              </Button>
+            )}
           </CardContent>
         </MotionCard>
       ))}
-
       {visibleEpisodes < episodes.length && (
         <Box display="flex" justifyContent="center" mt={2}>
-          <Button 
-            variant="outlined" 
-            onClick={loadMore}
-            sx={{ 
-              borderRadius: 4,
-              px: 4
-            }}
+          <Button
+            variant="outlined"
+            onClick={handleLoadMore}
           >
             Load More Episodes
           </Button>
         </Box>
       )}
-    </Stack>
+    </Box>
   );
 } 
