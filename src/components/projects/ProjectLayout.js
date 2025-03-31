@@ -2,6 +2,7 @@ import { Box, Container, Typography, Chip, Stack, Link, IconButton } from '@mui/
 import { GitHub as GitHubIcon, Launch as LaunchIcon } from '@mui/icons-material';
 import { format } from 'date-fns';
 import Image from 'next/image';
+import ShareButton from '../ShareButton';
 
 export function ProjectLayout({ project, children }) {
   const {
@@ -94,6 +95,11 @@ export function ProjectLayout({ project, children }) {
                   </IconButton>
                 </Link>
               )}
+              <ShareButton 
+                title={title}
+                url={typeof window !== 'undefined' ? window.location.href : ''}
+                description={description}
+              />
             </Stack>
           </Box>
         </Container>

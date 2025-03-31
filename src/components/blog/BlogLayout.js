@@ -1,9 +1,10 @@
 'use client';
 
-import { Box, Container, Typography } from '@mui/material';
+import { Box, Container, Typography, Stack, Divider, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { format } from 'date-fns';
 import Image from 'next/image';
+import ShareButton from '../ShareButton';
 
 const HeroSection = styled(Box)(({ theme }) => ({
   position: 'relative',
@@ -88,6 +89,29 @@ const BlogLayout = ({ children, title, description, image, date, author }) => {
             </Typography>
           </HeroContent>
         </HeroSection>
+
+        {/* Share Section */}
+        <Box sx={{ 
+          py: 3,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: 2,
+          bgcolor: 'background.paper',
+          borderBottom: 1,
+          borderColor: 'divider'
+        }}>
+          <Typography variant="subtitle1" color="text.secondary">
+            Share this article:
+          </Typography>
+          <ShareButton 
+            title={title}
+            url={typeof window !== 'undefined' ? window.location.href : ''}
+            description={description}
+          />
+        </Box>
+
+        {/* Content */}
         <Container maxWidth="md" sx={{ py: 8 }}>
           {children}
         </Container>

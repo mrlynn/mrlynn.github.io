@@ -14,16 +14,37 @@ export async function generateMetadata({ params }) {
   const post = await getPostBySlug(params.slug);
   if (!post) return {};
 
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://mlynn.org';
+  const fullUrl = `${baseUrl}/blog/${params.slug}`;
+  const imageUrl = post.image ? `${baseUrl}${post.image}` : `${baseUrl}/images/og-image.jpg`;
+
   return {
-    title: `${post.title} | Blog`,
+    title: post.title,
     description: post.description,
+    authors: [{ name: post.author }],
     openGraph: {
       title: post.title,
       description: post.description,
       type: 'article',
+      url: fullUrl,
+      siteName: 'Michael Lynn',
       publishedTime: post.date,
       authors: [post.author],
-      images: post.image ? [post.image] : [],
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.description,
+      images: [imageUrl],
+      creator: '@mlynn',
     },
   };
 }
