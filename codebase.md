@@ -198,6 +198,491 @@ out/*
 
 ```
 
+# ARCHITECTURE.md
+
+```md
+# System Architecture Documentation
+
+## Overview
+This is a Next.js-based personal website/portfolio built with Material UI, featuring a blog, projects showcase, and various content sections. The application uses the App Router pattern and follows React Server Component principles.
+
+## Tech Stack
+- **Framework**: Next.js 14
+- **UI Library**: Material UI (MUI)
+- **Content**: MDX for rich content
+- **Styling**: Material UI's styling system
+- **Data Storage**: MongoDB with Mongoose
+- **Deployment**: Vercel
+- **Media Storage**: Vercel Blob Storage
+
+## Core Architecture
+
+### 1. Application Structure
+\`\`\`
+src/
+├── app/                 # Next.js App Router pages
+├── components/          # Reusable React components
+├── theme/              # Material UI theming
+├── lib/                # Utility functions and helpers
+├── hooks/              # Custom React hooks
+├── utils/              # Helper utilities
+└── content/            # MDX content files
+\`\`\`
+
+### 2. Routing Architecture
+- Uses Next.js App Router
+- File-based routing structure
+- Dynamic routes for blog posts and projects
+- API routes for data fetching
+
+### 3. Component Architecture
+- Server Components by default
+- Client Components marked with 'use client'
+- Shared components in `/components`
+- Page-specific components co-located with pages
+
+## Key Features
+
+### 1. Content Management
+- **MDX Processing**
+  - Raw MDX files in `/content`
+  - Frontmatter for metadata
+  - Custom MDX components
+  - Syntax highlighting
+
+- **Media Handling**
+  - Images stored in public directory
+  - Vercel Blob Storage for uploaded content
+  - Optimized image loading with Next.js Image component
+
+### 2. Projects Section
+\`\`\`
+/projects
+├── [slug]/             # Dynamic project routes
+│   ├── page.js         # Project detail page
+│   └── ProjectDetailClient.js
+├── page.js             # Projects listing
+└── metadata.js         # SEO configuration
+\`\`\`
+
+#### Project Features
+- **Content Display**
+  - MDX rendering
+  - Image carousels
+  - Tech stack visualization
+  - Demo video integration
+
+- **Data Flow**
+  \`\`\`mermaid
+  graph TD
+    A[MDX Files] --> B[getAllPosts]
+    B --> C[Project List]
+    B --> D[Project Detail]
+    D --> E[MDX Content]
+    D --> F[Image Carousel]
+  \`\`\`
+
+### 3. Blog System
+- Similar structure to projects
+- Category and tag support
+- RSS feed generation
+- Reading time calculation
+
+### 4. Data Layer
+
+#### MongoDB Integration
+\`\`\`javascript
+// Database Schema Example
+const ProjectSchema = new mongoose.Schema({
+  title: String,
+  slug: { type: String, unique: true },
+  description: String,
+  content: String,
+  date: Date,
+  tags: [String],
+  image: String,
+  // ... other fields
+});
+\`\`\`
+
+#### Content Loading Pipeline
+1. MDX files processed at build time
+2. Frontmatter extracted and validated
+3. Content rendered with custom components
+4. Dynamic data fetched from MongoDB
+
+### 5. Theme System
+- Material UI theming
+- Dark/light mode support
+- Custom color schemes
+- Responsive design system
+
+## Performance Optimizations
+
+### 1. Static Generation
+- Pages pre-rendered at build time
+- Incremental Static Regeneration for dynamic content
+- Static paths for known routes
+
+### 2. Image Optimization
+- Next.js Image component
+- Lazy loading
+- Responsive images
+- WebP format support
+
+### 3. Code Splitting
+- Automatic code splitting by route
+- Dynamic imports for heavy components
+- Client/server component separation
+
+## Security Measures
+
+### 1. Content Security
+- Input sanitization
+- MDX content validation
+- Secure image handling
+
+### 2. API Security
+- API route protection
+- Environment variable security
+- CORS configuration
+
+## Environment Configuration
+
+### Required Environment Variables
+\`\`\`
+MONGODB_URI=           # MongoDB connection string
+BLOB_READ_WRITE_TOKEN= # Vercel Blob Storage token
+JWT_SECRET=           # JWT authentication secret
+NEXT_PUBLIC_GA_ID=    # Google Analytics ID
+\`\`\`
+
+## Deployment
+
+### Vercel Deployment
+1. Connected to GitHub repository
+2. Automatic deployments on push
+3. Environment variable configuration
+4. Domain management
+
+### Build Process
+1. MDX content processing
+2. Static page generation
+3. Image optimization
+4. Asset compilation
+
+## Development Workflow
+
+### Local Development
+1. Clone repository
+2. Install dependencies
+3. Set up environment variables
+4. Run development server
+
+\`\`\`bash
+npm install
+cp .env.example .env.local
+npm run dev
+\`\`\`
+
+### Adding New Content
+1. Create MDX file in appropriate directory
+2. Add required frontmatter
+3. Add media assets
+4. Test locally
+5. Deploy changes
+
+## Monitoring and Analytics
+
+### Performance Monitoring
+- Vercel Analytics
+- Google Analytics
+- Custom performance metrics
+
+### Error Tracking
+- Error boundary implementation
+- Server-side error logging
+- Client-side error reporting
+
+## Future Considerations
+
+### Planned Improvements
+1. Enhanced search functionality
+2. Image optimization improvements
+3. Additional content types
+4. Performance optimizations
+5. Enhanced analytics
+
+### Scalability Considerations
+1. Content delivery optimization
+2. Database scaling
+3. Build time optimization
+4. Cache strategy improvements
+
+## Troubleshooting
+
+### Common Issues
+1. MDX parsing errors
+2. Image optimization issues
+3. MongoDB connection problems
+4. Build failures
+
+### Debug Procedures
+1. Check logs in Vercel dashboard
+2. Verify environment variables
+3. Test content rendering locally
+4. Validate database connections
+
+## Support and Maintenance
+
+### Regular Maintenance Tasks
+1. Dependency updates
+2. Security patches
+3. Content backups
+4. Performance monitoring
+
+### Support Procedures
+1. Issue tracking in GitHub
+2. Documentation updates
+3. Security vulnerability handling
+4. Performance optimization
+
+Would you like me to elaborate on any specific section of the architecture document? 
+```
+
+# docs/PROJECTS.md
+
+```md
+# Projects Section Documentation
+
+## Overview
+The projects section is a key feature of the website, showcasing development work through an interactive gallery of projects with detailed individual project pages.
+
+## Component Structure
+
+### 1. Project List Page (`/src/app/projects/page.js`)
+\`\`\`javascript
+export default async function ProjectsPage() {
+  const projects = await getAllPosts('project');
+  return (
+    <>
+      <PageHeader />
+      <BlogList posts={projects} />
+    </>
+  );
+}
+\`\`\`
+
+### 2. Project Card Component (`/src/components/projects/ProjectCard.js`)
+- Displays project preview
+- Handles:
+  - Image thumbnails
+  - Title and description
+  - Tags and dates
+  - Private project indicators
+  - Hover animations
+
+### 3. Project Detail Page (`/src/app/projects/[slug]/page.js`)
+- Dynamic routing for individual projects
+- MDX content rendering
+- Image carousel integration
+- Tech stack display
+
+## Data Flow
+
+### 1. Content Creation
+\`\`\`
+content/
+└── projects/
+    ├── project-1.mdx
+    ├── project-2.mdx
+    └── project-n.mdx
+\`\`\`
+
+### 2. Data Processing Pipeline
+1. MDX files read at build time
+2. Frontmatter parsed and validated
+3. Content converted to HTML
+4. Data cached for performance
+
+### 3. Project Schema
+\`\`\`javascript
+{
+  title: string,          // Project title
+  slug: string,          // URL-friendly identifier
+  description: string,   // Brief project description
+  content: string,       // Main MDX content
+  date: Date,           // Publication date
+  image: string,        // Hero/thumbnail image path
+  tags: string[],       // Technology tags
+  color: string,        // Theme color
+  private: boolean,     // Visibility flag
+  technologies: string[], // Detailed tech stack
+  demoUrl?: string,     // Optional demo link
+  githubUrl?: string    // Optional repository link
+}
+\`\`\`
+
+## Key Components
+
+### 1. ImageCarousel.js
+- Features:
+  - Touch-enabled navigation
+  - Keyboard controls
+  - Fullscreen mode
+  - Progress indicators
+  - Responsive design
+
+### 2. ProjectLayout.js
+- Sections:
+  - Hero image
+  - Project metadata
+  - Content area
+  - Navigation links
+
+### 3. ProjectContent.js
+- MDX rendering with custom components
+- Syntax highlighting
+- Custom styling for:
+  - Headers
+  - Code blocks
+  - Lists
+  - Blockquotes
+
+## Adding New Projects
+
+### 1. Create MDX File
+\`\`\`mdx
+---
+title: "Project Title"
+description: "Project description"
+date: "2024-03-30"
+image: "/images/projects/thumbnail.jpg"
+tags: ["React", "Node.js"]
+color: "#4A90E2"
+private: false
+technologies: ["React", "Node.js", "MongoDB"]
+demoUrl: "https://demo.example.com"
+githubUrl: "https://github.com/example/project"
+---
+
+# Project Content
+\`\`\`
+
+### 2. Add Media
+1. Place images in `/public/images/projects/`
+2. Optimize images for web
+3. Use consistent naming convention
+
+### 3. Test Locally
+\`\`\`bash
+npm run dev
+# Visit http://localhost:3000/projects/[slug]
+\`\`\`
+
+## Styling Guidelines
+
+### 1. Material UI Theme Integration
+\`\`\`javascript
+// Example theme customization
+{
+  components: {
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          borderRadius: 8,
+          transition: '0.3s'
+        }
+      }
+    }
+  }
+}
+\`\`\`
+
+### 2. Responsive Design
+- Mobile-first approach
+- Breakpoint system:
+  - xs: 0px
+  - sm: 600px
+  - md: 900px
+  - lg: 1200px
+
+## Performance Considerations
+
+### 1. Image Optimization
+- Use Next.js Image component
+- Implement lazy loading
+- Proper image sizing
+- WebP format support
+
+### 2. Code Splitting
+- Dynamic imports for heavy components
+- Route-based code splitting
+- Lazy loading of carousel images
+
+## Testing
+
+### 1. Component Testing
+\`\`\`javascript
+describe('ProjectCard', () => {
+  it('renders project information correctly', () => {
+    // Test implementation
+  });
+});
+\`\`\`
+
+### 2. Integration Testing
+- Page navigation
+- Image carousel functionality
+- MDX rendering
+
+## Common Issues and Solutions
+
+### 1. Image Loading
+- Issue: Images not displaying
+- Solution: Check paths and Image component props
+
+### 2. MDX Parsing
+- Issue: Content not rendering
+- Solution: Verify frontmatter format
+
+### 3. Carousel Performance
+- Issue: Slow image loading
+- Solution: Implement progressive loading
+
+## Best Practices
+
+### 1. Content Organization
+- Consistent file naming
+- Proper image optimization
+- Clear documentation
+
+### 2. Component Design
+- Single responsibility
+- Reusable components
+- Proper prop typing
+
+### 3. Performance
+- Lazy loading
+- Image optimization
+- Code splitting
+
+## Future Improvements
+
+### 1. Planned Features
+- Advanced filtering
+- Search functionality
+- Related projects
+- Project categories
+
+### 2. Performance Optimizations
+- Enhanced caching
+- Better image loading
+- Reduced bundle size
+
+Would you like me to elaborate on any specific aspect of the projects section? 
+```
+
 # jsconfig.json
 
 ```json
@@ -234,6 +719,9 @@ const withMDX = require('@next/mdx')({
       require('rehype-slug'),
       [require('rehype-prism-plus'), { ignoreMissing: true }],
     ],
+    providerImportSource: "@mdx-js/react",
+    jsx: true,
+    format: 'mdx',
   },
 });
 
@@ -249,6 +737,9 @@ const nextConfig = {
     unoptimized: true, // This allows serving local images directly
   },
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
+  experimental: {
+    mdxRs: true,
+  },
   webpack: (config) => {
     config.resolve.extensions = ['.js', '.jsx', '.json'];
     return config;
@@ -284,12 +775,12 @@ export default nextConfig;
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
-    "@mdx-js/loader": "^3.1.0",
-    "@mdx-js/react": "^3.1.0",
+    "@mdx-js/loader": "^3.0.0",
+    "@mdx-js/react": "^3.0.0",
     "@mui/icons-material": "^5.17.1",
     "@mui/material": "^5.17.1",
     "@mui/x-date-pickers": "^6.19.6",
-    "@next/mdx": "^15.2.3",
+    "@next/mdx": "^14.1.0",
     "@react-google-maps/api": "^2.20.6",
     "@tiptap/extension-blockquote": "^2.11.5",
     "@tiptap/extension-bullet-list": "^2.11.5",
@@ -310,7 +801,7 @@ export default nextConfig;
     "framer-motion": "^11.18.2",
     "gray-matter": "^4.0.3",
     "next": "14.1.0",
-    "next-mdx-remote": "^4.4.1",
+    "next-mdx-remote": "^4.3.1",
     "react": "^18",
     "react-dom": "^18",
     "react-github-calendar": "^4.5.6",
@@ -786,6 +1277,40 @@ export async function DELETE(request) {
 } 
 ```
 
+# src/app/api/spotify/token/route.js
+
+```js
+import { NextResponse } from 'next/server';
+
+export async function GET() {
+  try {
+    const response = await fetch('https://accounts.spotify.com/api/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': `Basic ${Buffer.from(
+          `${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`
+        ).toString('base64')}`,
+      },
+      body: 'grant_type=client_credentials',
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to get Spotify token');
+    }
+
+    const data = await response.json();
+    return NextResponse.json(data);
+  } catch (error) {
+    console.error('Error getting Spotify token:', error);
+    return NextResponse.json(
+      { error: 'Failed to get Spotify token' },
+      { status: 500 }
+    );
+  }
+} 
+```
+
 # src/app/api/upload/route.js
 
 ```js
@@ -836,30 +1361,196 @@ export async function POST(request) {
 ```js
 'use client';
 
-import { useState } from 'react';
-import { Box, Container, Typography, Grid, Paper, Modal, IconButton, useTheme } from '@mui/material';
-import { motion } from 'framer-motion';
-import { Close as CloseIcon } from '@mui/icons-material';
+import { useState, useMemo } from 'react';
+import { 
+  Box, 
+  Container, 
+  Typography, 
+  Grid, 
+  Paper, 
+  Modal, 
+  IconButton, 
+  useTheme,
+  TextField,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Chip,
+  Stack,
+  CircularProgress,
+  Pagination,
+  Fade,
+  useMediaQuery
+} from '@mui/material';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  Close as CloseIcon,
+  Search as SearchIcon,
+  NavigateNext as NavigateNextIcon,
+  NavigateBefore as NavigateBeforeIcon,
+  FilterList as FilterListIcon
+} from '@mui/icons-material';
 
 const MotionPaper = motion(Paper);
 
 const artwork = [
-  { title: 'Splash', image: '/images/artwork/splash.png' },
-  { title: 'Flowers', image: '/images/artwork/flowers.png' },
-  { title: 'Water Play', image: '/images/artwork/waterplay.png' },
-  { title: 'Wave', image: '/images/artwork/wave.png' },
-  { title: 'Two Waves', image: '/images/artwork/twowaves.png' },
-  { title: 'Shoreline', image: '/images/artwork/shoreline.png' },
-  { title: 'Abstract 1', image: '/images/artwork/abstract1.png' },
-  { title: 'Lava', image: '/images/artwork/lava.png' },
-  { title: 'Wave 2', image: '/images/artwork/wave2.png' },
-  { title: 'Wave 1', image: '/images/artwork/wave1.png' },
-  { title: 'Fence Posts', image: '/images/artwork/fenceposts.png' },
+  { 
+    id: 1,
+    title: 'Splash', 
+    image: '/images/artwork/splash.png',
+    category: 'Abstract',
+    year: 2024,
+    medium: 'Acrylic',
+    description: 'A vibrant exploration of color and movement',
+    tags: ['abstract', 'colorful', 'digital']
+  },
+  { 
+    id: 2,
+    title: 'Flowers', 
+    image: '/images/artwork/flowers.png',
+    category: 'Nature',
+    year: 2023,
+    medium: 'Acrylic',
+    description: 'A celebration of natural beauty',
+    tags: ['nature', 'flowers', 'brush']
+  },
+  { 
+    id: 3,
+    title: 'Water Play', 
+    image: '/images/artwork/waterplay.png',
+    category: 'Abstract',
+    year: 2024,
+    medium: 'Acrylic',
+    description: 'Fluid dynamics captured in motion',
+    tags: ['abstract', 'water', 'motion']
+  },
+  { 
+    id: 4,
+    title: 'Wave', 
+    image: '/images/artwork/wave.png',
+    category: 'Nature',
+    year: 2023,
+    medium: 'Acrylic',
+    description: 'The power of ocean waves',
+    tags: ['nature', 'ocean', 'waves']
+  },
+  { 
+    id: 5,
+    title: 'Two Waves', 
+    image: '/images/artwork/twowaves.png',
+    category: 'Nature',
+    year: 2024,
+    medium: 'Acrylic',
+    description: 'Harmony in motion',
+    tags: ['nature', 'ocean', 'waves']
+  },
+  { 
+    id: 6,
+    title: 'Shoreline', 
+    image: '/images/artwork/shoreline.png',
+    category: 'Nature',
+    year: 2023,
+    medium: 'Acrylic',
+    description: 'Where land meets sea',
+    tags: ['nature', 'shoreline', 'landscape']
+  },
+  { 
+    id: 7,
+    title: 'Abstract 1', 
+    image: '/images/artwork/abstract1.png',
+    category: 'Abstract',
+    year: 2024,
+    medium: 'Acrylic',
+    description: 'Exploring form and color',
+    tags: ['abstract', 'color', 'form']
+  },
+  { 
+    id: 8,
+    title: 'Lava', 
+    image: '/images/artwork/lava.png',
+    category: 'Abstract',
+    year: 2023,
+    medium: 'Acrylic',
+    description: 'Molten energy captured',
+    tags: ['abstract', 'lava', 'energy']
+  },
+  { 
+    id: 9,
+    title: 'Wave 2', 
+    image: '/images/artwork/wave2.png',
+    category: 'Nature',
+    year: 2024,
+    medium: 'Acrylic',
+    description: 'Ocean rhythms',
+    tags: ['nature', 'ocean', 'waves']
+  },
+  { 
+    id: 10,
+    title: 'Wave 1', 
+    image: '/images/artwork/wave1.png',
+    category: 'Nature',
+    year: 2023,
+    medium: 'Acrylic',
+    description: 'Wave patterns',
+    tags: ['nature', 'ocean', 'waves']
+  },
+  { 
+    id: 11,
+    title: 'Fence Posts', 
+    image: '/images/artwork/fenceposts.png',
+    category: 'Abstract',
+    year: 2024,
+    medium: 'Acrylic',
+    description: 'Geometric patterns in nature',
+    tags: ['abstract', 'geometric', 'nature']
+  },
 ];
+
+const ITEMS_PER_PAGE = 9;
 
 export default function ArtGallery() {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [selectedArtwork, setSelectedArtwork] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedYear, setSelectedYear] = useState('all');
+  const [selectedMedium, setSelectedMedium] = useState('all');
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+
+  const categories = useMemo(() => 
+    ['all', ...new Set(artwork.map(piece => piece.category))], 
+    []
+  );
+
+  const years = useMemo(() => 
+    ['all', ...new Set(artwork.map(piece => piece.year))].sort((a, b) => b - a), 
+    []
+  );
+
+  const mediums = useMemo(() => 
+    ['all', ...new Set(artwork.map(piece => piece.medium))], 
+    []
+  );
+
+  const filteredArtwork = useMemo(() => {
+    return artwork.filter(piece => {
+      const matchesSearch = piece.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          piece.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          piece.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+      const matchesCategory = selectedCategory === 'all' || piece.category === selectedCategory;
+      const matchesYear = selectedYear === 'all' || piece.year === selectedYear;
+      const matchesMedium = selectedMedium === 'all' || piece.medium === selectedMedium;
+      return matchesSearch && matchesCategory && matchesYear && matchesMedium;
+    });
+  }, [searchQuery, selectedCategory, selectedYear, selectedMedium]);
+
+  const paginatedArtwork = useMemo(() => {
+    const start = (page - 1) * ITEMS_PER_PAGE;
+    return filteredArtwork.slice(start, start + ITEMS_PER_PAGE);
+  }, [filteredArtwork, page]);
 
   const handleOpen = (artwork) => {
     setSelectedArtwork(artwork);
@@ -867,6 +1558,30 @@ export default function ArtGallery() {
 
   const handleClose = () => {
     setSelectedArtwork(null);
+  };
+
+  const handlePageChange = (event, value) => {
+    setPage(value);
+  };
+
+  const handleSearch = (event) => {
+    setSearchQuery(event.target.value);
+    setPage(1);
+  };
+
+  const handleCategoryChange = (event) => {
+    setSelectedCategory(event.target.value);
+    setPage(1);
+  };
+
+  const handleYearChange = (event) => {
+    setSelectedYear(event.target.value);
+    setPage(1);
+  };
+
+  const handleMediumChange = (event) => {
+    setSelectedMedium(event.target.value);
+    setPage(1);
   };
 
   return (
@@ -915,57 +1630,161 @@ export default function ArtGallery() {
           </Typography>
         </motion.div>
 
-        <Grid container spacing={4}>
-          {artwork.map((piece, index) => (
-            <Grid item xs={12} sm={6} md={4} key={piece.title}>
-              <MotionPaper
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                onClick={() => handleOpen(piece)}
-                sx={{
-                  cursor: 'pointer',
-                  background: theme.palette.mode === 'dark'
-                    ? 'rgba(6, 39, 54, 0.9)'
-                    : '#ffffff',
-                  backdropFilter: 'blur(10px)',
-                  border: `1px solid ${theme.palette.mode === 'dark'
-                    ? 'rgba(255,255,255,0.1)'
-                    : 'rgba(0,0,0,0.1)'}`,
-                  overflow: 'hidden',
-                  '&:hover': {
-                    transform: 'scale(1.02)',
-                    transition: 'transform 0.2s ease-in-out',
-                  },
+        <Box sx={{ mb: 4 }}>
+          <Grid container spacing={2} alignItems="center">
+            <Grid item xs={12} md={4}>
+              <TextField
+                fullWidth
+                variant="outlined"
+                placeholder="Search artwork..."
+                value={searchQuery}
+                onChange={handleSearch}
+                InputProps={{
+                  startAdornment: <SearchIcon sx={{ mr: 1, color: 'text.secondary' }} />,
                 }}
-              >
-                <Box
-                  component="img"
-                  src={piece.image}
-                  alt={piece.title}
-                  sx={{
-                    width: '100%',
-                    height: '300px',
-                    objectFit: 'cover',
-                    display: 'block',
-                  }}
-                />
-                <Box sx={{ p: 2 }}>
-                  <Typography
-                    variant="h6"
-                    sx={{
-                      color: theme.palette.mode === 'dark' ? '#ffffff' : '#000000',
-                      fontWeight: 500,
-                      textAlign: 'center',
-                    }}
-                  >
-                    {piece.title}
-                  </Typography>
-                </Box>
-              </MotionPaper>
+              />
             </Grid>
-          ))}
-        </Grid>
+            <Grid item xs={12} md={8}>
+              <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+                <FormControl fullWidth>
+                  <InputLabel>Category</InputLabel>
+                  <Select
+                    value={selectedCategory}
+                    label="Category"
+                    onChange={handleCategoryChange}
+                  >
+                    {categories.map((category) => (
+                      <MenuItem key={category} value={category}>
+                        {category.charAt(0).toUpperCase() + category.slice(1)}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <FormControl fullWidth>
+                  <InputLabel>Year</InputLabel>
+                  <Select
+                    value={selectedYear}
+                    label="Year"
+                    onChange={handleYearChange}
+                  >
+                    {years.map((year) => (
+                      <MenuItem key={year} value={year}>
+                        {year === 'all' ? 'All Years' : year}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <FormControl fullWidth>
+                  <InputLabel>Medium</InputLabel>
+                  <Select
+                    value={selectedMedium}
+                    label="Medium"
+                    onChange={handleMediumChange}
+                  >
+                    {mediums.map((medium) => (
+                      <MenuItem key={medium} value={medium}>
+                        {medium.charAt(0).toUpperCase() + medium.slice(1)}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Stack>
+            </Grid>
+          </Grid>
+        </Box>
+
+        <AnimatePresence>
+          <Grid container spacing={4}>
+            {paginatedArtwork.map((piece, index) => (
+              <Grid item xs={12} sm={6} md={4} key={piece.id}>
+                <MotionPaper
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  onClick={() => handleOpen(piece)}
+                  sx={{
+                    cursor: 'pointer',
+                    background: theme.palette.mode === 'dark'
+                      ? 'rgba(6, 39, 54, 0.9)'
+                      : '#ffffff',
+                    backdropFilter: 'blur(10px)',
+                    border: `1px solid ${theme.palette.mode === 'dark'
+                      ? 'rgba(255,255,255,0.1)'
+                      : 'rgba(0,0,0,0.1)'}`,
+                    overflow: 'hidden',
+                    '&:hover': {
+                      transform: 'scale(1.02)',
+                      transition: 'transform 0.2s ease-in-out',
+                    },
+                  }}
+                >
+                  <Box
+                    component="img"
+                    src={piece.image}
+                    alt={piece.title}
+                    sx={{
+                      width: '100%',
+                      height: '300px',
+                      objectFit: 'cover',
+                      display: 'block',
+                    }}
+                  />
+                  <Box sx={{ p: 2 }}>
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        color: theme.palette.mode === 'dark' ? '#ffffff' : '#000000',
+                        fontWeight: 500,
+                        mb: 1,
+                      }}
+                    >
+                      {piece.title}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        color: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)',
+                        mb: 1,
+                      }}
+                    >
+                      {piece.year} • {piece.medium}
+                    </Typography>
+                    <Stack direction="row" spacing={1} flexWrap="wrap" gap={1}>
+                      {piece.tags.map((tag) => (
+                        <Chip
+                          key={tag}
+                          label={tag}
+                          size="small"
+                          sx={{
+                            backgroundColor: theme.palette.mode === 'dark'
+                              ? 'rgba(255,255,255,0.1)'
+                              : 'rgba(0,0,0,0.05)',
+                            color: theme.palette.mode === 'dark'
+                              ? 'rgba(255,255,255,0.7)'
+                              : 'rgba(0,0,0,0.7)',
+                          }}
+                        />
+                      ))}
+                    </Stack>
+                  </Box>
+                </MotionPaper>
+              </Grid>
+            ))}
+          </Grid>
+        </AnimatePresence>
+
+        {filteredArtwork.length > 0 && (
+          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+            <Pagination
+              count={Math.ceil(filteredArtwork.length / ITEMS_PER_PAGE)}
+              page={page}
+              onChange={handlePageChange}
+              color="primary"
+              size={isMobile ? "small" : "large"}
+            />
+          </Box>
+        )}
 
         <Modal
           open={Boolean(selectedArtwork)}
@@ -977,43 +1796,83 @@ export default function ArtGallery() {
             p: 2,
           }}
         >
-          <Box
-            sx={{
-              position: 'relative',
-              maxWidth: '90vw',
-              maxHeight: '90vh',
-              outline: 'none',
-            }}
-          >
-            <IconButton
-              onClick={handleClose}
+          <Fade in={Boolean(selectedArtwork)}>
+            <Box
               sx={{
-                position: 'absolute',
-                right: -40,
-                top: -40,
-                color: '#ffffff',
-                '&:hover': {
-                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                },
+                position: 'relative',
+                maxWidth: '90vw',
+                maxHeight: '90vh',
+                outline: 'none',
+                bgcolor: theme.palette.background.paper,
+                borderRadius: 2,
+                p: 4,
+                display: 'flex',
+                flexDirection: { xs: 'column', md: 'row' },
+                gap: 4,
               }}
             >
-              <CloseIcon />
-            </IconButton>
-            {selectedArtwork && (
-              <Box
-                component="img"
-                src={selectedArtwork.image}
-                alt={selectedArtwork.title}
+              <IconButton
+                onClick={handleClose}
                 sx={{
-                  maxWidth: '100%',
-                  maxHeight: '90vh',
-                  objectFit: 'contain',
-                  borderRadius: 1,
-                  boxShadow: 24,
+                  position: 'absolute',
+                  right: 8,
+                  top: 8,
+                  color: theme.palette.text.primary,
+                  '&:hover': {
+                    backgroundColor: theme.palette.action.hover,
+                  },
                 }}
-              />
-            )}
-          </Box>
+              >
+                <CloseIcon />
+              </IconButton>
+              {selectedArtwork && (
+                <>
+                  <Box
+                    component="img"
+                    src={selectedArtwork.image}
+                    alt={selectedArtwork.title}
+                    sx={{
+                      maxWidth: { xs: '100%', md: '70%' },
+                      maxHeight: '80vh',
+                      objectFit: 'contain',
+                      borderRadius: 1,
+                    }}
+                  />
+                  <Box sx={{ flex: 1 }}>
+                    <Typography variant="h4" gutterBottom>
+                      {selectedArtwork.title}
+                    </Typography>
+                    <Typography variant="subtitle1" color="text.secondary" gutterBottom>
+                      {selectedArtwork.year} • {selectedArtwork.medium}
+                    </Typography>
+                    <Typography variant="body1" paragraph>
+                      {selectedArtwork.description}
+                    </Typography>
+                    <Typography variant="subtitle2" gutterBottom>
+                      Category: {selectedArtwork.category}
+                    </Typography>
+                    <Stack direction="row" spacing={1} flexWrap="wrap" gap={1}>
+                      {selectedArtwork.tags.map((tag) => (
+                        <Chip
+                          key={tag}
+                          label={tag}
+                          size="small"
+                          sx={{
+                            backgroundColor: theme.palette.mode === 'dark'
+                              ? 'rgba(255,255,255,0.1)'
+                              : 'rgba(0,0,0,0.05)',
+                            color: theme.palette.mode === 'dark'
+                              ? 'rgba(255,255,255,0.7)'
+                              : 'rgba(0,0,0,0.7)',
+                          }}
+                        />
+                      ))}
+                    </Stack>
+                  </Box>
+                </>
+              )}
+            </Box>
+          </Fade>
         </Modal>
       </Container>
     </Box>
@@ -1024,186 +1883,10 @@ export default function ArtGallery() {
 # src/app/blog/[slug]/page.js
 
 ```js
-import { MDXRemote } from 'next-mdx-remote/rsc';
-import { getPostBySlug, getAllPosts } from '../../../utils/blog';
-import BlogLayout from '../../../components/blog/BlogLayout';
-import { Typography, Box, Container } from '@mui/material';
-import Image from 'next/image';
-
-const components = {
-  h1: (props) => (
-    <Typography variant="h1" component="h1" gutterBottom {...props} />
-  ),
-  h2: (props) => (
-    <Typography variant="h2" component="h2" gutterBottom {...props} />
-  ),
-  h3: (props) => (
-    <Typography variant="h3" component="h3" gutterBottom {...props} />
-  ),
-  h4: (props) => (
-    <Typography variant="h4" component="h4" gutterBottom {...props} />
-  ),
-  h5: (props) => (
-    <Typography variant="h5" component="h5" gutterBottom {...props} />
-  ),
-  h6: (props) => (
-    <Typography variant="h6" component="h6" gutterBottom {...props} />
-  ),
-  p: (props) => (
-    <Typography variant="body1" component="p" paragraph {...props} />
-  ),
-  ul: (props) => (
-    <Typography component="ul" sx={{ pl: 4, mb: 2 }} {...props} />
-  ),
-  ol: (props) => (
-    <Typography component="ol" sx={{ pl: 4, mb: 2 }} {...props} />
-  ),
-  li: (props) => (
-    <Typography component="li" sx={{ mb: 1 }} {...props} />
-  ),
-  blockquote: (props) => (
-    <Typography
-      component="blockquote"
-      sx={{
-        borderLeft: 4,
-        borderColor: 'primary.main',
-        pl: 2,
-        py: 1,
-        my: 2,
-        fontStyle: 'italic',
-      }}
-      {...props}
-    />
-  ),
-  code: (props) => (
-    <Typography
-      component="code"
-      sx={{
-        bgcolor: {
-          light: 'grey.100',
-          dark: 'grey.900'
-        },
-        color: {
-          light: 'grey.900',
-          dark: 'grey.300'
-        },
-        p: 0.5,
-        borderRadius: 1,
-        fontFamily: 'monospace',
-      }}
-      {...props}
-    />
-  ),
-  pre: (props) => (
-    <Typography
-      component="pre"
-      sx={{
-        bgcolor: {
-          light: 'grey.100',
-          dark: 'grey.900'
-        },
-        color: {
-          light: 'grey.900',
-          dark: 'grey.300'
-        },
-        p: 2,
-        borderRadius: 1,
-        overflow: 'auto',
-        my: 2,
-        '& code': {
-          bgcolor: 'transparent',
-          color: 'inherit',
-          p: 0,
-        }
-      }}
-      {...props}
-    />
-  ),
-  img: (props) => {
-    // Clean up the src path
-    let src = props.src || '';
-    
-    // Handle markdown image syntax [path]
-    if (src.startsWith('[') && src.endsWith(']')) {
-      src = src.slice(1, -1);
-    }
-    
-    // Handle relative paths
-    if (src.startsWith('./')) {
-      src = src.substring(2);
-    }
-    
-    // Handle absolute paths starting with /
-    if (src.startsWith('/')) {
-      src = src.substring(1);
-    }
-
-    // For debugging
-    console.log('Image src:', src);
-
-    return (
-      <Box
-        component="figure"
-        sx={{
-          my: 4,
-          mx: 0,
-          p: 0,
-          '&::before, &::after': {
-            content: '""',
-            display: 'table',
-          },
-          '&::after': {
-            clear: 'both',
-          },
-        }}
-      >
-        <Box
-          sx={{
-            position: 'relative',
-            width: '100%',
-            borderRadius: 1,
-            overflow: 'hidden',
-            boxShadow: 1,
-          }}
-        >
-          <Image
-            {...props}
-            src={`/${src}`}
-            alt={props.alt || ''}
-            width={0}
-            height={0}
-            sizes="100vw"
-            style={{
-              width: '100%',
-              height: 'auto',
-            }}
-            priority={true}
-          />
-        </Box>
-        {props.alt && (
-          <Box
-            component="figcaption"
-            sx={{
-              textAlign: 'center',
-              mt: 1,
-              color: 'text.secondary',
-              typography: 'caption',
-            }}
-          >
-            {props.alt}
-          </Box>
-        )}
-      </Box>
-    );
-  },
-  a: (props) => (
-    <Typography
-      component="a"
-      sx={{ color: 'primary.main', textDecoration: 'none' }}
-      {...props}
-    />
-  ),
-};
+import { getPostBySlug, getAllPosts } from '../../../lib/blog';
+import { BlogLayout } from '../../../components/blog/BlogLayout';
+import BlogPostContent from '../../../components/blog/BlogPostContent';
+import { Typography, Container } from '@mui/material';
 
 export async function generateStaticParams() {
   const posts = await getAllPosts();
@@ -1214,17 +1897,10 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }) {
   const post = await getPostBySlug(params.slug);
-  if (!post) {
-    return {
-      title: 'Post Not Found',
-      description: 'The requested blog post could not be found.',
-    };
-  }
-
-  const ogImage = post.image || '/images/default-blog-image.jpg';
+  if (!post) return {};
 
   return {
-    title: post.title,
+    title: `${post.title} | Blog`,
     description: post.description,
     openGraph: {
       title: post.title,
@@ -1232,49 +1908,18 @@ export async function generateMetadata({ params }) {
       type: 'article',
       publishedTime: post.date,
       authors: [post.author],
-      images: [
-        {
-          url: ogImage,
-          width: 1200,
-          height: 630,
-          alt: post.title,
-        },
-      ],
-      tags: post.tags,
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: post.title,
-      description: post.description,
-      images: [ogImage],
-    },
-    alternates: {
-      canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/blog/${params.slug}`,
-    },
-    authors: [{ name: post.author }],
-    keywords: post.tags?.join(', '),
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        'max-video-preview': -1,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
-      },
+      images: post.image ? [post.image] : [],
     },
   };
 }
 
 export default async function BlogPost({ params }) {
   const post = await getPostBySlug(params.slug);
+  
   if (!post) {
     return (
-      <Container maxWidth="lg">
-        <Typography variant="h4" component="h1" gutterBottom>
-          Post Not Found
-        </Typography>
+      <Container>
+        <Typography variant="h1">Blog Post Not Found</Typography>
       </Container>
     );
   }
@@ -1287,9 +1932,7 @@ export default async function BlogPost({ params }) {
       date={post.date}
       author={post.author}
     >
-      <Box sx={{ mt: 4 }}>
-        <MDXRemote source={post.content} components={components} />
-      </Box>
+      <BlogPostContent post={post} slug={params.slug} />
     </BlogLayout>
   );
 } 
@@ -1308,7 +1951,8 @@ export const metadata = {
 };
 
 export default async function BlogPage() {
-  const posts = await getAllPosts();
+  // Get all posts except projects
+  const posts = await getAllPosts(null, 'project');
 
   return (
     <>
@@ -1459,6 +2103,183 @@ export default function Contact() {
 } 
 ```
 
+# src/app/expertise/mongodb/page.js
+
+```js
+'use client';
+
+import { Container, Typography, Grid, Card, CardContent, Box, Chip, Stack } from '@mui/material';
+import { mongodbTalks } from '../../../data/mongodb-talks';
+import { mongodbProjects } from '../../../data/mongodb-projects';
+import { format } from 'date-fns';
+import CredlyBadge from '../../../components/CredlyBadge';
+
+export default function MongoDBExpertise() {
+  return (
+    <Container maxWidth="lg">
+      <Box sx={{ py: 8 }}>
+        <Typography variant="h2" component="h1" gutterBottom>
+          MongoDB Expertise
+        </Typography>
+        <Typography variant="h5" color="text.secondary" paragraph>
+          Deep knowledge and experience in MongoDB development, optimization, and community engagement
+        </Typography>
+
+        {/* Certifications */}
+        <Box sx={{ mt: 8 }}>
+          <Typography variant="h4" component="h2" gutterBottom>
+            Certifications
+          </Typography>
+          <Grid container spacing={4} alignItems="center">
+            <Grid item xs={12} md={6}>
+              <Card>
+                <CardContent>
+                  <Typography variant="h5" component="h3" gutterBottom>
+                    MongoDB Certifications
+                  </Typography>
+                  <Box sx={{ display: 'flex', gap: 4, flexWrap: 'wrap', justifyContent: 'center' }}>
+                    <CredlyBadge badgeId="4e0273eb-a641-4a76-80b0-f5e0db12b4ab" />
+                    <CredlyBadge badgeId="833ef744-f741-45bd-857a-4023517b16bf" />
+                  </Box>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
+        </Box>
+
+        {/* Featured Projects */}
+        <Box sx={{ mt: 8 }}>
+          <Typography variant="h4" component="h2" gutterBottom>
+            Featured Projects
+          </Typography>
+          <Grid container spacing={4}>
+            {mongodbProjects
+              .filter(project => project.featured)
+              .map((project) => (
+                <Grid item xs={12} md={6} key={project.title}>
+                  <Card sx={{ height: '100%' }}>
+                    <CardContent>
+                      <Typography variant="h5" component="h3" gutterBottom>
+                        {project.title}
+                      </Typography>
+                      <Typography variant="body1" color="text.secondary" paragraph>
+                        {project.description}
+                      </Typography>
+                      <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                        {project.tags.map((tag) => (
+                          <Chip key={tag} label={tag} size="small" />
+                        ))}
+                      </Stack>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))}
+          </Grid>
+        </Box>
+
+        {/* Speaking Engagements */}
+        <Box sx={{ mt: 8 }}>
+          <Typography variant="h4" component="h2" gutterBottom>
+            Speaking Engagements
+          </Typography>
+          <Grid container spacing={4}>
+            {mongodbTalks.map((talk) => (
+              <Grid item xs={12} key={talk.title}>
+                <Card>
+                  <CardContent>
+                    <Typography variant="h5" component="h3" gutterBottom>
+                      {talk.title}
+                    </Typography>
+                    <Typography variant="subtitle1" color="text.secondary" gutterBottom>
+                      {talk.event} • {format(new Date(talk.date), 'MMMM d, yyyy')} • {talk.location}
+                    </Typography>
+                    <Typography variant="body1" paragraph>
+                      {talk.description}
+                    </Typography>
+                    <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                      {talk.tags.map((tag) => (
+                        <Chip key={tag} label={tag} size="small" />
+                      ))}
+                    </Stack>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+
+        {/* Skills and Expertise */}
+        <Box sx={{ mt: 8 }}>
+          <Typography variant="h4" component="h2" gutterBottom>
+            Skills and Expertise
+          </Typography>
+          <Grid container spacing={4}>
+            <Grid item xs={12} md={6}>
+              <Card>
+                <CardContent>
+                  <Typography variant="h5" component="h3" gutterBottom>
+                    Technical Skills
+                  </Typography>
+                  <Stack spacing={2}>
+                    <Typography variant="body1">
+                      • MongoDB Atlas and Cloud Services
+                    </Typography>
+                    <Typography variant="body1">
+                      • Schema Design and Data Modeling
+                    </Typography>
+                    <Typography variant="body1">
+                      • Performance Optimization
+                    </Typography>
+                    <Typography variant="body1">
+                      • Aggregation Pipelines
+                    </Typography>
+                    <Typography variant="body1">
+                      • Change Streams and Real-time Data
+                    </Typography>
+                    <Typography variant="body1">
+                      • Atlas Search and Vector Search
+                    </Typography>
+                  </Stack>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Card>
+                <CardContent>
+                  <Typography variant="h5" component="h3" gutterBottom>
+                    Community Engagement
+                  </Typography>
+                  <Stack spacing={2}>
+                    <Typography variant="body1">
+                      • Technical Writing and Documentation
+                    </Typography>
+                    <Typography variant="body1">
+                      • Conference Speaking
+                    </Typography>
+                    <Typography variant="body1">
+                      • Workshop Facilitation
+                    </Typography>
+                    <Typography variant="body1">
+                      • Open Source Contributions
+                    </Typography>
+                    <Typography variant="body1">
+                      • Developer Support
+                    </Typography>
+                    <Typography variant="body1">
+                      • Community Building
+                    </Typography>
+                  </Stack>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
+        </Box>
+      </Box>
+    </Container>
+  );
+} 
+```
+
 # src/app/favicon.ico
 
 This is a binary file of the type: Binary
@@ -1543,7 +2364,10 @@ a {
 import { Space_Grotesk } from 'next/font/google';
 import { ThemeProvider } from '../theme/ThemeContext';
 import Layout from '../components/Layout';
+import ErrorBoundary from '../components/ErrorBoundary';
 import './globals.css';
+import Script from 'next/script';
+import { GA_TRACKING_ID } from '../lib/analytics';
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -1553,17 +2377,90 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata = {
+  metadataBase: new URL('https://mlynn.org'),
   title: 'Michael Lynn - Creative Developer',
   description: 'Pushing the boundaries of web development with innovative solutions and creative coding',
+  authors: [{ name: 'Michael Lynn' }],
+  creator: 'Michael Lynn',
+  publisher: 'Michael Lynn',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://mrlynn.github.io',
+    siteName: 'Michael Lynn',
+    title: 'Michael Lynn - Creative Developer',
+    description: 'Pushing the boundaries of web development with innovative solutions and creative coding',
+    images: [
+      {
+        url: '/images/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Michael Lynn - Creative Developer',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Michael Lynn - Creative Developer',
+    description: 'Pushing the boundaries of web development with innovative solutions and creative coding',
+    images: ['/images/og-image.jpg'],
+    creator: '@yourtwitterhandle',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  verification: {
+    google: 'your-google-site-verification',
+  },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={spaceGrotesk.variable}>
+      <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/letter-m.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="manifest" href="/site.webmanifest" />
+        {/* Google Analytics */}
+        <Script
+          strategy="afterInteractive"
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
+        />
+        <Script
+          id="google-analytics"
+          strategy="afterInteractive"
+        >
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_TRACKING_ID}', {
+              page_path: window.location.pathname,
+              send_page_view: true,
+            });
+          `}
+        </Script>
+      </head>
       <body style={{ margin: 0, padding: 0 }}>
-        <ThemeProvider>
-          <Layout>{children}</Layout>
-        </ThemeProvider>
+        <ErrorBoundary>
+          <ThemeProvider>
+            <Layout>{children}</Layout>
+          </ThemeProvider>
+        </ErrorBoundary>
       </body>
     </html>
   );
@@ -1576,14 +2473,15 @@ export default function RootLayout({ children }) {
 ```js
 'use client';
 
-import { Box, Container, Typography, Button, Grid, Paper, Stack, useTheme } from '@mui/material';
-import { GitHub as GitHubIcon, LinkedIn as LinkedInIcon, BookOutlined as BookOutlinedIcon, Code as CodeIcon, Terminal as TerminalIcon, Cloud as CloudIcon } from '@mui/icons-material';
+import { Box, Container, Typography, Button, Grid, Paper, Stack, useTheme, IconButton } from '@mui/material';
+import { GitHub as GitHubIcon, LinkedIn as LinkedInIcon, BookOutlined as BookOutlinedIcon, Code as CodeIcon, Terminal as TerminalIcon, Cloud as CloudIcon, ArrowDownward as ArrowDownwardIcon } from '@mui/icons-material';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import ProjectsSection from '../components/ProjectsSection';
 import VideosSection from '../components/VideosSection';
 import GitHubActivity from '../components/GitHubActivity';
 import Timeline from '../components/Timeline';
+import Certifications from '../components/Certifications';
 import { projects } from '../data/projects';
 import { timelineEvents } from '../data/timeline';
 import Image from 'next/image';
@@ -1592,6 +2490,7 @@ import Image from 'next/image';
 const MotionBox = motion.create(Box);
 const MotionTypography = motion.create(Typography);
 const MotionPaper = motion.create(Paper);
+const MotionStack = motion(Stack);
 
 const titles = [
   "Creative Technologist",
@@ -1640,9 +2539,8 @@ function CyclingTitle() {
     const interval = setInterval(() => {
       let newTitle;
       do {
-        // Pick a random title
         newTitle = titles[Math.floor(Math.random() * titles.length)];
-      } while (newTitle === currentTitle); // Make sure it's not the same as current
+      } while (newTitle === currentTitle);
 
       setCurrentTitle(newTitle);
     }, 3000);
@@ -1651,7 +2549,16 @@ function CyclingTitle() {
   }, [currentTitle]);
 
   return (
-    <Box sx={{ height: '3.5rem', display: 'flex', justifyContent: 'center', mb: 4 }}>
+    <Box 
+      sx={{ 
+        minHeight: '3.5rem',
+        display: 'flex', 
+        justifyContent: 'center',
+        alignItems: 'center',
+        mb: 4,
+        position: 'relative',
+      }}
+    >
       <AnimatePresence mode="wait">
         <motion.div
           key={currentTitle}
@@ -1670,6 +2577,7 @@ function CyclingTitle() {
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               textAlign: 'center',
+              lineHeight: 1.2,
             }}
           >
             {currentTitle}
@@ -1787,135 +2695,471 @@ function FloatingProjectCards() {
   );
 }
 
+const heroBackgroundVariants = {
+  animate: {
+    backgroundPosition: ['0% 0%', '100% 100%'],
+    transition: {
+      duration: 20,
+      repeat: Infinity,
+      repeatType: 'reverse',
+    },
+  },
+};
+
+const ParticleBackground = () => (
+  <Box
+    sx={{
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      overflow: 'hidden',
+      zIndex: 1,
+    }}
+  >
+    {[...Array(50)].map((_, i) => (
+      <motion.div
+        key={i}
+        style={{
+          position: 'absolute',
+          width: Math.random() * 3 + 1,
+          height: Math.random() * 3 + 1,
+          backgroundColor: 'rgba(255, 255, 255, 0.5)',
+          borderRadius: '50%',
+          top: `${Math.random() * 100}%`,
+          left: `${Math.random() * 100}%`,
+        }}
+        animate={{
+          y: [0, 1000],
+          opacity: [1, 0],
+        }}
+        transition={{
+          duration: Math.random() * 10 + 10,
+          repeat: Infinity,
+          ease: "linear",
+          delay: Math.random() * 10,
+        }}
+      />
+    ))}
+  </Box>
+);
+
+const StatCard = ({ number, label }) => (
+  <MotionPaper
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    sx={{
+      p: 3,
+      backgroundColor: 'rgba(255,255,255,0.08)',
+      backdropFilter: 'blur(10px)',
+      border: '1px solid rgba(255,255,255,0.1)',
+      textAlign: 'center',
+      transition: 'all 0.3s ease',
+      '&:hover': {
+        transform: 'translateY(-5px)',
+        backgroundColor: 'rgba(255,255,255,0.12)',
+        boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
+      },
+    }}
+  >
+    <Typography
+      variant="h3"
+      sx={{
+        color: '#fff',
+        fontWeight: 700,
+        fontSize: { xs: '1.75rem', md: '2.25rem' },
+        mb: 1,
+        background: 'linear-gradient(135deg, #A5BE00 0%, #427AA1 100%)',
+        WebkitBackgroundClip: 'text',
+        WebkitTextFillColor: 'transparent',
+      }}
+    >
+      {number}
+    </Typography>
+    <Typography
+      variant="body2"
+      sx={{
+        color: 'rgba(255,255,255,0.8)',
+        textTransform: 'uppercase',
+        letterSpacing: 1.5,
+        fontSize: '0.75rem',
+        fontWeight: 500,
+      }}
+    >
+      {label}
+    </Typography>
+  </MotionPaper>
+);
+
 export default function Home() {
   const theme = useTheme();
-  const containerRef = useRef(null);
+  const ref = useRef(null);
   const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"]
+    target: ref,
+    offset: ["start start", "end start"],
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.5, 0]);
+  const stats = [
+    { number: '15+', label: 'Years Experience' },
+    { number: '200+', label: 'Tech Talks' },
+    { number: '50K+', label: 'Developers Reached' },
+    { number: '100+', label: 'Open Source Contributions' },
+  ];
 
   return (
-    <Box ref={containerRef}>
-      <Box
+    <Box ref={ref}>
+      {/* Hero Section */}
+      <MotionBox
+        component={motion.div}
+        variants={heroBackgroundVariants}
+        animate="animate"
         sx={{
           minHeight: '100vh',
-          pt: 12,
-          pb: 8,
-          background: 'linear-gradient(135deg, rgba(5, 102, 141, 0.1) 0%, rgba(165, 190, 0, 0.1) 100%)',
+          background: 'linear-gradient(-45deg, #062736, #427AA1, #679436, #A5BE00)',
+          backgroundSize: '400% 400%',
+          display: 'flex',
+          alignItems: 'center',
+          position: 'relative',
+          overflow: 'hidden',
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(6, 39, 54, 0.85)',
+            zIndex: 1,
+          },
         }}
       >
-        <Container maxWidth="lg">
-          <Grid container spacing={8} alignItems="center">
-            <Grid item xs={12} md={6}>
-              <motion.div
+        <ParticleBackground />
+        <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 2 }}>
+          <Grid container spacing={4} alignItems="center">
+            <Grid item xs={12} md={7}>
+              <MotionStack
+                spacing={4}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 0.8 }}
               >
+                <Box sx={{ mb: 2 }}>
+                  <Typography
+                    variant="overline"
+                    sx={{
+                      color: 'rgba(165, 190, 0, 0.8)',
+                      fontWeight: 500,
+                      letterSpacing: 3,
+                      mb: 2,
+                      display: 'block',
+                      fontSize: '0.75rem',
+                    }}
+                  >
+                    WELCOME TO MY WORLD
+                  </Typography>
+                  <Typography
+                    variant="h1"
+                    sx={{
+                      fontSize: { xs: '2.5rem', md: '4.5rem' },
+                      fontWeight: 800,
+                      color: '#fff',
+                      textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
+                      mb: 2,
+                      lineHeight: 1.1,
+                      letterSpacing: '-0.02em',
+                    }}
+                  >
+                    Michael Lynn
+                  </Typography>
+                </Box>
+                
+                <Box sx={{ transform: 'scale(1.1)', mb: 2 }}>
+                  <CyclingTitle />
+                </Box>
+                
                 <Typography
-                  variant="h1"
-                  gutterBottom
+                  variant="h6"
                   sx={{
-                    fontSize: { xs: '2.5rem', md: '3.5rem' },
-                    fontWeight: 600,
-                    background: theme.palette.background.gradientText,
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                    color: 'transparent',
-                    mb: 2,
-                  }}
-                >
-                  Michael Lynn
-                </Typography>
-
-                <CyclingTitle />
-
-                <Typography
-                  variant="body1"
-                  sx={{
-                    mb: 4,
-                    color: theme.palette.text.secondary,
+                    color: 'rgba(255,255,255,0.9)',
+                    maxWidth: '600px',
+                    lineHeight: 1.8,
+                    mb: 6,
                     fontSize: { xs: '1rem', md: '1.25rem' },
+                    fontWeight: 400,
                   }}
                 >
-                  Building bridges between developers and technology. Passionate about creating intuitive solutions and sharing knowledge through teaching and community engagement.
+                  Building bridges between developers and technology.
+                  Passionate about creating intuitive solutions and sharing
+                  knowledge through teaching and community engagement.
                 </Typography>
 
-                <Stack direction="row" spacing={2}>
+                <Stack direction="row" spacing={3} sx={{ mb: 8 }}>
                   <Button
                     variant="contained"
                     size="large"
                     startIcon={<GitHubIcon />}
                     href="https://github.com/mrlynn"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    sx={{
+                      backgroundColor: '#fff',
+                      color: '#062736',
+                      px: 4,
+                      py: 1.5,
+                      fontWeight: 600,
+                      '&:hover': {
+                        backgroundColor: 'rgba(255,255,255,0.9)',
+                        transform: 'translateY(-2px)',
+                        boxShadow: '0 5px 15px rgba(0,0,0,0.2)',
+                      },
+                      transition: 'all 0.3s ease',
+                    }}
                   >
                     GitHub
                   </Button>
                   <Button
-                    variant="contained"
+                    variant="outlined"
                     size="large"
                     startIcon={<LinkedInIcon />}
                     href="https://linkedin.com/in/mlynn"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    sx={{
+                      borderColor: 'rgba(255,255,255,0.6)',
+                      borderWidth: 2,
+                      color: '#fff',
+                      px: 4,
+                      py: 1.5,
+                      fontWeight: 600,
+                      '&:hover': {
+                        borderColor: '#fff',
+                        backgroundColor: 'rgba(255,255,255,0.1)',
+                        transform: 'translateY(-2px)',
+                        boxShadow: '0 5px 15px rgba(0,0,0,0.2)',
+                      },
+                      transition: 'all 0.3s ease',
+                    }}
                   >
                     LinkedIn
                   </Button>
-                  <Button
-                    variant="contained"
-                    size="large"
-                    startIcon={<BookOutlinedIcon />}
-                    href="/resume"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Resume
-                  </Button>
                 </Stack>
-              </motion.div>
+
+                <Grid container spacing={3}>
+                  {stats.map((stat, index) => (
+                    <Grid item xs={6} sm={3} key={stat.label}>
+                      <StatCard {...stat} />
+                    </Grid>
+                  ))}
+                </Grid>
+              </MotionStack>
             </Grid>
-            <Grid item xs={12} md={6} sx={{ display: 'flex', justifyContent: 'center' }}>
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
+            <Grid item xs={12} md={5}>
+              <MotionBox
+                initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
+                transition={{ duration: 0.8 }}
+                sx={{
+                  position: 'relative',
+                  height: { xs: '400px', md: '460px' },
+                  width: '100%',
+                  display: { xs: 'none', md: 'block' },
+                  mt: 4,
+                }}
               >
                 <Box
                   sx={{
                     position: 'relative',
-                    width: { xs: '280px', sm: '320px', md: '400px' },
-                    height: { xs: '280px', sm: '320px', md: '400px' },
-                    borderRadius: '16px',
+                    height: '100%',
+                    width: '100%',
+                    borderRadius: '24px',
                     overflow: 'hidden',
-                    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
+                    border: '4px solid rgba(255,255,255,0.1)',
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      background: 'linear-gradient(180deg, rgba(6,39,54,0) 0%, rgba(6,39,54,0.6) 100%)',
+                      zIndex: 1,
+                      opacity: 0.3,
+                      transition: 'all 0.3s ease',
+                    },
+                    '&:hover::before': {
+                      opacity: 0.1,
+                    },
+                    transform: 'perspective(1000px) rotateY(-5deg)',
+                    transition: 'all 0.5s ease',
+                    '&:hover': {
+                      transform: 'perspective(1000px) rotateY(0deg) translateY(-10px)',
+                      boxShadow: '0 30px 60px rgba(0,0,0,0.4)',
+                      '& + .quote-box': {
+                        transform: 'translateX(-50%) translateY(-5px)',
+                        backgroundColor: 'rgba(255,255,255,0.12)',
+                      },
+                    },
                   }}
                 >
-                  <Box
-                    component="img"
-                    src="./mike-mexico.jpg"
+                  <Image
+                    src="/mike-mexico.jpg"
                     alt="Michael Lynn"
-                    sx={{
-                      width: '100%',
-                      height: '100%',
+                    fill
+                    style={{
                       objectFit: 'cover',
-                      objectPosition: 'top center',
-                      borderRadius: '16px',
-                      transition: 'transform 0.3s ease',
-                      '&:hover': {
-                        transform: 'scale(1.02)',
-                      },
+                      objectPosition: 'center',
                     }}
+                    priority
                   />
                 </Box>
-              </motion.div>
+                <Box
+                  className="quote-box"
+                  component={motion.div}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                  sx={{
+                    position: 'absolute',
+                    bottom: -30,
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: '90%',
+                    p: 3,
+                    backgroundColor: 'rgba(255,255,255,0.08)',
+                    backdropFilter: 'blur(10px)',
+                    borderRadius: '16px',
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    textAlign: 'center',
+                    zIndex: 2,
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      backgroundColor: 'rgba(255,255,255,0.12)',
+                      transform: 'translateX(-50%) translateY(-5px)',
+                    },
+                  }}
+                >
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      color: 'white',
+                      fontWeight: 500,
+                      fontSize: '1.1rem',
+                      lineHeight: 1.6,
+                      textShadow: '0 2px 4px rgba(0,0,0,0.2)',
+                      fontStyle: 'italic',
+                      position: 'relative',
+                      '&::before': {
+                        content: '"\\201C"',
+                        position: 'absolute',
+                        top: -20,
+                        left: -10,
+                        fontSize: '3rem',
+                        color: 'rgba(255,255,255,0.2)',
+                        fontFamily: 'serif',
+                        lineHeight: 1,
+                      },
+                      '&::after': {
+                        content: '"\\201D"',
+                        position: 'absolute',
+                        bottom: -40,
+                        right: -10,
+                        fontSize: '3rem',
+                        color: 'rgba(255,255,255,0.2)',
+                        fontFamily: 'serif',
+                        lineHeight: 1,
+                      },
+                    }}
+                  >
+                    Empowering developers to build the future of technology
+                  </Typography>
+                </Box>
+              </MotionBox>
             </Grid>
+          </Grid>
+        </Container>
+        
+        <Box
+          sx={{
+            position: 'absolute',
+            bottom: 32,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            zIndex: 2,
+          }}
+        >
+          <motion.div
+            animate={{
+              y: [0, 10, 0],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          >
+            <IconButton
+              sx={{
+                color: 'white',
+                border: '2px solid white',
+                '&:hover': {
+                  backgroundColor: 'rgba(255,255,255,0.1)',
+                },
+              }}
+              onClick={() => window.scrollTo({
+                top: window.innerHeight,
+                behavior: 'smooth',
+              })}
+            >
+              <ArrowDownwardIcon />
+            </IconButton>
+          </motion.div>
+        </Box>
+      </MotionBox>
+
+      {/* Tech Cards Section */}
+      <Box sx={{ py: 10, backgroundColor: '#062736' }}>
+        <Container maxWidth="lg">
+          <Grid container spacing={4}>
+            {techCards.map((card, index) => (
+              <Grid item xs={12} md={4} key={card.title}>
+                <MotionPaper
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.2 }}
+                  sx={{
+                    p: 3,
+                    height: '100%',
+                    backgroundColor: 'rgba(255,255,255,0.05)',
+                    backdropFilter: 'blur(10px)',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    borderTop: `4px solid ${card.color}`,
+                    transition: 'transform 0.3s ease',
+                    '&:hover': {
+                      transform: 'translateY(-8px)',
+                    },
+                  }}
+                >
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      color: '#fff',
+                      mb: 2,
+                      fontWeight: 600,
+                    }}
+                  >
+                    {card.title}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color: 'rgba(255,255,255,0.7)',
+                      fontFamily: 'monospace',
+                      whiteSpace: 'pre-wrap',
+                    }}
+                  >
+                    {card.content}
+                  </Typography>
+                </MotionPaper>
+              </Grid>
+            ))}
           </Grid>
         </Container>
       </Box>
@@ -1924,6 +3168,9 @@ export default function Home() {
       <Box sx={{ py: 8, background: 'rgba(0, 0, 0, 0.2)' }}>
         <Timeline events={timelineEvents} />
       </Box>
+
+      {/* Certifications Section */}
+      <Certifications />
 
       <Container maxWidth="lg" sx={{ py: 8 }}>
         <ProjectsSection />
@@ -2146,19 +3393,22 @@ export const metadata = {
 import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import AppleIcon from '@mui/icons-material/Apple';
 import GoogleIcon from '@mui/icons-material/Google';
 import { motion } from 'framer-motion';
 import { podcasts } from '../../data/podcasts';
-import PodcastCard from '../../components/podcasts/PodcastCard';
+import PodcastEpisodes from '../../components/podcasts/PodcastEpisodes';
 import PageHeader from '../../components/PageHeader';
 
+const MotionContainer = motion(Container);
 const MotionPaper = motion(Paper);
 
 const getPlatformIcon = (platform) => {
@@ -2174,8 +3424,45 @@ const getPlatformIcon = (platform) => {
   }
 };
 
+function TabPanel({ children, value, index, ...other }) {
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`podcast-tabpanel-${index}`}
+      aria-labelledby={`podcast-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ py: 3 }}>
+          {children}
+        </Box>
+      )}
+    </div>
+  );
+}
+
+function a11yProps(index) {
+  return {
+    id: `podcast-tab-${index}`,
+    'aria-controls': `podcast-tabpanel-${index}`,
+  };
+}
+
 export default function PodcastsPage() {
-  const [selectedPodcast, setSelectedPodcast] = useState(podcasts[0]);
+  const [currentTab, setCurrentTab] = useState(0);
+  const [podcastMetadata, setPodcastMetadata] = useState({});
+
+  const handleTabChange = (event, newValue) => {
+    setCurrentTab(newValue);
+  };
+
+  const handleMetadataLoad = (metadata, podcastTitle) => {
+    setPodcastMetadata(prev => ({
+      ...prev,
+      [podcastTitle]: metadata
+    }));
+  };
 
   return (
     <Box>
@@ -2191,90 +3478,131 @@ export default function PodcastsPage() {
           px: { xs: 2, sm: 3, md: 4 }
         }}
       >
-        {podcasts.map((podcast, index) => (
-          <Box 
-            key={podcast.title} 
-            sx={{ 
-              mb: index < podcasts.length - 1 ? { xs: 6, md: 8 } : 0 
+        <Paper 
+          elevation={0}
+          sx={{ 
+            borderRadius: 2,
+            background: (theme) => theme.palette.mode === 'dark' 
+              ? 'rgba(0,0,0,0.2)' 
+              : 'rgba(255,255,255,0.8)',
+            backdropFilter: 'blur(10px)',
+            mb: 4
+          }}
+        >
+          <Tabs
+            value={currentTab}
+            onChange={handleTabChange}
+            variant="fullWidth"
+            textColor="primary"
+            indicatorColor="primary"
+            aria-label="podcast tabs"
+            sx={{
+              borderBottom: 1,
+              borderColor: 'divider',
+              '& .MuiTab-root': {
+                fontSize: { xs: '0.875rem', sm: '1rem' },
+                py: 2
+              }
             }}
           >
-            <Grid container spacing={{ xs: 3, md: 4 }}>
-              <Grid item xs={12} md={4}>
-                <MotionPaper
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  elevation={3}
-                  sx={{
-                    p: { xs: 2, sm: 3 },
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    background: (theme) => theme.palette.mode === 'dark' 
-                      ? 'rgba(0,0,0,0.2)' 
-                      : 'rgba(255,255,255,0.8)',
-                    backdropFilter: 'blur(10px)',
-                    borderRadius: 2,
-                  }}
-                >
-                  <Box
-                    component="img"
-                    src={podcast.coverImage}
-                    alt={podcast.title}
+            {podcasts.map((podcast, index) => (
+              <Tab 
+                key={podcast.title}
+                label={podcast.title}
+                {...a11yProps(index)}
+              />
+            ))}
+          </Tabs>
+        </Paper>
+
+        {podcasts.map((podcast, index) => {
+          const metadata = podcastMetadata[podcast.title] || {};
+          
+          return (
+            <TabPanel key={podcast.title} value={currentTab} index={index}>
+              <MotionContainer
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.5 }}
+              >
+                <Stack spacing={4}>
+                  <Paper
+                    elevation={2}
                     sx={{
-                      width: '100%',
-                      maxWidth: 300,
-                      height: 'auto',
+                      p: { xs: 2, sm: 3 },
                       borderRadius: 2,
-                      mb: 3,
-                      boxShadow: 3,
+                      background: (theme) => theme.palette.mode === 'dark' 
+                        ? 'rgba(0,0,0,0.2)' 
+                        : 'rgba(255,255,255,0.8)',
+                      backdropFilter: 'blur(10px)',
                     }}
-                  />
-                  <Stack spacing={2} sx={{ width: '100%' }}>
-                    <Stack direction="row" spacing={2} justifyContent="center">
-                      {podcast.platforms.map((platform) => (
-                        <Tooltip key={platform.name} title={`Listen on ${platform.name}`}>
-                          <IconButton
-                            href={platform.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            sx={{
-                              color: 'primary.main',
-                              '&:hover': {
-                                color: 'primary.dark',
-                                transform: 'scale(1.1)',
-                              },
-                              transition: 'all 0.2s ease-in-out',
-                            }}
-                          >
-                            {getPlatformIcon(platform)}
-                          </IconButton>
-                        </Tooltip>
-                      ))}
+                  >
+                    <Stack 
+                      direction={{ xs: 'column', sm: 'row' }}
+                      spacing={3}
+                      alignItems="center"
+                    >
+                      <Box
+                        component="img"
+                        src={metadata.imageUrl || podcast.coverImage}
+                        alt={metadata.title || podcast.title}
+                        sx={{
+                          width: { xs: '100%', sm: 200 },
+                          height: 'auto',
+                          borderRadius: 2,
+                          boxShadow: 3,
+                        }}
+                      />
+                      <Stack spacing={2} flex={1}>
+                        <Typography variant="h4" component="h2">
+                          {metadata.title || podcast.title}
+                        </Typography>
+                        <Typography variant="body1" color="text.secondary">
+                          {metadata.description || podcast.description}
+                        </Typography>
+                        {metadata.author && (
+                          <Typography variant="body2" color="text.secondary">
+                            By {metadata.author}
+                          </Typography>
+                        )}
+                        <Stack direction="row" spacing={1}>
+                          {podcast.platforms.map((platform) => (
+                            <Tooltip 
+                              key={platform.name} 
+                              title={`Listen on ${platform.name}`}
+                            >
+                              <IconButton
+                                href={platform.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                sx={{
+                                  color: 'primary.main',
+                                  '&:hover': {
+                                    color: 'primary.dark',
+                                    transform: 'scale(1.1)',
+                                  },
+                                  transition: 'all 0.2s ease-in-out',
+                                }}
+                              >
+                                {getPlatformIcon(platform)}
+                              </IconButton>
+                            </Tooltip>
+                          ))}
+                        </Stack>
+                      </Stack>
                     </Stack>
-                  </Stack>
-                </MotionPaper>
-              </Grid>
-              <Grid item xs={12} md={8}>
-                <Stack spacing={3}>
-                  {podcast.episodes.map((episode, episodeIndex) => (
-                    <PodcastCard 
-                      key={episode.title} 
-                      episode={episode}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ 
-                        duration: 0.5, 
-                        delay: (index * podcast.episodes.length + episodeIndex) * 0.1 
-                      }}
-                    />
-                  ))}
+                  </Paper>
+
+                  <PodcastEpisodes 
+                    feedUrl={podcast.feedUrl} 
+                    onMetadataLoad={(metadata) => handleMetadataLoad(metadata, podcast.title)}
+                  />
                 </Stack>
-              </Grid>
-            </Grid>
-          </Box>
-        ))}
+              </MotionContainer>
+            </TabPanel>
+          );
+        })}
       </Container>
     </Box>
   );
@@ -2284,152 +3612,24 @@ export default function PodcastsPage() {
 # src/app/projects/[slug]/page.js
 
 ```js
-import { MDXRemote } from 'next-mdx-remote/rsc';
-import { getProjectBySlug, getAllProjects } from '../../../utils/projects';
-import ProjectLayout from '../../../components/projects/ProjectLayout';
-import { Typography, Box, Container } from '@mui/material';
-import Image from 'next/image';
+import { getPostBySlug, getAllPosts } from '../../../lib/blog';
+import { BlogLayout } from '../../../components/blog/BlogLayout';
+import BlogPostContent from '../../../components/blog/BlogPostContent';
+import { Typography, Container } from '@mui/material';
 
-const components = {
-  h1: (props) => (
-    <Typography variant="h1" component="h1" gutterBottom {...props} />
-  ),
-  h2: (props) => (
-    <Typography variant="h2" component="h2" gutterBottom {...props} />
-  ),
-  h3: (props) => (
-    <Typography variant="h3" component="h3" gutterBottom {...props} />
-  ),
-  h4: (props) => (
-    <Typography variant="h4" component="h4" gutterBottom {...props} />
-  ),
-  h5: (props) => (
-    <Typography variant="h5" component="h5" gutterBottom {...props} />
-  ),
-  h6: (props) => (
-    <Typography variant="h6" component="h6" gutterBottom {...props} />
-  ),
-  p: (props) => (
-    <Typography variant="body1" component="p" paragraph {...props} />
-  ),
-  ul: (props) => (
-    <Typography component="ul" sx={{ pl: 4, mb: 2 }} {...props} />
-  ),
-  ol: (props) => (
-    <Typography component="ol" sx={{ pl: 4, mb: 2 }} {...props} />
-  ),
-  li: (props) => (
-    <Typography component="li" sx={{ mb: 1 }} {...props} />
-  ),
-  blockquote: (props) => (
-    <Typography
-      component="blockquote"
-      sx={{
-        borderLeft: 4,
-        borderColor: 'primary.main',
-        pl: 2,
-        py: 1,
-        my: 2,
-        fontStyle: 'italic',
-      }}
-      {...props}
-    />
-  ),
-  code: (props) => (
-    <Typography
-      component="code"
-      sx={{
-        bgcolor: {
-          light: 'grey.100',
-          dark: 'grey.900'
-        },
-        color: {
-          light: 'grey.900',
-          dark: 'grey.300'
-        },
-        p: 0.5,
-        borderRadius: 1,
-        fontFamily: 'monospace',
-      }}
-      {...props}
-    />
-  ),
-  pre: (props) => (
-    <Typography
-      component="pre"
-      sx={{
-        bgcolor: {
-          light: 'grey.100',
-          dark: 'grey.900'
-        },
-        color: {
-          light: 'grey.900',
-          dark: 'grey.300'
-        },
-        p: 2,
-        borderRadius: 1,
-        overflow: 'auto',
-        my: 2,
-        '& code': {
-          bgcolor: 'transparent',
-          color: 'inherit',
-          p: 0,
-        }
-      }}
-      {...props}
-    />
-  ),
-  img: (props) => {
-    // Clean up the src path
-    let src = props.src || '';
-    
-    // Handle markdown image syntax [path]
-    if (src.startsWith('[') && src.endsWith(']')) {
-      src = src.slice(1, -1);
-    }
-    
-    // Handle relative paths
-    if (src.startsWith('./')) {
-      src = src.substring(2);
-    }
-    
-    // Handle absolute paths starting with /
-    if (src.startsWith('/')) {
-      src = src.substring(1);
-    }
-
-    return (
-      <Box sx={{ my: 4 }}>
-        <Image
-          src={`/${src}`}
-          alt={props.alt || ''}
-          width={1200}
-          height={630}
-          style={{
-            width: '100%',
-            height: 'auto',
-            borderRadius: '8px',
-            boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-          }}
-        />
-      </Box>
-    );
-  },
-};
+export async function generateStaticParams() {
+  const projects = await getAllPosts('project');
+  return projects.map((project) => ({
+    slug: project.slug,
+  }));
+}
 
 export async function generateMetadata({ params }) {
-  const project = await getProjectBySlug(params.slug);
-  if (!project) {
-    return {
-      title: 'Project Not Found',
-      description: 'The requested project could not be found.',
-    };
-  }
-
-  const ogImage = project.image || '/images/default-project-image.jpg';
+  const project = await getPostBySlug(params.slug);
+  if (!project) return {};
 
   return {
-    title: project.title,
+    title: `${project.title} | Projects`,
     description: project.description,
     openGraph: {
       title: project.title,
@@ -2437,70 +3637,32 @@ export async function generateMetadata({ params }) {
       type: 'article',
       publishedTime: project.date,
       authors: [project.author],
-      images: [
-        {
-          url: ogImage,
-          width: 1200,
-          height: 630,
-          alt: project.title,
-        },
-      ],
-      tags: project.tags,
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: project.title,
-      description: project.description,
-      images: [ogImage],
-    },
-    alternates: {
-      canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/projects/${params.slug}`,
-    },
-    authors: [{ name: project.author }],
-    keywords: project.tags?.join(', '),
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        'max-video-preview': -1,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
-      },
+      images: project.image ? [project.image] : [],
     },
   };
 }
 
-export default async function ProjectPage({ params }) {
-  const project = await getProjectBySlug(params.slug);
+export default async function Project({ params }) {
+  const project = await getPostBySlug(params.slug);
+  
   if (!project) {
     return (
-      <Container maxWidth="lg">
-        <Typography variant="h4" component="h1" gutterBottom>
-          Project Not Found
-        </Typography>
+      <Container>
+        <Typography variant="h1">Project Not Found</Typography>
       </Container>
     );
   }
 
   return (
-    <ProjectLayout
+    <BlogLayout
       title={project.title}
       description={project.description}
       image={project.image}
       date={project.date}
       author={project.author}
-      tags={project.tags}
-      color={project.color}
-      technologies={project.technologies}
-      demoUrl={project.demoUrl}
-      githubUrl={project.githubUrl}
     >
-      <Box sx={{ mt: 4 }}>
-        <MDXRemote source={project.content} components={components} />
-      </Box>
-    </ProjectLayout>
+      <BlogPostContent post={project} slug={params.slug} />
+    </BlogLayout>
   );
 } 
 ```
@@ -2814,214 +3976,29 @@ export const metadata = {
 # src/app/projects/page.js
 
 ```js
-import { getAllProjects } from '../../utils/projects';
-import ProjectList from '../../components/projects/ProjectList';
+import { getAllPosts } from '../../lib/blog';
+import BlogList from '../../components/blog/BlogList';
 import PageHeader from '../../components/PageHeader';
 
 export const metadata = {
   title: 'Projects | Michael Lynn',
-  description: 'A collection of my work and experiments in software development',
+  description: 'Software development projects and experiments by Michael Lynn',
 };
 
 export default async function ProjectsPage() {
-  const projects = await getAllProjects();
+  // Get only project posts
+  const projects = await getAllPosts('project');
 
   return (
     <>
       <PageHeader
         title="Projects"
-        subtitle="A showcase of my work in software development, from experimental prototypes to production applications. Each project represents a unique challenge and learning opportunity."
+        subtitle="A showcase of my work in software development, from experimental prototypes to production applications."
       />
-      <ProjectList projects={projects} />
+      <BlogList posts={projects} />
     </>
   );
 } 
-```
-
-# src/app/projects/src/app/layout.js
-
-```js
-import { Space_Grotesk } from 'next/font/google';
-import { Providers } from './providers';
-import Layout from '../components/Layout';
-import './globals.css';
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-space-grotesk',
-  adjustFontFallback: false,
-});
-
-export const metadata = {
-  title: 'Michael Lynn - Creative Developer',
-  description: 'Pushing the boundaries of web development with innovative solutions and creative coding',
-};
-
-export default function RootLayout({ children }) {
-  return (
-    <html lang="en" className={spaceGrotesk.variable}>
-      <body>
-        <Providers>
-          <Layout>{children}</Layout>
-        </Providers>
-      </body>
-    </html>
-  );
-} 
-```
-
-# src/app/projects/src/app/providers.js
-
-```js
-'use client';
-
-import { ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import { theme } from '../theme';
-
-export function Providers({ children }) {
-  return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      {children}
-    </ThemeProvider>
-  );
-} 
-```
-
-# src/app/projects/src/components/podcasts/PodcastCard.js
-
-```js
-'use client';
-
-import { motion } from 'framer-motion';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
-import YouTubeIcon from '@mui/icons-material/YouTube';
-
-const MotionPaper = motion(Box);
-
-export default function PodcastCard({ episode }) {
-  return (
-    <MotionPaper
-      component={motion.div}
-      whileHover={{ scale: 1.02 }}
-      transition={{ duration: 0.2 }}
-      sx={{
-        p: 3,
-        borderRadius: 2,
-        boxShadow: 2,
-        bgcolor: 'background.paper',
-      }}
-    >
-      <Grid container spacing={2} alignItems="center">
-        <Grid item xs={12} sm={4}>
-          <Box
-            component="img"
-            src={`https://img.youtube.com/vi/${episode.videoId}/maxresdefault.jpg`}
-            alt={episode.title}
-            sx={{
-              width: '100%',
-              borderRadius: 1,
-            }}
-          />
-        </Grid>
-        <Grid item xs={12} sm={8}>
-          <Typography variant="h6" gutterBottom>
-            {episode.title}
-          </Typography>
-          <Typography variant="body2" color="text.secondary" paragraph>
-            {episode.description}
-          </Typography>
-          <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
-            {episode.tags.map((tag) => (
-              <Chip key={tag} label={tag} size="small" />
-            ))}
-          </Stack>
-          <Stack direction="row" spacing={2} alignItems="center">
-            <Typography variant="body2" color="text.secondary">
-              {new Date(episode.date).toLocaleDateString()} • {episode.duration}
-            </Typography>
-            <Button
-              variant="outlined"
-              startIcon={<YouTubeIcon />}
-              href={`https://www.youtube.com/watch?v=${episode.videoId}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Watch on YouTube
-            </Button>
-          </Stack>
-        </Grid>
-      </Grid>
-    </MotionPaper>
-  );
-} 
-```
-
-# src/app/projects/src/theme.js
-
-```js
-import { createTheme } from '@mui/material/styles';
-
-export const theme = createTheme({
-  palette: {
-    mode: 'light',
-    primary: {
-      main: '#1976d2',
-    },
-    secondary: {
-      main: '#dc004e',
-    },
-    background: {
-      default: '#f5f5f5',
-      paper: '#ffffff',
-    },
-  },
-  typography: {
-    fontFamily: '"Space Grotesk", "Roboto", "Helvetica", "Arial", sans-serif',
-    h1: {
-      fontWeight: 700,
-    },
-    h2: {
-      fontWeight: 700,
-    },
-    h3: {
-      fontWeight: 600,
-    },
-    h4: {
-      fontWeight: 600,
-    },
-    h5: {
-      fontWeight: 600,
-    },
-    h6: {
-      fontWeight: 600,
-    },
-  },
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          textTransform: 'none',
-          borderRadius: 8,
-        },
-      },
-    },
-    MuiPaper: {
-      styleOverrides: {
-        root: {
-          borderRadius: 12,
-        },
-      },
-    },
-  },
-}); 
 ```
 
 # src/app/resume/page.js
@@ -3029,10 +4006,261 @@ export const theme = createTheme({
 ```js
 'use client';
 
-import Resume from '../../components/Resume';
+import { Box, Container, Typography, Grid, Paper, List, ListItem, ListItemText, Chip, Stack, Divider, useTheme, useMediaQuery } from '@mui/material';
+import { motion } from 'framer-motion';
+import Certifications from '../../components/Certifications';
+import PageHeader from '../../components/PageHeader';
 
-export default function ResumePage() {
-  return <Resume />;
+const MotionPaper = motion(Paper);
+
+const experiences = [
+  {
+    title: 'Principal Developer Advocate',
+    company: 'MongoDB',
+    location: 'Greater New York City Area',
+    period: 'Mar 2018 - Present',
+    description: 'In my current role at MongoDB, I\'m dedicated to empowering developers and internal technical teams by delivering hands-on enablement content focused heavily on Artificial Intelligence (AI), MongoDB Atlas, and MongoDB Vector Search. I actively design labs, interactive workshops, and comprehensive training programs that simplify and demonstrate how developers can practically leverage these advanced technologies in real-world scenarios.',
+    responsibilities: [
+      'Artificial Intelligence & MongoDB Integration: Built practical demonstrations and sample applications to showcase how developers can implement AI-driven solutions using MongoDB Atlas, MongoDB Vector Search, and advanced AI techniques, enabling more intelligent applications and improved user experiences.',
+      'Vector Search Enablement: Created comprehensive learning resources and interactive labs that educate developers on MongoDB Vector Search, including semantic search use cases, retrieval-augmented generation (RAG) strategies, and integration with leading AI models like OpenAI.',
+      'Educational Content & Community Engagement: Produced technical screencasts, articles, podcasts, and live streams focused explicitly on Data Modeling, AI implementation, MongoDB\'s innovative data platform capabilities, and emerging developer trends.',
+      'Technical Advisory & Mentorship: Mentored developers, founders, and technical stakeholders, assisting them in adopting and successfully integrating advanced MongoDB features and AI technologies into their software projects.',
+      'MongoDB for Startups Program: Contributed to the launch and growth of the MongoDB for Startups initiative, guiding early-stage companies.',
+      'Created and produced the MongoDB Podcast, featuring interviews with industry leaders and technical deep-dives into MongoDB technologies.'
+    ]
+  },
+  {
+    title: 'Sr. Solutions Architect',
+    company: 'MongoDB',
+    location: 'Greater New York City Area',
+    period: 'Jan 2016 - Mar 2018',
+    description: 'Responsible for guiding and informing customers and users throughout the process of designing and building reliable, scalable systems using MongoDB.',
+    responsibilities: [
+      'Design systems, applications, and infrastructure to help drive some of the world\'s largest software development projects leveraging MongoDB',
+      'Advise customers on architectures, patterns, and strategies for making best use of MongoDB',
+      'Partner with our sales team to help ensure success in accounts ranging from small startups to large enterprises',
+      'Lead proof of concept implementations from concept through execution',
+      'Translate technical concepts and patterns into business benefits for management and executives',
+      'Work with the enablement team to produce and deliver content to educate newly hired MongoDB team members',
+      'Curate, develop and deliver field enablement and education content to train MongoDB employees'
+    ]
+  },
+  {
+    title: 'Co-Organizer - MongoDB Community User Group (PhillyMUG)',
+    company: 'MongoDB',
+    location: 'Philadelphia, PA',
+    period: 'Jun 2015 - Present',
+    description: 'Building and driving increased awareness of MongoDB\'s Database Platform and tools and related NoSQL technologies in and around the Philadelphia Area.',
+    responsibilities: [
+      'Organize and facilitate monthly meetup sessions for the Philadelphia MongoDB User Group',
+      'Identify and coordinate with speakers for technical presentations and workshops',
+      'Build and deliver technical presentations on MongoDB features and best practices',
+      'Foster a vibrant community of MongoDB developers in the Philadelphia region',
+      'Create hands-on workshops and learning opportunities for the local developer community'
+    ]
+  },
+  {
+    title: 'Solutions Consultant',
+    company: 'Medallia, Inc.',
+    location: 'Yardley, PA',
+    period: 'Jun 2013 - Dec 2015',
+    description: 'Worked with businesses to measure and improve customer experience in real time through software solutions.',
+    responsibilities: [
+      'Drive strategy and execution of Medallia\'s referral, resell and service delivery partnerships',
+      'Develop product integration, business models and sales enablement plans',
+      'Create custom solutions and demonstrations for various verticals and industries'
+    ]
+  }
+];
+
+const skills = [
+  'Large Language Models (LLM)',
+  'Data Modeling',
+  'Artificial Intelligence (AI)',
+  'Vector Search',
+  'MongoDB',
+  'JavaScript',
+  'Node.js',
+  'Developer Advocacy',
+  'Technical Training',
+  'Public Speaking',
+  'Podcasting',
+  'Content Creation',
+  'Team Leadership',
+  'Community Building',
+  'Solutions Architecture',
+  'Python',
+  'Technical Writing'
+];
+
+export default function Resume() {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isDark = theme.palette.mode === 'dark';
+
+  const paperStyle = {
+    p: { xs: 2, sm: 3 },
+    mb: { xs: 2, sm: 3 },
+    background: isDark ? 'rgba(6, 39, 54, 0.9)' : 'rgba(255, 255, 255, 0.9)',
+    backdropFilter: 'blur(10px)',
+    border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
+    color: theme.palette.text.primary,
+  };
+
+  return (
+    <Box>
+      <PageHeader 
+        title="Resume" 
+        subtitle="Professional experience, skills, and certifications"
+      />
+
+      <Container maxWidth="lg" sx={{ py: 8 }}>
+        <MotionPaper
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          sx={{
+            ...paperStyle,
+            mb: { xs: 4, md: 6 },
+            p: { xs: 3, sm: 4 },
+          }}
+        >
+          <Typography
+            variant="body1"
+            sx={{
+              fontSize: { xs: '1rem', sm: '1.25rem' },
+              lineHeight: 1.6,
+              color: theme.palette.text.primary,
+            }}
+          >
+            I'm a Principal Developer Advocate at MongoDB, where I help developers unlock the power of AI, vector search, and modern data applications. With a passion for making complex concepts accessible, I design hands-on enablement programs and interactive tools that drive technical growth.
+          </Typography>
+        </MotionPaper>
+
+        <Grid container spacing={{ xs: 2, md: 4 }}>
+          <Grid item xs={12} md={8}>
+            {experiences.map((exp, index) => (
+              <MotionPaper
+                key={exp.title}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                sx={paperStyle}
+              >
+                <Typography 
+                  variant="h5" 
+                  gutterBottom
+                  sx={{
+                    fontSize: { xs: '1.5rem', sm: '1.75rem' },
+                    color: theme.palette.text.primary,
+                  }}
+                >
+                  {exp.title}
+                </Typography>
+                <Typography 
+                  variant="subtitle1" 
+                  gutterBottom
+                  sx={{
+                    fontSize: { xs: '0.875rem', sm: '1rem' },
+                    color: theme.palette.text.secondary,
+                  }}
+                >
+                  {exp.company} | {exp.location} | {exp.period}
+                </Typography>
+                <Typography 
+                  variant="body1" 
+                  paragraph
+                  sx={{
+                    fontSize: { xs: '0.875rem', sm: '1rem' },
+                    color: theme.palette.text.primary,
+                  }}
+                >
+                  {exp.description}
+                </Typography>
+                <List sx={{ py: 0 }}>
+                  {exp.responsibilities.map((resp, i) => (
+                    <ListItem 
+                      key={i}
+                      sx={{
+                        py: { xs: 0.5, sm: 1 },
+                        '& .MuiListItemText-root': {
+                          m: 0,
+                        },
+                      }}
+                    >
+                      <ListItemText 
+                        primary={resp}
+                        primaryTypographyProps={{
+                          sx: {
+                            fontSize: { xs: '0.875rem', sm: '1rem' },
+                            color: theme.palette.text.primary,
+                          }
+                        }}
+                      />
+                    </ListItem>
+                  ))}
+                </List>
+              </MotionPaper>
+            ))}
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <MotionPaper
+              initial={{ opacity: 0, x: isMobile ? 0 : 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              sx={{
+                ...paperStyle,
+                position: { xs: 'sticky', md: 'static' },
+                top: { xs: 16, sm: 24 },
+                zIndex: 1,
+              }}
+            >
+              <Typography 
+                variant="h5" 
+                gutterBottom
+                sx={{
+                  fontSize: { xs: '1.5rem', sm: '1.75rem' },
+                  color: theme.palette.text.primary,
+                }}
+              >
+                Skills & Expertise
+              </Typography>
+              <Divider sx={{ my: { xs: 1.5, sm: 2 } }} />
+              <Stack 
+                direction="row" 
+                spacing={1} 
+                flexWrap="wrap" 
+                useFlexGap
+                sx={{
+                  gap: { xs: 0.5, sm: 1 },
+                }}
+              >
+                {skills.map((skill, index) => (
+                  <Chip
+                    key={index}
+                    label={skill}
+                    sx={{
+                      m: 0.5,
+                      background: theme.palette.background.gradient,
+                      color: isDark ? 'white' : 'black',
+                      fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                      height: { xs: 24, sm: 32 },
+                      '&:hover': {
+                        opacity: 0.9,
+                      },
+                    }}
+                  />
+                ))}
+              </Stack>
+            </MotionPaper>
+          </Grid>
+        </Grid>
+      </Container>
+
+      {/* Certifications Section */}
+      <Certifications />
+    </Box>
+  );
 } 
 ```
 
@@ -3114,6 +4342,34 @@ export default async function sitemap() {
 } 
 ```
 
+# src/app/social/page.js
+
+```js
+import { Container, Typography, Box } from '@mui/material';
+import InstagramFeed from '../../components/InstagramFeed';
+
+export const metadata = {
+  title: 'Social Media | Michael Lynn',
+  description: 'Follow my journey through social media posts and updates',
+};
+
+export default function SocialPage() {
+  return (
+    <Container maxWidth="lg">
+      <Box sx={{ py: 8 }}>
+        <Typography variant="h2" component="h1" gutterBottom>
+          Social Media
+        </Typography>
+        <Typography variant="subtitle1" color="text.secondary" paragraph>
+          Follow my journey through social media posts and updates
+        </Typography>
+        <InstagramFeed />
+      </Box>
+    </Container>
+  );
+} 
+```
+
 # src/app/speaking/page.js
 
 ```js
@@ -3152,6 +4408,7 @@ import SpeakingCard from '../../components/speaking/SpeakingCard';
 import SpeakingList from '../../components/speaking/SpeakingList';
 import SpeakingMap from '../../components/speaking/SpeakingMap';
 import SpeakingTable from '../../components/speaking/SpeakingTable';
+import PageHeader from '../../components/PageHeader';
 
 export default function SpeakingClient({ initialEngagements }) {
   const [view, setView] = useState('table');
@@ -3208,30 +4465,10 @@ export default function SpeakingClient({ initialEngagements }) {
   return (
     <Container maxWidth="lg">
       <Box sx={{ pt: 8, pb: 6 }}>
-        <Typography
-          variant="h2"
-          component="h1"
-          gutterBottom
-          sx={{
-            fontSize: { xs: '2rem', md: '2.5rem' },
-            fontWeight: 600,
-            mb: 2,
-          }}
-        >
-          Speaking Engagements
-        </Typography>
-        <Typography 
-          variant="h5" 
-          color="text.secondary"
-          sx={{
-            fontSize: { xs: '1.1rem', md: '1.25rem' },
-            fontWeight: 400,
-            mb: 4,
-          }}
-        >
-          {getSubtitleText()}
-        </Typography>
-
+      <PageHeader
+        title="Speaking Engagements"
+        subtitle="Some of the conferences, meetups, and workshops I've spoken at or will be speaking at."
+      />
         <Stack 
           direction="row" 
           spacing={2} 
@@ -3762,6 +4999,7 @@ export default function BlogHeader() {
 import { Box, Container, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { format } from 'date-fns';
+import Image from 'next/image';
 
 const HeroSection = styled(Box)(({ theme }) => ({
   position: 'relative',
@@ -3821,13 +5059,19 @@ const BlogLayout = ({ children, title, description, image, date, author }) => {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Box>
-        <HeroSection
-          sx={{
-            backgroundImage: `url(${image})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        >
+        <HeroSection>
+          {image && (
+            <Image
+              src={image}
+              alt={title}
+              fill
+              style={{
+                objectFit: 'cover',
+                objectPosition: 'center',
+              }}
+              priority
+            />
+          )}
           <HeroContent>
             <Typography variant="h1" component="h1" gutterBottom>
               {title}
@@ -3848,7 +5092,7 @@ const BlogLayout = ({ children, title, description, image, date, author }) => {
   );
 };
 
-export default BlogLayout; 
+export { BlogLayout }; 
 ```
 
 # src/components/blog/BlogList.js
@@ -3894,6 +5138,54 @@ const BlogList = ({ posts }) => {
 };
 
 export default BlogList; 
+```
+
+# src/components/blog/BlogPostContent.js
+
+```js
+'use client';
+
+import { Box } from '@mui/material';
+import { useEffect } from 'react';
+import { MDXRemote } from 'next-mdx-remote';
+import { Typography } from '@mui/material';
+import Image from 'next/image';
+import { trackContentView } from '../../lib/analytics';
+import { mdxComponents } from '../mdx/MDXComponents';
+
+export default function BlogPostContent({ post, slug }) {
+  useEffect(() => {
+    if (post?.title) {
+      trackContentView(slug);
+    }
+  }, [post?.title, slug]);
+
+  if (!post?.content) {
+    return null;
+  }
+
+  return (
+    <Box sx={{ mt: 4 }}>
+      <MDXRemote
+        {...post.content}
+        components={{
+          ...mdxComponents,
+          img: ({ src, alt }) => (
+            <Box sx={{ my: 4, position: 'relative', height: '400px', width: '100%' }}>
+              <Image
+                src={src}
+                alt={alt || ''}
+                fill
+                style={{ objectFit: 'contain' }}
+                priority
+              />
+            </Box>
+          ),
+        }}
+      />
+    </Box>
+  );
+} 
 ```
 
 # src/components/blog/ImageUpload.js
@@ -4518,6 +5810,54 @@ export default function BlogPost({ post }) {
 } 
 ```
 
+# src/components/Certifications.js
+
+```js
+'use client';
+
+import { Box, Container, Typography, Grid, Card, CardContent } from '@mui/material';
+import CredlyBadge from './CredlyBadge';
+
+export default function Certifications() {
+  return (
+    <Box sx={{ py: 8, bgcolor: 'background.default' }}>
+      <Container maxWidth="lg">
+        <Typography variant="h3" component="h2" gutterBottom align="center">
+          Certifications
+        </Typography>
+        <Typography variant="h6" color="text.secondary" paragraph align="center" sx={{ mb: 6 }}>
+          Professional certifications and achievements
+        </Typography>
+        
+        <Grid container spacing={4} justifyContent="center">
+          <Grid item xs={12} md={6}>
+            <Card>
+              <CardContent>
+                <Typography variant="h5" component="h3" gutterBottom align="center">
+                  MongoDB Certifications
+                </Typography>
+                <Box sx={{ 
+                  display: 'flex', 
+                  gap: 4, 
+                  flexWrap: 'wrap', 
+                  justifyContent: 'center',
+                  mt: 2
+                }}>
+                  <CredlyBadge badgeId="4e0273eb-a641-4a76-80b0-f5e0db12b4ab" />
+                  <CredlyBadge badgeId="833ef744-f741-45bd-857a-4023517b16bf" />
+                  <CredlyBadge badgeId="0a059146-6f29-42ba-b438-9bc1bfe7d0cb" />
+                  <CredlyBadge badgeId="a5c70efa-5e60-4430-b19c-0674fa71041c" />
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+      </Container>
+    </Box>
+  );
+} 
+```
+
 # src/components/CodeBlock.js
 
 ```js
@@ -4566,6 +5906,151 @@ export default function CodeBlock({ children, language }) {
     </Paper>
   );
 } 
+```
+
+# src/components/common/AnimatedComponents.js
+
+```js
+import { motion } from 'framer-motion';
+import { Box, Typography } from '@mui/material';
+
+export const MotionBox = motion(Box);
+export const MotionTypography = motion(Typography);
+
+export const fadeInUp = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.5 }
+};
+
+export const fadeIn = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  transition: { duration: 0.5 }
+};
+
+export const AnimatedSection = ({ children, delay = 0 }) => (
+  <MotionBox
+    component="section"
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.5, delay }}
+  >
+    {children}
+  </MotionBox>
+);
+
+export const AnimatedTypography = ({ variant, component, children, delay = 0, ...props }) => (
+  <MotionTypography
+    variant={variant}
+    component={component}
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5, delay }}
+    {...props}
+  >
+    {children}
+  </MotionTypography>
+); 
+```
+
+# src/components/CredlyBadge.js
+
+```js
+'use client';
+
+import { useEffect } from 'react';
+import { Box } from '@mui/material';
+
+export default function CredlyBadge({ badgeId, width = 150, height = 270 }) {
+  useEffect(() => {
+    // Load Credly embed script
+    const script = document.createElement('script');
+    script.src = '//cdn.credly.com/assets/utilities/embed.js';
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  return (
+    <Box
+      component="div"
+      data-iframe-width={width}
+      data-iframe-height={height}
+      data-share-badge-id={badgeId}
+      data-share-badge-host="https://www.credly.com"
+    />
+  );
+} 
+```
+
+# src/components/ErrorBoundary.js
+
+```js
+'use client';
+
+import { Component } from 'react';
+import { Box, Typography, Button } from '@mui/material';
+import { trackError } from '../lib/analytics';
+
+class ErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    // Track the error in analytics
+    trackError(
+      error.name,
+      error.message,
+      error.stack
+    );
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: '400px',
+            p: 3,
+            textAlign: 'center',
+          }}
+        >
+          <Typography variant="h5" gutterBottom>
+            Something went wrong
+          </Typography>
+          <Typography variant="body1" color="text.secondary" paragraph>
+            We apologize for the inconvenience. Please try refreshing the page.
+          </Typography>
+          <Button
+            variant="contained"
+            onClick={() => window.location.reload()}
+          >
+            Refresh Page
+          </Button>
+        </Box>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
+export default ErrorBoundary; 
 ```
 
 # src/components/GitHubActivity.js
@@ -4645,6 +6130,74 @@ export default function GitHubActivity() {
     </Section>
   );
 } 
+```
+
+# src/components/InstagramFeed.js
+
+```js
+import { Box, Typography, Grid } from '@mui/material';
+import { Instagram as InstagramIcon } from '@mui/icons-material';
+
+const InstagramFeed = () => {
+  // Add your Instagram post URLs here
+  const instagramPosts = [
+    'https://www.instagram.com/p/Cwn9hd6J4Rr/',
+    'https://www.instagram.com/p/CvzskTQgYgA/',
+    'https://www.instagram.com/p/CupldQhJIwI/',
+    'https://www.instagram.com/reel/CnhWpHLhoGw/',
+    'https://www.instagram.com/reel/CucGbwQgpmX/',
+    'https://www.instagram.com/reel/CuU9NucpV4l/',
+    'https://www.instagram.com/p/C5Zaa8gpmWT/',
+    'https://www.instagram.com/p/C4O1O_spGWN/',
+    'https://www.instagram.com/p/CxEouYHLMrz/'
+    // Add more post URLs as needed
+  ];
+
+  return (
+    <Box sx={{ py: 4 }}>
+      <Box display="flex" alignItems="center" mb={3}>
+        <InstagramIcon sx={{ mr: 1 }} />
+        <Typography variant="h4" component="h2">
+          Instagram Feed
+        </Typography>
+      </Box>
+      <Grid container spacing={3}>
+        {instagramPosts.map((postUrl, index) => (
+          <Grid item xs={12} sm={6} md={4} key={index}>
+            <Box
+              sx={{
+                position: 'relative',
+                width: '100%',
+                paddingTop: '125%', // This maintains Instagram's typical aspect ratio
+                backgroundColor: '#fafafa',
+                border: '1px solid #e0e0e0',
+                borderRadius: 1,
+                overflow: 'hidden',
+              }}
+            >
+              <Box
+                component="iframe"
+                src={`${postUrl}embed`}
+                sx={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  border: 'none',
+                }}
+                loading="lazy"
+                allowFullScreen
+              />
+            </Box>
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
+  );
+};
+
+export default InstagramFeed; 
 ```
 
 # src/components/Layout.js
@@ -4839,6 +6392,176 @@ export default function TechStack({ items }) {
 } 
 ```
 
+# src/components/mdx/MDXComponents.js
+
+```js
+import { Typography, Box } from '@mui/material';
+import Image from 'next/image';
+
+export const mdxComponents = {
+  h1: (props) => (
+    <Typography variant="h1" component="h1" gutterBottom {...props} />
+  ),
+  h2: (props) => (
+    <Typography variant="h2" component="h2" gutterBottom {...props} />
+  ),
+  h3: (props) => (
+    <Typography variant="h3" component="h3" gutterBottom {...props} />
+  ),
+  h4: (props) => (
+    <Typography variant="h4" component="h4" gutterBottom {...props} />
+  ),
+  h5: (props) => (
+    <Typography variant="h5" component="h5" gutterBottom {...props} />
+  ),
+  h6: (props) => (
+    <Typography variant="h6" component="h6" gutterBottom {...props} />
+  ),
+  p: ({ children, ...props }) => (
+    <Typography variant="body1" component="div" paragraph {...props}>
+      {children}
+    </Typography>
+  ),
+  a: ({ children, ...props }) => (
+    <Typography
+      component="a"
+      color="primary"
+      sx={{
+        textDecoration: 'none',
+        '&:hover': {
+          textDecoration: 'underline',
+        },
+      }}
+      {...props}
+    >
+      {children}
+    </Typography>
+  ),
+  ul: ({ children, ...props }) => (
+    <Typography component="ul" sx={{ pl: 2, mb: 2 }} {...props}>
+      {children}
+    </Typography>
+  ),
+  ol: ({ children, ...props }) => (
+    <Typography component="ol" sx={{ pl: 2, mb: 2 }} {...props}>
+      {children}
+    </Typography>
+  ),
+  li: ({ children, ...props }) => (
+    <Typography component="li" sx={{ mb: 1 }} {...props}>
+      {children}
+    </Typography>
+  ),
+  blockquote: ({ children, ...props }) => (
+    <Box
+      component="blockquote"
+      sx={{
+        borderLeft: 4,
+        borderColor: 'primary.main',
+        pl: 2,
+        py: 1,
+        my: 2,
+        bgcolor: 'background.paper',
+      }}
+      {...props}
+    >
+      <Typography component="div">
+        {children}
+      </Typography>
+    </Box>
+  ),
+  img: ({ src, alt, ...props }) => (
+    <Box
+      component="figure"
+      sx={{
+        my: 4,
+        mx: 0,
+        p: 0,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
+    >
+      <Box
+        sx={{
+          position: 'relative',
+          width: '100%',
+          height: 'auto',
+          minHeight: '300px',
+        }}
+      >
+        <Image
+          src={src}
+          alt={alt || ''}
+          fill
+          style={{ objectFit: 'contain' }}
+          {...props}
+        />
+      </Box>
+      {alt && (
+        <Typography
+          component="figcaption"
+          variant="caption"
+          sx={{ mt: 1, textAlign: 'center' }}
+        >
+          {alt}
+        </Typography>
+      )}
+    </Box>
+  ),
+  pre: ({ children, ...props }) => (
+    <Box
+      component="pre"
+      sx={{
+        p: 2,
+        my: 2,
+        overflow: 'auto',
+        bgcolor: 'background.paper',
+        borderRadius: 1,
+        '& code': {
+          fontFamily: 'monospace',
+        },
+      }}
+      {...props}
+    >
+      {children}
+    </Box>
+  ),
+  code: ({ children, ...props }) => (
+    <Typography
+      component="code"
+      sx={{
+        p: 0.5,
+        bgcolor: 'background.paper',
+        borderRadius: 0.5,
+        fontFamily: 'monospace',
+      }}
+      {...props}
+    >
+      {children}
+    </Typography>
+  ),
+}; 
+```
+
+# src/components/mdx/MDXRenderer.js
+
+```js
+'use client';
+
+import { MDXRemote } from 'next-mdx-remote';
+import { mdxComponents } from './MDXComponents';
+
+export default function MDXRenderer({ source }) {
+  return (
+    <MDXRemote
+      {...source}
+      components={mdxComponents}
+    />
+  );
+} 
+```
+
 # src/components/Navigation.js
 
 ```js
@@ -4875,7 +6598,9 @@ import {
   Article as ArticleIcon,
   ContactMail as ContactIcon,
   Book as BookIcon,
-  RecordVoiceOver as SpeakingIcon
+  RecordVoiceOver as SpeakingIcon,
+  Podcasts as PodcastsIcon,
+  Instagram as InstagramIcon
 } from '@mui/icons-material';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTheme as useCustomTheme } from '../theme/ThemeContext';
@@ -4910,12 +6635,14 @@ const Navigation = () => {
     { text: 'Projects', icon: <WorkIcon />, path: '/projects' },
     { text: 'Blog', icon: <BookIcon />, path: '/blog' },
     { text: 'Speaking', icon: <SpeakingIcon />, path: '/speaking' },
+    { text: 'Podcasts', icon: <PodcastsIcon />, path: '/podcasts' },
   ];
 
   // Secondary navigation items (in More dropdown)
   const secondaryItems = [
     { text: 'Videos', icon: <YouTubeIcon />, path: '/videos' },
     { text: 'Art', icon: <PaletteIcon />, path: '/art' },
+    { text: 'Social', icon: <InstagramIcon />, path: '/social' },
     { text: 'Resume', icon: <ArticleIcon />, path: '/resume' },
     { text: 'Contact', icon: <ContactIcon />, path: '/contact' }
   ];
@@ -5092,6 +6819,7 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import { motion } from 'framer-motion';
+import { getVideoUrl, getVideoEmbedUrl } from '../utils/videoUtils'; 
 
 const MotionTypography = motion(Typography);
 
@@ -5296,6 +7024,204 @@ export default function PodcastCard({ episode, ...motionProps }) {
 } 
 ```
 
+# src/components/podcasts/PodcastEpisodes.js
+
+```js
+'use client';
+
+import { useState, useEffect } from 'react';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+import Alert from '@mui/material/Alert';
+import { motion } from 'framer-motion';
+
+const MotionCard = motion(Card);
+
+const EPISODES_PER_PAGE = 5;
+
+export default function PodcastEpisodes({ feedUrl, onMetadataLoad }) {
+  const [episodes, setEpisodes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [visibleEpisodes, setVisibleEpisodes] = useState(EPISODES_PER_PAGE);
+
+  useEffect(() => {
+    const fetchPodcastData = async () => {
+      try {
+        const response = await fetch(feedUrl);
+        const text = await response.text();
+        const parser = new DOMParser();
+        const xml = parser.parseFromString(text, 'text/xml');
+        
+        // Parse podcast metadata
+        const channel = xml.querySelector('channel');
+        const podcastMetadata = {
+          title: channel.querySelector('title')?.textContent || '',
+          description: channel.querySelector('description')?.textContent || '',
+          imageUrl: channel.querySelector('image url')?.textContent || 
+                   channel.querySelector('itunes\\:image')?.getAttribute('href') || '',
+          lastBuildDate: channel.querySelector('lastBuildDate')?.textContent || '',
+          link: channel.querySelector('link')?.textContent || '',
+          author: channel.querySelector('itunes\\:author')?.textContent || ''
+        };
+        
+        // Notify parent component of metadata
+        if (onMetadataLoad) {
+          onMetadataLoad(podcastMetadata);
+        }
+        
+        // Parse episodes
+        const items = xml.querySelectorAll('item');
+        const parsedEpisodes = Array.from(items).map((item, index) => {
+          const title = item.querySelector('title')?.textContent || '';
+          const description = item.querySelector('description')?.textContent || '';
+          const pubDate = new Date(item.querySelector('pubDate')?.textContent || '');
+          const duration = item.querySelector('itunes\\:duration')?.textContent || '';
+          const link = item.querySelector('link')?.textContent || '';
+          const audioUrl = item.querySelector('enclosure')?.getAttribute('url') || '';
+          
+          // Clean up description by removing HTML tags and converting entities
+          const cleanDescription = description
+            .replace(/<[^>]*>/g, '') // Remove HTML tags
+            .replace(/&nbsp;/g, ' ') // Replace &nbsp; with space
+            .replace(/&amp;/g, '&') // Replace &amp; with &
+            .replace(/&quot;/g, '"') // Replace &quot; with "
+            .replace(/&#39;/g, "'"); // Replace &#39; with '
+
+          return {
+            id: index,
+            title,
+            description: cleanDescription,
+            pubDate,
+            duration,
+            link,
+            audioUrl
+          };
+        });
+
+        setEpisodes(parsedEpisodes);
+        setLoading(false);
+      } catch (err) {
+        setError('Failed to load podcast episodes');
+        setLoading(false);
+      }
+    };
+
+    fetchPodcastData();
+  }, [feedUrl, onMetadataLoad]);
+
+  const loadMore = () => {
+    setVisibleEpisodes(prev => prev + EPISODES_PER_PAGE);
+  };
+
+  if (loading) {
+    return (
+      <Box display="flex" justifyContent="center" p={4}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return <Alert severity="error">{error}</Alert>;
+  }
+
+  return (
+    <Stack spacing={3}>
+      {episodes.slice(0, visibleEpisodes).map((episode, index) => (
+        <MotionCard
+          key={episode.id || episode.title}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: index * 0.1 }}
+          elevation={2}
+          sx={{
+            background: (theme) => theme.palette.mode === 'dark' 
+              ? 'rgba(0,0,0,0.2)' 
+              : 'rgba(255,255,255,0.8)',
+            backdropFilter: 'blur(10px)',
+            borderRadius: 2,
+          }}
+        >
+          <CardContent>
+            <Typography variant="h6" gutterBottom>
+              {episode.title}
+            </Typography>
+            
+            <Stack direction="row" spacing={2} mb={2}>
+              <Chip 
+                label={new Date(episode.pubDate).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric'
+                })}
+                size="small"
+                color="primary"
+                variant="outlined"
+              />
+              {episode.duration && (
+                <Chip 
+                  label={episode.duration}
+                  size="small"
+                  color="secondary"
+                  variant="outlined"
+                />
+              )}
+            </Stack>
+
+            <Typography 
+              variant="body2" 
+              color="text.secondary"
+              sx={{ 
+                mb: 2,
+                display: '-webkit-box',
+                WebkitLineClamp: 3,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis'
+              }}
+            >
+              {episode.description}
+            </Typography>
+
+            <Button
+              variant="contained"
+              href={episode.audioUrl || episode.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              size="small"
+            >
+              Listen to Episode
+            </Button>
+          </CardContent>
+        </MotionCard>
+      ))}
+
+      {visibleEpisodes < episodes.length && (
+        <Box display="flex" justifyContent="center" mt={2}>
+          <Button 
+            variant="outlined" 
+            onClick={loadMore}
+            sx={{ 
+              borderRadius: 4,
+              px: 4
+            }}
+          >
+            Load More Episodes
+          </Button>
+        </Box>
+      )}
+    </Stack>
+  );
+} 
+```
+
 # src/components/ProjectFeatures.js
 
 ```js
@@ -5326,6 +7252,167 @@ export default function ProjectFeatures({ features }) {
           </ListItem>
         ))}
       </List>
+    </Box>
+  );
+} 
+```
+
+# src/components/projects/ImageCarousel.js
+
+```js
+'use client';
+
+import { useState } from 'react';
+import { Box, IconButton, Paper, Typography } from '@mui/material';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import FullscreenIcon from '@mui/icons-material/Fullscreen';
+import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
+
+export default function ImageCarousel({ images, alt }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const handlePrevious = () => {
+    setCurrentIndex((prevIndex) => 
+      prevIndex === 0 ? images.length - 1 : prevIndex - 1
+    );
+  };
+
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) => 
+      prevIndex === images.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+      setIsFullscreen(true);
+    } else {
+      document.exitFullscreen();
+      setIsFullscreen(false);
+    }
+  };
+
+  if (!images?.length) return null;
+
+  return (
+    <Box sx={{ position: 'relative', width: '100%', height: '60vh', minHeight: '400px' }}>
+      <Paper
+        elevation={0}
+        sx={{
+          position: 'relative',
+          width: '100%',
+          height: '100%',
+          overflow: 'hidden',
+          borderRadius: 2,
+        }}
+      >
+        <Box
+          component="img"
+          src={images[currentIndex]}
+          alt={`${alt} - Screenshot ${currentIndex + 1}`}
+          sx={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'contain',
+            bgcolor: 'grey.100',
+          }}
+        />
+        
+        {images.length > 1 && (
+          <>
+            <IconButton
+              onClick={handlePrevious}
+              sx={{
+                position: 'absolute',
+                left: 16,
+                top: '50%',
+                transform: 'translateY(-50%)',
+                bgcolor: 'rgba(255, 255, 255, 0.9)',
+                '&:hover': {
+                  bgcolor: 'white',
+                },
+              }}
+            >
+              <ChevronLeftIcon />
+            </IconButton>
+            <IconButton
+              onClick={handleNext}
+              sx={{
+                position: 'absolute',
+                right: 16,
+                top: '50%',
+                transform: 'translateY(-50%)',
+                bgcolor: 'rgba(255, 255, 255, 0.9)',
+                '&:hover': {
+                  bgcolor: 'white',
+                },
+              }}
+            >
+              <ChevronRightIcon />
+            </IconButton>
+          </>
+        )}
+
+        <Box
+          sx={{
+            position: 'absolute',
+            bottom: 16,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            display: 'flex',
+            gap: 1,
+            bgcolor: 'rgba(255, 255, 255, 0.9)',
+            borderRadius: 2,
+            p: 1,
+          }}
+        >
+          {images.map((_, index) => (
+            <Box
+              key={index}
+              sx={{
+                width: 8,
+                height: 8,
+                borderRadius: '50%',
+                bgcolor: index === currentIndex ? 'primary.main' : 'grey.300',
+                transition: 'background-color 0.2s',
+              }}
+            />
+          ))}
+        </Box>
+
+        <IconButton
+          onClick={toggleFullscreen}
+          sx={{
+            position: 'absolute',
+            top: 16,
+            right: 16,
+            bgcolor: 'rgba(255, 255, 255, 0.9)',
+            '&:hover': {
+              bgcolor: 'white',
+            },
+          }}
+        >
+          {isFullscreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
+        </IconButton>
+
+        <Typography
+          variant="caption"
+          sx={{
+            position: 'absolute',
+            bottom: 16,
+            right: 16,
+            bgcolor: 'rgba(255, 255, 255, 0.9)',
+            px: 1,
+            py: 0.5,
+            borderRadius: 1,
+          }}
+        >
+          {currentIndex + 1} / {images.length}
+        </Typography>
+      </Paper>
     </Box>
   );
 } 
@@ -5529,152 +7616,114 @@ export default function ProjectContent({ content }) {
 # src/components/projects/ProjectLayout.js
 
 ```js
-import { Container, Typography, Box, Stack, Chip, Link as MuiLink } from '@mui/material';
+import { Box, Container, Typography, Chip, Stack, Link, IconButton } from '@mui/material';
+import { GitHub as GitHubIcon, Launch as LaunchIcon } from '@mui/icons-material';
 import { format } from 'date-fns';
-import Link from 'next/link';
+import Image from 'next/image';
 
-const HeroSection = ({ children, sx }) => (
-  <Box
-    sx={{
-      position: 'relative',
-      height: '60vh',
-      minHeight: '400px',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      color: 'white',
-      textAlign: 'center',
-      '&::before': {
-        content: '""',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        background: 'rgba(0,0,0,0.5)',
-        zIndex: 1,
-      },
-      ...sx,
-    }}
-  >
-    <Box sx={{ position: 'relative', zIndex: 2, width: '100%' }}>
-      {children}
-    </Box>
-  </Box>
-);
-
-const HeroContent = ({ children }) => (
-  <Container maxWidth="md">
-    <Stack spacing={2}>{children}</Stack>
-  </Container>
-);
-
-export default function ProjectLayout({
-  children,
-  title,
-  description,
-  image,
-  date,
-  author,
-  tags,
-  color,
-  technologies,
-  demoUrl,
-  githubUrl,
-}) {
-  // Add JSON-LD schema
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'SoftwareApplication',
-    name: title,
-    description: description,
-    image: image,
-    datePublished: date,
-    author: {
-      '@type': 'Person',
-      name: author,
-    },
-    applicationCategory: 'DeveloperApplication',
-    operatingSystem: 'Web',
-    offers: {
-      '@type': 'Offer',
-      price: '0',
-      priceCurrency: 'USD',
-    },
-    technologies: technologies,
-  };
+export function ProjectLayout({ project, children }) {
+  const {
+    title,
+    description,
+    image,
+    date,
+    author,
+    tags = [],
+    color = 'primary',
+    technologies = [],
+    demoUrl,
+    githubUrl,
+  } = project;
 
   return (
-    <Container maxWidth="lg">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <Box>
-        <HeroSection
+    <Box>
+      {/* Hero Section with Image */}
+      {image && (
+        <Box
           sx={{
-            backgroundImage: `url(${image})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
+            position: 'relative',
+            width: '100%',
+            height: '400px',
+            mb: 6,
           }}
         >
-          <HeroContent>
+          <Image
+            src={image}
+            alt={title}
+            fill
+            style={{
+              objectFit: 'cover',
+              objectPosition: 'center',
+            }}
+            priority
+          />
+        </Box>
+      )}
+
+      {/* Project Info Section */}
+      <Box
+        sx={{
+          bgcolor: `${color}.main`,
+          color: `${color}.contrastText`,
+          py: 8,
+          mb: 6,
+        }}
+      >
+        <Container maxWidth="lg">
+          <Box sx={{ maxWidth: 800, mx: 'auto' }}>
             <Typography variant="h1" component="h1" gutterBottom>
               {title}
             </Typography>
-            <Typography variant="h5" component="h2" gutterBottom>
+            <Typography variant="subtitle1" gutterBottom>
               {description}
             </Typography>
-            <Stack direction="row" spacing={2} justifyContent="center" alignItems="center">
-              <Typography variant="subtitle1">
-                By {author} • {format(new Date(date), 'MMMM yyyy')}
-              </Typography>
-              {demoUrl && (
-                <MuiLink
-                  component={Link}
-                  href={demoUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  sx={{ color: 'white', textDecoration: 'underline' }}
-                >
-                  Live Demo
-                </MuiLink>
-              )}
-              {githubUrl && (
-                <MuiLink
-                  component={Link}
-                  href={githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  sx={{ color: 'white', textDecoration: 'underline' }}
-                >
-                  GitHub
-                </MuiLink>
-              )}
-            </Stack>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, justifyContent: 'center' }}>
+            <Stack direction="row" spacing={1} sx={{ mt: 2 }}>
               {tags.map((tag) => (
                 <Chip
                   key={tag}
                   label={tag}
-                  sx={{
-                    bgcolor: color,
-                    color: 'white',
-                    '&:hover': {
-                      bgcolor: color,
-                      opacity: 0.9,
-                    },
-                  }}
+                  size="small"
+                  sx={{ bgcolor: 'rgba(255, 255, 255, 0.2)' }}
                 />
               ))}
-            </Box>
-          </HeroContent>
-        </HeroSection>
-        <Container maxWidth="md" sx={{ py: 8 }}>
-          {children}
+            </Stack>
+            <Stack direction="row" spacing={2} sx={{ mt: 4 }}>
+              {githubUrl && (
+                <Link
+                  href={githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  sx={{ color: 'inherit' }}
+                >
+                  <IconButton color="inherit">
+                    <GitHubIcon />
+                  </IconButton>
+                </Link>
+              )}
+              {demoUrl && (
+                <Link
+                  href={demoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  sx={{ color: 'inherit' }}
+                >
+                  <IconButton color="inherit">
+                    <LaunchIcon />
+                  </IconButton>
+                </Link>
+              )}
+            </Stack>
+          </Box>
         </Container>
       </Box>
-    </Container>
+
+      {/* Project Content */}
+      <Container maxWidth="lg">
+        <Box sx={{ maxWidth: 800, mx: 'auto' }}>
+          {children}
+        </Box>
+      </Container>
+    </Box>
   );
 } 
 ```
@@ -6208,7 +8257,7 @@ export default function Resume() {
 
 import { Box, Typography, useTheme } from '@mui/material';
 import { motion } from 'framer-motion';
-
+import { AnimatedTypography } from './common/AnimatedComponents';
 const MotionBox = motion(Box);
 
 export default function Section({ title, subtitle, children }) {
@@ -7932,6 +9981,71 @@ export default Timeline;
 } 
 ```
 
+# src/components/videos/VideoCard.js
+
+```js
+'use client';
+
+import { Card, CardContent, CardMedia, Typography, Box, IconButton } from '@mui/material';
+import { PlayArrow as PlayIcon } from '@mui/icons-material';
+import { trackVideoPlay } from '../../lib/analytics';
+
+export default function VideoCard({ video }) {
+  const handleVideoClick = () => {
+    trackVideoPlay(video.videoId, video.title, video.platform);
+  };
+
+  return (
+    <Card 
+      sx={{ 
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        position: 'relative',
+        overflow: 'hidden',
+        '&:hover': {
+          transform: 'translateY(-4px)',
+          transition: 'transform 0.2s ease-in-out',
+        },
+      }}
+    >
+      <Box sx={{ position: 'relative' }}>
+        <CardMedia
+          component="img"
+          height="200"
+          image={video.thumbnail}
+          alt={video.title}
+          sx={{ objectFit: 'cover' }}
+        />
+        <IconButton
+          onClick={handleVideoClick}
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            '&:hover': {
+              backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            },
+          }}
+        >
+          <PlayIcon sx={{ color: 'white', fontSize: 40 }} />
+        </IconButton>
+      </Box>
+      <CardContent sx={{ flexGrow: 1 }}>
+        <Typography gutterBottom variant="h6" component="h2">
+          {video.title}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {video.description}
+        </Typography>
+      </CardContent>
+    </Card>
+  );
+} 
+```
+
 # src/components/VideosSection.js
 
 ```js
@@ -8380,6 +10494,143 @@ Next.js is an excellent choice for building modern web applications. Its feature
 Happy coding! 🚀 
 ```
 
+# src/content/blog/mongodb-expertise.mdx
+
+```mdx
+---
+title: 'Building Scalable Applications with MongoDB: A Developer Advocate\'s Perspective'
+date: '2024-03-20'
+tags: ['MongoDB', 'Developer Advocacy', 'Technical Writing', 'Public Speaking']
+excerpt: 'Insights from a MongoDB Developer Advocate on building scalable applications, best practices, and community engagement.'
+coverImage: './images/blog/mongodb-expertise.jpg'
+readTime: '8 min read'
+---
+
+# Building Scalable Applications with MongoDB: A Developer Advocate's Perspective
+
+As a MongoDB Developer Advocate, I've had the privilege of working with developers worldwide, helping them build scalable applications and sharing best practices. In this post, I'll share insights from my experience and provide practical tips for working with MongoDB effectively.
+
+## Why MongoDB for Modern Applications?
+
+MongoDB's document model offers several advantages for modern applications:
+
+- **Flexible Schema**: Adapt to changing requirements without complex migrations
+- **Horizontal Scaling**: Scale out with sharding for massive datasets
+- **Rich Query Language**: Powerful querying capabilities with aggregation pipelines
+- **Real-time Analytics**: Built-in support for analytics and reporting
+- **Cloud Native**: Seamless integration with modern cloud platforms
+
+## Best Practices for MongoDB Applications
+
+### 1. Schema Design
+
+\`\`\`javascript
+// Example of a well-structured document
+{
+  _id: ObjectId(),
+  title: "Building with MongoDB",
+  author: {
+    name: "John Doe",
+    email: "john@example.com",
+    social: {
+      twitter: "@johndoe",
+      github: "github.com/johndoe"
+    }
+  },
+  content: "Article content...",
+  tags: ["mongodb", "development", "best-practices"],
+  metadata: {
+    views: 1000,
+    likes: 50,
+    publishedAt: ISODate("2024-03-20"),
+    lastUpdated: ISODate("2024-03-20")
+  }
+}
+\`\`\`
+
+### 2. Indexing Strategy
+
+\`\`\`javascript
+// Create compound indexes for common queries
+db.articles.createIndex({ "author.name": 1, "metadata.publishedAt": -1 });
+
+// Text index for search functionality
+db.articles.createIndex({ title: "text", content: "text" });
+\`\`\`
+
+### 3. Aggregation Pipelines
+
+\`\`\`javascript
+// Example of a complex aggregation pipeline
+db.articles.aggregate([
+  { $match: { "metadata.publishedAt": { $gte: ISODate("2024-01-01") } } },
+  { $group: {
+    _id: "$author.name",
+    totalArticles: { $sum: 1 },
+    averageViews: { $avg: "$metadata.views" }
+  }},
+  { $sort: { totalArticles: -1 } }
+]);
+\`\`\`
+
+## Performance Optimization
+
+### 1. Query Optimization
+
+- Use projection to limit returned fields
+- Implement pagination
+- Leverage covered queries
+- Monitor query performance with explain()
+
+### 2. Connection Management
+
+\`\`\`javascript
+// Example of connection pooling with Mongoose
+const mongoose = require('mongoose');
+
+mongoose.connect(process.env.MONGODB_URI, {
+  maxPoolSize: 10,
+  minPoolSize: 5,
+  serverSelectionTimeoutMS: 5000,
+  socketTimeoutMS: 45000,
+});
+\`\`\`
+
+## Community Engagement
+
+As a Developer Advocate, I focus on:
+
+1. **Technical Content Creation**
+   - Blog posts
+   - Video tutorials
+   - Code samples
+   - Documentation contributions
+
+2. **Community Building**
+   - Speaking at conferences
+   - Hosting workshops
+   - Contributing to open source
+   - Engaging on social media
+
+3. **Developer Support**
+   - Answering questions on Stack Overflow
+   - Participating in MongoDB forums
+   - Providing feedback on MongoDB products
+
+## Resources for Developers
+
+- [MongoDB Documentation](https://docs.mongodb.com)
+- [MongoDB University](https://university.mongodb.com)
+- [MongoDB Community Forums](https://community.mongodb.com)
+- [MongoDB GitHub](https://github.com/mongodb)
+
+## Conclusion
+
+MongoDB's flexibility and scalability make it an excellent choice for modern applications. By following best practices and engaging with the community, developers can build robust and maintainable applications.
+
+Stay tuned for more content about MongoDB development, and feel free to reach out with questions or suggestions for future topics! 
+```
+
 # src/content/blog/optimizing-web-performance.mdx
 
 ```mdx
@@ -8508,47 +10759,167 @@ Performance optimization is an ongoing process. Regular monitoring and optimizat
 Happy optimizing! ⚡ 
 ```
 
+# src/data/mongodb-projects.js
+
+```js
+export const mongodbProjects = [
+  {
+    title: "MongoDB Atlas Vector Search Demo",
+    description: "A demonstration of MongoDB Atlas Vector Search capabilities, including semantic search and similarity matching for document retrieval.",
+    technologies: ["MongoDB", "Next.js", "OpenAI", "Vector Search"],
+    image: "/images/projects/vector-search-demo.jpg",
+    demoUrl: "https://vector-search-demo.mrlynn.dev",
+    githubUrl: "https://github.com/mrlynn/vector-search-demo",
+    tags: ["MongoDB", "AI", "Vector Search", "Full Stack"],
+    featured: true,
+  },
+  {
+    title: "MongoDB Performance Analyzer",
+    description: "A tool for analyzing MongoDB query performance, providing insights into slow queries and optimization opportunities.",
+    technologies: ["MongoDB", "Node.js", "Express", "React"],
+    image: "/images/projects/performance-analyzer.jpg",
+    demoUrl: "https://performance-analyzer.mrlynn.dev",
+    githubUrl: "https://github.com/mrlynn/mongodb-performance-analyzer",
+    tags: ["MongoDB", "Performance", "Analytics", "Tools"],
+    featured: true,
+  },
+  {
+    title: "MongoDB Atlas Search Tutorial",
+    description: "A comprehensive tutorial application demonstrating MongoDB Atlas Search features, including text search and faceted navigation.",
+    technologies: ["MongoDB", "Next.js", "Atlas Search", "Material UI"],
+    image: "/images/projects/atlas-search-tutorial.jpg",
+    demoUrl: "https://atlas-search-tutorial.mrlynn.dev",
+    githubUrl: "https://github.com/mrlynn/atlas-search-tutorial",
+    tags: ["MongoDB", "Search", "Tutorial", "Full Stack"],
+    featured: false,
+  },
+  {
+    title: "MongoDB Change Streams Demo",
+    description: "A real-time application demonstrating MongoDB Change Streams for live data synchronization and event-driven architectures.",
+    technologies: ["MongoDB", "Node.js", "Socket.io", "React"],
+    image: "/images/projects/change-streams-demo.jpg",
+    demoUrl: "https://change-streams-demo.mrlynn.dev",
+    githubUrl: "https://github.com/mrlynn/change-streams-demo",
+    tags: ["MongoDB", "Real-time", "WebSockets", "Backend"],
+    featured: false,
+  },
+  {
+    title: "MongoDB Atlas Functions Example",
+    description: "A collection of serverless functions using MongoDB Atlas Functions, demonstrating various use cases and best practices.",
+    technologies: ["MongoDB", "Atlas Functions", "Serverless", "JavaScript"],
+    image: "/images/projects/atlas-functions.jpg",
+    demoUrl: "https://atlas-functions.mrlynn.dev",
+    githubUrl: "https://github.com/mrlynn/atlas-functions-examples",
+    tags: ["MongoDB", "Serverless", "Functions", "Backend"],
+    featured: false,
+  },
+]; 
+```
+
+# src/data/mongodb-talks.js
+
+```js
+export const mongodbTalks = [
+  {
+    title: "Building Scalable Applications with MongoDB Atlas",
+    description: "Learn how to build and deploy scalable applications using MongoDB Atlas, including best practices for schema design, indexing, and performance optimization.",
+    date: "2024-03-15",
+    event: "MongoDB World 2024",
+    location: "New York, NY",
+    type: "Conference",
+    tags: ["MongoDB", "Atlas", "Scalability", "Cloud"],
+    slides: "https://slides.com/mrlynn/mongodb-world-2024",
+    recording: "https://youtube.com/watch?v=example1",
+    code: "https://github.com/mrlynn/mongodb-examples",
+  },
+  {
+    title: "MongoDB and Next.js: Building Modern Web Applications",
+    description: "Explore how to integrate MongoDB with Next.js applications, including server-side rendering, API routes, and real-time updates.",
+    date: "2024-02-20",
+    event: "Next.js Conference",
+    location: "San Francisco, CA",
+    type: "Conference",
+    tags: ["MongoDB", "Next.js", "Web Development", "Full Stack"],
+    slides: "https://slides.com/mrlynn/nextjs-mongodb",
+    recording: "https://youtube.com/watch?v=example2",
+    code: "https://github.com/mrlynn/nextjs-mongodb-demo",
+  },
+  {
+    title: "MongoDB Performance Optimization Workshop",
+    description: "Hands-on workshop covering MongoDB performance optimization techniques, including query optimization, indexing strategies, and monitoring.",
+    date: "2024-01-10",
+    event: "MongoDB User Group",
+    location: "Virtual",
+    type: "Workshop",
+    tags: ["MongoDB", "Performance", "Workshop", "Best Practices"],
+    slides: "https://slides.com/mrlynn/mongodb-performance",
+    recording: "https://youtube.com/watch?v=example3",
+    code: "https://github.com/mrlynn/mongodb-performance-workshop",
+  },
+  {
+    title: "MongoDB Atlas Vector Search: Building AI Applications",
+    description: "Learn how to build AI-powered applications using MongoDB Atlas Vector Search, including semantic search and recommendation systems.",
+    date: "2023-12-05",
+    event: "AI/ML Conference",
+    location: "Austin, TX",
+    type: "Conference",
+    tags: ["MongoDB", "AI", "Vector Search", "Machine Learning"],
+    slides: "https://slides.com/mrlynn/mongodb-vector-search",
+    recording: "https://youtube.com/watch?v=example4",
+    code: "https://github.com/mrlynn/mongodb-vector-search-demo",
+  },
+  {
+    title: "MongoDB and GraphQL: Modern API Development",
+    description: "Explore how to build GraphQL APIs with MongoDB, including schema design, resolvers, and performance considerations.",
+    date: "2023-11-15",
+    event: "GraphQL Summit",
+    location: "Berlin, Germany",
+    type: "Conference",
+    tags: ["MongoDB", "GraphQL", "API", "Backend"],
+    slides: "https://slides.com/mrlynn/mongodb-graphql",
+    recording: "https://youtube.com/watch?v=example5",
+    code: "https://github.com/mrlynn/mongodb-graphql-example",
+  },
+]; 
+```
+
 # src/data/podcasts.js
 
 ```js
 export const podcasts = [
   {
-    title: 'MongoDB Podcast',
-    description: 'Join us as we explore the world of MongoDB, from basic concepts to advanced features, and hear from experts in the field.',
-    coverImage: '/podcasts/mongodb-podcast.jpg',
+    title: 'The MongoDB Podcast',
+    description: 'The MongoDB Podcast features guest interviews including developers, startups, and founders with MongoDB Principal Developer Advocate Michael Lynn. Learn about new and emerging technology, how to use the various MongoDB products and best practices, how organizations are using MongoDB, and what lead them to choose MongoDB over other databases.',
+    coverImage: 'https://d3t3ozftmdmh3i.cloudfront.net/staging/podcast_uploaded_nologo/42899702/d94a89660675d7dc.jpg',
+    feedUrl: 'https://anchor.fm/s/1004c5698/podcast/rss',
     platforms: [
       {
-        name: 'Spotify',
-        icon: 'spotify',
-        url: 'https://open.spotify.com/show/your-podcast-id'
+        name: 'Apple Podcasts',
+        url: 'https://podcasts.apple.com/us/podcast/the-mongodb-podcast/id1500452446',
+        icon: 'apple'
       },
+      {
+        name: 'Spotify',
+        url: 'https://open.spotify.com/show/0ibUtrJG4JVgwfvB2MXMSb',
+        icon: 'spotify'
+      }
+    ]
+  },
+  {
+    title: 'Daily Reflection Podcast',
+    description: 'The Daily Reflection Podcast delivers hope and inspiration through interviews with members of the recovery community through the lens of the Daily Reflection book.',
+    coverImage: '/podcasts/daily-reflection.jpg',
+    feedUrl: 'https://feeds.buzzsprout.com/1558982.rss',
+    platforms: [
       {
         name: 'Apple Podcasts',
-        icon: 'apple',
-        url: 'https://podcasts.apple.com/podcast/your-podcast-id'
+        url: 'https://podcasts.apple.com/us/podcast/daily-reflection-podcast/id1545568828',
+        icon: 'apple'
       },
       {
-        name: 'Google Podcasts',
-        icon: 'google',
-        url: 'https://podcasts.google.com/feed/your-podcast-id'
-      }
-    ],
-    episodes: [
-      {
-        title: 'Getting Started with MongoDB Atlas',
-        description: 'Learn how to set up your first MongoDB Atlas cluster and start building your applications.',
-        date: '2024-03-15',
-        duration: '25:30',
-        videoId: 'your-video-id',
-        tags: ['MongoDB', 'Atlas', 'Getting Started']
-      },
-      {
-        title: 'Vector Search in MongoDB',
-        description: 'Explore how to implement vector search in MongoDB for AI and machine learning applications.',
-        date: '2024-03-10',
-        duration: '30:15',
-        videoId: 'your-video-id',
-        tags: ['Vector Search', 'AI', 'Machine Learning']
+        name: 'Spotify',
+        url: 'https://open.spotify.com/show/0nIV6OzSBhOelN75rbgKjE',
+        icon: 'spotify'
       }
     ]
   }
@@ -8824,6 +11195,169 @@ export const videos = [
 
 ```
 
+# src/hooks/useAnalytics.js
+
+```js
+import { useEffect } from 'react';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { pageview, event, AnalyticsEvents } from '../lib/analytics';
+
+export const useAnalytics = () => {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  // Track page views
+  useEffect(() => {
+    if (pathname) {
+      const url = pathname + searchParams.toString();
+      pageview(url);
+    }
+  }, [pathname, searchParams]);
+
+  // Track navigation events
+  const trackNavigation = (destination) => {
+    event({
+      action: AnalyticsEvents.NAVIGATION,
+      category: 'navigation',
+      label: destination,
+    });
+  };
+
+  // Track button clicks
+  const trackButtonClick = (buttonName, buttonLocation) => {
+    event({
+      action: AnalyticsEvents.BUTTON_CLICK,
+      category: 'interaction',
+      label: buttonName,
+      value: buttonLocation,
+    });
+  };
+
+  // Track link clicks
+  const trackLinkClick = (linkText, linkUrl) => {
+    event({
+      action: AnalyticsEvents.LINK_CLICK,
+      category: 'interaction',
+      label: linkText,
+      value: linkUrl,
+    });
+  };
+
+  // Track form submissions
+  const trackFormSubmit = (formName) => {
+    event({
+      action: AnalyticsEvents.FORM_SUBMIT,
+      category: 'form',
+      label: formName,
+    });
+  };
+
+  // Track search queries
+  const trackSearch = (searchQuery) => {
+    event({
+      action: AnalyticsEvents.SEARCH,
+      category: 'search',
+      label: searchQuery,
+    });
+  };
+
+  return {
+    trackNavigation,
+    trackButtonClick,
+    trackLinkClick,
+    trackFormSubmit,
+    trackSearch,
+  };
+}; 
+```
+
+# src/lib/analytics.js
+
+```js
+// Google Analytics 4 Configuration
+export const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID;
+
+// Pageview tracking
+export const pageview = (url) => {
+  if (typeof window.gtag === 'function') {
+    window.gtag('config', GA_TRACKING_ID, {
+      page_path: url,
+      send_page_view: true,
+    });
+  }
+};
+
+// Event tracking
+export const event = ({ action, category, label, value }) => {
+  if (typeof window.gtag === 'function') {
+    window.gtag('event', action, {
+      event_category: category,
+      event_label: label,
+      value: value,
+    });
+  }
+};
+
+// Custom event types
+export const AnalyticsEvents = {
+  // Navigation events
+  PAGE_VIEW: 'page_view',
+  NAVIGATION: 'navigation',
+  
+  // Content interaction events
+  BLOG_POST_VIEW: 'blog_post_view',
+  PROJECT_VIEW: 'project_view',
+  VIDEO_PLAY: 'video_play',
+  
+  // User interaction events
+  BUTTON_CLICK: 'button_click',
+  LINK_CLICK: 'link_click',
+  FORM_SUBMIT: 'form_submit',
+  
+  // Search events
+  SEARCH: 'search',
+  
+  // Error events
+  ERROR: 'error',
+};
+
+// Helper function to track content views
+export const trackContentView = (contentType, contentId, contentTitle) => {
+  event({
+    action: contentType === 'blog' ? AnalyticsEvents.BLOG_POST_VIEW : AnalyticsEvents.PROJECT_VIEW,
+    category: 'content',
+    label: contentTitle,
+    value: contentId,
+  });
+};
+
+// Helper function to track video plays
+export const trackVideoPlay = (videoId, videoTitle, platform) => {
+  event({
+    action: AnalyticsEvents.VIDEO_PLAY,
+    category: 'video',
+    label: videoTitle,
+    value: videoId,
+    custom_parameters: {
+      platform,
+    },
+  });
+};
+
+// Helper function to track errors
+export const trackError = (errorType, errorMessage, errorStack) => {
+  event({
+    action: AnalyticsEvents.ERROR,
+    category: 'error',
+    label: errorMessage,
+    value: errorType,
+    custom_parameters: {
+      stack: errorStack,
+    },
+  });
+}; 
+```
+
 # src/lib/blog.js
 
 ```js
@@ -8835,54 +11369,82 @@ import rehypeSlug from 'rehype-slug';
 import rehypePrism from 'rehype-prism-plus';
 import remarkGfm from 'remark-gfm';
 
-const BLOG_DIR = path.join(process.cwd(), 'content/blog');
+const postsDirectory = path.join(process.cwd(), 'content/blog');
 
-export async function getAllPosts() {
-  const files = fs.readdirSync(BLOG_DIR);
-  const posts = await Promise.all(
-    files
-      .filter((file) => file.endsWith('.mdx'))
-      .map(async (file) => {
-        const source = fs.readFileSync(path.join(BLOG_DIR, file), 'utf8');
-        const { data, content } = matter(source);
-        const mdxSource = await serialize(content, {
-          mdxOptions: {
-            rehypePlugins: [rehypeSlug, rehypePrism],
-            remarkPlugins: [remarkGfm],
-          },
-        });
+export async function getAllPosts(category = null, excludeCategory = null) {
+  // Get file names under /content/blog
+  const fileNames = fs.readdirSync(postsDirectory);
+  const allPosts = await Promise.all(
+    fileNames.map(async (fileName) => {
+      // Remove ".mdx" from file name to get slug
+      const slug = fileName.replace(/\.mdx?$/, '');
 
-        return {
-          ...data,
-          slug: file.replace(/\.mdx$/, ''),
-          mdxSource,
-        };
-      })
+      // Read markdown file as string
+      const fullPath = path.join(postsDirectory, fileName);
+      const fileContents = fs.readFileSync(fullPath, 'utf8');
+
+      // Use gray-matter to parse the post metadata section
+      const { data: frontmatter, content } = matter(fileContents);
+
+      // Filter by category if specified
+      if (category && frontmatter.category !== category) {
+        return null;
+      }
+
+      // Filter out excluded category if specified
+      if (excludeCategory && frontmatter.category === excludeCategory) {
+        return null;
+      }
+
+      // Combine the data with the slug
+      return {
+        slug,
+        ...frontmatter,
+        content
+      };
+    })
   );
 
-  return posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+  // Filter out null values and sort posts by date
+  const posts = allPosts
+    .filter(post => post !== null)
+    .sort((a, b) => {
+      if (a.date < b.date) {
+        return 1;
+      } else {
+        return -1;
+      }
+    });
+
+  return posts;
 }
 
 export async function getPostBySlug(slug) {
-  const filePath = path.join(BLOG_DIR, `${slug}.mdx`);
-  const source = fs.readFileSync(filePath, 'utf8');
-  const { data, content } = matter(source);
-  const mdxSource = await serialize(content, {
-    mdxOptions: {
-      rehypePlugins: [rehypeSlug, rehypePrism],
-      remarkPlugins: [remarkGfm],
-    },
-  });
+  const fullPath = path.join(postsDirectory, `${slug}.mdx`);
+  
+  try {
+    const fileContents = fs.readFileSync(fullPath, 'utf8');
+    const { data: frontmatter, content } = matter(fileContents);
+    
+    const mdxSource = await serialize(content, {
+      mdxOptions: {
+        development: process.env.NODE_ENV === 'development',
+      },
+    });
 
-  return {
-    ...data,
-    slug,
-    mdxSource,
-  };
+    return {
+      slug,
+      content: mdxSource,
+      ...frontmatter,
+    };
+  } catch (error) {
+    console.error(`Error reading post ${slug}:`, error);
+    return null;
+  }
 }
 
 export function getAllPostSlugs() {
-  const files = fs.readdirSync(BLOG_DIR);
+  const files = fs.readdirSync(postsDirectory);
   return files
     .filter((file) => file.endsWith('.mdx'))
     .map((file) => file.replace(/\.mdx$/, ''));
@@ -8990,81 +11552,6 @@ export async function getPostBySlug(slug) {
   } catch (error) {
     console.error(`Error getting post ${slug}:`, error);
     throw error;
-  }
-} 
-```
-
-# src/lib/mdx.ts
-
-```ts
-import fs from 'fs';
-import path from 'path';
-import matter from 'gray-matter';
-import { serialize } from 'next-mdx-remote/serialize';
-
-const BLOG_DIR = path.join(process.cwd(), 'content/blog');
-
-export interface BlogPost {
-  slug: string;
-  title: string;
-  date: string;
-  author: string;
-  description: string;
-  image: string;
-  tags: string[];
-  content: string;
-  mdxSource: any;
-}
-
-export async function getAllBlogPosts(): Promise<BlogPost[]> {
-  const files = fs.readdirSync(BLOG_DIR);
-  
-  const posts = await Promise.all(
-    files
-      .filter((file) => file.endsWith('.mdx'))
-      .map(async (file) => {
-        const filePath = path.join(BLOG_DIR, file);
-        const source = fs.readFileSync(filePath, 'utf8');
-        const { content, data } = matter(source);
-        const mdxSource = await serialize(content);
-        
-        return {
-          slug: file.replace('.mdx', ''),
-          title: data.title,
-          date: data.date,
-          author: data.author,
-          description: data.description,
-          image: data.image,
-          tags: data.tags,
-          content,
-          mdxSource,
-        };
-      })
-  );
-
-  return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-}
-
-export async function getBlogPost(slug: string): Promise<BlogPost | null> {
-  try {
-    const filePath = path.join(BLOG_DIR, `${slug}.mdx`);
-    const source = fs.readFileSync(filePath, 'utf8');
-    const { content, data } = matter(source);
-    const mdxSource = await serialize(content);
-
-    return {
-      slug,
-      title: data.title,
-      date: data.date,
-      author: data.author,
-      description: data.description,
-      image: data.image,
-      tags: data.tags,
-      content,
-      mdxSource,
-    };
-  } catch (error) {
-    return null;
   }
 } 
 ```
@@ -9277,7 +11764,7 @@ export function ThemeProvider({ children }) {
     palette: {
       mode: isDarkMode ? 'dark' : 'light',
       primary: {
-        main: '#2563eb',
+        main: '#0d3793',
         light: isDarkMode ? '#80e4ff' : '#339af0',
         dark: isDarkMode ? '#0095cc' : '#003580',
       },
@@ -9507,52 +11994,98 @@ export const useTheme = () => useContext(ThemeContext);
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
-import { parseISO } from 'date-fns';
+import { serialize } from 'next-mdx-remote/serialize';
 
-const BLOG_DIR = path.join(process.cwd(), 'content/blog');
+const postsDirectory = path.join(process.cwd(), 'content/blog');
 
-export async function getAllPosts() {
-  // Ensure the blog directory exists
-  if (!fs.existsSync(BLOG_DIR)) {
-    fs.mkdirSync(BLOG_DIR, { recursive: true });
-    return [];
-  }
+export async function getAllPosts(category = null, excludeCategory = null) {
+  // Get file names under /content/blog
+  const fileNames = fs.readdirSync(postsDirectory);
+  const allPosts = await Promise.all(
+    fileNames.map(async (fileName) => {
+      // Remove ".mdx" from file name to get slug
+      const slug = fileName.replace(/\.mdx?$/, '');
 
-  const files = fs.readdirSync(BLOG_DIR);
-  const posts = files
-    .filter((file) => file.endsWith('.mdx'))
-    .map((file) => {
-      const filePath = path.join(BLOG_DIR, file);
-      const fileContent = fs.readFileSync(filePath, 'utf8');
-      const { data, content } = matter(fileContent);
-      const slug = file.replace(/\.mdx$/, '');
+      // Read markdown file as string
+      const fullPath = path.join(postsDirectory, fileName);
+      const fileContents = fs.readFileSync(fullPath, 'utf8');
 
-      // Ensure the date is in ISO format
-      let date = data.date;
-      try {
-        // Try to parse the date and convert it to ISO format
-        date = parseISO(data.date).toISOString().split('T')[0];
-      } catch (error) {
-        console.error(`Error parsing date for post ${slug}:`, error);
-        // If parsing fails, use the original date string
+      // Use gray-matter to parse the post metadata section
+      const { data: frontmatter, content } = matter(fileContents);
+
+      // Filter by category if specified
+      if (category && frontmatter.category !== category) {
+        return null;
       }
 
+      // Filter out excluded category if specified
+      if (excludeCategory && frontmatter.category === excludeCategory) {
+        return null;
+      }
+
+      // Combine the data with the slug
       return {
         slug,
-        ...data,
-        date,
-        content,
+        ...frontmatter,
+        content
       };
     })
-    .sort((a, b) => new Date(b.date) - new Date(a.date));
+  );
+
+  // Filter out null values and sort posts by date
+  const posts = allPosts
+    .filter(post => post !== null)
+    .sort((a, b) => {
+      if (a.date < b.date) {
+        return 1;
+      } else {
+        return -1;
+      }
+    });
 
   return posts;
 }
 
 export async function getPostBySlug(slug) {
-  const filePath = path.join(BLOG_DIR, `${slug}.mdx`);
+  const fullPath = path.join(postsDirectory, `${slug}.mdx`);
   
-  if (!fs.existsSync(filePath)) {
+  try {
+    const fileContents = fs.readFileSync(fullPath, 'utf8');
+    const { data: frontmatter, content } = matter(fileContents);
+    
+    const mdxSource = await serialize(content, {
+      mdxOptions: {
+        development: process.env.NODE_ENV === 'development',
+      },
+    });
+
+    return {
+      slug,
+      content: mdxSource,
+      ...frontmatter,
+    };
+  } catch (error) {
+    console.error(`Error reading post ${slug}:`, error);
+    return null;
+  }
+}
+
+export function getAllPostSlugs() {
+  const files = fs.readdirSync(postsDirectory);
+  return files
+    .filter((file) => file.endsWith('.mdx'))
+    .map((file) => file.replace(/\.mdx$/, ''));
+}
+
+// Helper function to get all projects (posts with category 'project')
+export async function getAllProjects() {
+  return getAllPosts('project');
+}
+
+// Helper function to get a project by slug
+export async function getProjectBySlug(slug) {
+  const post = await getPostBySlug(slug);
+  if (!post || post.category !== 'project') {
     return null;
   }
 
@@ -9567,13 +12100,48 @@ export async function getPostBySlug(slug) {
     console.error(`Error parsing date for post ${slug}:`, error);
   }
 
+  // Serialize the MDX content
+  const mdxSource = await serialize(content, {
+    mdxOptions: {
+      development: process.env.NODE_ENV === 'development',
+      remarkPlugins: [],
+      rehypePlugins: [],
+    },
+    parseFrontmatter: true,
+  });
+
   return {
     slug,
     ...data,
     date,
-    content,
+    content: mdxSource,
   };
 } 
+```
+
+# src/utils/imageUtils.js
+
+```js
+export const cleanImagePath = (src) => {
+  if (!src) return '';
+  
+  // Handle markdown image syntax [path]
+  if (src.startsWith('[') && src.endsWith(']')) {
+    src = src.slice(1, -1);
+  }
+  
+  // Handle relative paths
+  if (src.startsWith('./')) {
+    src = src.substring(2);
+  }
+  
+  // Handle absolute paths starting with /
+  if (src.startsWith('/')) {
+    src = src.substring(1);
+  }
+
+  return src;
+}; 
 ```
 
 # src/utils/mdx.js
@@ -9583,9 +12151,6 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import { serialize } from 'next-mdx-remote/serialize';
-import rehypeSlug from 'rehype-slug';
-import rehypePrism from 'rehype-prism-plus';
-import remarkGfm from 'remark-gfm';
 
 const MDX_COMPONENTS_DIR = path.join(process.cwd(), 'src/components/mdx/includes');
 
@@ -9636,143 +12201,344 @@ export async function getMDXContent(filePath) {
       return null;
     }
 
-    const fileContents = fs.readFileSync(fullPath, 'utf8');
-    console.log('File contents loaded, length:', fileContents.length);
-    
-    // Process includes before parsing frontmatter
-    const processedContent = processMDXIncludes(fileContents, fullPath);
-    
-    // Parse frontmatter and content
-    const { data, content } = matter(processedContent);
-    console.log('Frontmatter parsed:', data);
+    const source = fs.readFileSync(fullPath, 'utf8');
+    const { data: frontmatter, content } = matter(source);
+    const processedContent = processMDXIncludes(content, filePath);
     
     // Serialize the MDX content
-    const mdxSource = await serialize(content, {
-      mdxOptions: {
-        remarkPlugins: [remarkGfm],
-        rehypePlugins: [rehypeSlug, [rehypePrism, { ignoreMissing: true }]],
-        format: 'mdx',
-      },
+    const mdxSource = await serialize(processedContent, {
       parseFrontmatter: true,
+      mdxOptions: {
+        development: process.env.NODE_ENV === 'development',
+      }
     });
 
-    console.log('MDX content serialized successfully');
-    console.log('Content type:', typeof mdxSource);
-    console.log('Content preview:', mdxSource.substring(0, 100));
-
     return {
-      frontmatter: data,
+      frontmatter,
       content: mdxSource,
+      slug: path.basename(filePath, path.extname(filePath)),
     };
   } catch (error) {
-    console.error(`Error processing MDX file ${filePath}:`, error);
-    console.error('Error stack:', error.stack);
+    console.error('Error processing MDX file:', error);
     return null;
   }
 }
 
 // Function to get all MDX files from a directory
 export async function getAllMDXFiles(directory) {
-  try {
-    const fullPath = path.join(process.cwd(), directory);
-    console.log('Reading directory:', fullPath);
-    
-    if (!fs.existsSync(fullPath)) {
-      console.error(`Directory not found: ${fullPath}`);
-      return [];
-    }
-
-    const files = fs.readdirSync(fullPath);
-    console.log('Found files:', files);
-    
-    const mdxFiles = await Promise.all(
-      files
-        .filter((file) => file.endsWith('.mdx'))
-        .map(async (file) => {
-          const filePath = path.join(directory, file);
-          const result = await getMDXContent(filePath);
-          
-          if (!result) {
-            return null;
-          }
-
-          return {
-            ...result.frontmatter,
-            slug: file.replace(/\.mdx$/, ''),
-            content: result.content,
-          };
-        })
-    );
-
-    return mdxFiles.filter(Boolean).sort((a, b) => new Date(b.date) - new Date(a.date));
-  } catch (error) {
-    console.error(`Error getting MDX files from ${directory}:`, error);
+  const fullPath = path.join(process.cwd(), directory);
+  
+  if (!fs.existsSync(fullPath)) {
+    fs.mkdirSync(fullPath, { recursive: true });
     return [];
   }
+
+  const files = fs.readdirSync(fullPath);
+  const mdxFiles = files.filter(file => file.endsWith('.mdx'));
+
+  const allContent = await Promise.all(
+    mdxFiles.map(async (file) => {
+      const filePath = path.join(directory, file);
+      const content = await getMDXContent(filePath);
+      if (!content) return null;
+
+      const slug = file.replace(/\.mdx$/, '');
+      return {
+        slug,
+        ...content.frontmatter,
+        content: content.content,
+      };
+    })
+  );
+
+  return allContent.filter(Boolean);
+}
+
+// Function to get a single MDX file by slug
+export async function getMDXFileBySlug(directory, slug) {
+  const filePath = path.join(directory, `${slug}.mdx`);
+  const content = await getMDXContent(filePath);
+  
+  if (!content) return null;
+
+  return {
+    slug,
+    ...content.frontmatter,
+    content: content.content,
+  };
 } 
+```
+
+# src/utils/podcastUtils.js
+
+```js
+const APPLE_PODCAST_API = 'https://itunes.apple.com/lookup';
+const SPOTIFY_API = 'https://api.spotify.com/v1';
+
+export const fetchPodcastData = async (feedUrl) => {
+  try {
+    const response = await fetch(feedUrl);
+    if (!response.ok) {
+      throw new Error('Failed to fetch podcast feed');
+    }
+    
+    const feedData = await response.text();
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(feedData, 'text/xml');
+    
+    // Extract podcast info
+    const channel = xmlDoc.getElementsByTagName('channel')[0];
+    const podcast = {
+      title: channel.getElementsByTagName('title')[0]?.textContent || '',
+      description: channel.getElementsByTagName('description')[0]?.textContent || '',
+      author: channel.getElementsByTagName('itunes:author')[0]?.textContent || '',
+      imageUrl: channel.getElementsByTagName('image')[0]?.getElementsByTagName('url')[0]?.textContent || '',
+      categories: Array.from(channel.getElementsByTagName('itunes:category')).map(cat => cat.getAttribute('text')),
+      language: channel.getElementsByTagName('language')[0]?.textContent || '',
+      lastBuildDate: channel.getElementsByTagName('lastBuildDate')[0]?.textContent || '',
+    };
+
+    // Extract episodes
+    const episodes = Array.from(xmlDoc.getElementsByTagName('item')).map(item => ({
+      title: item.getElementsByTagName('title')[0]?.textContent || '',
+      description: item.getElementsByTagName('description')[0]?.textContent || '',
+      pubDate: item.getElementsByTagName('pubDate')[0]?.textContent || '',
+      duration: item.getElementsByTagName('itunes:duration')[0]?.textContent || '',
+      audioUrl: item.getElementsByTagName('enclosure')[0]?.getAttribute('url') || '',
+      episodeNumber: item.getElementsByTagName('itunes:episode')[0]?.textContent || '',
+      seasonNumber: item.getElementsByTagName('itunes:season')[0]?.textContent || '',
+      guid: item.getElementsByTagName('guid')[0]?.textContent || '',
+      link: item.getElementsByTagName('link')[0]?.textContent || '',
+    }));
+
+    return {
+      podcast,
+      episodes,
+    };
+  } catch (error) {
+    console.error('Error fetching podcast data:', error);
+    throw error;
+  }
+};
+
+const fetchApplePodcast = async (podcastId) => {
+  const response = await fetch(`${APPLE_PODCAST_API}?id=${podcastId}&entity=podcast`);
+  const data = await response.json();
+  
+  if (!data.results || data.results.length === 0) {
+    throw new Error('Podcast not found');
+  }
+
+  const podcast = data.results[0];
+  
+  // Fetch episodes using the feed URL
+  const feedResponse = await fetch(podcast.feedUrl);
+  const feedData = await feedResponse.text();
+  
+  // Parse the XML feed
+  const parser = new DOMParser();
+  const xmlDoc = parser.parseFromString(feedData, 'text/xml');
+  
+  // Extract episodes
+  const episodes = Array.from(xmlDoc.getElementsByTagName('item')).map(item => ({
+    title: item.getElementsByTagName('title')[0]?.textContent || '',
+    description: item.getElementsByTagName('description')[0]?.textContent || '',
+    pubDate: item.getElementsByTagName('pubDate')[0]?.textContent || '',
+    duration: item.getElementsByTagName('itunes:duration')[0]?.textContent || '',
+    audioUrl: item.getElementsByTagName('enclosure')[0]?.getAttribute('url') || '',
+    episodeNumber: item.getElementsByTagName('itunes:episode')[0]?.textContent || '',
+    seasonNumber: item.getElementsByTagName('itunes:season')[0]?.textContent || '',
+  }));
+
+  return {
+    podcast: {
+      title: podcast.trackName,
+      description: podcast.description,
+      author: podcast.artistName,
+      imageUrl: podcast.artworkUrl600,
+      feedUrl: podcast.feedUrl,
+      categories: podcast.genres,
+      rating: podcast.averageUserRating,
+      ratingCount: podcast.userRatingCount,
+      platform: 'apple',
+    },
+    episodes,
+  };
+};
+
+const fetchSpotifyPodcast = async (showId) => {
+  // Note: This requires a Spotify API token
+  const token = await getSpotifyToken();
+  const response = await fetch(`${SPOTIFY_API}/shows/${showId}`, {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+  
+  if (!response.ok) {
+    throw new Error('Failed to fetch Spotify podcast');
+  }
+
+  const show = await response.json();
+  
+  // Fetch episodes
+  const episodesResponse = await fetch(`${SPOTIFY_API}/shows/${showId}/episodes?limit=50`, {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+  
+  if (!episodesResponse.ok) {
+    throw new Error('Failed to fetch Spotify episodes');
+  }
+
+  const episodesData = await episodesResponse.json();
+  
+  return {
+    podcast: {
+      title: show.name,
+      description: show.description,
+      author: show.publisher,
+      imageUrl: show.images[0]?.url,
+      categories: show.languages,
+      rating: show.popularity / 20, // Convert Spotify popularity to 5-star rating
+      ratingCount: show.followers.total,
+      platform: 'spotify',
+    },
+    episodes: episodesData.items.map(episode => ({
+      title: episode.name,
+      description: episode.description,
+      pubDate: episode.release_date,
+      duration: episode.duration_ms / 1000, // Convert to seconds
+      audioUrl: episode.external_urls.spotify,
+      episodeNumber: episode.episode_number,
+      seasonNumber: episode.season_number,
+    })),
+  };
+};
+
+// Helper function to get Spotify API token
+const getSpotifyToken = async () => {
+  const response = await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': `Basic ${Buffer.from(
+        `${process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`
+      ).toString('base64')}`,
+    },
+    body: 'grant_type=client_credentials',
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to get Spotify token');
+  }
+
+  const data = await response.json();
+  return data.access_token;
+};
+
+export const formatDuration = (duration) => {
+  if (!duration) return '';
+  
+  // Convert duration to seconds if it's in HH:MM:SS format
+  let seconds = duration;
+  if (duration.includes(':')) {
+    const [hours, minutes, secs] = duration.split(':').map(Number);
+    seconds = hours * 3600 + minutes * 60 + secs;
+  }
+  
+  // Format duration
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  
+  if (hours > 0) {
+    return `${hours}h ${minutes}m`;
+  }
+  return `${minutes}m`;
+}; 
 ```
 
 # src/utils/projects.js
 
 ```js
-import { readFileSync, readdirSync } from 'fs';
-import { join } from 'path';
-import matter from 'gray-matter';
+import { getAllMDXFiles, getMDXFileBySlug } from './mdx';
 import { parseISO } from 'date-fns';
 
-const projectsDirectory = join(process.cwd(), 'content/projects');
+const PROJECTS_DIR = 'content/projects';
 
 export async function getAllProjects() {
-  const fileNames = readdirSync(projectsDirectory);
-  const allProjectsData = fileNames
-    .filter(fileName => fileName.endsWith('.mdx'))
-    .map(fileName => {
-      // Remove ".mdx" from file name to get id
-      const slug = fileName.replace(/\.mdx$/, '');
-
-      // Read markdown file as string
-      const fullPath = join(projectsDirectory, fileName);
-      const fileContents = readFileSync(fullPath, 'utf8');
-
-      // Use gray-matter to parse the post metadata section
-      const { data, content } = matter(fileContents);
-
-      // Combine the data with the id
-      return {
-        slug,
-        ...data,
-        date: data.date ? parseISO(data.date) : new Date(),
-        content
-      };
-    });
-
+  const projects = await getAllMDXFiles(PROJECTS_DIR);
+  
   // Sort projects by date
-  return allProjectsData.sort((a, b) => b.date - a.date);
+  return projects.sort((a, b) => {
+    const dateA = parseISO(a.date || new Date().toISOString());
+    const dateB = parseISO(b.date || new Date().toISOString());
+    return dateB - dateA;
+  });
 }
 
 export async function getProjectBySlug(slug) {
-  const filePath = join(projectsDirectory, `${slug}.mdx`);
+  const project = await getMDXFileBySlug(PROJECTS_DIR, slug);
   
-  try {
-    const fileContents = readFileSync(filePath, 'utf8');
-    const { data, content } = matter(fileContents);
+  if (!project) return null;
 
-    return {
-      slug,
-      ...data,
-      content
-    };
-  } catch (error) {
-    return null;
+  // Ensure date is properly formatted
+  if (project.date) {
+    project.date = parseISO(project.date).toISOString();
   }
+
+  // Ensure tags is an array
+  if (!Array.isArray(project.tags)) {
+    project.tags = [];
+  }
+
+  // Ensure technologies is an array
+  if (!Array.isArray(project.technologies)) {
+    project.technologies = [];
+  }
+
+  console.log('Project data:', {
+    title: project.title,
+    hasContent: !!project.content,
+    contentType: typeof project.content,
+    contentPreview: JSON.stringify(project.content).substring(0, 100),
+  });
+
+  return project;
 }
 
 export function getAllProjectSlugs() {
-  const files = readdirSync(projectsDirectory);
-  return files
-    .filter((file) => file.endsWith('.mdx'))
-    .map((file) => file.replace(/\.mdx$/, ''));
+  return getAllProjects().then(projects => projects.map(project => project.slug));
 } 
+```
+
+# src/utils/videoUtils.js
+
+```js
+export const getVideoUrl = (videoId, platform = 'youtube') => {
+  switch (platform.toLowerCase()) {
+    case 'youtube':
+      return `https://www.youtube.com/watch?v=${videoId}`;
+    case 'tiktok':
+      return `https://www.tiktok.com/@fitbodymike/video/${videoId}`;
+    case 'vimeo':
+      return `https://player.vimeo.com/video/${videoId}`;
+    default:
+      return `https://www.youtube.com/watch?v=${videoId}`;
+  }
+};
+
+export const getVideoEmbedUrl = (videoId, platform = 'youtube') => {
+  switch (platform.toLowerCase()) {
+    case 'youtube':
+      return `https://www.youtube.com/embed/${videoId}`;
+    case 'vimeo':
+      return `https://player.vimeo.com/video/${videoId}`;
+    default:
+      return `https://www.youtube.com/embed/${videoId}`;
+  }
+}; 
 ```
 
 # tsconfig.json

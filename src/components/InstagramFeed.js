@@ -9,7 +9,10 @@ const InstagramFeed = () => {
     'https://www.instagram.com/p/CupldQhJIwI/',
     'https://www.instagram.com/reel/CnhWpHLhoGw/',
     'https://www.instagram.com/reel/CucGbwQgpmX/',
-    'https://www.instagram.com/reel/CuU9NucpV4l/'
+    'https://www.instagram.com/reel/CuU9NucpV4l/',
+    'https://www.instagram.com/p/C5Zaa8gpmWT/',
+    'https://www.instagram.com/p/C4O1O_spGWN/',
+    'https://www.instagram.com/p/CxEouYHLMrz/'
     // Add more post URLs as needed
   ];
 

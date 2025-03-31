@@ -42,3 +42,4 @@ next-env.d.ts
 .cursorrules
 *pdf
 out/*
+codebase.md

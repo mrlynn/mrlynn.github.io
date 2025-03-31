@@ -1,0 +1,110 @@
+---
+title: "Portfolio Website Redesign"
+description: "A complete redesign of my personal portfolio using Next.js and Material UI"
+date: "2024-03-30"
+image: "/images/projects/portfolio/hero.jpg"
+tags: ["Next.js", "React", "Material UI"]
+color: "#4A90E2"
+private: false
+technologies: ["React", "Next.js", "Material UI", "MDX", "Vercel"]
+demoUrl: "https://myportfolio.com"
+githubUrl: "https://github.com/username/portfolio"
+---
+
+# Project Overview
+
+This project represents a complete overhaul of my personal portfolio website, focusing on modern design principles and enhanced performance.
+
+<TechStack 
+  technologies={[
+    "React", 
+    "Next.js", 
+    "Material UI", 
+    "MDX", 
+    "Framer Motion",
+    "Vercel"
+  ]}
+/>
+
+## Key Features
+
+- Server-side rendering for improved SEO and performance
+- Dark/light mode with persistent user preferences
+- Interactive project showcases with detailed case studies
+- Integrated blog with MDX support
+- Contact form with email integration
+
+<ImageGrid 
+  images={[
+    { src: "/images/projects/portfolio/home.jpg", alt: "Home page" },
+    { src: "/images/projects/portfolio/projects.jpg", alt: "Projects page" },
+    { src: "/images/projects/portfolio/blog.jpg", alt: "Blog page" },
+    { src: "/images/projects/portfolio/contact.jpg", alt: "Contact page" }
+  ]}
+  columns={2}
+/>
+
+## Development Process
+
+The development process followed an iterative approach, with regular user testing and feedback integration.
+
+<VideoPlayer 
+  title="Design and Development Process"
+  description="A timelapse of the design and development process"
+  src="https://www.youtube.com/watch?v=abc123"
+/>
+
+## Technical Implementation
+
+The navigation system uses Material UI's Drawer component with custom animations:
+
+<CodeDemo 
+  title="Custom Animated Navigation" 
+  description="Navigation drawer with Framer Motion animations"
+  code={`
+import { Drawer, List, ListItem, ListItemText } from '@mui/material';
+import { motion } from 'framer-motion';
+
+// Animated list item
+const AnimatedListItem = motion(ListItem);
+
+const Navigation = ({ open, onClose }) => {
+  return (
+    <Drawer
+      anchor="left"
+      open={open}
+      onClose={onClose}
+    >
+      <List sx={{ width: 250 }}>
+        {['Home', 'Projects', 'Blog', 'Contact'].map((text, index) => (
+          <AnimatedListItem
+            button
+            key={text}
+            initial={{ x: -20, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ delay: index * 0.1 }}
+            onClick={onClose}
+          >
+            <ListItemText primary={text} />
+          </AnimatedListItem>
+        ))}
+      </List>
+    </Drawer>
+  );
+};
+`}
+>
+  <div style={{ padding: '10px' }}>
+    <div style={{ marginBottom: '10px', fontWeight: 'bold' }}>Navigation Menu</div>
+    <div style={{ border: '1px solid #ccc', borderRadius: '4px', overflow: 'hidden' }}>
+      <div style={{ padding: '10px 15px', borderBottom: '1px solid #eee', backgroundColor: '#f0f8ff' }}>Home</div>
+      <div style={{ padding: '10px 15px', borderBottom: '1px solid #eee', backgroundColor: '#f0f8ff' }}>Projects</div>
+      <div style={{ padding: '10px 15px', borderBottom: '1px solid #eee', backgroundColor: '#f0f8ff' }}>Blog</div>
+      <div style={{ padding: '10px 15px', backgroundColor: '#f0f8ff' }}>Contact</div>
+    </div>
+  </div>
+</CodeDemo>
+
+## Conclusion
+
+This project significantly improved my online presence while showcasing my front-end development skills. The new portfolio has resulted in a 40% increase in user engagement and several new client inquiries.
