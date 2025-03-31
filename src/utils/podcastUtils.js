@@ -94,6 +94,12 @@ const fetchApplePodcast = async (podcastId) => {
 
 // Helper function to get Spotify API token with retries
 const getSpotifyToken = async (retries = 3) => {
+  // Check if credentials are configured
+  if (!process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID || !process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET) {
+    console.warn('Spotify credentials not configured, falling back to RSS feed');
+    return null;
+  }
+
   for (let i = 0; i < retries; i++) {
     try {
       const response = await fetch('/api/spotify/token');
@@ -103,7 +109,8 @@ const getSpotifyToken = async (retries = 3) => {
         console.error(`Spotify token attempt ${i + 1} failed:`, errorData);
         
         if (i === retries - 1) {
-          throw new Error('Failed to get Spotify token after multiple attempts');
+          console.warn('Failed to get Spotify token after multiple attempts, falling back to RSS feed');
+          return null;
         }
         
         // Wait before retrying (exponential backoff)
@@ -117,7 +124,8 @@ const getSpotifyToken = async (retries = 3) => {
       console.error(`Spotify token attempt ${i + 1} error:`, error);
       
       if (i === retries - 1) {
-        throw error;
+        console.warn('Failed to get Spotify token after multiple attempts, falling back to RSS feed');
+        return null;
       }
       
       // Wait before retrying (exponential backoff)

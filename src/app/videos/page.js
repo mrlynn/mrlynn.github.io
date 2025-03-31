@@ -1,12 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Box, Container, Typography, Grid, Paper, Chip, Stack, Tooltip } from '@mui/material';
 import { motion } from 'framer-motion';
 import { YouTube as YouTubeIcon, MusicNote as TikTokIcon } from '@mui/icons-material';
 import { useTheme } from '@mui/material';
 import { withAnalytics } from '../../components/withAnalytics';
 import { videos } from '../../data/videos';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const MotionPaper = motion(Paper);
 
@@ -32,8 +34,9 @@ const getPlatformIcon = (platform) => {
   }
 };
 
-function VideosPage() {
+function VideosPageContent() {
   const theme = useTheme();
+  const searchParams = useSearchParams();
   const [selectedTags, setSelectedTags] = useState([]);
 
   // Get unique tags from all videos
@@ -280,6 +283,18 @@ function VideosPage() {
         </Grid>
       </Container>
     </Box>
+  );
+}
+
+function VideosPage() {
+  return (
+    <Suspense fallback={
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
+        <CircularProgress />
+      </Box>
+    }>
+      <VideosPageContent />
+    </Suspense>
   );
 }
 
