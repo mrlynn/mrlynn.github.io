@@ -28,37 +28,43 @@ export default function PodcastEpisodes({ feedUrl, onMetadataLoad }) {
         setLoading(true);
         setError(null);
 
-        // Try to fetch from Spotify first
-        const spotifyData = await fetchSpotifyPodcast(feedUrl);
+        // Fetch from RSS feed
+        const response = await fetch(feedUrl);
+        if (!response.ok) {
+          throw new Error('Failed to fetch podcast feed');
+        }
         
-        if (spotifyData) {
-          setEpisodes(spotifyData.episodes);
-          if (onMetadataLoad) {
-            onMetadataLoad(spotifyData.podcast);
-          }
-        } else {
-          // Fallback to RSS feed
-          const response = await fetch(feedUrl);
-          if (!response.ok) {
-            throw new Error('Failed to fetch podcast feed');
-          }
-          
-          const feedData = await response.text();
-          const parser = new DOMParser();
-          const xmlDoc = parser.parseFromString(feedData, 'text/xml');
-          
-          const items = xmlDoc.getElementsByTagName('item');
-          const parsedEpisodes = Array.from(items).map(item => ({
-            title: item.getElementsByTagName('title')[0]?.textContent || '',
-            description: item.getElementsByTagName('description')[0]?.textContent || '',
-            pubDate: item.getElementsByTagName('pubDate')[0]?.textContent || '',
-            duration: item.getElementsByTagName('itunes:duration')[0]?.textContent || '',
-            audioUrl: item.getElementsByTagName('enclosure')[0]?.getAttribute('url') || '',
-            episodeNumber: item.getElementsByTagName('itunes:episode')[0]?.textContent || '',
-            seasonNumber: item.getElementsByTagName('itunes:season')[0]?.textContent || '',
-          }));
+        const feedData = await response.text();
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(feedData, 'text/xml');
+        
+        // Extract podcast info
+        const channel = xmlDoc.getElementsByTagName('channel')[0];
+        const podcast = {
+          title: channel.getElementsByTagName('title')[0]?.textContent || '',
+          description: channel.getElementsByTagName('description')[0]?.textContent || '',
+          author: channel.getElementsByTagName('itunes:author')[0]?.textContent || '',
+          imageUrl: channel.getElementsByTagName('image')[0]?.getElementsByTagName('url')[0]?.textContent || '',
+          categories: Array.from(channel.getElementsByTagName('itunes:category')).map(cat => cat.getAttribute('text')),
+          language: channel.getElementsByTagName('language')[0]?.textContent || '',
+          lastBuildDate: channel.getElementsByTagName('lastBuildDate')[0]?.textContent || '',
+        };
 
-          setEpisodes(parsedEpisodes);
+        // Extract episodes
+        const items = xmlDoc.getElementsByTagName('item');
+        const parsedEpisodes = Array.from(items).map(item => ({
+          title: item.getElementsByTagName('title')[0]?.textContent || '',
+          description: item.getElementsByTagName('description')[0]?.textContent || '',
+          pubDate: item.getElementsByTagName('pubDate')[0]?.textContent || '',
+          duration: item.getElementsByTagName('itunes:duration')[0]?.textContent || '',
+          audioUrl: item.getElementsByTagName('enclosure')[0]?.getAttribute('url') || '',
+          episodeNumber: item.getElementsByTagName('itunes:episode')[0]?.textContent || '',
+          seasonNumber: item.getElementsByTagName('itunes:season')[0]?.textContent || '',
+        }));
+
+        setEpisodes(parsedEpisodes);
+        if (onMetadataLoad) {
+          onMetadataLoad(podcast);
         }
       } catch (err) {
         console.error('Error fetching episodes:', err);
@@ -153,11 +159,24 @@ export default function PodcastEpisodes({ feedUrl, onMetadataLoad }) {
           </CardContent>
         </MotionCard>
       ))}
-      {visibleEpisodes < episodes.length && (
-        <Box display="flex" justifyContent="center" mt={2}>
+      {episodes.length > visibleEpisodes && (
+        <Box display="flex" justifyContent="center" mt={4}>
           <Button
             variant="outlined"
             onClick={handleLoadMore}
+            sx={{
+              borderColor: (theme) => theme.palette.mode === 'dark' 
+                ? 'rgba(255,255,255,0.2)' 
+                : 'rgba(0,0,0,0.2)',
+              '&:hover': {
+                borderColor: (theme) => theme.palette.mode === 'dark' 
+                  ? 'rgba(255,255,255,0.3)' 
+                  : 'rgba(0,0,0,0.3)',
+                background: (theme) => theme.palette.mode === 'dark' 
+                  ? 'rgba(255,255,255,0.05)' 
+                  : 'rgba(0,0,0,0.05)',
+              },
+            }}
           >
             Load More Episodes
           </Button>

@@ -9,11 +9,6 @@ export const podcasts = [
         name: 'Apple Podcasts',
         url: 'https://podcasts.apple.com/us/podcast/the-mongodb-podcast/id1500452446',
         icon: 'apple'
-      },
-      {
-        name: 'Spotify',
-        url: 'https://open.spotify.com/show/0ibUtrJG4JVgwfvB2MXMSb',
-        icon: 'spotify'
       }
     ]
   },
@@ -27,11 +22,6 @@ export const podcasts = [
         name: 'Apple Podcasts',
         url: 'https://podcasts.apple.com/us/podcast/daily-reflection-podcast/id1545568828',
         icon: 'apple'
-      },
-      {
-        name: 'Spotify',
-        url: 'https://open.spotify.com/show/0nIV6OzSBhOelN75rbgKjE',
-        icon: 'spotify'
       }
     ]
   }

@@ -1,5 +1,4 @@
 const APPLE_PODCAST_API = 'https://itunes.apple.com/lookup';
-const SPOTIFY_API = 'https://api.spotify.com/v1';
 
 export const fetchPodcastData = async (feedUrl) => {
   try {
@@ -90,109 +89,6 @@ const fetchApplePodcast = async (podcastId) => {
     },
     episodes,
   };
-};
-
-// Helper function to get Spotify API token with retries
-const getSpotifyToken = async (retries = 3) => {
-  // Check if credentials are configured
-  if (!process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID || !process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET) {
-    console.warn('Spotify credentials not configured, falling back to RSS feed');
-    return null;
-  }
-
-  for (let i = 0; i < retries; i++) {
-    try {
-      const response = await fetch('/api/spotify/token');
-      
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error(`Spotify token attempt ${i + 1} failed:`, errorData);
-        
-        if (i === retries - 1) {
-          console.warn('Failed to get Spotify token after multiple attempts, falling back to RSS feed');
-          return null;
-        }
-        
-        // Wait before retrying (exponential backoff)
-        await new Promise(resolve => setTimeout(resolve, Math.pow(2, i) * 1000));
-        continue;
-      }
-
-      const data = await response.json();
-      return data.access_token;
-    } catch (error) {
-      console.error(`Spotify token attempt ${i + 1} error:`, error);
-      
-      if (i === retries - 1) {
-        console.warn('Failed to get Spotify token after multiple attempts, falling back to RSS feed');
-        return null;
-      }
-      
-      // Wait before retrying (exponential backoff)
-      await new Promise(resolve => setTimeout(resolve, Math.pow(2, i) * 1000));
-    }
-  }
-};
-
-const fetchSpotifyPodcast = async (showId) => {
-  try {
-    const token = await getSpotifyToken();
-    
-    const response = await fetch(`${SPOTIFY_API}/shows/${showId}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-    });
-    
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error('Failed to fetch Spotify podcast:', errorData);
-      throw new Error('Failed to fetch Spotify podcast');
-    }
-
-    const show = await response.json();
-    
-    // Fetch episodes
-    const episodesResponse = await fetch(`${SPOTIFY_API}/shows/${showId}/episodes?limit=50`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-    });
-    
-    if (!episodesResponse.ok) {
-      const errorData = await episodesResponse.json();
-      console.error('Failed to fetch Spotify episodes:', errorData);
-      throw new Error('Failed to fetch Spotify episodes');
-    }
-
-    const episodesData = await episodesResponse.json();
-    
-    return {
-      podcast: {
-        title: show.name,
-        description: show.description,
-        author: show.publisher,
-        imageUrl: show.images[0]?.url,
-        categories: show.languages,
-        rating: show.popularity / 20, // Convert Spotify popularity to 5-star rating
-        ratingCount: show.followers.total,
-        platform: 'spotify',
-      },
-      episodes: episodesData.items.map(episode => ({
-        title: episode.name,
-        description: episode.description,
-        pubDate: episode.release_date,
-        duration: episode.duration_ms / 1000, // Convert to seconds
-        audioUrl: episode.external_urls.spotify,
-        episodeNumber: episode.episode_number,
-        seasonNumber: episode.season_number,
-      })),
-    };
-  } catch (error) {
-    console.error('Error fetching Spotify podcast:', error);
-    // Return null to indicate failure
-    return null;
-  }
 };
 
 export const formatDuration = (duration) => {
