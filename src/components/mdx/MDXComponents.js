@@ -1,5 +1,14 @@
-import { Typography, Box } from '@mui/material';
+import { Typography, Box, Chip, Stack } from '@mui/material';
 import Image from 'next/image';
+import Link from 'next/link';
+import TechStack from './includes/TechStack';
+import DemoVideo from './includes/DemoVideo';
+import AsciiDiagram from './includes/AsciiDiagram';
+import MermaidDiagram from './includes/MermaidDiagram';
+import CodeDemo from './includes/CodeDemo';
+import ImageGrid from './includes/ImageGrid';
+import VideoPlayer from './includes/VideoPlayer';
+
 
 export const mdxComponents = {
   h1: (props) => (
@@ -25,9 +34,10 @@ export const mdxComponents = {
       {children}
     </Typography>
   ),
-  a: ({ children, ...props }) => (
+  a: ({ children, href, ...props }) => (
     <Typography
-      component="a"
+      component={Link}
+      href={href}
       color="primary"
       sx={{
         textDecoration: 'none',
@@ -68,9 +78,7 @@ export const mdxComponents = {
       }}
       {...props}
     >
-      <Typography component="div">
-        {children}
-      </Typography>
+      <Typography component="div">{children}</Typography>
     </Box>
   ),
   img: ({ src, alt, ...props }) => (
@@ -112,36 +120,61 @@ export const mdxComponents = {
       )}
     </Box>
   ),
-  pre: ({ children, ...props }) => (
-    <Box
-      component="pre"
-      sx={{
-        p: 2,
-        my: 2,
-        overflow: 'auto',
-        bgcolor: 'background.paper',
-        borderRadius: 1,
-        '& code': {
+  pre: ({ children, ...props }) => {
+    const content = children?.props?.children || '';
+    const isAsciiDiagram = /[┌┐└┘├┤─│]/.test(content);
+
+    if (isAsciiDiagram) {
+      return <AsciiDiagram {...props}>{content}</AsciiDiagram>;
+    }
+
+    return (
+      <Box
+        component="pre"
+        sx={{
+          p: 2,
+          my: 2,
+          overflow: 'auto',
+          bgcolor: 'background.paper',
+          borderRadius: 1,
+          '& code': {
+            fontFamily: 'monospace',
+          },
+        }}
+        {...props}
+      >
+        {children}
+      </Box>
+    );
+  },
+  code: ({ children, ...props }) => {
+    const content = children || '';
+    const isAsciiDiagram = /[┌┐└┘├┤─│]/.test(content);
+
+    if (isAsciiDiagram) {
+      return <AsciiDiagram {...props}>{content}</AsciiDiagram>;
+    }
+
+    return (
+      <Typography
+        component="code"
+        sx={{
+          p: 0.5,
+          bgcolor: 'background.paper',
+          borderRadius: 0.5,
           fontFamily: 'monospace',
-        },
-      }}
-      {...props}
-    >
-      {children}
-    </Box>
-  ),
-  code: ({ children, ...props }) => (
-    <Typography
-      component="code"
-      sx={{
-        p: 0.5,
-        bgcolor: 'background.paper',
-        borderRadius: 0.5,
-        fontFamily: 'monospace',
-      }}
-      {...props}
-    >
-      {children}
-    </Typography>
-  ),
+        }}
+        {...props}
+      >
+        {children}
+      </Typography>
+    );
+  },
+  TechStack,
+  DemoVideo,
+  AsciiDiagram,
+  MermaidDiagram,
+  CodeDemo,
+  ImageGrid,
+  VideoPlayer,
 }; 

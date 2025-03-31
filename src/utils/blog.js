@@ -2,8 +2,28 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import { serialize } from 'next-mdx-remote/serialize';
+import rehypeSlug from 'rehype-slug';
+import rehypePrism from 'rehype-prism-plus';
+import remarkGfm from 'remark-gfm';
 
 const postsDirectory = path.join(process.cwd(), 'content/blog');
+
+/**
+ * Process import statements in MDX to load custom components
+ * @param {string} content - The MDX content to process
+ * @returns {string} Processed MDX content
+ */
+function processComponentImports(content) {
+  // Match import statements for components
+  const importRegex = /import\s+(\w+)\s+from\s+['"]@\/components\/mdx\/includes\/([^'"]+)['"]/g;
+  
+  // Replace import statements with component usage notes
+  let modifiedContent = content.replace(importRegex, (match, componentName, path) => {
+    return `{/* Component ${componentName} from ${path} is auto-loaded */}`;
+  });
+  
+  return modifiedContent;
+}
 
 export async function getAllPosts(category = null, excludeCategory = null) {
   // Get file names under /content/blog
@@ -30,11 +50,14 @@ export async function getAllPosts(category = null, excludeCategory = null) {
         return null;
       }
 
+      // Process component imports
+      const processedContent = processComponentImports(content);
+
       // Combine the data with the slug
       return {
         slug,
         ...frontmatter,
-        content
+        content: processedContent
       };
     })
   );
@@ -60,10 +83,19 @@ export async function getPostBySlug(slug) {
     const fileContents = fs.readFileSync(fullPath, 'utf8');
     const { data: frontmatter, content } = matter(fileContents);
     
-    const mdxSource = await serialize(content, {
+    // Process component imports
+    const processedContent = processComponentImports(content);
+    
+    const mdxSource = await serialize(processedContent, {
       mdxOptions: {
         development: process.env.NODE_ENV === 'development',
+        remarkPlugins: [remarkGfm],
+        rehypePlugins: [
+          rehypeSlug,
+          [rehypePrism, { ignoreMissing: true }]
+        ],
       },
+      scope: frontmatter,
     });
 
     return {
@@ -96,31 +128,5 @@ export async function getProjectBySlug(slug) {
     return null;
   }
 
-  const fileContent = fs.readFileSync(filePath, 'utf8');
-  const { data, content } = matter(fileContent);
-
-  // Ensure the date is in ISO format
-  let date = data.date;
-  try {
-    date = parseISO(data.date).toISOString().split('T')[0];
-  } catch (error) {
-    console.error(`Error parsing date for post ${slug}:`, error);
-  }
-
-  // Serialize the MDX content
-  const mdxSource = await serialize(content, {
-    mdxOptions: {
-      development: process.env.NODE_ENV === 'development',
-      remarkPlugins: [],
-      rehypePlugins: [],
-    },
-    parseFrontmatter: true,
-  });
-
-  return {
-    slug,
-    ...data,
-    date,
-    content: mdxSource,
-  };
+  return post;
 } 

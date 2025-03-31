@@ -1,0 +1,232 @@
+---
+title: "MongoDB Indexing System"
+description: "A deep dive into advanced indexing techniques with MongoDB"
+date: "2024-04-01"
+image: "/images/blog/mongodb-indexing.png"
+tags: ["MongoDB", "Database", "Performance", "Indexing"]
+color: "#00ED64"
+category: "project"
+private: false
+technologies: ["MongoDB", "Atlas", "Node.js", "JavaScript"]
+demoUrl: "https://mongodb-indexing-demo.example.com"
+githubUrl: "https://github.com/example/mongodb-indexing"
+---
+
+# MongoDB Indexing System
+
+This project explores advanced MongoDB indexing techniques to optimize query performance in large-scale applications.
+
+## System Architecture
+
+The system architecture implements a multi-layered approach to indexing:
+
+<MermaidDiagram
+  title="MongoDB Indexing System Architecture"
+  chart={`
+flowchart TB
+    Client([Client Application]) --> API[API Layer]
+    
+    subgraph Backend
+    API --> QueryOptimizer[Query Optimizer]
+    QueryOptimizer --> IndexManager[Index Manager]
+    IndexManager --> IndexRecommender[Index Recommender]
+    IndexManager --> IndexCreator[Index Creator]
+    IndexRecommender --> IndexCreator
+    end
+    
+    IndexCreator --> MongoDB[(MongoDB Atlas)]
+    
+    class Client,API,MongoDB rounded
+    class Backend,QueryOptimizer,IndexManager,IndexRecommender,IndexCreator rect
+    class MongoDB database
+  `}
+  caption="Key components of the indexing system and their relationships"
+/>
+
+## Indexing Strategies
+![Indexing](/images/blog/mongodb-indexing.png)
+
+We developed a comprehensive indexing strategy for different use cases:
+
+<MermaidDiagram
+  title="MongoDB Indexing Strategies Decision Tree"
+  chart={`
+flowchart TD
+    Start([Query Analysis]) --> Q1{Query Pattern?}
+    Q1 -->|Range Query| RangeIdx[Single Field Index]
+    Q1 -->|Exact Match| Q2{Multiple Fields?}
+    Q1 -->|Text Search| TextIdx[Text Index]
+    Q1 -->|Geospatial| GeoIdx[2dsphere Index]
+    
+    Q2 -->|Yes| Q3{Order Matters?}
+    Q2 -->|No| SingleIdx[Single Field Index]
+    
+    Q3 -->|Yes| CompoundIdx[Compound Index]
+    Q3 -->|No| Q4{High Cardinality?}
+    
+    Q4 -->|Yes| CompoundIdx
+    Q4 -->|No| SingleIdx
+    
+    RangeIdx --> Evaluate([Evaluate Performance])
+    TextIdx --> Evaluate
+    GeoIdx --> Evaluate
+    SingleIdx --> Evaluate
+    CompoundIdx --> Evaluate
+    
+    Evaluate --> Q5{Performance\nAcceptable?}
+    Q5 -->|Yes| End([Done])
+    Q5 -->|No| Refine[Refine Index Strategy]
+    Refine --> Start
+    
+    class Start,End rounded
+    class Q1,Q2,Q3,Q4,Q5 rhombus
+    class RangeIdx,TextIdx,GeoIdx,SingleIdx,CompoundIdx rect
+  `}
+  caption="Decision process for selecting the optimal indexing strategy"
+/>
+
+## Query Performance Comparison
+
+<MermaidDiagram
+  title="Performance Impact of Different Index Types"
+  chart={`
+graph LR
+    subgraph "Query Types"
+    A[Simple Equality]
+    B[Range Query]
+    C[Sort Operation]
+    D[Compound Filter]
+    E[Text Search]
+    end
+    
+    subgraph "No Index"
+    A1[150ms]
+    B1[720ms]
+    C1[890ms]
+    D1[1200ms]
+    E1[2500ms]
+    end
+    
+    subgraph "With Index"
+    A2[5ms]
+    B2[25ms]
+    C2[30ms]
+    D2[45ms]
+    E2[60ms]
+    end
+    
+    A --> A1
+    A --> A2
+    B --> B1
+    B --> B2
+    C --> C1
+    C --> C2
+    D --> D1
+    D --> D2
+    E --> E1
+    E --> E2
+    
+    style A1 fill:#f9a8a8
+    style B1 fill:#f9a8a8
+    style C1 fill:#f9a8a8
+    style D1 fill:#f9a8a8
+    style E1 fill:#f9a8a8
+    
+    style A2 fill:#a8f9a8
+    style B2 fill:#a8f9a8
+    style C2 fill:#a8f9a8
+    style D2 fill:#a8f9a8
+    style E2 fill:#a8f9a8
+  `}
+  caption="Performance comparison in milliseconds with and without proper indexing"
+/>
+
+## Index Creation Process
+
+The system follows a structured workflow for index creation:
+
+<MermaidDiagram
+  chart={`
+sequenceDiagram
+    participant App as Application
+    participant IM as Index Manager
+    participant QA as Query Analyzer
+    participant IR as Index Recommender
+    participant Mongo as MongoDB
+    
+    App->>QA: Submit Query Pattern
+    QA->>QA: Analyze Query Structure
+    QA->>IR: Request Index Recommendation
+    IR->>IR: Generate Index Options
+    IR->>IM: Propose Index Configuration
+    IM->>Mongo: Create Index
+    Mongo-->>IM: Index Creation Status
+    IM-->>App: Performance Report
+    
+    Note over App,Mongo: Index creation happens asynchronously
+  `}
+  caption="Sequence of operations during index creation"
+/>
+
+
+## Performance Monitoring System
+
+<MermaidDiagram
+  title="Index Performance Monitoring System"
+  chart={`
+graph TB
+    subgraph Collection ["MongoDB Collection"]
+    Data[(Data)]
+    Indexes[(Indexes)]
+    end
+    
+    subgraph Monitoring ["Monitoring System"]
+    QP[Query Profiler]
+    IA[Index Analyzer]
+    PM[Performance Metrics]
+    end
+    
+    subgraph Visualization ["Dashboards"]
+    RT[Response Time]
+    IU[Index Usage]
+    QS[Query Stats]
+    end
+    
+    Data --- Indexes
+    Collection --> QP
+    QP --> IA
+    IA --> PM
+    PM --> RT
+    PM --> IU
+    PM --> QS
+    
+    style Collection fill:#e0f7fa,stroke:#00acc1,stroke-width:2px
+    style Monitoring fill:#e8f5e9,stroke:#43a047,stroke-width:2px
+    style Visualization fill:#fff3e0,stroke:#ff9800,stroke-width:2px
+  `}
+  caption="Comprehensive monitoring system for index performance"
+/>
+
+## The Technology Stack
+
+<TechStack 
+  items={[
+    "MongoDB Atlas",
+    "Node.js",
+    "Express.js",
+    "React",
+    "D3.js",
+    "Material UI"
+  ]}
+/>
+
+## Implementation Notes
+
+The implementation addresses several key challenges:
+
+1. Balancing index size with query performance
+2. Handling dynamic query patterns
+3. Monitoring index usage and maintenance
+4. Automating index recommendations
+
+This project demonstrates how proper indexing can dramatically improve application performance while minimizing resource usage.
