@@ -4,6 +4,59 @@ import { NextResponse } from 'next/server';
 // Check for OpenAI API key
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
+// Function to validate Mermaid syntax
+const validateMermaidSyntax = (code) => {
+  // Remove any markdown code block markers and 'mermaid' keyword
+  const cleanCode = code
+    .replace(/^```mermaid\n/g, '')
+    .replace(/^```\n/g, '')
+    .replace(/\n```$/g, '')
+    .replace(/^mermaid\n/g, '')  // Remove 'mermaid' keyword if present
+    .trim();
+
+  // Check for invalid style definitions
+  const invalidStylePattern = /style\s+\w+\s+fill:[^,]+/;
+  if (invalidStylePattern.test(cleanCode)) {
+    throw new Error('Invalid style syntax detected. Use classDef instead of direct style definitions.');
+  }
+
+  // Check for invalid classDef syntax in ER diagrams
+  if (cleanCode.startsWith('erDiagram')) {
+    // Split the code into sections
+    const lines = cleanCode.split('\n').map(line => line.trim()).filter(line => line);
+    
+    // Find the first classDef line
+    const firstClassDefIndex = lines.findIndex(line => line.startsWith('classDef'));
+    
+    // Find the first entity definition line
+    const firstEntityIndex = lines.findIndex(line => line.includes('||--'));
+    
+    // Check if classDef comes before entity definitions
+    if (firstClassDefIndex > firstEntityIndex) {
+      throw new Error('In ER diagrams, classDef statements must come before entity definitions. Move all classDef and class statements to the top of the diagram.');
+    }
+
+    // Check for any classDef that doesn't match the exact format
+    const classDefLines = lines.filter(line => line.startsWith('classDef'));
+    for (const line of classDefLines) {
+      const isValidFormat = /^classDef\s+\w+\s+fill:#[0-9a-fA-F]{6},stroke:#[0-9a-fA-F]{6},stroke-width:2px$/.test(line);
+      if (!isValidFormat) {
+        throw new Error(`Invalid classDef syntax in ER diagram. Line: "${line}". Use the exact format: classDef styleName fill:#color,stroke:#color,stroke-width:2px`);
+      }
+    }
+
+    // Check for relationship names with spaces
+    const relationshipLines = lines.filter(line => line.includes('||--'));
+    for (const line of relationshipLines) {
+      if (line.includes('"') && line.includes('" : ')) {
+        throw new Error('Relationship names with spaces should use underscores instead of quotes. For example, use "part_of" instead of "part of".');
+      }
+    }
+  }
+
+  return cleanCode;
+};
+
 export async function POST(request) {
   if (!OPENAI_API_KEY) {
     return NextResponse.json(
@@ -41,7 +94,7 @@ export async function POST(request) {
           instructions += 'Define classes with attributes, methods, and relationships (inheritance, composition, etc.).';
           break;
         case 'erDiagram':
-          instructions += 'Define entities with attributes and relationships with proper cardinality.';
+          instructions += 'Define entities with attributes and relationships with proper cardinality. For ER diagrams, use ONLY the exact classDef syntax shown in the example. The classDef lines must match the format exactly, including the hex color codes and stroke-width property. IMPORTANT: Place all classDef and class statements at the top of the diagram, before any entity definitions.';
           break;
         case 'gantt':
           instructions += 'Include sections, tasks with durations, and dependencies where appropriate.';
@@ -66,14 +119,64 @@ ${instructions}
 
 Description: "${prompt}"
 
-Follow these guidelines:
+IMPORTANT: Follow these guidelines strictly:
 1. Ensure the diagram is clear, focused, and visually well-organized
 2. Use proper Mermaid syntax and formatting
-3. Add appropriate styling for clarity (colors, shapes, etc. where useful)
-4. Keep the diagram size manageable (not too many elements)
-5. Return only the Mermaid code without backticks or language markers
+3. For styling, ONLY use classDef and class syntax:
+   - First define styles: classDef styleName fill:#color,stroke:#color,stroke-width:2px
+   - Then apply styles: class nodeName styleName
+4. NEVER use direct style definitions with colons
+5. Keep the diagram size manageable (not too many elements)
+6. Return only the Mermaid diagram code without backticks, language markers, or the 'mermaid' keyword
+7. Use proper spacing and line breaks between style definitions
+8. For ER diagrams, use ONLY the exact classDef syntax shown in the example
+9. Use 6-digit hex color codes (e.g., #74c0fc) for all colors
+10. For ER diagrams, place ALL classDef and class statements at the TOP of the diagram, before any entity definitions
 
-Respond ONLY with the Mermaid diagram code and nothing else.
+Example of correct syntax:
+\`\`\`mermaid
+flowchart LR
+    A[Start] --> B[Process]
+    B --> C[End]
+    
+    classDef default fill:#f9f9f9,stroke:#333333,stroke-width:2px
+    classDef process fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    classDef start fill:#e8f5e9,stroke:#4caf50,stroke-width:2px
+    classDef end fill:#fce4ec,stroke:#e91e63,stroke-width:2px
+    
+    class A start
+    class B process
+    class C end
+\`\`\`
+
+Example of ER diagram with correct syntax:
+\`\`\`mermaid
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#74c0fc', 'primaryTextColor': '#000000', 'primaryBorderColor': '#74c0fc', 'lineColor': '#74c0fc', 'secondaryColor': '#f0f9ff', 'tertiaryColor': '#ffffff'}}}%%
+erDiagram
+    CUSTOMER ||--o{ ORDER : places
+    ORDER ||--|{ ORDER_ITEM : contains
+    PRODUCT ||--o{ ORDER_ITEM : part_of
+    
+    CUSTOMER {
+        string name
+        string email
+    }
+    ORDER {
+        int id
+        date created_at
+    }
+    ORDER_ITEM {
+        int quantity
+        float price
+    }
+    PRODUCT {
+        int id
+        string name
+        float price
+    }
+\`\`\`
+
+Respond ONLY with the Mermaid diagram code and nothing else. Do not include any explanations, additional text, backticks, language markers, or the 'mermaid' keyword.
     `;
 
     // Call OpenAI API
@@ -88,7 +191,7 @@ Respond ONLY with the Mermaid diagram code and nothing else.
         messages: [
           {
             role: 'system',
-            content: 'You are a diagram generator specialized in creating Mermaid diagrams from natural language descriptions. Create valid Mermaid diagram code based on the user prompt. Include appropriate styling to enhance clarity.'
+            content: 'You are a diagram generator specialized in creating Mermaid diagrams from natural language descriptions. Create valid Mermaid diagram code based on the user prompt. Use ONLY classDef and class syntax for styling. Never use direct style definitions with colons. For ER diagrams, use ONLY the exact classDef syntax shown in the example, including the exact format for colors (6-digit hex) and stroke-width property. IMPORTANT: Place all classDef and class statements at the top of ER diagrams, before any entity definitions. Return ONLY the diagram code without any markdown formatting, backticks, language markers, or the "mermaid" keyword.'
           },
           {
             role: 'user',
@@ -112,18 +215,14 @@ Respond ONLY with the Mermaid diagram code and nothing else.
     const data = await response.json();
     const mermaidCode = data.choices[0].message.content.trim();
 
-    // Clean up the code if it has markdown code block markers
-    const cleanedMermaidCode = mermaidCode
-      .replace(/^```mermaid\n/g, '')
-      .replace(/^```\n/g, '')
-      .replace(/\n```$/g, '')
-      .trim();
+    // Validate and clean the code
+    const cleanedMermaidCode = validateMermaidSyntax(mermaidCode);
 
     return NextResponse.json({ mermaidCode: cleanedMermaidCode });
   } catch (error) {
     console.error('Error processing request:', error);
     return NextResponse.json(
-      { error: 'Error processing request' },
+      { error: error.message || 'Error processing request' },
       { status: 500 }
     );
   }

@@ -94,7 +94,7 @@ export default function RootLayout({ children }) {
               transport_type: 'beacon',
               anonymize_ip: true,
               cookie_flags: 'SameSite=None;Secure',
-              debug_mode: process.env.NODE_ENV === 'development',
+              debug_mode: window.location.hostname === 'localhost',
             });
           `}
         </Script>
