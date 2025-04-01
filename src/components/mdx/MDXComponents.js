@@ -8,6 +8,8 @@ import MermaidDiagram from './includes/MermaidDiagram';
 import CodeDemo from './includes/CodeDemo';
 import ImageGrid from './includes/ImageGrid';
 import VideoPlayer from './includes/VideoPlayer';
+import ScreenshotSlideshow from '../ScreenshotSlideshow';
+import CodeBlock from '../CodeBlock';
 
 
 export const mdxComponents = {
@@ -129,25 +131,12 @@ export const mdxComponents = {
     }
 
     return (
-      <Box
-        component="pre"
-        sx={{
-          p: 2,
-          my: 2,
-          overflow: 'auto',
-          bgcolor: 'background.paper',
-          borderRadius: 1,
-          '& code': {
-            fontFamily: 'monospace',
-          },
-        }}
-        {...props}
-      >
-        {children}
-      </Box>
+      <CodeBlock language={children?.props?.className?.replace('language-', '')}>
+        {content}
+      </CodeBlock>
     );
   },
-  code: ({ children, ...props }) => {
+  code: ({ children, className, ...props }) => {
     const content = children || '';
     const isAsciiDiagram = /[┌┐└┘├┤─│]/.test(content);
 
@@ -177,4 +166,5 @@ export const mdxComponents = {
   CodeDemo,
   ImageGrid,
   VideoPlayer,
+  ScreenshotSlideshow,
 }; 

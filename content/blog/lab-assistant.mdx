@@ -1,0 +1,255 @@
+---
+title: "MongoDB AI Lab Assistant"
+description: "An intelligent assistant that leverages RAG (Retrieval Augmented Generation) and vector search to provide accurate, context-aware responses to technical questions about MongoDB"
+date: "2025-03-31"
+author: "Michael Lynn"
+image: "/images/projects/lab-assistant/mascot-banner.png"
+tags: ["AI", "RAG", "MongoDB", "Vector Search", "Next.js"]
+color: "#47A248"
+category: "project"
+private: false
+screenshots: [
+  "/images/projects/lab-assistant/one.png",
+  "/images/projects/lab-assistant/two.gif",
+  "/images/projects/lab-assistant/three.png",
+  "/images/projects/lab-assistant/four.png"
+]
+technologies: ["Next.js", "React", "Material UI", "MongoDB Atlas", "Vector Search", "OpenAI API"]
+demoUrl: "https://mdb.link/lab-assistant"
+githubUrl: "https://github.com/yourusername/mongodb-ai-lab"
+---
+
+# MongoDB AI Lab Assistant
+
+As part of my role at MongoDB as a Principal Developer Advocate, I'm responsible for delivering content designed to enable developers across several core disciplines: Data Modeling, Schema Design and Optimization, Vector Search, Retrieval Automated Generation, AI Agent Development and several other related topics. In an effort to ensure that developers in attendance at workshops have access to assistance right at their fingertips, I developed this RAG chatbot and trained it on all of the workshop content.  I call this, the MongoDB AI Lab Assistant.
+
+The MongoDB AI Lab Assistant is an intelligent system that combines the power of RAG (Retrieval Augmented Generation) with MongoDB's vector search capabilities to provide accurate, context-aware responses to technical questions about MongoDB. This project demonstrates how modern AI techniques can be integrated with MongoDB to create powerful knowledge retrieval systems.
+
+<ScreenshotSlideshow 
+  screenshots={[
+    "/images/projects/lab-assistant/one.png",
+    "/images/projects/lab-assistant/two.gif",
+    "/images/projects/lab-assistant/three.png",
+    "/images/projects/lab-assistant/four.png"
+  ]}
+  title="MongoDB AI Lab Assistant"
+/> 
+
+
+## Project Overview
+
+The AI Lab Assistant uses a sophisticated approach to answer questions:
+1. First, it searches for similar questions in its knowledge base
+2. If no exact match is found, it retrieves relevant documentation chunks
+3. Finally, it generates a response using the retrieved context
+
+<MermaidDiagram
+  title="AI Lab Assistant Architecture"
+  chart={`
+flowchart TD
+    User([User]) --> UI[Web Interface]
+    UI --> API[API Endpoint]
+    API --> QM[Question Matcher]
+    API --> VS[Vector Search]
+    API --> RAG[RAG System]
+    QM --> DB[(Question DB)]
+    VS --> DB
+    RAG --> DB
+    DB --> LLM[LLM]
+    LLM --> API
+    API --> UI
+    
+    classDef primary fill:#47A248,stroke:#388E3C,color:white;
+    classDef secondary fill:#2196F3,stroke:#1976D2,color:white;
+    classDef tertiary fill:#FFC107,stroke:#FFA000,color:white;
+    
+    class UI,API primary;
+    class QM,VS,RAG secondary;
+    class DB,LLM tertiary;
+  `}
+  caption="High-level architecture of the MongoDB AI Lab Assistant"
+/>
+
+## Key Features
+
+- **Smart Question Matching**: Uses vector search to find similar questions
+- **RAG Integration**: Retrieves relevant documentation chunks for context
+- **Vector Search**: Leverages MongoDB Atlas Vector Search for efficient similarity search
+- **Admin Interface**: Manage knowledge base and monitor system performance
+- **Response Tracking**: Track question patterns and system effectiveness
+- **Document Management**: Upload and manage documentation chunks
+- **Performance Monitoring**: Monitor system performance and usage patterns
+
+## Technical Implementation
+
+The project is built with modern web technologies and integrates with MongoDB's powerful features.
+
+<TechStack 
+  items={[
+    "Next.js 14",
+    "React",
+    "Material UI",
+    "MongoDB Atlas",
+    "Vector Search",
+    "OpenAI API"
+  ]}
+/>
+
+### Core Components
+
+#### 1. Question Processing System
+
+The system uses a sophisticated approach to process questions:
+
+<MermaidDiagram
+  chart={`
+flowchart LR
+    Q[Question] --> VS[Vector Search]
+    VS --> Match{Match Found?}
+    Match -->|Yes| Cached[Cached Answer]
+    Match -->|No| RAG[RAG Search]
+    RAG --> Chunks[Document Chunks]
+    Chunks --> LLM[LLM]
+    LLM --> Answer[Generated Answer]
+    Cached --> Response[Final Response]
+    Answer --> Response
+    
+    classDef primary fill:#47A248,stroke:#388E3C,color:white;
+    classDef secondary fill:#2196F3,stroke:#1976D2,color:white;
+    classDef tertiary fill:#FFC107,stroke:#FFA000,color:white;
+    
+    class Q,Response primary;
+    class VS,RAG,LLM secondary;
+    class Match,Cached,Chunks,Answer tertiary;
+  `}
+  caption="Question processing flow"
+/>
+
+#### 2. RAG System
+
+The RAG (Retrieval Augmented Generation) system enhances responses with relevant context:
+
+<MermaidDiagram
+  chart={`
+flowchart TD
+    Doc[Document] --> Chunk[Chunker]
+    Chunk --> Embed[Embedding]
+    Embed --> Store[(Vector Store)]
+    Q[Question] --> QEmbed[Question Embedding]
+    QEmbed --> Search[Vector Search]
+    Store --> Search
+    Search --> Context[Context Builder]
+    Context --> LLM[LLM]
+    LLM --> Response[Response]
+    
+    classDef primary fill:#47A248,stroke:#388E3C,color:white;
+    classDef secondary fill:#2196F3,stroke:#1976D2,color:white;
+    classDef tertiary fill:#FFC107,stroke:#FFA000,color:white;
+    
+    class Doc,Q,Response primary;
+    class Chunk,Embed,Search secondary;
+    class Store,Context,LLM tertiary;
+  `}
+  caption="RAG system architecture"
+/>
+
+### Database Schema
+
+The system uses several MongoDB collections:
+
+```javascript
+// RAG Documents Collection
+{
+  title: String,
+  content: String,
+  chunks: [{
+    content: String,
+    embedding: [Number],
+    metadata: {
+      startIndex: Number,
+      endIndex: Number,
+      section: String
+    }
+  }],
+  metadata: {
+    category: String,
+    tags: [String],
+    author: String,
+    lastUpdated: Date
+  }
+}
+
+// RAG Queries Collection
+{
+  question: String,
+  question_embedding: [Number],
+  retrieved_chunks: [{
+    document_id: ObjectId,
+    chunk_index: Number,
+    relevance_score: Number
+  }],
+  response: String,
+  created_at: Date
+}
+```
+
+## Challenges and Solutions
+
+### Challenge 1: Efficient Document Chunking
+
+Creating effective document chunks while maintaining context was crucial.
+
+**Solution**: Implemented a sophisticated chunking strategy that:
+- Maintains semantic boundaries
+- Uses overlap between chunks
+- Keeps chunks within token limits
+- Preserves document structure
+
+### Challenge 2: Vector Search Performance
+
+Optimizing vector search for large document collections.
+
+**Solution**: 
+- Implemented hybrid search (vector + text)
+- Added relevance scoring
+- Cached embeddings
+- Used batch processing for large documents
+
+### Challenge 3: Context Integration
+
+Effectively integrating retrieved context with LLM responses.
+
+**Solution**:
+- Developed a context builder that prioritizes relevant information
+- Created a prompt template system
+- Implemented context window management
+- Added relevance scoring for chunks
+
+## Real-World Applications
+
+The MongoDB AI Lab Assistant has several practical applications:
+
+1. **Technical Support**: Provide instant answers to common MongoDB questions
+2. **Documentation Search**: Help users find relevant documentation
+3. **Learning Tool**: Assist users in learning MongoDB concepts
+4. **Knowledge Base**: Build and maintain a searchable knowledge base
+5. **Performance Analysis**: Track common questions and system effectiveness
+
+## Future Enhancements
+
+Several enhancements are planned for future versions:
+
+1. **Enhanced Search**: Implement semantic search with filters
+2. **User Feedback**: Add feedback mechanism for response quality
+3. **Analytics Dashboard**: Create detailed usage analytics
+4. **Multi-language Support**: Add support for multiple languages
+5. **API Integration**: Allow external systems to query the assistant
+6. **Custom Knowledge Bases**: Support for custom document collections
+
+## Conclusion
+
+The MongoDB AI Lab Assistant demonstrates how modern AI techniques can be integrated with MongoDB to create powerful knowledge retrieval systems. By combining RAG with vector search, the system provides accurate, context-aware responses while maintaining efficiency and scalability.
+
+This project showcases the potential of MongoDB's vector search capabilities and how they can be used to build sophisticated AI-powered applications.
+
+Try the [MongoDB AI Lab Assistant](/tools/ai-lab) yourself and experience the power of intelligent question answering.
