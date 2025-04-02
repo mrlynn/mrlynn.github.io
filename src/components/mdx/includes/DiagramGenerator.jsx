@@ -18,7 +18,9 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
-  Chip
+  Chip,
+  ToggleButton,
+  ToggleButtonGroup
 } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import RefreshIcon from '@mui/icons-material/Refresh';
@@ -26,16 +28,20 @@ import DownloadIcon from '@mui/icons-material/Download';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import SendIcon from '@mui/icons-material/Send';
+import CodeIcon from '@mui/icons-material/Code';
 import MermaidDiagram from './MermaidDiagram';
+import * as htmlToImage from 'html-to-image';
 
-const DiagramGenerator = () => {
+const DiagramGenerator = ({ title, description }) => {
   const [prompt, setPrompt] = useState('');
+  const [mermaidCode, setMermaidCode] = useState('');
+  const [diagramType, setDiagramType] = useState('flowchart');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [mermaidCode, setMermaidCode] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [diagramType, setDiagramType] = useState('auto');
+  const [showSource, setShowSource] = useState(false);
+  const [inputMode, setInputMode] = useState('natural'); // 'natural' or 'code'
   const promptRef = useRef(null);
   const diagramRef = useRef(null);
 
@@ -51,45 +57,44 @@ const DiagramGenerator = () => {
     { value: 'pie', label: 'Pie Chart' }
   ];
 
-  const generateDiagram = async () => {
-    if (!prompt.trim()) {
-      setError('Please enter a description of the diagram you want to create.');
-      return;
-    }
-
-    setLoading(true);
-    setError(null);
-    
+  const handleGenerate = async () => {
     try {
-      const response = await fetch('/api/generate-diagram', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ 
-          prompt,
-          diagramType: diagramType === 'auto' ? null : diagramType
-        }),
-      });
+      setLoading(true);
+      setError(null);
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to generate diagram');
+      let finalMermaidCode;
+      if (inputMode === 'natural') {
+        // Generate from natural language
+        const response = await fetch('/api/generate-diagram', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            prompt,
+            diagramType,
+          }),
+        });
+
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.message || 'Failed to generate diagram');
+        }
+
+        const data = await response.json();
+        finalMermaidCode = data.mermaidCode;
+      } else {
+        // Use directly pasted Mermaid code
+        finalMermaidCode = mermaidCode;
       }
 
-      const data = await response.json();
-      setMermaidCode(data.mermaidCode);
+      setMermaidCode(finalMermaidCode);
+      setShowSource(false);
     } catch (err) {
+      setError(err.message);
       console.error('Error generating diagram:', err);
-      setError(err.message || 'Failed to generate diagram. Please try again.');
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter' && e.ctrlKey) {
-      generateDiagram();
     }
   };
 
@@ -99,15 +104,45 @@ const DiagramGenerator = () => {
     setSnackbarOpen(true);
   };
 
-  const handleRegenerateClick = () => {
-    generateDiagram();
+  const handleDownloadSVG = async () => {
+    try {
+      const svgElement = diagramRef.current.querySelector('svg');
+      if (!svgElement) return;
+
+      const svgData = new XMLSerializer().serializeToString(svgElement);
+      const blob = new Blob([svgData], { type: 'image/svg+xml' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'diagram.svg';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Error downloading SVG:', err);
+      setSnackbarMessage('Failed to download SVG');
+      setSnackbarOpen(true);
+    }
   };
 
-  const handleClearClick = () => {
-    setPrompt('');
-    setMermaidCode('');
-    setError(null);
-    promptRef.current?.focus();
+  const handleDownloadPNG = async () => {
+    try {
+      const dataUrl = await htmlToImage.toPng(diagramRef.current, {
+        quality: 1.0,
+        pixelRatio: 2,
+      });
+      const a = document.createElement('a');
+      a.href = dataUrl;
+      a.download = 'diagram.png';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    } catch (err) {
+      console.error('Error downloading PNG:', err);
+      setSnackbarMessage('Failed to download PNG');
+      setSnackbarOpen(true);
+    }
   };
 
   const handleSnackbarClose = () => {
@@ -116,63 +151,6 @@ const DiagramGenerator = () => {
 
   const handleDiagramTypeChange = (event) => {
     setDiagramType(event.target.value);
-  };
-
-  // Function to download the diagram as SVG
-  const downloadAsSVG = () => {
-    if (!diagramRef.current) return;
-    
-    // Find the SVG element within the diagram container
-    const svgElement = diagramRef.current.querySelector('svg');
-    if (!svgElement) {
-      setError('Could not find SVG element to download');
-      return;
-    }
-    
-    // Get the SVG content
-    const svgContent = new XMLSerializer().serializeToString(svgElement);
-    const blob = new Blob([svgContent], { type: 'image/svg+xml' });
-    
-    // Create a download link and trigger the download
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'diagram.svg';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    
-    setSnackbarMessage('Diagram downloaded as SVG');
-    setSnackbarOpen(true);
-  };
-
-  // Function to capture the diagram as PNG
-  const captureAsPNG = async () => {
-    if (!diagramRef.current) return;
-    
-    try {
-      // Dynamically import html-to-image for client-side only
-      const htmlToImage = await import('html-to-image');
-      
-      // Create a PNG from the diagram container
-      const dataUrl = await htmlToImage.toPng(diagramRef.current, { 
-        quality: 0.95,
-        backgroundColor: 'white'
-      });
-      
-      // Create a download link and trigger the download
-      const link = document.createElement('a');
-      link.href = dataUrl;
-      link.download = 'diagram.png';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      
-      setSnackbarMessage('Diagram downloaded as PNG');
-      setSnackbarOpen(true);
-    } catch (error) {
-      console.error('Error capturing diagram as PNG:', error);
-      setError('Failed to download diagram as PNG');
-    }
   };
 
   // Example prompts for inspiration
@@ -218,19 +196,51 @@ const DiagramGenerator = () => {
           </Select>
         </FormControl>
 
-        <TextField
-          fullWidth
-          multiline
-          rows={4}
-          variant="outlined"
-          label="Diagram Description"
-          placeholder={placeholderText}
-          value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
-          onKeyDown={handleKeyDown}
-          inputRef={promptRef}
+        <ToggleButtonGroup
+          value={inputMode}
+          exclusive
+          onChange={(e, newMode) => newMode && setInputMode(newMode)}
           sx={{ mb: 2 }}
-        />
+        >
+          <ToggleButton value="natural">Natural Language</ToggleButton>
+          <ToggleButton value="code">Mermaid Code</ToggleButton>
+        </ToggleButtonGroup>
+
+        {inputMode === 'natural' ? (
+          <TextField
+            fullWidth
+            multiline
+            rows={4}
+            variant="outlined"
+            label="Diagram Description"
+            placeholder={placeholderText}
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            inputRef={promptRef}
+            sx={{ mb: 2 }}
+          />
+        ) : (
+          <TextField
+            fullWidth
+            multiline
+            rows={6}
+            label="Paste Mermaid Code"
+            value={mermaidCode}
+            onChange={(e) => setMermaidCode(e.target.value)}
+            placeholder="Example:
+graph TD
+    A[Start] --> B{Is it working?}
+    B -->|Yes| C[Great!]
+    B -->|No| D[Debug]
+    D --> B"
+            sx={{
+              '& .MuiInputBase-root': {
+                fontFamily: 'monospace',
+                fontSize: '0.875rem',
+              },
+            }}
+          />
+        )}
 
         <Box sx={{ mb: 3 }}>
           <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>
@@ -254,15 +264,20 @@ const DiagramGenerator = () => {
             variant="contained"
             color="primary"
             endIcon={<SendIcon />}
-            disabled={loading || !prompt.trim()}
-            onClick={generateDiagram}
+            disabled={loading || (inputMode === 'natural' && !prompt) || (inputMode === 'code' && !mermaidCode)}
+            onClick={handleGenerate}
           >
-            Generate Diagram
+            {loading ? 'Generating...' : 'Generate Diagram'}
           </Button>
           <Button
             variant="outlined"
             color="secondary"
-            onClick={handleClearClick}
+            onClick={() => {
+              setPrompt('');
+              setMermaidCode('');
+              setError(null);
+              promptRef.current?.focus();
+            }}
           >
             Clear
           </Button>
@@ -291,7 +306,7 @@ const DiagramGenerator = () => {
                 <Button
                   size="small"
                   startIcon={<RefreshIcon />}
-                  onClick={handleRegenerateClick}
+                  onClick={handleGenerate}
                   variant="outlined"
                 >
                   Regenerate
@@ -307,7 +322,7 @@ const DiagramGenerator = () => {
                 <Button
                   size="small"
                   startIcon={<DownloadIcon />}
-                  onClick={downloadAsSVG}
+                  onClick={handleDownloadSVG}
                   variant="outlined"
                 >
                   Download SVG
@@ -315,7 +330,7 @@ const DiagramGenerator = () => {
                 <Button
                   size="small"
                   startIcon={<PhotoCameraIcon />}
-                  onClick={captureAsPNG}
+                  onClick={handleDownloadPNG}
                   variant="outlined"
                 >
                   Download PNG

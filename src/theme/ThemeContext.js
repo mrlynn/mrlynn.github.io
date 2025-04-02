@@ -40,14 +40,14 @@ export function ThemeProvider({ children }) {
         dark: isDarkMode ? '#2e7c44' : '#087f23',
       },
       background: {
-        default: isDarkMode ? '#121212' : '#f5f5f5',
-        paper: isDarkMode ? '#1a1a1a' : '#ffffff',
-        card: isDarkMode ? '#242424' : '#f8f9fa',
+        default: isDarkMode ? '#0e1e2a' : '#f5f5f5',
+        paper: isDarkMode ? '#162736' : '#ffffff',
+        card: isDarkMode ? '#1a314a' : '#f8f9fa',
         gradient: isDarkMode 
-          ? 'linear-gradient(135deg, #2563eb 0%, #679436 100%)'
+          ? 'linear-gradient(135deg, #0d3793 0%, #679436 100%)'
           : 'linear-gradient(135deg, #2563eb 0%, #679436 100%)',
         gradientText: isDarkMode
-          ? 'linear-gradient(90deg,rgb(9, 139, 61) 30%, #80e4ff 100%)'
+          ? 'linear-gradient(90deg, #80e4ff 30%, #7dff9b 100%)'
           : 'linear-gradient(90deg, #0070f3 30%, #339af0 100%)',
       },
       text: {
@@ -130,7 +130,7 @@ export function ThemeProvider({ children }) {
             '--color-calendar-graph-day-L4-bg': isDarkMode ? '#39d353' : '#216e39',
           },
           body: {
-            backgroundColor: isDarkMode ? '#121212' : '#ffffff',
+            backgroundColor: isDarkMode ? '#0e1e2a' : '#ffffff',
             color: isDarkMode ? '#ffffff' : '#000000',
             transition: 'all 0.2s ease',
             scrollbarWidth: 'thin',

@@ -74,7 +74,10 @@ const Navigation = () => {
 
   // Secondary navigation items (in More dropdown)
   const secondaryItems = [
-    { text: 'Tools', icon: <BuildIcon />, path: '/tools/generate-diagram' },
+    { text: 'Tools', icon: <BuildIcon />, items: [
+      { text: 'Diagram Generator', path: '/tools/generate-diagram' },
+      { text: 'MongoDB Introspector', path: '/tools/introspect' }
+    ]},
     { text: 'Videos', icon: <YouTubeIcon />, path: '/videos' },
     { text: 'Art', icon: <PaletteIcon />, path: '/art' },
     { text: 'Social', icon: <InstagramIcon />, path: '/social' },
@@ -82,7 +85,16 @@ const Navigation = () => {
     { text: 'Contact', icon: <ContactIcon />, path: '/contact' }
   ];
 
-  const mobileMenuItems = [...primaryItems, ...secondaryItems];
+  // Combine primary and secondary items for mobile menu
+  const mobileMenuItems = [...primaryItems, ...secondaryItems.reduce((acc, item) => {
+    if (item.items) {
+      return [...acc, ...item.items.map(subItem => ({
+        ...subItem,
+        icon: item.icon
+      }))];
+    }
+    return [...acc, item];
+  }, [])];
 
   return (
     <>
@@ -90,23 +102,32 @@ const Navigation = () => {
         position="fixed"
         sx={{
           background: theme.palette.mode === 'dark'
-            ? 'rgba(18, 18, 18, 0.8)'
-            : 'rgba(255, 255, 255, 0.8)',
+            ? 'rgba(14, 30, 42, 0.95)'
+            : 'rgba(255, 255, 255, 0.95)',
           backdropFilter: 'blur(10px)',
           borderBottom: `1px solid ${theme.palette.mode === 'dark'
-            ? 'rgba(255,255,255,0.1)'
-            : 'rgba(0,0,0,0.1)'}`,
+            ? 'rgba(255,255,255,0.08)'
+            : 'rgba(0,0,0,0.08)'}`,
+          transition: 'all 0.2s ease',
         }}
       >
         <Container maxWidth="lg">
           <Toolbar sx={{ justifyContent: 'space-between' }}>
             {/* Logo and Name */}
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Box sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: 1,
+              transition: 'transform 0.2s ease',
+              '&:hover': {
+                transform: 'translateY(-1px)',
+              },
+            }}>
               <Image
                 src="/letter-m-circle.svg"
                 alt="M Logo"
-                width={26}
-                height={26}
+                width={28}
+                height={28}
                 style={{
                   filter: theme.palette.mode === 'dark' ? 'invert(1)' : 'none'
                 }}
@@ -115,7 +136,9 @@ const Navigation = () => {
                 onClick={() => handleNavigation('/')}
                 sx={{
                   fontWeight: 700,
+                  fontSize: '1.1rem',
                   color: theme.palette.mode === 'dark' ? 'white' : 'black',
+                  letterSpacing: '0.02em',
                 }}
               >
                 Michael Lynn
@@ -133,7 +156,28 @@ const Navigation = () => {
                     onClick={() => handleNavigation(item.path)}
                     sx={{
                       mx: 1,
+                      px: 1.5,
                       color: pathname === item.path ? 'primary.main' : 'text.primary',
+                      position: 'relative',
+                      '&::after': {
+                        content: '""',
+                        position: 'absolute',
+                        bottom: 6,
+                        left: pathname === item.path ? '20%' : '50%',
+                        right: pathname === item.path ? '20%' : '50%',
+                        height: 2,
+                        bgcolor: 'primary.main',
+                        transition: 'all 0.2s ease',
+                        opacity: pathname === item.path ? 1 : 0,
+                      },
+                      '&:hover': {
+                        background: 'transparent',
+                        '&::after': {
+                          left: '20%',
+                          right: '20%',
+                          opacity: 0.7,
+                        },
+                      },
                     }}
                   >
                     {item.text}
@@ -158,13 +202,39 @@ const Navigation = () => {
                   onClose={handleMoreClose}
                 >
                   {secondaryItems.map((item) => (
-                    <MenuItem
-                      key={item.path}
-                      onClick={() => handleNavigation(item.path)}
-                      selected={pathname === item.path}
-                    >
-                      {item.text}
-                    </MenuItem>
+                    item.items ? (
+                      <div key={item.text}>
+                        <MenuItem
+                          sx={{
+                            fontWeight: 'bold',
+                            pointerEvents: 'none',
+                            backgroundColor: 'background.default'
+                          }}
+                        >
+                          <ListItemIcon>{item.icon}</ListItemIcon>
+                          <ListItemText primary={item.text} />
+                        </MenuItem>
+                        {item.items.map((subItem) => (
+                          <MenuItem
+                            key={subItem.path}
+                            onClick={() => handleNavigation(subItem.path)}
+                            selected={pathname === subItem.path}
+                            sx={{ pl: 4 }}
+                          >
+                            <ListItemText primary={subItem.text} />
+                          </MenuItem>
+                        ))}
+                      </div>
+                    ) : (
+                      <MenuItem
+                        key={item.path}
+                        onClick={() => handleNavigation(item.path)}
+                        selected={pathname === item.path}
+                      >
+                        <ListItemIcon>{item.icon}</ListItemIcon>
+                        <ListItemText primary={item.text} />
+                      </MenuItem>
+                    )
                   ))}
                 </Menu>
 
