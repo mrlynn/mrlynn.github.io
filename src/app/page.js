@@ -9,6 +9,7 @@ import VideosSection from '../components/VideosSection';
 import GitHubActivity from '../components/GitHubActivity';
 import Timeline from '../components/Timeline';
 import Certifications from '../components/Certifications';
+import CalendarBooking from '../components/CalendarBooking';
 import { projects } from '../data/projects';
 import { timelineEvents } from '../data/timeline';
 import Image from 'next/image';
@@ -698,6 +699,94 @@ export default function Home() {
 
       {/* Certifications Section */}
       <Certifications />
+
+      {/* Calendar Booking Section */}
+      <Box 
+        sx={{ 
+          py: 12,
+          background: 'linear-gradient(180deg, rgba(6,39,54,0.03) 0%, rgba(6,39,54,0.08) 100%)',
+          borderTop: '1px solid rgba(6,39,54,0.1)',
+          borderBottom: '1px solid rgba(6,39,54,0.1)',
+        }}
+      >
+        <Container maxWidth="lg">
+          <Box sx={{ maxWidth: '800px', mx: 'auto', textAlign: 'center', mb: 8 }}>
+            <Typography
+              variant="h3"
+              sx={{
+                mb: 3,
+                fontWeight: 700,
+                color: theme.palette.text.primary,
+                position: 'relative',
+                '&::after': {
+                  content: '""',
+                  position: 'absolute',
+                  bottom: -16,
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  width: 80,
+                  height: 4,
+                  background: 'linear-gradient(90deg, #427AA1 0%, #A5BE00 100%)',
+                  borderRadius: 2,
+                },
+              }}
+            >
+              Schedule a Meeting
+            </Typography>
+            <Typography
+              variant="h6"
+              sx={{
+                color: theme.palette.text.secondary,
+                lineHeight: 1.8,
+                mb: 2,
+              }}
+            >
+              Book a time to discuss your project, collaboration opportunities, or just to chat about technology.
+            </Typography>
+            <Typography
+              variant="body1"
+              sx={{
+                color: theme.palette.text.secondary,
+                opacity: 0.8,
+              }}
+            >
+              Select a convenient time slot from my calendar below. Looking forward to connecting with you!
+            </Typography>
+          </Box>
+          
+          <Box
+            sx={{
+              position: 'relative',
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: -20,
+                left: -20,
+                right: -20,
+                bottom: -20,
+                background: 'linear-gradient(135deg, rgba(66,122,161,0.1) 0%, rgba(165,190,0,0.1) 100%)',
+                borderRadius: '24px',
+                zIndex: 0,
+              },
+            }}
+          >
+            <Paper
+              elevation={0}
+              sx={{
+                position: 'relative',
+                zIndex: 1,
+                borderRadius: '16px',
+                overflow: 'hidden',
+                backgroundColor: 'white',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
+                border: '1px solid rgba(6,39,54,0.1)',
+              }}
+            >
+              <CalendarBooking variant="iframe" />
+            </Paper>
+          </Box>
+        </Container>
+      </Box>
 
       <Container maxWidth="lg" sx={{ py: 8 }}>
         <ProjectsSection />
