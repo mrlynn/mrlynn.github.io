@@ -1,7 +1,7 @@
 'use client';
 
 import { Box, Container, Typography, Button, Grid, Paper, Stack, useTheme, IconButton } from '@mui/material';
-import { GitHub as GitHubIcon, LinkedIn as LinkedInIcon, BookOutlined as BookOutlinedIcon, Code as CodeIcon, Terminal as TerminalIcon, Cloud as CloudIcon, ArrowDownward as ArrowDownwardIcon } from '@mui/icons-material';
+import { GitHub as GitHubIcon, LinkedIn as LinkedInIcon, BookOutlined as BookOutlinedIcon, Code as CodeIcon, Terminal as TerminalIcon, Cloud as CloudIcon, ArrowDownward as ArrowDownwardIcon, CalendarToday as CalendarIcon } from '@mui/icons-material';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import ProjectsSection from '../components/ProjectsSection';
@@ -467,6 +467,29 @@ export default function Home() {
                   >
                     LinkedIn
                   </Button>
+                  <CalendarBooking 
+                    variant="button" 
+                    buttonProps={{
+                      variant: "outlined",
+                      size: "large",
+                      children: "Schedule a Meeting",
+                      sx: {
+                        borderColor: 'rgba(255,255,255,0.6)',
+                        borderWidth: 2,
+                        color: '#fff',
+                        px: 4,
+                        py: 1.5,
+                        fontWeight: 600,
+                        '&:hover': {
+                          borderColor: '#fff',
+                          backgroundColor: 'rgba(255,255,255,0.1)',
+                          transform: 'translateY(-2px)',
+                          boxShadow: '0 5px 15px rgba(0,0,0,0.2)',
+                        },
+                        transition: 'all 0.3s ease',
+                      }
+                    }}
+                  />
                 </Stack>
 
                 <Grid container spacing={3}>
