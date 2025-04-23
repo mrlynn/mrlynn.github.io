@@ -76,7 +76,8 @@ const Navigation = () => {
   const secondaryItems = [
     { text: 'Tools', icon: <BuildIcon />, items: [
       { text: 'Diagram Generator', path: '/tools/generate-diagram' },
-      { text: 'MongoDB Introspector', path: '/tools/introspect' }
+      { text: 'MongoDB Introspector', path: '/tools/introspect' },
+      { text: 'MongoDB RAG Explainer', path: 'https://rag-chunk-explainer.vercel.app/' }
     ]},
     { text: 'Videos', icon: <YouTubeIcon />, path: '/videos' },
     { text: 'Art', icon: <PaletteIcon />, path: '/art' },
