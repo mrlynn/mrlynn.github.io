@@ -2,7 +2,7 @@
 
 import { Box } from '@mui/material';
 import { motion } from 'framer-motion';
-import Navigation from './Navigation';
+import NavigationImproved from './NavigationImproved';
 
 const MotionBox = motion(Box);
 
@@ -10,7 +10,7 @@ export default function Layout({ children }) {
   return (
     <Box sx={{ minHeight: '100vh', position: 'relative' }}>
       {/* Navigation */}
-      <Navigation />
+      <NavigationImproved />
 
       {/* Main content */}
       <Box

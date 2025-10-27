@@ -27,20 +27,16 @@ export default function BlogCard({ post, index }) {
         sx={{
           position: 'relative',
           height: '100%',
-          borderRadius: 2,
+          borderRadius: '16px',
           overflow: 'hidden',
-          background: theme.palette.mode === 'dark'
-            ? theme.palette.background.paper
-            : '#ffffff',
-          boxShadow: theme.palette.mode === 'dark'
-            ? '0 4px 20px rgba(0,0,0,0.2)'
-            : '0 4px 20px rgba(0,0,0,0.1)',
-          border: `1px solid ${theme.palette.mode === 'dark'
-            ? 'rgba(255,255,255,0.1)'
-            : 'rgba(0,0,0,0.1)'}`,
-          transition: 'transform 0.3s ease-in-out',
+          background: theme.palette.background.paper,
+          boxShadow: theme.shadows[2],
+          border: `1px solid ${theme.palette.border.subtle}`,
+          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
           '&:hover': {
             transform: 'translateY(-5px)',
+            borderColor: theme.palette.border.default,
+            boxShadow: theme.shadows[8],
           },
         }}
       >

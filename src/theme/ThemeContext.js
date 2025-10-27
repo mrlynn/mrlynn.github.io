@@ -3,6 +3,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { ThemeProvider as MuiThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import { colors, typography, shadows, gradients, borderRadius, transitions } from './designSystem';
 
 const ThemeContext = createContext();
 
@@ -30,79 +31,164 @@ export function ThemeProvider({ children }) {
     palette: {
       mode: isDarkMode ? 'dark' : 'light',
       primary: {
-        main: '#0d3793',
-        light: isDarkMode ? '#80e4ff' : '#339af0',
-        dark: isDarkMode ? '#0095cc' : '#003580',
+        main: colors.primary[600],
+        light: colors.primary[400],
+        dark: colors.primary[800],
       },
       secondary: {
-        main: '#679436',
-        light: isDarkMode ? '#7dff9b' : '#80e27e',
-        dark: isDarkMode ? '#2e7c44' : '#087f23',
+        main: colors.secondary[600],
+        light: colors.secondary[400],
+        dark: colors.secondary[800],
+      },
+      accent: {
+        main: colors.accent.main,
+        light: colors.accent.light,
+        dark: colors.accent.dark,
       },
       background: {
-        default: isDarkMode ? '#0e1e2a' : '#f5f5f5',
-        paper: isDarkMode ? '#162736' : '#ffffff',
-        card: isDarkMode ? '#1a314a' : '#f8f9fa',
-        gradient: isDarkMode 
-          ? 'linear-gradient(135deg, #0d3793 0%, #679436 100%)'
-          : 'linear-gradient(135deg, #2563eb 0%, #679436 100%)',
-        gradientText: isDarkMode
-          ? 'linear-gradient(90deg, #80e4ff 30%, #7dff9b 100%)'
-          : 'linear-gradient(90deg, #0070f3 30%, #339af0 100%)',
+        default: isDarkMode ? colors.dark.bg.primary : colors.light.bg.primary,
+        paper: isDarkMode ? colors.dark.bg.paper : colors.light.bg.paper,
+        card: isDarkMode ? colors.dark.bg.tertiary : colors.light.bg.tertiary,
+        elevated: isDarkMode ? colors.dark.bg.elevated : colors.light.bg.elevated,
+        gradient: gradients.primary,
+        gradientAccent: gradients.accent,
+        gradientSecondary: gradients.secondary,
+        mesh: isDarkMode ? gradients.mesh.dark : gradients.mesh.light,
+      },
+      surface: {
+        primary: isDarkMode ? colors.dark.surface.primary : colors.light.surface.primary,
+        secondary: isDarkMode ? colors.dark.surface.secondary : colors.light.surface.secondary,
+        tertiary: isDarkMode ? colors.dark.surface.tertiary : colors.light.surface.tertiary,
+      },
+      border: {
+        subtle: isDarkMode ? colors.dark.border.subtle : colors.light.border.subtle,
+        default: isDarkMode ? colors.dark.border.default : colors.light.border.default,
+        strong: isDarkMode ? colors.dark.border.strong : colors.light.border.strong,
       },
       text: {
-        primary: isDarkMode ? '#ffffff' : '#000000',
-        secondary: isDarkMode ? '#b3b3b3' : '#666666',
+        primary: isDarkMode ? '#ffffff' : colors.gray[900],
+        secondary: isDarkMode ? colors.gray[400] : colors.gray[600],
+        disabled: isDarkMode ? colors.gray[600] : colors.gray[400],
       },
-      divider: isDarkMode ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.12)',
+      divider: isDarkMode ? colors.dark.border.default : colors.light.border.default,
     },
     typography: {
-      fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+      fontFamily: typography.fontFamily.primary,
       h1: {
-        fontSize: '3rem',
-        fontWeight: 700,
-        lineHeight: 1.2,
+        fontSize: typography.fontSize['5xl'],
+        fontWeight: typography.fontWeight.bold,
+        lineHeight: typography.lineHeight.tight,
         marginBottom: '1.5rem',
+        letterSpacing: '-0.02em',
       },
       h2: {
-        fontSize: '2rem',
-        fontWeight: 600,
-        lineHeight: 1.3,
+        fontSize: typography.fontSize['4xl'],
+        fontWeight: typography.fontWeight.semibold,
+        lineHeight: typography.lineHeight.snug,
         marginBottom: '1.25rem',
+        letterSpacing: '-0.01em',
       },
       h3: {
-        fontSize: '1.5rem',
-        fontWeight: 600,
-        lineHeight: 1.4,
+        fontSize: typography.fontSize['3xl'],
+        fontWeight: typography.fontWeight.semibold,
+        lineHeight: typography.lineHeight.snug,
         marginBottom: '1rem',
       },
       h4: {
-        fontSize: '1.25rem',
-        fontWeight: 600,
-        lineHeight: 1.4,
+        fontSize: typography.fontSize['2xl'],
+        fontWeight: typography.fontWeight.semibold,
+        lineHeight: typography.lineHeight.normal,
         marginBottom: '0.75rem',
       },
       h5: {
-        fontSize: '1.125rem',
-        fontWeight: 600,
-        lineHeight: 1.4,
+        fontSize: typography.fontSize.xl,
+        fontWeight: typography.fontWeight.semibold,
+        lineHeight: typography.lineHeight.normal,
         marginBottom: '0.5rem',
       },
       h6: {
-        fontSize: '1rem',
-        fontWeight: 600,
-        lineHeight: 1.4,
+        fontSize: typography.fontSize.lg,
+        fontWeight: typography.fontWeight.semibold,
+        lineHeight: typography.lineHeight.normal,
         marginBottom: '0.5rem',
       },
       body1: {
-        fontSize: '1.125rem',
-        lineHeight: 1.6,
+        fontSize: typography.fontSize.base,
+        lineHeight: typography.lineHeight.relaxed,
         marginBottom: '1rem',
       },
       body2: {
-        fontSize: '1rem',
-        lineHeight: 1.6,
+        fontSize: typography.fontSize.sm,
+        lineHeight: typography.lineHeight.normal,
         marginBottom: '0.75rem',
+      },
+      caption: {
+        fontSize: typography.fontSize.xs,
+        lineHeight: typography.lineHeight.normal,
+      },
+    },
+    shape: {
+      borderRadius: parseInt(borderRadius.md),
+    },
+    shadows: isDarkMode ? [
+      'none',
+      shadows.dark.xs,
+      shadows.dark.sm,
+      shadows.dark.sm,
+      shadows.dark.md,
+      shadows.dark.md,
+      shadows.dark.lg,
+      shadows.dark.lg,
+      shadows.dark.xl,
+      shadows.dark.xl,
+      shadows.dark['2xl'],
+      shadows.dark['2xl'],
+      shadows.dark['2xl'],
+      shadows.dark['2xl'],
+      shadows.dark['2xl'],
+      shadows.dark['2xl'],
+      shadows.dark['2xl'],
+      shadows.dark['2xl'],
+      shadows.dark['2xl'],
+      shadows.dark['2xl'],
+      shadows.dark['2xl'],
+      shadows.dark['2xl'],
+      shadows.dark['2xl'],
+      shadows.dark['2xl'],
+      shadows.dark['2xl'],
+    ] : [
+      'none',
+      shadows.light.xs,
+      shadows.light.sm,
+      shadows.light.sm,
+      shadows.light.md,
+      shadows.light.md,
+      shadows.light.lg,
+      shadows.light.lg,
+      shadows.light.xl,
+      shadows.light.xl,
+      shadows.light['2xl'],
+      shadows.light['2xl'],
+      shadows.light['2xl'],
+      shadows.light['2xl'],
+      shadows.light['2xl'],
+      shadows.light['2xl'],
+      shadows.light['2xl'],
+      shadows.light['2xl'],
+      shadows.light['2xl'],
+      shadows.light['2xl'],
+      shadows.light['2xl'],
+      shadows.light['2xl'],
+      shadows.light['2xl'],
+      shadows.light['2xl'],
+      shadows.light['2xl'],
+    ],
+    transitions: {
+      easing: {
+        easeInOut: transitions.base,
+        easeOut: transitions.fast,
+        easeIn: transitions.slow,
+        sharp: transitions.bounce,
       },
     },
     components: {
@@ -123,86 +209,124 @@ export function ThemeProvider({ children }) {
       MuiCssBaseline: {
         styleOverrides: {
           ':root': {
-            '--color-calendar-graph-day-bg': isDarkMode ? '#1e1e1e' : '#f8f9fa',
+            '--color-calendar-graph-day-bg': isDarkMode ? colors.dark.bg.secondary : colors.light.bg.secondary,
             '--color-calendar-graph-day-L1-bg': isDarkMode ? '#0e4429' : '#9be9a8',
             '--color-calendar-graph-day-L2-bg': isDarkMode ? '#006d32' : '#40c463',
             '--color-calendar-graph-day-L3-bg': isDarkMode ? '#26a641' : '#30a14e',
             '--color-calendar-graph-day-L4-bg': isDarkMode ? '#39d353' : '#216e39',
           },
+          '*': {
+            boxSizing: 'border-box',
+            margin: 0,
+            padding: 0,
+          },
+          'html, body': {
+            scrollBehavior: 'smooth',
+          },
           body: {
-            backgroundColor: isDarkMode ? '#0e1e2a' : '#ffffff',
-            color: isDarkMode ? '#ffffff' : '#000000',
-            transition: 'all 0.2s ease',
+            backgroundColor: isDarkMode ? colors.dark.bg.primary : colors.light.bg.primary,
+            color: isDarkMode ? '#ffffff' : colors.gray[900],
+            transition: `background-color ${transitions.base}, color ${transitions.base}`,
             scrollbarWidth: 'thin',
-            scrollbarColor: isDarkMode ? '#404040 #1e1e1e' : '#c1c1c1 #f1f1f1',
+            scrollbarColor: isDarkMode ? `${colors.gray[700]} ${colors.dark.bg.secondary}` : `${colors.gray[400]} ${colors.gray[100]}`,
+            WebkitFontSmoothing: 'antialiased',
+            MozOsxFontSmoothing: 'grayscale',
             '&::-webkit-scrollbar': {
-              width: '8px',
+              width: '10px',
+              height: '10px',
             },
             '&::-webkit-scrollbar-track': {
-              background: isDarkMode ? '#1e1e1e' : '#f1f1f1',
+              background: isDarkMode ? colors.dark.bg.secondary : colors.gray[100],
             },
             '&::-webkit-scrollbar-thumb': {
-              backgroundColor: isDarkMode ? '#404040' : '#c1c1c1',
-              borderRadius: '4px',
+              backgroundColor: isDarkMode ? colors.gray[700] : colors.gray[400],
+              borderRadius: borderRadius.md,
+              border: `2px solid ${isDarkMode ? colors.dark.bg.secondary : colors.gray[100]}`,
               '&:hover': {
-                backgroundColor: isDarkMode ? '#4a4a4a' : '#a8a8a8',
+                backgroundColor: isDarkMode ? colors.gray[600] : colors.gray[500],
               },
             },
           },
           'a': {
-            color: isDarkMode ? '#61dafb' : '#0070f3',
+            color: isDarkMode ? colors.primary[400] : colors.primary[600],
             textDecoration: 'none',
+            transition: `color ${transitions.fast}`,
             '&:hover': {
+              color: isDarkMode ? colors.primary[300] : colors.primary[700],
               textDecoration: 'underline',
             },
           },
-          '.MuiPaper-root': {
-            backgroundColor: isDarkMode ? '#1e1e1e' : '#ffffff',
-            transition: 'background-color 0.2s ease',
+          'img': {
+            maxWidth: '100%',
+            height: 'auto',
           },
-          '.MuiAppBar-root': {
-            backgroundColor: isDarkMode ? '#1e1e1e' : '#ffffff',
-            color: isDarkMode ? '#ffffff' : '#000000',
+          'code': {
+            fontFamily: typography.fontFamily.mono,
+            fontSize: '0.875em',
+            padding: '0.125em 0.375em',
+            borderRadius: borderRadius.sm,
+            backgroundColor: isDarkMode ? colors.dark.surface.secondary : colors.light.surface.secondary,
           },
-          '.MuiCard-root': {
-            backgroundColor: isDarkMode ? '#1e1e1e' : '#ffffff',
-            borderColor: isDarkMode ? '#333333' : '#e0e0e0',
-          },
-          '.MuiButton-root': {
-            textTransform: 'none',
+          'pre': {
+            fontFamily: typography.fontFamily.mono,
+            fontSize: typography.fontSize.sm,
+            padding: '1rem',
+            borderRadius: borderRadius.lg,
+            overflow: 'auto',
+            backgroundColor: isDarkMode ? colors.dark.surface.secondary : colors.light.surface.secondary,
           },
         },
       },
       MuiPaper: {
         styleOverrides: {
           root: {
-            backgroundColor: isDarkMode ? '#1e1e1e' : '#ffffff',
+            backgroundColor: isDarkMode ? colors.dark.bg.paper : colors.light.bg.paper,
             backgroundImage: 'none',
+            transition: `all ${transitions.base}`,
+          },
+          elevation1: {
+            boxShadow: isDarkMode ? shadows.dark.sm : shadows.light.sm,
+          },
+          elevation2: {
+            boxShadow: isDarkMode ? shadows.dark.md : shadows.light.md,
+          },
+          elevation3: {
+            boxShadow: isDarkMode ? shadows.dark.lg : shadows.light.lg,
           },
         },
       },
       MuiCard: {
         styleOverrides: {
           root: {
-            backgroundColor: isDarkMode ? '#242424' : '#ffffff',
+            backgroundColor: isDarkMode ? colors.dark.bg.paper : colors.light.bg.paper,
             backgroundImage: 'none',
+            borderRadius: borderRadius.lg,
+            border: `1px solid ${isDarkMode ? colors.dark.border.subtle : colors.light.border.subtle}`,
+            transition: `all ${transitions.base}`,
+            '&:hover': {
+              borderColor: isDarkMode ? colors.dark.border.default : colors.light.border.default,
+            },
           },
         },
       },
       MuiAppBar: {
         styleOverrides: {
           root: {
-            backgroundColor: isDarkMode ? 'rgba(30, 30, 30, 0.8)' : 'rgba(255, 255, 255, 0.8)',
+            backgroundColor: isDarkMode ? 'rgba(30, 46, 66, 0.95)' : 'rgba(255, 255, 255, 0.95)',
             backgroundImage: 'none',
-            borderBottom: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.12)'}`,
+            backdropFilter: 'blur(12px)',
+            borderBottom: `1px solid ${isDarkMode ? colors.dark.border.subtle : colors.light.border.subtle}`,
+            boxShadow: isDarkMode ? shadows.dark.sm : shadows.light.sm,
+            transition: `all ${transitions.base}`,
           },
         },
       },
       MuiDrawer: {
         styleOverrides: {
           paper: {
-            backgroundColor: isDarkMode ? '#1e1e1e' : '#ffffff',
+            backgroundColor: isDarkMode ? colors.dark.bg.paper : colors.light.bg.paper,
             backgroundImage: 'none',
+            borderRight: `1px solid ${isDarkMode ? colors.dark.border.subtle : colors.light.border.subtle}`,
           },
         },
       },
@@ -210,30 +334,85 @@ export function ThemeProvider({ children }) {
         styleOverrides: {
           root: {
             textTransform: 'none',
+            borderRadius: borderRadius.md,
+            fontWeight: typography.fontWeight.medium,
+            transition: `all ${transitions.fast}`,
+            '&:hover': {
+              transform: 'translateY(-1px)',
+            },
+          },
+          contained: {
+            boxShadow: 'none',
+            '&:hover': {
+              boxShadow: isDarkMode ? shadows.dark.md : shadows.light.md,
+            },
+          },
+          outlined: {
+            borderWidth: '1.5px',
+            '&:hover': {
+              borderWidth: '1.5px',
+            },
           },
         },
       },
       MuiChip: {
         styleOverrides: {
           root: {
-            backgroundColor: isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)',
-            color: isDarkMode ? '#ffffff' : '#000000',
+            backgroundColor: isDarkMode ? colors.dark.surface.secondary : colors.light.surface.secondary,
+            color: isDarkMode ? '#ffffff' : colors.gray[900],
+            borderRadius: borderRadius.md,
+            fontWeight: typography.fontWeight.medium,
+            transition: `all ${transitions.fast}`,
+            '&:hover': {
+              backgroundColor: isDarkMode ? colors.dark.surface.tertiary : colors.light.surface.tertiary,
+            },
           },
         },
       },
       MuiIconButton: {
         styleOverrides: {
           root: {
-            color: isDarkMode ? '#ffffff' : '#000000',
+            color: isDarkMode ? '#ffffff' : colors.gray[900],
+            transition: `all ${transitions.fast}`,
+            '&:hover': {
+              backgroundColor: isDarkMode ? colors.dark.surface.secondary : colors.light.surface.secondary,
+              transform: 'scale(1.05)',
+            },
           },
         },
       },
       MuiLink: {
         styleOverrides: {
           root: {
-            color: isDarkMode ? '#61dafb' : '#0070f3',
+            color: isDarkMode ? colors.primary[400] : colors.primary[600],
+            transition: `all ${transitions.fast}`,
             '&:hover': {
-              color: isDarkMode ? '#80e4ff' : '#339af0',
+              color: isDarkMode ? colors.primary[300] : colors.primary[700],
+            },
+          },
+        },
+      },
+      MuiTooltip: {
+        styleOverrides: {
+          tooltip: {
+            backgroundColor: isDarkMode ? colors.dark.bg.elevated : colors.gray[800],
+            fontSize: typography.fontSize.sm,
+            borderRadius: borderRadius.md,
+            padding: '8px 12px',
+          },
+        },
+      },
+      MuiTextField: {
+        styleOverrides: {
+          root: {
+            '& .MuiOutlinedInput-root': {
+              borderRadius: borderRadius.md,
+              transition: `all ${transitions.fast}`,
+              '&:hover': {
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderColor: isDarkMode ? colors.dark.border.strong : colors.light.border.strong,
+                },
+              },
             },
           },
         },

@@ -34,6 +34,8 @@ export default function Certifications() {
                   <CredlyBadge badgeId="a5c70efa-5e60-4430-b19c-0674fa71041c" />
                   <CredlyBadge badgeId="eae0010a-b157-4f78-aa07-29ff0647c2c0" />
                   <CredlyBadge badgeId="7b8c4dd2-68e2-4ce3-81c1-6aac27870d65" />
+                  <CredlyBadge badgeId="dfbff6c9-ff28-4621-959b-d1906cb96698" />
+                  <CredlyBadge badgeId="356fc291-29d7-46e8-b3ec-f519e0908edc" />
                 </Box>
               </CardContent>
             </Card>

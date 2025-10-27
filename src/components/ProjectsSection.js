@@ -18,8 +18,8 @@ export default function ProjectsSection() {
       sx={{
         py: 12,
         background: theme.palette.mode === 'dark'
-          ? 'radial-gradient(circle at center, rgba(5, 102, 141, 0.1) 0%, rgba(4, 30, 43, 0) 70%)'
-          : 'radial-gradient(circle at center, rgba(5, 102, 141, 0.05) 0%, rgba(4, 30, 43, 0) 70%)',
+          ? 'radial-gradient(circle at center, rgba(33, 150, 243, 0.1) 0%, rgba(10, 14, 39, 0) 70%)'
+          : 'radial-gradient(circle at center, rgba(33, 150, 243, 0.05) 0%, rgba(255, 255, 255, 0) 70%)',
       }}
     >
       <Container maxWidth="lg">
@@ -30,6 +30,7 @@ export default function ProjectsSection() {
           gutterBottom
           sx={{
             mb: 6,
+            fontWeight: 700,
             background: theme.palette.background.gradient,
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
@@ -49,16 +50,16 @@ export default function ProjectsSection() {
                   height: '100%',
                   display: 'flex',
                   flexDirection: 'column',
-                  background: theme.palette.mode === 'dark'
-                    ? 'rgba(6, 39, 54, 0.9)'
-                    : theme.palette.background.paper,
+                  background: theme.palette.background.paper,
                   backdropFilter: 'blur(10px)',
-                  border: `1px solid ${theme.palette.mode === 'dark'
-                    ? 'rgba(255,255,255,0.1)'
-                    : 'rgba(0,0,0,0.1)'}`,
-                  transition: 'transform 0.3s ease-in-out',
+                  border: `1px solid ${theme.palette.border.subtle}`,
+                  borderRadius: '16px',
+                  overflow: 'hidden',
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                   '&:hover': {
                     transform: 'translateY(-8px)',
+                    borderColor: theme.palette.border.default,
+                    boxShadow: theme.shadows[8],
                   },
                 }}
               >
@@ -175,11 +176,20 @@ export default function ProjectsSection() {
             size="large"
             endIcon={<ArrowForwardIcon />}
             sx={{
-              borderColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)',
-              color: theme.palette.mode === 'dark' ? '#ffffff' : '#000000',
+              borderColor: theme.palette.border.default,
+              borderWidth: '1.5px',
+              color: theme.palette.text.primary,
+              px: 4,
+              py: 1.5,
+              borderRadius: '12px',
+              fontWeight: 600,
+              transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
               '&:hover': {
-                borderColor: theme.palette.mode === 'dark' ? '#ffffff' : '#000000',
-                backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
+                borderWidth: '1.5px',
+                borderColor: theme.palette.primary.main,
+                backgroundColor: theme.palette.surface.secondary,
+                transform: 'translateY(-2px)',
+                boxShadow: theme.shadows[4],
               },
             }}
           >

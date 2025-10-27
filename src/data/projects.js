@@ -49,7 +49,7 @@ export const projects = [
     description: 'The easiest way to build RAG applications with MongoDB - a lightweight NPM package for vector search and document ingestion.',
     image: '/images/projects/mongodb-rag.png',
     tags: ['MongoDB', 'AI', 'Vector Search'],
-    demoUrl: 'https://mongodb.com/rag',
+    demoUrl: 'https://mongodb-rag.com',
     private: false,
     color: '#427AA1',
   },
