@@ -41,5 +41,6 @@ yarn-error.log*
 next-env.d.ts
 .cursorrules
 *pdf
+!public/Michael_Lynn_Resume.pdf
 out/*
 codebase.md
