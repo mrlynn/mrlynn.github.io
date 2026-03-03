@@ -1,242 +1,486 @@
 ---
-title: "NetPad: A Personal Journey into Visual Agentic AI Development"
-description: "Develop agentic workflows in line with industry standards (AG-UI, A2A) visually... think Figma for Agents"
-date: "2025-05-22"
+title: "NetPad: MongoDB-Connected Form Builder Platform"
+description: "An enterprise-grade platform combining visual form building, workflow automation, and AI-powered conversational experiences with MongoDB Atlas integration"
+date: "2026-01-24"
 author: "Michael Lynn"
-image: "/images/netpad.png"
-tags: ["Agents", "AI", "Workflow", "Next.js", "MongoDB", "Material UI", "Authentication", "React", "Web Development"]
-color: "#1976d2"
-category: "blog"
+image: "/images/projects/netpad/banner.png"
+tags: ["MongoDB", "Forms", "Workflows", "AI", "RAG", "Vector Search", "Next.js", "Open Source"]
+color: "#00ED64"
+category: "project"
 private: false
-technologies: ["Next.js", "MongoDB", "Material UI", "NextAuth.js", "React Hook Form"]
+screenshots: [
+  "/images/projects/netpad/form-builder.png",
+  "/images/projects/netpad/workflow-editor.png",
+  "/images/projects/netpad/conversational-form.png",
+  "/images/projects/netpad/data-browser.png"
+]
+technologies: ["Next.js 14", "React", "Material UI", "MongoDB Atlas", "Vector Search", "OpenAI API", "TypeScript", "Vercel"]
 demoUrl: "https://netpad.io"
+githubUrl: "https://github.com/mrlynn/netpad-v3"
 ---
 
-# NetPad: A Personal Journey into Visual Agentic AI Development
+# NetPad: MongoDB-Connected Form Builder Platform
 
-## Introduction
+As a Principal Developer Advocate at MongoDB, I'm constantly looking for ways to help developers build applications faster while leveraging the full power of MongoDB's document model. NetPad emerged from a simple observation: building data collection and processing systems shouldn't require weeks of backend development.
 
-As a developer advocate and MongoDB expert, I've spent years helping developers build complex applications. But in late 2023, as the AI revolution accelerated, I found myself increasingly frustrated with the gap between the promise of agentic AI and the reality of building production-ready systems. This frustration became the catalyst for NetPad—a project that has evolved from a simple diagram editor into what I believe is the future of agentic workflow development.
+NetPad is an open-source, enterprise-grade platform that transforms how organizations build MongoDB-connected applications. The platform combines four core pillars—**Forms**, **Workflows**, **Data Management**, and **AI/Conversational Experiences**—to deliver a complete solution from database to production in minutes.
 
-## The Problem That Started It All
+<ScreenshotSlideshow
+  screenshots={[
+    "/images/projects/netpad/form-builder.png",
+    "/images/projects/netpad/workflow-editor.png",
+    "/images/projects/netpad/conversational-form.png",
+    "/images/projects/netpad/data-browser.png"
+  ]}
+  title="NetPad Platform"
+/>
 
-Like many developers, I was excited about the potential of large language models (LLMs) and multi-agent systems. I dove into LangChain, explored CrewAI, and experimented with various frameworks. But as I tried to build anything beyond simple prototypes, I kept hitting the same walls:
+## Project Overview
 
-- **Code-first complexity**: Even simple workflows required hundreds of lines of orchestration code
-- **Debugging nightmares**: When agents failed, tracing the problem through nested function calls was painful
-- **Team collaboration barriers**: Non-technical stakeholders couldn't contribute to or even understand the workflows
-- **Production deployment challenges**: Moving from prototype to production-ready systems felt like rebuilding everything
+NetPad is built around four core pillars that work together seamlessly:
 
-I remember spending an entire weekend trying to debug a three-agent research workflow that worked perfectly in my local environment but failed mysteriously in production. The problem? A context variable that wasn't being passed correctly between agents. It should have been a five-minute fix, but the code-first approach made it nearly impossible to visualize the data flow.
+1. **Forms**: Visual drag-and-drop form builder with 30+ field types, conditional logic, and multi-page support
+2. **Workflows**: Automation engine with 25+ node types for post-submission processing and integrations
+3. **Data Management**: Browse, query, and manage MongoDB data with visual tools and secure credential storage
+4. **AI/Conversational**: Natural language data collection powered by RAG and MongoDB Atlas Vector Search
 
-That's when I realized we needed a different approach entirely.
+<MermaidDiagram
+  title="NetPad Platform Architecture"
+  chart={`
+flowchart TD
+    User([User]) --> UI[Web Interface]
 
-## The Vision: "Figma for Agentic Workflows"
+    subgraph Platform[NetPad Platform]
+        UI --> Forms[Form Builder]
+        UI --> Workflows[Workflow Engine]
+        UI --> Data[Data Browser]
+        UI --> AI[AI/Conversational]
 
-The breakthrough came when I was watching my designer colleague effortlessly create complex user interfaces in Figma. She could see every component, understand the relationships at a glance, and collaborate with our entire team—developers, product managers, and stakeholders—all working together on the same visual canvas.
+        Forms --> API[API Layer]
+        Workflows --> API
+        Data --> API
+        AI --> API
 
-I thought: "What if we could build agentic AI workflows the same way?"
+        API --> Services[Platform Services]
+        Services --> Auth[Authentication]
+        Services --> Orgs[Organizations]
+        Services --> Projects[Projects]
+        Services --> Apps[Applications]
+    end
 
-What if instead of writing complex orchestration code, developers could:
-- **Visually compose** agents, tools, and data flows
-- **See the entire system** at a glance, understanding relationships and dependencies
-- **Debug visually** by watching data flow through the system in real-time
-- **Collaborate seamlessly** with domain experts who understand the business logic but not the code
+    API --> MongoDB[(MongoDB Atlas)]
+    AI --> VS[Vector Search]
+    AI --> LLM[OpenAI LLM]
+    VS --> MongoDB
 
-That vision became NetPad.
+    classDef primary fill:#00ED64,stroke:#00684A,color:white;
+    classDef secondary fill:#2196F3,stroke:#1976D2,color:white;
+    classDef tertiary fill:#FFC107,stroke:#FFA000,color:white;
 
-## Technical Philosophy: MongoDB-First, Visual-First
+    class UI,Forms,Workflows,Data,AI primary;
+    class API,Services secondary;
+    class MongoDB,VS,LLM tertiary;
+  `}
+  caption="High-level architecture of the NetPad Platform"
+/>
 
-From the beginning, I made several key architectural decisions that would shape NetPad's development:
+## Key Features
 
-### 1. MongoDB Atlas as the Foundation
-Having worked extensively with MongoDB, I knew that the flexibility of a document database would be crucial for storing complex, evolving workflow definitions. Unlike rigid SQL schemas, MongoDB allows NetPad to store:
-- **Arbitrary node configurations** without predefined schema constraints
-- **Dynamic properties** that vary by node type
-- **Rich metadata** including execution history, user annotations, and collaboration data
-- **Flexible relationships** between workflows, templates, and user preferences
+### Visual Form Builder
+- **WYSIWYG Editor**: Drag-and-drop interface with live preview and keyboard shortcuts
+- **30+ Field Types**: Text, selection, date/time, rich input, files, signatures, geolocation, and more
+- **Multi-Page Forms**: Step-based progression with configurable indicators (dots, numbers, progress bar, tabs)
+- **Conditional Logic**: Show/hide fields based on other field values
+- **Computed Fields**: Formula-based calculations with a powerful expression engine
+- **Lookup Fields**: Cross-collection references with autocomplete
+- **Theming & Branding**: Custom colors, logos, preset themes, and full CSS control
+- **Template Gallery**: 25+ form templates and 11 workflow templates for rapid development
 
-### 2. JSON DSL as the Universal Language
-I designed NetPad around a canonical JSON Domain Specific Language (DSL) that serves as the single source of truth for all workflows:
+### Form Types
 
-```json
-{
-  "nodes": [
-    {
-      "id": "agent1",
-      "type": "agent_node",
-      "x": 100,
-      "y": 100,
-      "params": {
-        "prompt": "Analyze the provided data...",
-        "model": "gpt-4",
-        "temperature": 0.7
-      }
-    }
-  ],
-  "edges": [
-    {
-      "from": "input1",
-      "to": "agent1",
-      "type": "data_flow"
-    }
-  ]
-}
+| Type | Description | Use Case |
+|------|-------------|----------|
+| **Data Entry** | Standard CRUD forms | Registration, surveys, data input |
+| **Search** | Query/filter existing data | Data lookup with operators (equals, contains, between, in, regex) |
+| **Both** | Switchable mode | Flexible data management (entry + search) |
+| **Conversational** | AI-powered dialogue | Support tickets, feedback, intake with natural language |
+
+### Workflow Automation
+- **Visual Editor**: Canvas-based ReactFlow-powered workflow design with node palette
+- **25+ Node Types**: Logic (conditional, switch, filter, loop), data transform, MongoDB operations, HTTP requests, email, Slack, Google Sheets
+- **Multiple Triggers**: Form submission, webhook, schedule (CRON), manual, API
+- **Execution Engine**: Queue-based with retry logic, exponential backoff, and comprehensive error handling
+- **Real-Time Monitoring**: Execution status, progress tracking, and version history
+
+### Conversational Forms with RAG
+
+Transform traditional forms into natural language dialogues with Knowledge-Guided AI:
+
+- **Natural Language Interaction**: Users chat with an AI that guides data collection
+- **Topic Coverage Tracking**: Ensures all required information is collected
+- **Automatic Data Extraction**: Structured data with confidence scoring per field
+- **Knowledge-Guided (RAG)**: Ground AI responses in uploaded documents (PDF, DOCX, TXT)
+- **Source Citations**: Every AI response includes traceable references to source documents
+- **Vector Search**: MongoDB Atlas Vector Search for semantic document retrieval
+
+### Data Management
+- **Connection Vault**: AES-256-GCM encrypted storage for MongoDB credentials
+- **Data Browser**: Visual document viewing, editing, querying, and aggregation pipeline building
+- **Import/Export**: CSV/JSON with schema inference and mapping
+- **Atlas Integration**: Auto-provisioned M0 clusters, monitoring, and user management
+
+## Technical Implementation
+
+The project leverages modern web technologies and MongoDB's powerful features.
+
+<TechStack
+  items={[
+    "Next.js 14",
+    "React 18",
+    "Material UI",
+    "MongoDB Atlas",
+    "Vector Search",
+    "OpenAI API",
+    "TypeScript",
+    "Vercel"
+  ]}
+/>
+
+### Core Components
+
+#### 1. Form Processing Pipeline
+
+Forms support multiple modes including data entry, search, and conversational collection:
+
+<MermaidDiagram
+  chart={`
+flowchart LR
+    Submit[Form Submit] --> Validate[Validation]
+    Validate --> Transform[Transform]
+    Transform --> Store[(MongoDB)]
+    Store --> Trigger{Workflow?}
+    Trigger -->|Yes| Execute[Execute Workflow]
+    Trigger -->|No| Complete[Complete]
+    Execute --> Complete
+
+    classDef primary fill:#00ED64,stroke:#00684A,color:white;
+    classDef secondary fill:#2196F3,stroke:#1976D2,color:white;
+    classDef tertiary fill:#FFC107,stroke:#FFA000,color:white;
+
+    class Submit,Complete primary;
+    class Validate,Transform,Execute secondary;
+    class Store,Trigger tertiary;
+  `}
+  caption="Form submission processing flow"
+/>
+
+#### 2. RAG-Powered Conversational Forms
+
+The Knowledge-Guided Conversational Forms system uses Retrieval-Augmented Generation to provide accurate, document-grounded responses:
+
+<MermaidDiagram
+  chart={`
+flowchart TD
+    Doc[Document Upload] --> Extract[Text Extraction]
+    Extract --> Chunk[Intelligent Chunking]
+    Chunk --> Embed[Generate Embeddings]
+    Embed --> Store[(Vector Store)]
+
+    User[User Message] --> QEmbed[Query Embedding]
+    QEmbed --> Search[Vector Search]
+    Store --> Search
+    Search --> Context[Context Builder]
+    Context --> LLM[LLM + Citations]
+    LLM --> Response[AI Response]
+    Response --> Extract2[Data Extraction]
+    Extract2 --> Structured[Structured Data]
+
+    classDef primary fill:#00ED64,stroke:#00684A,color:white;
+    classDef secondary fill:#2196F3,stroke:#1976D2,color:white;
+    classDef tertiary fill:#FFC107,stroke:#FFA000,color:white;
+
+    class Doc,User,Response primary;
+    class Extract,Chunk,Embed,Search secondary;
+    class Store,Context,LLM,Structured tertiary;
+  `}
+  caption="RAG system architecture for knowledge-guided conversations"
+/>
+
+**Example Conversation Flow**:
+
+```
+AI: Hi! I'm here to help you submit an IT support ticket.
+    What kind of issue are you experiencing?
+
+User: My laptop won't turn on
+
+AI: I'm sorry to hear that. When you say it won't turn on,
+    does the screen stay completely black, or do you see any
+    lights or error messages?
+
+User: Completely black, no lights at all
+
+AI: That sounds like a hardware issue. How urgent is this?
+    Are you able to work from another device?
+
+→ Extracted Data:
+  {
+    "issueCategory": "hardware",
+    "urgencyLevel": "high",
+    "description": "Laptop won't power on, no lights...",
+    "confidence": 0.92
+  }
 ```
 
-This approach means workflows can be:
-- **Version controlled** like code
-- **Exported/imported** between environments
-- **Generated programmatically** by AI assistants
-- **Validated** against schemas
-- **Executed** consistently across different runtime environments
+#### 3. Workflow Execution Engine
 
-### 3. React + Material UI for Professional UX
-Rather than building yet another developer tool with a spartan interface, I chose Material UI to create a professional-grade experience that could scale from individual developers to enterprise teams. The visual interface needed to be as polished as the AI systems it would create.
+<MermaidDiagram
+  chart={`
+flowchart LR
+    Trigger[Trigger] --> Queue[Job Queue]
+    Queue --> Execute[Execution Engine]
+    Execute --> Node1[Node 1]
+    Node1 --> Node2[Node 2]
+    Node2 --> Branch{Conditional?}
+    Branch -->|Path A| NodeA[Node A]
+    Branch -->|Path B| NodeB[Node B]
+    NodeA --> Merge[Merge]
+    NodeB --> Merge
+    Merge --> Complete[Complete]
 
-## The Development Journey: Key Milestones
+    classDef primary fill:#00ED64,stroke:#00684A,color:white;
+    classDef secondary fill:#2196F3,stroke:#1976D2,color:white;
+    classDef tertiary fill:#FFC107,stroke:#FFA000,color:white;
 
-### Phase 1: The SVG Canvas Foundation (Months 1-3)
-The project started as an SVG-based diagram editor. I built a custom canvas system that could handle:
-- Drag-and-drop shape creation
-- Real-time connections between nodes
-- Pan/zoom/selection interactions
-- Shape property editing
+    class Trigger,Complete primary;
+    class Queue,Execute,Merge secondary;
+    class Node1,Node2,NodeA,NodeB,Branch tertiary;
+  `}
+  caption="Workflow execution flow with conditional branching"
+/>
 
-This foundation taught me the importance of separating visual representation from logical workflow definition—a principle that would prove crucial as complexity grew.
+### Database Schema
 
-### Phase 2: The Node Type System (Months 4-6)
-As I added more node types—agents, tools, APIs, databases—I realized I needed a sophisticated registry system. The breakthrough was creating a modular, data-driven approach where new node types could be defined declaratively:
+The platform uses several MongoDB collections:
 
 ```javascript
-// shapeRegistryData.js
-agent_node: {
-  type: 'agent_node',
-  label: 'Agent Node',
-  description: 'An autonomous reasoning or orchestration node',
-  propertyDefs: [
-    { name: 'prompt', type: 'string', section: 'Agent', multiline: true },
-    { name: 'temperature', type: 'number', section: 'LLM', min: 0, max: 2 }
-  ],
-  ports: {
-    input: [{ id: 'context_in', name: 'Context In' }],
-    output: [{ id: 'tool_out', name: 'Tool Out' }]
-  }
+// Form Definition
+{
+  _id: ObjectId,
+  name: String,
+  slug: String,
+  formType: 'entry' | 'search' | 'both' | 'conversational',
+  fields: [{
+    id: String,
+    type: String,
+    label: String,
+    required: Boolean,
+    validation: Object,
+    conditionalLogic: Object
+  }],
+  theme: {
+    primaryColor: String,
+    headerStyle: String,
+    preset: String
+  },
+  organizationId: ObjectId,
+  projectId: ObjectId
+}
+
+// Workflow Definition
+{
+  _id: ObjectId,
+  name: String,
+  trigger: {
+    type: 'form' | 'webhook' | 'schedule' | 'manual' | 'api',
+    config: Object
+  },
+  nodes: [{
+    id: String,
+    type: String,
+    position: { x: Number, y: Number },
+    data: Object
+  }],
+  edges: [{
+    source: String,
+    target: String
+  }],
+  status: 'draft' | 'published'
+}
+
+// RAG Document
+{
+  _id: ObjectId,
+  formId: ObjectId,
+  title: String,
+  chunks: [{
+    content: String,
+    embedding: [Number],  // 1536 dimensions
+    metadata: { startIndex: Number, endIndex: Number }
+  }],
+  metadata: { fileType: String, uploadedAt: Date }
 }
 ```
 
-This system now supports 47+ node types, from basic shapes to sophisticated AI components.
+## Platform Services
 
-### Phase 3: The Execution Engine (Months 7-9)
-Building a reliable workflow execution engine was perhaps the most challenging phase. I developed a port-based I/O system where:
-- **Nodes** receive inputs and produce outputs
-- **Context** flows between nodes seamlessly
-- **Errors** are captured and reported visually
-- **State** is preserved for debugging and replay
+### Organizations & Multi-Tenancy
 
-The execution engine supports both step-by-step debugging and full automation, with comprehensive logging stored in MongoDB for later analysis.
+```
+Organization
+├── Projects (dev, staging, prod)
+│   ├── Applications
+│   │   ├── Forms
+│   │   ├── Workflows
+│   │   ├── Connections
+│   │   └── Releases (versioned snapshots)
+│   ├── Forms (standalone)
+│   └── Workflows (standalone)
+├── Members (Owner, Admin, Member, Viewer)
+├── Connection Vault
+├── Templates
+└── Billing/Subscription
+```
 
-### Phase 4: The mCP Integration (Months 10-12)
-The Model-Component-Property (mCP) system emerged from the need to standardize how NetPad communicates with external systems. Using Zod for validation, I created a unified command interface that handles:
-- **LLM interactions** across multiple providers (OpenAI, Anthropic, Ollama)
-- **Tool execution** with proper sandboxing and error handling
-- **Database operations** including MongoDB and vector search
-- **External API calls** with authentication and retry logic
+### Application Marketplace
 
-This system makes NetPad truly extensible—new capabilities can be added without modifying core execution logic.
+- **Browse**: Discover published applications by category, tags, or search
+- **Import**: One-click import into your projects
+- **Publish**: Share your applications with the community
+- **npm Integration**: Install applications directly from npm registry
 
-## Personal Motivations: Democratizing AI Development
+### AI Agents (15+ Available)
 
-### Making AI Accessible to Domain Experts
-One of my strongest motivations is enabling domain experts—people who understand business problems deeply but may not be programmers—to participate directly in AI solution development. 
+| Agent | Description |
+|-------|-------------|
+| **Field Type Detection** | Auto-detect field types from data |
+| **Form Generator** | Create forms from natural language |
+| **Formula Assistant** | Help build computed field formulas |
+| **Conditional Logic Generator** | Auto-generate show/hide rules |
+| **Form Optimization** | Analyze and improve forms |
+| **Response Insights** | Analyze submission patterns |
+| **Compliance Audit** | Check for regulatory compliance |
+| **Auto-Translation** | Translate forms to other languages |
+| **Knowledge-Guided Conversation** | RAG-powered conversational forms |
 
-I've watched talented product managers, designers, and subject matter experts struggle to communicate their requirements to engineering teams building AI systems. With NetPad, these experts can:
-- **Prototype workflows** directly, testing their logic visually
-- **Iterate rapidly** without waiting for development cycles
-- **Collaborate seamlessly** with technical teams
-- **Understand system behavior** through visual debugging
+## Challenges and Solutions
 
-### Accelerating Developer Productivity
-For developers, NetPad represents a fundamental shift from low-level orchestration code to high-level visual composition. Instead of writing boilerplate connection logic, developers can focus on the unique value of their applications:
-- **Agent behavior** and prompt engineering
-- **Tool integration** and custom capabilities
-- **Error handling** and edge cases
-- **Performance optimization** and scaling
+### Challenge 1: Multi-Tenant Architecture
 
-### Building for Production from Day One
-Having seen too many AI prototypes fail to reach production, I designed NetPad with enterprise requirements in mind:
-- **Security**: Role-based access control, secure credential storage, audit logging
-- **Scalability**: MongoDB Atlas clustering, horizontal execution scaling
-- **Reliability**: Comprehensive error handling, state recovery, execution replay
-- **Governance**: Version control, approval workflows, compliance tracking
+Supporting multiple organizations with isolated data while maintaining performance.
 
-## Technical Innovations
+**Solution**:
+- Organization-scoped queries throughout the application
+- Connection vault with encrypted credentials per organization
+- Project-based resource grouping (dev, staging, prod)
+- Fine-grained RBAC at organization, application, and form levels
 
-### Visual Debugging Revolution
-One of NetPad's most powerful features is its visual debugging capability. When a workflow executes, users can:
-- **Watch data flow** in real-time as connections light up
-- **Inspect state** at any node with rich data visualization
-- **Step through execution** like debugging code
-- **Replay failures** to understand what went wrong
+### Challenge 2: Real-Time Conversational Experience
 
-This transforms debugging from a frustrating guessing game into a systematic investigation process.
+Creating a natural conversation flow while extracting structured data.
 
-### AI-Assisted Development
-NetPad itself leverages AI to help users build better workflows:
-- **Workflow generation** from natural language descriptions
-- **Node suggestion** based on context and patterns
-- **Error diagnosis** with AI-powered recommendations
-- **Pattern recognition** to suggest improvements
+**Solution**:
+- Server-Sent Events (SSE) for streaming AI responses
+- Topic tracking system to ensure complete data collection
+- Confidence scoring for extracted fields
+- Graceful fallback to traditional forms when needed
 
-### Semantic Tool Discovery
-Using MongoDB Atlas Vector Search, NetPad can automatically discover relevant tools for agent nodes based on semantic similarity. This means agents can dynamically find and use the most appropriate tools for their current context.
+### Challenge 3: Vector Search at Scale
 
-## The Future: Collaborative AI Development
+Implementing RAG without requiring expensive cluster upgrades for all users.
 
-Looking ahead, I see NetPad evolving into a comprehensive platform for collaborative AI development:
+**Solution**:
+- Two-tier deployment model:
+  - Cloud (netpad.io): M10+ Atlas cluster for Vector Search
+  - Self-hosted: Atlas Local (Docker) for development and private instances
+- Intelligent document chunking with sentence-aware boundaries
+- Configurable retrieval parameters (chunk count, minimum score)
 
-### Real-Time Collaboration
-Multi-user editing with real-time synchronization, allowing distributed teams to build workflows together like they would edit a Google Doc.
+### Challenge 4: Workflow Reliability
 
-### AI Co-Design
-AI assistants that help users design better workflows, suggest optimizations, and identify potential issues before they occur.
+Ensuring workflows execute reliably with proper error handling.
 
-### Enterprise Integration
-Deep integration with enterprise systems, supporting complex approval workflows, compliance requirements, and security policies.
+**Solution**:
+- MongoDB-based job queue with priority support
+- Configurable retry policies with exponential backoff
+- Per-node timeout management
+- Execution history with full audit trail
 
-### Community Ecosystem
-A marketplace of workflow templates, custom node types, and integration patterns contributed by the community.
+## Developer Ecosystem
 
-## Lessons Learned
+NetPad provides multiple ways for developers to extend and integrate:
 
-### 1. Visual Representation Matters More Than Expected
-Initially, I thought the visual interface was just a nice-to-have. I've learned that visual representation fundamentally changes how people think about and approach problems. Complex multi-agent systems become manageable when you can see the big picture.
+### NPM Packages
 
-### 2. MongoDB's Flexibility Is Crucial for AI Applications
-The ability to store arbitrary, evolving data structures without schema migrations has been invaluable. AI applications are inherently experimental, and rigid database schemas would have slowed development significantly.
+```bash
+# React form renderer (28+ field types)
+npm install @netpad/forms
 
-### 3. Developer Experience Drives Adoption
-No matter how powerful the underlying technology, if the developer experience isn't excellent, adoption suffers. Investing heavily in UX, documentation, and developer tools has been essential.
+# Workflow API client
+npm install @netpad/workflows
 
-### 4. Community Feedback Shapes Everything
-The most important features and architectural decisions have come from watching real users struggle with real problems. Building in public and gathering continuous feedback has been transformative.
+# CLI for package management
+npm install -g @netpad/cli
 
-## The Bigger Picture: Why This Matters
+# MCP server for AI-assisted development (75 tools)
+npm install @netpad/mcp-server
+```
 
-I believe we're at an inflection point in software development. Just as visual design tools revolutionized how we create user interfaces, visual development tools will revolutionize how we create AI systems.
+### 165+ API Endpoints
 
-NetPad represents my bet on a future where:
-- **AI development is collaborative**, not siloed
-- **Complex systems are comprehensible**, not mysterious black boxes
-- **Innovation is accessible**, not limited to ML PhD holders
-- **Production deployment is straightforward**, not a months-long engineering project
+Full programmatic access to all platform features:
+- Form CRUD, submissions, and analytics
+- Workflow management and execution
+- Organization and project management
+- Application marketplace and npm integration
+- AI and RAG operations
 
-## Getting Started
+## Open Source & Deployment
 
-NetPad is open source and available at [netpad.io](https://netpad.io). Whether you're a developer frustrated with current AI development tools, a domain expert wanting to prototype AI solutions, or an enterprise team needing production-ready agentic workflows, I'd love to hear your feedback and see what you build.
+NetPad follows an open core model:
 
-The future of AI development is visual, collaborative, and accessible. NetPad is my contribution to making that future a reality.
+| Mode | Best For | RAG Support |
+|------|----------|-------------|
+| **Cloud** | Production SaaS at netpad.io | Team/Enterprise tiers (M10+ cluster) |
+| **Self-Hosted** | Private instances, development | All tiers via Atlas Local (Docker) |
+| **Standalone** | Exported apps | User-provided infrastructure |
 
----
+### Subscription Tiers
 
-*Michael Lynn is a developer advocate, MongoDB expert, and the creator of NetPad.*
+| Feature | Free | Pro | Team | Enterprise |
+|---------|------|-----|------|------------|
+| **Forms** | 3 | Unlimited | Unlimited | Unlimited |
+| **Submissions/mo** | 1,000 | 1,000 | 10,000 | Unlimited |
+| **Workflow Executions/mo** | 50 | 500 | 5,000 | Unlimited |
+| **AI Generations/mo** | 10 | 100 | 500 | Unlimited |
+| **RAG Features** | Self-hosted only | Self-hosted only | Full | Full |
+
+## Real-World Applications
+
+NetPad has been deployed across various use cases:
+
+1. **Workshop Registration**: Collect attendee information with automatic confirmation workflows
+2. **Support Ticket Systems**: Conversational intake that extracts structured ticket data
+3. **Healthcare Intake**: HIPAA-compliant patient forms with field-level encryption
+4. **Vendor Assessments**: RAG-powered forms that reference policy documents
+5. **Lead Qualification**: AI conversations that qualify leads and route to appropriate teams
+6. **Event Management**: Multi-page registration with payment integration workflows
+
+## Future Enhancements
+
+The roadmap includes several exciting features:
+
+1. **Enhanced AI Agents**: More specialized agents for compliance, translation, and insights
+2. **Workflow Templates**: Expanded library of pre-built automation patterns
+3. **Advanced Analytics**: Deeper insights into form performance and user behavior
+4. **Multi-Language Support**: Internationalization for global deployments
+5. **Plugin System**: Third-party extensions and integrations
+6. **Mobile SDK**: Native mobile form rendering
+
+## Conclusion
+
+NetPad demonstrates how MongoDB's flexible document model, combined with modern features like Atlas Vector Search and the Atlas Data API, can power sophisticated application platforms. By abstracting away backend complexity while providing full access to MongoDB's capabilities, NetPad enables rapid development of data-driven applications.
+
+The platform showcases the potential of combining traditional form-based data collection with AI-powered conversational experiences, all backed by MongoDB's robust data platform.
+
+Explore NetPad at [netpad.io](https://netpad.io) or check out the [GitHub repository](https://github.com/mongodb/netpad) to run your own instance.
