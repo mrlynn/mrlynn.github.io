@@ -1,0 +1,141 @@
+---
+category: "project"
+title: "Claude Skills"
+description: "Production-ready skill packages for AI coding agents. A curated collection of structured knowledge bundles that give coding assistants deep expertise in specific domains."
+image: "/images/projects/claude-skills.png"
+tags: ["AI", "Claude", "Skills", "Agent", "Python", "Developer Tools", "Open Source"]
+private: false
+demoUrl: "https://github.com/mrlynn/claude-skills"
+color: "#D97706"
+date: "2025-03-04"
+author: "Michael Lynn"
+technologies: ["Python", "Markdown", "SKILL.md", "Claude Code", "MCP", "OpenAI Codex"]
+githubUrl: "https://github.com/mrlynn/claude-skills"
+---
+
+# Claude Skills
+
+## Overview
+
+Claude Skills is a curated collection of **AI agent skill packages** — structured knowledge bundles that give coding assistants deep expertise in specific domains. Each skill contains battle-tested patterns, CLI tools, and reference documentation extracted from production applications and 10+ years of field experience.
+
+Skills follow the open `SKILL.md` specification: YAML frontmatter for metadata, markdown for instructions, and optional Python tools for automation. This format is natively supported by Claude Code and adaptable to any AI agent platform.
+
+## Features
+
+- **17 Skills**: MongoDB DevRel skills and professional skills for technical work
+- **37 Python Tools**: Zero external dependencies — standard library only
+- **31 Reference Docs**: Detailed knowledge base documents
+- **21+ Asset Templates**: Copy-paste ready templates
+- **Agent Agnostic**: Compatible with Claude Code, OpenAI Codex, Cursor, Windsurf, Aider, and custom agents
+
+## Skill Collections
+
+### MongoDB DevRel Skills (8 skills)
+
+Skills for building Next.js + MongoDB applications following MongoDB Developer Relations conventions:
+
+- **mongodb-nextjs-scaffold** — Project bootstrap with MongoDB branding
+- **mongodb-rbac-middleware** — NextAuth v5 + 8-role RBAC + edge middleware
+- **mongodb-email-system** — DB-backed transactional email templates
+- **mongodb-atlas-provisioning** — Self-service Atlas cluster management
+- **mongodb-ai-features** — AI/RAG integration with MongoDB Atlas
+- **mongodb-event-platform** — Event/hackathon lifecycle management
+- **mongodb-partner-portal** — Partner tiers, contacts, engagement tracking
+- **mongodb-devrel-advisor** — Always-on conventions and architecture advisor
+
+*Origin: Extracted from the MongoDB Hackathon Platform.*
+
+### Professional Skills Collection (9 skills)
+
+General-purpose skills for technical work, developer relations, and professional development:
+
+- **rag-pipeline-builder** — Build RAG systems with Voyage AI embeddings
+- **resume-tailorer** — ATS-optimize resumes for job postings
+- **developer-day-curriculum** — Design workshop agendas and exercises
+- **mcp-server-scaffold** — Generate MCP tool servers from OpenAPI specs
+- **document-model-advisor** — MongoDB schema design (embed vs reference)
+- **conference-talk-builder** — Create CFPs and talk outlines
+- **queryable-encryption-workshop** — Industry-specific QE demos with compliance mapping
+- **technical-comparison-generator** — Fair MongoDB vs competitor comparisons
+- **hackathon-judge-assistant** — Scoring rubrics and constructive feedback
+
+*Origin: Patterns from 10+ years MongoDB field work, 50+ workshops, 100+ schema reviews, hackathon judging.*
+
+## Technical Details
+
+### Skill Anatomy
+
+Every skill follows a consistent structure:
+
+```
+<skill-name>/
+├── SKILL.md              # Entry point: YAML frontmatter + instructions
+├── README.md             # Quick start guide
+├── scripts/              # Python CLI tools (standard library only)
+│   ├── tool1.py
+│   ├── tool2.py
+│   └── tool3.py
+├── references/           # Detailed knowledge base documents
+│   ├── patterns.md
+│   └── best-practices.md
+└── assets/               # Templates, sample data, starter files
+    ├── template1.json
+    └── template2.md
+```
+
+### Design Principles
+
+- **Real code, not pseudocode** — patterns extracted from production
+- **Architecture decisions documented** — explains WHY, not just WHAT
+- **Zero external dependencies** — Python tools use standard library only
+- **Self-contained** — each skill works independently
+- **Deterministic tools** — no LLM/API calls; pure local computation
+
+### Agent Compatibility
+
+| Platform | Status | Install Method |
+|----------|--------|----------------|
+| Claude Code | Native | `claude skill add` or `.claude/settings.local.json` |
+| OpenAI Codex | Compatible | Copy `SKILL.md` to `.codex/skills/` |
+| Cursor | Compatible | Reference in rules or context |
+| Windsurf | Compatible | Reference in rules or context |
+| Aider | Compatible | Load as context files |
+| Custom agents | Compatible | Load `SKILL.md` as system context |
+
+## Use Cases
+
+### For AI Agents
+- Deep domain expertise on demand
+- Battle-tested patterns and architectures
+- Consistent structure for reliable outputs
+- Zero external dependencies (all local)
+
+### For Developers
+- Reference implementations
+- CLI tools for automation
+- Architecture decision documentation
+- Copy-paste ready templates
+
+### For Teams
+- Shared knowledge base
+- Consistent conventions
+- Onboarding materials
+- Code review checklists
+
+## Distribution
+
+Skills are available as individual ZIP files or collection bundles in the `dist/` directory. Pre-packaged ZIPs include all MongoDB skills, all professional skills, or individual skill downloads.
+
+## Results
+
+Claude Skills has successfully:
+- Packaged 17 production-ready skills for AI agents
+- Delivered 37 Python CLI tools with zero external dependencies
+- Created 31 reference documents for deep domain knowledge
+- Achieved compatibility across major AI agent platforms
+- Extracted patterns from real MongoDB Hackathon Platform and 10+ years of field experience
+
+## License
+
+This project is licensed under the MIT License. Open source and ready for your AI agent.
