@@ -7,18 +7,18 @@ const theme = (mode) => {
     palette: {
       mode,
       primary: {
-        main: isDark ? '#61dafb' : '#0070f3',
+        main: isDark ? '#10b981' : '#059669',
       },
       background: {
-        default: isDark ? '#0a1929' : '#ffffff',
-        paper: isDark ? '#0a1929' : '#ffffff',
+        default: isDark ? '#030712' : '#fafdfb',
+        paper: isDark ? '#0d1117' : '#ffffff',
         gradient: isDark
-          ? 'linear-gradient(45deg,rgb(97, 251, 141) 30%, #0070f3 90%)'
-          : 'linear-gradient(45deg,rgb(29, 124, 19) 30%,rgb(97, 251, 141) 90%)',
+          ? 'linear-gradient(135deg, #10b981 0%, #00ED64 100%)'
+          : 'linear-gradient(135deg, #059669 0%, #10b981 100%)',
       },
       text: {
-        primary: isDark ? '#ffffff' : '#000000',
-        secondary: isDark ? '#b3b3b3' : '#666666',
+        primary: isDark ? '#e2e8f0' : '#0f172a',
+        secondary: isDark ? '#94a3b8' : '#475569',
       },
     },
     typography: {

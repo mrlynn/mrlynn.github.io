@@ -17,9 +17,9 @@ export default function ProjectsSection() {
     <Box
       sx={{
         py: 12,
-        background: theme.palette.mode === 'dark'
-          ? 'radial-gradient(circle at center, rgba(33, 150, 243, 0.1) 0%, rgba(10, 14, 39, 0) 70%)'
-          : 'radial-gradient(circle at center, rgba(33, 150, 243, 0.05) 0%, rgba(255, 255, 255, 0) 70%)',
+        background: isDark
+          ? 'radial-gradient(circle at center, rgba(16, 185, 129, 0.06) 0%, transparent 70%)'
+          : 'radial-gradient(circle at center, rgba(16, 185, 129, 0.04) 0%, transparent 70%)',
       }}
     >
       <Container maxWidth="lg">
@@ -31,7 +31,8 @@ export default function ProjectsSection() {
           sx={{
             mb: 6,
             fontWeight: 700,
-            background: theme.palette.background.gradient,
+            fontFamily: '"Space Grotesk", sans-serif',
+            background: theme.palette.background.gradientAccent,
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
           }}
@@ -58,8 +59,10 @@ export default function ProjectsSection() {
                   transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                   '&:hover': {
                     transform: 'translateY(-8px)',
-                    borderColor: theme.palette.border.default,
-                    boxShadow: theme.shadows[8],
+                    borderColor: isDark ? 'rgba(16, 185, 129, 0.25)' : theme.palette.border.default,
+                    boxShadow: isDark
+                      ? '0 8px 24px rgba(0,0,0,0.3), 0 0 15px rgba(16, 185, 129, 0.08)'
+                      : theme.shadows[8],
                   },
                 }}
               >
@@ -71,7 +74,7 @@ export default function ProjectsSection() {
                     alt={project.title}
                     sx={{
                       objectFit: 'cover',
-                      borderBottom: '1px solid rgba(255,255,255,0.1)',
+                      borderBottom: `1px solid ${isDark ? 'rgba(16, 185, 129, 0.1)' : 'rgba(16, 185, 129, 0.06)'}`,
                       filter: project.private ? 'brightness(0.7)' : 'none',
                     }}
                   />
@@ -105,7 +108,8 @@ export default function ProjectsSection() {
                     component="h3"
                     gutterBottom
                     sx={{
-                      color: theme.palette.mode === 'dark' ? '#ffffff' : '#000000',
+                      color: theme.palette.text.primary,
+                      fontFamily: '"Space Grotesk", sans-serif',
                       fontWeight: 600,
                     }}
                   >
@@ -115,7 +119,7 @@ export default function ProjectsSection() {
                     variant="body2"
                     sx={{
                       mb: 2,
-                      color: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)'
+                      color: theme.palette.text.secondary
                     }}
                   >
                     {project.description}
@@ -127,13 +131,9 @@ export default function ProjectsSection() {
                         label={tag}
                         sx={{
                           m: 0.5,
-                          background: theme.palette.background.gradient,
-                          color: isDark ? 'white' : 'black',
-                          fontSize: { xs: '0.75rem', sm: '0.875rem' },
-                          height: { xs: 24, sm: 32 },
-                          '&:hover': {
-                            opacity: 0.9,
-                          },
+                          fontSize: { xs: '0.7rem', sm: '0.8rem' },
+                          fontFamily: '"JetBrains Mono", monospace',
+                          height: { xs: 24, sm: 28 },
                         }}
                       />
                     ))}
@@ -150,12 +150,12 @@ export default function ProjectsSection() {
                         disabled={project.private}
                         sx={{
                           color: project.private
-                            ? theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'
-                            : theme.palette.mode === 'dark' ? '#ffffff' : '#000000',
+                            ? theme.palette.text.disabled
+                            : theme.palette.text.primary,
                           '&:hover': {
                             color: project.private
-                              ? theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'
-                              : theme.palette.secondary.main,
+                              ? theme.palette.text.disabled
+                              : theme.palette.primary.main,
                           },
                         }}
                       >
@@ -176,7 +176,7 @@ export default function ProjectsSection() {
             size="large"
             endIcon={<ArrowForwardIcon />}
             sx={{
-              borderColor: theme.palette.border.default,
+              borderColor: isDark ? 'rgba(16, 185, 129, 0.3)' : theme.palette.border.default,
               borderWidth: '1.5px',
               color: theme.palette.text.primary,
               px: 4,
@@ -187,9 +187,13 @@ export default function ProjectsSection() {
               '&:hover': {
                 borderWidth: '1.5px',
                 borderColor: theme.palette.primary.main,
-                backgroundColor: theme.palette.surface.secondary,
+                backgroundColor: isDark
+                  ? 'rgba(16, 185, 129, 0.08)'
+                  : 'rgba(16, 185, 129, 0.04)',
                 transform: 'translateY(-2px)',
-                boxShadow: theme.shadows[4],
+                boxShadow: isDark
+                  ? '0 4px 16px rgba(16, 185, 129, 0.15)'
+                  : theme.shadows[4],
               },
             }}
           >

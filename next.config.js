@@ -1,14 +1,7 @@
 const withMDX = require('@next/mdx')({
   extension: /\.mdx?$/,
   options: {
-    remarkPlugins: [require('remark-gfm')],
-    rehypePlugins: [
-      require('rehype-slug'),
-      [require('rehype-prism-plus'), { ignoreMissing: true }],
-    ],
     providerImportSource: "@mdx-js/react",
-    jsx: true,
-    format: 'mdx',
   },
 });
 
@@ -21,12 +14,9 @@ const nextConfig = {
         hostname: '**',
       },
     ],
-    unoptimized: true, // This allows serving local images directly
+    unoptimized: true,
   },
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
-  experimental: {
-    mdxRs: true,
-  },
   webpack: (config) => {
     config.resolve.extensions = ['.js', '.jsx', '.json'];
     return config;
