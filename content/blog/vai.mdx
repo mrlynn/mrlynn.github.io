@@ -1,15 +1,15 @@
 ---
 title: "VAI: Voyage AI CLI & RAG Playground"
-description: "A comprehensive toolkit for building RAG pipelines with Voyage AI embeddings and MongoDB Atlas Vector Search—CLI, web playground, and desktop app."
+description: "A developer toolkit for building semantic search and RAG workflows with Voyage AI embeddings, MongoDB Atlas Vector Search, local inference, and MCP integration."
 date: "2026-02-19"
 author: "Michael Lynn"
 image: "/images/projects/voyageai-cli.png"
-tags: ["MongoDB", "Voyage AI", "RAG", "Vector Search", "CLI", "Embeddings", "Node.js", "Electron"]
+tags: ["MongoDB", "Voyage AI", "RAG", "Vector Search", "CLI", "Embeddings", "MCP", "Node.js"]
 color: "#00ED64"
 category: "project"
 private: false
-technologies: ["Node.js 18+", "Commander.js", "MongoDB Driver 6.x", "Electron", "Voyage AI API"]
-demoUrl: "https://www.npmjs.com/package/voyageai-cli"
+technologies: ["Node.js 18+", "Commander.js", "MongoDB Driver 6.x", "Voyage AI API", "Python", "Model Context Protocol"]
+demoUrl: "https://vaicli.com"
 githubUrl: "https://github.com/mrlynn/voyageai-cli"
 ---
 
@@ -17,56 +17,27 @@ githubUrl: "https://github.com/mrlynn/voyageai-cli"
 
 **Command:** `vai` · **Repository:** [github.com/mrlynn/voyageai-cli](https://github.com/mrlynn/voyageai-cli)
 
-VAI (voyageai-cli) is a comprehensive toolkit for building RAG (Retrieval-Augmented Generation) pipelines using Voyage AI embeddings and MongoDB Atlas Vector Search. The tool provides three interfaces: a 22-command CLI for terminal workflows, a browser-based web playground, and a standalone Electron desktop app with OS keychain integration.
+VAI (`voyageai-cli`) is a developer toolkit for building semantic search and RAG workflows with [Voyage AI](https://www.mongodb.com/docs/voyageai/) embeddings and [MongoDB Atlas Vector Search](https://www.mongodb.com/docs/atlas/atlas-vector-search/). It covers the full pipeline from chunking documents and generating embeddings to storing vectors, searching, reranking, evaluating, and integrating those capabilities into editors and applications.
 
-## Project Overview
+What started as a CLI for hands-on vector search experiments has grown into a much broader platform: local inference with `voyage-4-nano`, browser-based tooling, composable JSON workflows, conversational RAG, benchmarking, evaluation, and an MCP server for AI-native development environments.
 
-As a Principal Developer Advocate at MongoDB, I built VAI to give developers a single, consistent way to go from raw documents to a searchable vector database—and to explore Voyage AI models, chunking strategies, and two-stage retrieval without writing custom scripts. Whether you prefer the CLI, the playground, or the desktop app, the same capabilities are available: chunk → embed → store → query → rerank.
+## Overview
 
-<MermaidDiagram
-  title="VAI Architecture — Three Deployment Modes"
-  chart={`
-flowchart LR
-    subgraph CLI[CLI]
-        C1[embed]
-        C2[pipeline]
-        C3[query]
-        C4[22 commands]
-    end
+I built VAI to make semantic search approachable without forcing developers to stitch together one-off scripts for every stage of the pipeline. The goal was to give people a single tool they could use to learn the concepts, prototype locally, and then scale toward production patterns using the same mental model.
 
-    subgraph Playground[Web Playground]
-        P1[Embed]
-        P2[Compare]
-        P3[Search]
-        P4[7 tabs]
-    end
+At a high level, VAI helps developers move through a familiar sequence:
 
-    subgraph Desktop[Desktop App]
-        D1[Electron]
-        D2[LeafyGreen]
-        D3[Keychain]
-    end
-
-    CLI --> API[Voyage AI API]
-    Playground --> API
-    Desktop --> API
-    CLI --> Mongo[(MongoDB Atlas)]
-    Playground --> Mongo
-    Desktop --> Mongo
-
-    classDef primary fill:#00ED64,stroke:#00684A,color:black;
-    classDef secondary fill:#2196F3,stroke:#1976D2,color:white;
-    class API,Mongo secondary;
-    class CLI,Playground,Desktop primary;
-  `}
-  caption="CLI, web playground, and desktop app share the same Voyage AI and MongoDB integration"
-/>
+1. Chunk raw documents into embedding-friendly units
+2. Generate embeddings locally or through the Voyage AI API
+3. Store vectors in MongoDB Atlas
+4. Search and rerank results
+5. Evaluate quality, benchmark tradeoffs, and integrate the workflow into apps or AI tools
 
 ## Key Features
 
-### 1. End-to-End RAG Pipeline (`vai pipeline`)
+### 1. End-to-End RAG Pipeline
 
-A single command takes a folder of documents to a searchable vector database:
+The core workflow is still the fastest path from documents to a searchable vector collection:
 
 ```bash
 vai pipeline ./docs/ --db myapp --collection knowledge --create-index
@@ -74,13 +45,23 @@ vai pipeline ./docs/ --db myapp --collection knowledge --create-index
 
 - Reads files recursively (`.txt`, `.md`, `.html`, `.json`, `.jsonl`, `.pdf`)
 - Chunks with a configurable strategy (fixed, sentence, paragraph, recursive, markdown)
-- Batched embedding generation with progress tracking
+- Generates embeddings with Voyage AI or local nano inference
 - Writes to MongoDB Atlas with metadata
 - Can create the Atlas Vector Search index automatically
 
-### 2. Text Chunking (`vai chunk`)
+### 2. Local Inference with `voyage-4-nano`
 
-Five strategies in `src/lib/chunker.js`:
+One of the biggest recent additions is a zero-API-key on-ramp using local inference:
+
+```bash
+npm install -g voyageai-cli
+vai nano setup
+vai embed "What is vector search?" --local
+```
+
+This uses a lightweight Python bridge under the hood so developers can run `voyage-4-nano` on their own machine. The important product decision here is that local mode fits into the same workflow as hosted Voyage 4 models, so developers can start locally and scale later without relearning the tool.
+
+### 3. Flexible Chunking
 
 | Strategy    | Description                    |
 |------------|--------------------------------|
@@ -92,67 +73,74 @@ Five strategies in `src/lib/chunker.js`:
 
 Configurable chunk size, overlap, and output formats (JSONL, JSON, stdout). Markdown files can automatically use the markdown strategy.
 
-### 3. Embedding Generation (`vai embed`)
+### 4. Search, Query, and Rerank
 
-Supports the Voyage 4 family and domain-specific models:
-
-- **voyage-4-large** — MoE, 71.41 RTEB NDCG@10
-- **voyage-4** — Dense, balanced quality/cost
-- **voyage-4-lite** — Budget-friendly
-- **voyage-4-nano** — Free, open-weight (HuggingFace)
-- **Domain:** voyage-code-3, voyage-finance-2, voyage-law-2
-
-Features: Matryoshka dimensions (512, 1024), batch processing with progress, and input/output type (document vs. query).
-
-### 4. Two-Stage Retrieval (`vai query`)
-
-Embed → Vector Search → Rerank:
+VAI supports both raw vector similarity search and two-stage retrieval:
 
 ```bash
 vai query "authentication guide" --db myapp --collection docs
 ```
 
-- Embeds the query with the configured Voyage model
-- Runs MongoDB Atlas `$vectorSearch` aggregation
-- Reranks with `rerank-2.5` or `rerank-2.5-lite`
-- Supports pre-filters and post-filters
+That flow looks like:
 
-### 5. Reranking (`vai rerank`)
+- Embed the query
+- Run MongoDB Atlas `$vectorSearch`
+- Rerank candidates with Voyage reranking models
+- Return better ordered results with scores and filtering support
 
-Standalone reranking for any document set. Input via CLI args, stdin, or file. Returns relevance-sorted results with scores. Models: `rerank-2.5` (accuracy), `rerank-2.5-lite` (speed).
+This makes it practical to compare retrieval quality with and without reranking while using the same data pipeline.
 
-### 6. Vector Search Index Management (`vai index`)
+### 5. Web Playground
 
-- **create** — Create an Atlas Vector Search index
-- **list** — List indexes on a collection
-- **delete** — Drop an index
-
-### 7. Benchmarking (`vai benchmark`)
-
-Eight subcommands for model evaluation: **embed** (latency/cost), **asymmetric** (large for docs, lite for queries), **space** (shared embedding space), **quantization** (float, int8, ubinary), **cost**, **rerank**, **e2e**, **batch**.
-
-### 8. Cost Estimation (`vai estimate`)
-
-Compare symmetric vs asymmetric strategies at scale:
+The local playground adds a visual interface on top of the CLI:
 
 ```bash
-vai estimate --docs 10M --queries 100M --months 12
+vai playground
 ```
 
-Shows cost breakdown for model combinations and highlights savings from asymmetric retrieval (~83% query-time cost reduction with voyage-4-large for docs, voyage-4-lite for queries).
+The current playground includes seven interactive tabs:
 
-### 9. Configuration
+- **Embed**
+- **Similarity**
+- **Rerank**
+- **Search**
+- **Models**
+- **Chat**
+- **Explain**
 
-- **`vai config`** — Persistent config in `~/.vai/config.json`: `set api-key`, `set mongodb-uri`, `get`, `list`, `delete`. Priority: ENV > `.env` > `~/.vai/config.json`.
-- **`vai init`** — Creates `.vai.json` with project defaults (model, db, collection, field, dimensions, chunk strategy/size/overlap). All commands read this; CLI flags override.
+It is designed for teaching, experimentation, and quick validation of search and embedding behavior without leaving the browser.
 
-### 10. Interactive Learning (`vai explain`)
+### 6. Conversational RAG and AI Tooling
 
-17 topics: embeddings, MoE, shared-space, RTEB, quantization, two-stage, nano, models, and more (in `src/lib/explanations.js`).
+VAI now extends beyond classic CLI workflows:
 
-### 11. Web Playground (`vai playground`)
+- **`vai chat`** adds conversational RAG with Anthropic, OpenAI, or Ollama
+- **`vai mcp`** exposes VAI as an MCP server for AI-powered editors
+- **`vai mcp install`** wires those tools into Claude Desktop, Cursor, Windsurf, and VS Code
 
-Seven tabs: **Embed**, **Compare**, **Search**, **Benchmark**, **Explore** (PCA/t-SNE), **About**, **Settings**. Launched via `vai playground` for local use.
+That MCP support is a meaningful shift in scope. VAI is no longer just a terminal utility; it can now act as infrastructure for AI-assisted coding and knowledge retrieval inside developer tools.
+
+### 7. Workflows
+
+VAI workflows let developers define multi-step RAG pipelines as JSON:
+
+```bash
+vai workflow list
+vai workflow init -o my-pipeline.json
+vai workflow validate my-pipeline.json
+vai workflow run my-pipeline.json --input query="How does auth work?"
+```
+
+These workflows support dependencies, template expressions, and automatic parallelization of independent steps, which makes them a strong bridge between one-off experiments and repeatable production processes.
+
+### 8. Evaluation, Benchmarking, and Lifecycle Management
+
+VAI also grew into a tool for measuring and maintaining retrieval systems, not just building them:
+
+- **`vai eval`** measures retrieval quality with metrics like MRR, nDCG, Recall, MAP, and Precision
+- **`vai benchmark`** explores model, cost, quantization, rerank, batch, and end-to-end tradeoffs
+- **`vai purge`** and **`vai refresh`** help manage embedding lifecycle as models or source content change
+- **`vai estimate`** helps compare cost strategies before scaling a workload
 
 ## Technical Implementation
 
@@ -161,11 +149,11 @@ Seven tabs: **Embed**, **Compare**, **Search**, **Benchmark**, **Explore** (PCA/
     "Node.js 18+",
     "Commander.js",
     "MongoDB Driver 6.x",
-    "Electron",
     "Voyage AI API",
     "dotenv",
     "ora",
-    "LeafyGreen (desktop)"
+    "Python bridge for local inference",
+    "Model Context Protocol"
   ]}
 />
 
@@ -173,104 +161,93 @@ Seven tabs: **Embed**, **Compare**, **Search**, **Benchmark**, **Explore** (PCA/
 
 | Path | Purpose |
 |------|---------|
-| **src/cli.js** | Main entry, command registration |
-| **src/commands/** | 22 command modules (embed, rerank, search, pipeline, index, etc.) |
+| **src/cli.js** | Main CLI entry and command registration |
+| **src/commands/** | Command modules for setup, ingestion, retrieval, evaluation, MCP, workflows, and tooling |
 | **src/lib/api.js** | Voyage AI API client |
 | **src/lib/mongo.js** | MongoDB Atlas connection and operations |
 | **src/lib/chunker.js** | Five chunking strategies |
-| **src/lib/catalog.js** | Model definitions and benchmarks |
+| **src/lib/catalog.js** | Model definitions, pricing, and benchmark metadata |
 | **src/lib/readers.js** | File parsers (.txt, .md, .html, .json, .pdf) |
+| **Workflow system** | JSON-based multi-step pipeline execution |
+| **MCP server** | Editor-integrated search, embedding, and knowledge tools |
 
-### Data Flow
+### Product Surface
 
-<MermaidDiagram
-  title="Pipeline Flow"
-  chart={`
-flowchart LR
-    F[Files] --> R[Readers]
-    R --> Ch[Chunker]
-    Ch --> V[Voyage API]
-    V --> M[(MongoDB Atlas)]
-    M --> I[Vector Index]
-  `}
-  caption="Documents to searchable vector store"
-/>
+The current project surface is much broader than the original post described:
 
-<MermaidDiagram
-  title="Query Flow (Two-Stage Retrieval)"
-  chart={`
-flowchart LR
-    Q[Query text] --> E[Voyage Embed]
-    E --> VS["$vectorSearch"]
-    VS --> K[Top-K]
-    K --> Rr[Voyage Rerank]
-    Rr --> Out[Final results]
-  `}
-  caption="Query embedding → vector search → rerank"
-/>
+| Area | What it enables |
+|------|------------------|
+| **CLI** | Scriptable local and API-backed RAG workflows |
+| **Playground** | Interactive exploration in the browser |
+| **Local inference** | Zero-key onboarding with `voyage-4-nano` |
+| **MCP** | AI editor integration for search and retrieval |
+| **Workflows** | Composable JSON pipelines with dependencies |
+| **Evaluation** | Retrieval quality measurement and comparison |
+| **Code generation** | Generated starter code and scaffolds for apps |
 
 ## MongoDB Integration
 
-- **Connection:** `src/lib/mongo.js` — Official MongoDB Node.js driver 6.x, connection pooling, retries.
-- **Vector Search:** Atlas Vector Search aggregation with `$vectorSearch` (index, path, queryVector, numCandidates, limit, optional filter).
-- **Requirement:** Atlas Vector Search (self-hosted MongoDB must be 7.0.2+ for vector search).
+- **Connection layer:** Official MongoDB Node.js driver with Atlas-oriented workflows
+- **Storage:** Embeddings, metadata, and chunked source content
+- **Retrieval:** Atlas Vector Search via `$vectorSearch`
+- **Operational support:** Index creation, data refresh, purge workflows, and collection tooling
 
-## CLI Commands (Complete List)
+MongoDB is central to VAI's design because it gives developers a practical place to move from experiments into real retrieval systems without changing databases between prototype and production.
+
+## Representative Commands
 
 | Command | Purpose |
 |---------|---------|
 | **init** | Initialize `.vai.json` project config |
-| **pipeline** | End-to-end: chunk → embed → store |
-| **query** | Search + rerank (two-stage retrieval) |
-| **chunk** | Chunk documents (5 strategies) |
-| **embed** | Generate embeddings |
-| **rerank** | Rerank by relevance |
-| **similarity** | Compare text similarity (cosine) |
-| **store** | Embed and store a single document |
-| **ingest** | Bulk import from JSONL |
-| **search** | Raw vector similarity search |
-| **index** | Manage vector search indexes (create/list/delete) |
-| **models** | List models and benchmarks |
-| **benchmark** | Eight benchmarking subcommands |
-| **estimate** | Cost estimator |
-| **explain** | 17 interactive explainers |
-| **config** | Manage persistent config |
-| **ping** | Test API and MongoDB connectivity |
-| **playground** | Launch web UI |
-| **demo** | Guided walkthrough |
-| **completions** | Shell completion (bash/zsh) |
-| **app** | Desktop app management |
-| **about** | Project info |
-| **version** | Print version |
+| **pipeline** | End-to-end chunk, embed, store, and index flow |
+| **nano** | Local `voyage-4-nano` setup and testing |
+| **query** | Two-stage retrieval with reranking |
+| **chat** | Conversational RAG with multiple providers |
+| **workflow run** | Execute JSON-defined pipelines |
+| **mcp install** | Install the MCP server into AI tools |
+| **eval** | Measure retrieval quality |
+| **benchmark** | Compare cost, speed, and quality tradeoffs |
+| **generate / scaffold** | Produce integration code and starter projects |
 
-## File Support
+## Why This Project Matters
 
-Implemented in `src/lib/readers.js`:
+VAI solves a real gap in the vector search ecosystem: many developers understand the theory of embeddings and RAG, but the path from concept to working system is still fragmented. They need to learn chunking, embeddings, storage, retrieval, reranking, evaluation, and integration, often across multiple tools.
 
-- **.txt** — Plain text
-- **.md** — Markdown
-- **.html** — HTML (tag stripping)
-- **.json** / **.jsonl** — JSON/JSONL
-- **.pdf** — PDF (optional `pdf-parse` dependency)
+VAI brings those concerns together into one toolkit. It is useful both as a learning environment and as a serious prototyping tool for teams working with semantic search, RAG, and AI-enabled product features.
 
-## Testing & Deployment
+## Challenges & Solutions
 
-- **Tests:** 312 tests with Node.js native test runner (`node --test`). E2E: Playwright for the playground. Run with `npm test`.
-- **Install:** `npm install -g voyageai-cli`
-- **Desktop:** GitHub Releases — macOS (.dmg), Windows (.exe), Linux (.AppImage / .deb). OS keychain, dark/light themes, LeafyGreen.
-- **Playground:** `vai playground` for local browser UI.
+### Challenge 1: Making advanced retrieval workflows approachable
 
-## Security & Integration Notes
+RAG systems involve a lot of moving parts, and most developer tools only cover a small slice of the lifecycle.
 
-- **API keys:** Desktop uses OS keychain; CLI uses `~/.vai/config.json` or ENV. Never committed in `.vai.json`.
-- **MongoDB:** Supports `mongodb+srv://` (TLS via Atlas). Input validation and path sanitization in readers.
-- **CI/Scripting:** Commands support `--json` and `--quiet`. `.vai.json` can be committed for team defaults. Bash/Zsh completions available.
+**Solution**: VAI presents a unified interface across chunking, embedding, storage, search, reranking, evaluation, and integration so developers can keep one mental model as they move from experiment to production.
 
-## Limitations
+### Challenge 2: Lowering the barrier to first success
 
-- Node.js 18+ required (ESM in dependencies).
-- PDF support is optional (peer dependency `pdf-parse`).
-- Atlas Vector Search required (not compatible with self-hosted MongoDB &lt; 7.0.2).
+Requiring API setup before a developer can even test the basics creates friction.
+
+**Solution**: Local `voyage-4-nano` inference gives VAI a zero-key starting point while preserving compatibility with the broader Voyage 4 family and MongoDB-backed workflows.
+
+### Challenge 3: Meeting developers where they already work
+
+A tool like this is more useful when it can move beyond the terminal.
+
+**Solution**: The web playground, JSON workflows, generated starter code, and MCP server make VAI usable in the browser, inside apps, and directly within AI-powered editors.
+
+## Results
+
+VAI now serves as:
+
+- A practical CLI for semantic search and RAG prototyping
+- A teaching tool for embeddings, reranking, and vector search concepts
+- A local-first on-ramp with `voyage-4-nano`
+- A bridge into AI editors through MCP
+- A more complete retrieval engineering toolkit with evaluation and workflow support
+
+## Notes on Screenshots
+
+I reviewed the screenshots folder referenced for this project, but at the moment it contains the capture script rather than committed image assets. Once the generated screenshots are available, they would make a great addition to this article alongside the playground and MCP sections.
 
 ## Links
 

@@ -66,6 +66,11 @@ export async function getPostBySlug(slug) {
     const mdxSource = await serialize(content, {
       mdxOptions: {
         development: process.env.NODE_ENV === 'development',
+        remarkPlugins: [remarkGfm],
+        rehypePlugins: [
+          rehypeSlug,
+          [rehypePrism, { ignoreMissing: true }]
+        ],
       },
     });
 

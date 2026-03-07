@@ -67,6 +67,8 @@ export default async function Project({ params }) {
       image={project.image}
       date={project.date}
       author={project.author}
+      demoUrl={project.demoUrl}
+      githubUrl={project.githubUrl}
     >
       <BlogPostContent post={project} slug={params.slug} />
     </BlogLayout>

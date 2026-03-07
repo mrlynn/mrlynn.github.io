@@ -1,0 +1,86 @@
+---
+category: "project"
+title: "AA Companion"
+description: "A recovery companion app that brings together daily reflections, meeting tools, journaling, and guided support for people in sobriety."
+image: "/images/projects/aacompanion.jpg"
+tags: ["Next.js", "MongoDB", "AI", "Recovery"]
+demoUrl: "https://aacompanion.com"
+private: false
+color: "#5B8FA8"
+date: "2026-03-06"
+author: "Michael Lynn"
+technologies: ["Next.js", "React", "Material UI", "MongoDB Atlas", "AI", "Ably"]
+---
+
+# AA Companion
+
+## Overview
+AA Companion is a recovery-focused web application designed to support people in sobriety with a calm, useful daily experience. The product centers on reflection, routine, and connection, combining spiritual reading, journaling, meeting discovery, and guided support in one place.
+
+This project was shaped around a simple idea: a digital tool for recovery should feel respectful, private, and genuinely helpful. Instead of trying to replace meetings, sponsors, or fellowship, AA Companion is built to act as a steady companion between those moments.
+
+## Features
+- **Daily Reflections**: Read and revisit daily reflection content in a focused, mobile-friendly interface
+- **Guided Recovery Path**: A structured early recovery experience that introduces key concepts and app features over time
+- **Meeting Finder**: Help users locate meetings and reduce friction around staying connected to the program
+- **Journaling and Inventory**: Support daily writing, reflection prompts, and ongoing recovery practices
+- **Sobriety-Aware Experience**: Personalize content and feature access based on recovery progress
+- **Private Support Features**: Designed around anonymity, trust, and spiritually aligned peer support
+- **Real-Time and AI-Enhanced Capabilities**: Extend the experience with intelligent guidance, chat, and retrieval-based assistance
+
+## Technical Details
+
+### Architecture
+The application uses a modern full-stack JavaScript architecture:
+- Frontend: Next.js App Router with React
+- UI System: Material UI
+- Database: MongoDB Atlas
+- Authentication: NextAuth/Auth.js-based flows
+- Real-Time Messaging: Ably
+- AI Layer: Retrieval-based workflows powered by MongoDB Vector Search and application-level agents
+
+### Key Components
+1. **Reflection Experience**
+   - Daily reading interface
+   - Rich metadata and sharing support
+   - SEO and open graph optimization
+   - Responsive reading flow
+
+2. **Guided Course and Onboarding**
+   - First-30-days style learning path
+   - Adaptive gating based on sobriety and engagement
+   - Feature introduction blocks for gradual discovery
+   - Admin tooling for managing lessons and modules
+
+3. **Support and Connection Layer**
+   - Meeting discovery workflows
+   - Recovery journaling and habit support
+   - Real-time chat foundations
+   - Volunteer support agent architecture with safety-oriented guardrails
+
+## Challenges & Solutions
+
+### Challenge 1: Building for a sensitive context
+Recovery products need a very different tone than typical productivity or social apps. The interface, copy, and feature design all need to reinforce trust rather than pressure.
+
+**Solution**: The product direction emphasized gentle onboarding, privacy-conscious design, accessible UI patterns, and features that support recovery without turning the experience into a noisy social feed.
+
+### Challenge 2: Combining guidance, content, and real-time features
+AA Companion brings together editorial content, personalized user flows, messaging, and AI-assisted support. Keeping those systems cohesive required a clear architecture and a flexible content model.
+
+**Solution**: The app uses a modular Next.js architecture, MongoDB-backed content and user context, an admin CMS for course material, and a layered approach to intelligent features so the product can evolve without becoming brittle.
+
+## Results
+AA Companion has created a strong foundation for:
+- Daily reflection and journaling workflows
+- Guided feature discovery for people in early recovery
+- Meeting and habit-based engagement loops
+- Privacy-aware social and volunteer support capabilities
+- Future AI enhancements grounded in real product utility
+
+## Future Enhancements
+1. Expanded sponsor-sharing and accountability flows
+2. More adaptive recovery journeys based on engagement patterns
+3. Additional AI safety and support tooling
+4. Broader reminders and messaging integrations
+5. Continued investment in accessibility, trust, and low-friction mobile use

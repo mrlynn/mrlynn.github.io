@@ -67,6 +67,8 @@ export default async function BlogPost({ params }) {
       image={post.image}
       date={post.date}
       author={post.author}
+      demoUrl={post.demoUrl}
+      githubUrl={post.githubUrl}
     >
       <BlogPostContent post={post} slug={params.slug} />
     </BlogLayout>

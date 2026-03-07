@@ -1,9 +1,9 @@
 'use client';
 
-import { Box, Container, Typography, Stack, Divider, Button } from '@mui/material';
+import { Box, Container, Typography, Button, Link } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { format } from 'date-fns';
 import Image from 'next/image';
+import { GitHub as GitHubIcon, Launch as LaunchIcon } from '@mui/icons-material';
 import ShareButton from '../ShareButton';
 
 const HeroSection = styled(Box)(({ theme }) => ({
@@ -34,7 +34,7 @@ const HeroContent = styled(Box)(({ theme }) => ({
   padding: theme.spacing(4),
 }));
 
-const BlogLayout = ({ children, title, description, image, date, author }) => {
+const BlogLayout = ({ children, title, description, image, date, author, demoUrl, githubUrl }) => {
   // Add JSON-LD schema
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -90,10 +90,11 @@ const BlogLayout = ({ children, title, description, image, date, author }) => {
           </HeroContent>
         </HeroSection>
 
-        {/* Share Section */}
+        {/* Actions Section: Demo, GitHub, Share */}
         <Box sx={{ 
           py: 3,
           display: 'flex',
+          flexWrap: 'wrap',
           justifyContent: 'center',
           alignItems: 'center',
           gap: 2,
@@ -101,8 +102,33 @@ const BlogLayout = ({ children, title, description, image, date, author }) => {
           borderBottom: 1,
           borderColor: 'divider'
         }}>
-          <Typography variant="subtitle1" color="text.secondary">
-            Share this article:
+          {demoUrl && (
+            <Button
+              component={Link}
+              href={demoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              startIcon={<LaunchIcon />}
+              variant="contained"
+              color="primary"
+            >
+              Live Demo
+            </Button>
+          )}
+          {githubUrl && (
+            <Button
+              component={Link}
+              href={githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              startIcon={<GitHubIcon />}
+              variant="outlined"
+            >
+              View on GitHub
+            </Button>
+          )}
+          <Typography variant="subtitle1" color="text.secondary" sx={{ mx: 1 }}>
+            Share:
           </Typography>
           <ShareButton 
             title={title}

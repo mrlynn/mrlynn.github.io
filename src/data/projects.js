@@ -1,5 +1,14 @@
 export const projects = [
   {
+    title: 'AA Companion',
+    description: 'A recovery companion app with daily reflections, meeting tools, journaling, and guided support for people in sobriety.',
+    image: '/images/projects/aacompanion.jpg',
+    tags: ['Next.js', 'MongoDB', 'AI', 'Recovery'],
+    demoUrl: 'https://aacompanion.com',
+    private: false,
+    color: '#5B8FA8',
+  },
+  {
     title: 'MongoDB Atlas Deployer',
     description: 'A web application for rapid provisioning and management of MongoDB Atlas clusters for workshops and training events.',
     image: '/images/projects/atlas-deployer.png',

@@ -1,4 +1,16 @@
-import { Typography, Box, Chip, Stack } from '@mui/material';
+import {
+  Typography,
+  Box,
+  Chip,
+  Stack,
+  Paper,
+  TableContainer,
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell
+} from '@mui/material';
 import Image from 'next/image';
 import Link from 'next/link';
 import TechStack from './includes/TechStack';
@@ -57,6 +69,26 @@ export const mdxComponents = {
       {children}
     </Typography>
   ),
+  table: ({ children, ...props }) => (
+    <TableContainer component={Paper} sx={{ my: 4, overflowX: 'auto' }}>
+      <Table size="small" {...props}>
+        {children}
+      </Table>
+    </TableContainer>
+  ),
+  thead: ({ children, ...props }) => <TableHead {...props}>{children}</TableHead>,
+  tbody: ({ children, ...props }) => <TableBody {...props}>{children}</TableBody>,
+  tr: ({ children, ...props }) => <TableRow {...props}>{children}</TableRow>,
+  th: ({ children, ...props }) => (
+    <TableCell
+      component="th"
+      sx={{ fontWeight: 700, whiteSpace: 'nowrap' }}
+      {...props}
+    >
+      {children}
+    </TableCell>
+  ),
+  td: ({ children, ...props }) => <TableCell {...props}>{children}</TableCell>,
   ol: ({ children, ...props }) => (
     <Typography component="ol" sx={{ pl: 2, mb: 2 }} {...props}>
       {children}
