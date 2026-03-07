@@ -19,7 +19,6 @@ import {
   ListItemText,
   Divider,
   Fade,
-  Typography,
 } from '@mui/material';
 import {
   Home as HomeIcon,
@@ -145,7 +144,6 @@ const NavigationImproved = () => {
               sx={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: 1.5,
                 cursor: 'pointer',
               }}
               onClick={() => handleNavigation('/')}
@@ -181,23 +179,6 @@ const NavigationImproved = () => {
                     filter: 'brightness(0) invert(1)',
                   }}
                 />
-              </Box>
-              <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-                <Typography
-                  variant="h6"
-                  component="span"
-                  sx={{
-                    fontFamily: '"Space Grotesk", sans-serif',
-                    fontWeight: 700,
-                    fontSize: '1.125rem',
-                    letterSpacing: '-0.01em',
-                    background: theme.palette.background.gradientHero || theme.palette.background.gradient,
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                  }}
-                >
-                  Michael Lynn
-                </Typography>
               </Box>
             </MotionBox>
 
