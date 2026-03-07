@@ -14,7 +14,6 @@ import { projects } from '../data/projects';
 import { timelineEvents } from '../data/timeline';
 import Image from 'next/image';
 
-// Create motion components using motion.create()
 const MotionBox = motion.create(Box);
 const MotionTypography = motion.create(Typography);
 const MotionPaper = motion.create(Paper);
@@ -34,10 +33,6 @@ const titles = [
   "Tech Enthusiast",
   "Creative Mind",
   "Digital Artist",
-  "Innovator",
-  "Tech Enthusiast",
-  "Creative Mind",
-  "Artist",
   "Developer",
 ];
 
@@ -45,17 +40,20 @@ const techCards = [
   {
     title: 'MongoDB',
     content: '{ "database": "NoSQL", "type": "Document" }',
-    color: '#05668D', // Lapis Lazuli
+    color: '#10b981',
+    icon: '{ }',
   },
   {
     title: 'Node.js',
     content: 'async function build() {\n  await dream();\n  return future;\n}',
-    color: '#679436', // Asparagus
+    color: '#06b6d4',
+    icon: 'fn()',
   },
   {
     title: 'React',
     content: '<Innovation\n  future={tech}\n  passion={true}\n/>',
-    color: '#427AA1', // UCLA Blue
+    color: '#00ED64',
+    icon: '</>',
   }
 ];
 
@@ -69,18 +67,16 @@ function CyclingTitle() {
       do {
         newTitle = titles[Math.floor(Math.random() * titles.length)];
       } while (newTitle === currentTitle);
-
       setCurrentTitle(newTitle);
     }, 3000);
-
     return () => clearInterval(interval);
   }, [currentTitle]);
 
   return (
-    <Box 
-      sx={{ 
+    <Box
+      sx={{
         minHeight: '3.5rem',
-        display: 'flex', 
+        display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         mb: 4,
@@ -101,7 +97,8 @@ function CyclingTitle() {
             sx={{
               fontSize: { xs: '1.75rem', md: '2.5rem' },
               fontWeight: 600,
-              background: theme.palette.background.gradient,
+              fontFamily: '"Space Grotesk", sans-serif',
+              background: theme.palette.background.gradientHero || theme.palette.background.gradient,
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               textAlign: 'center',
@@ -128,8 +125,7 @@ function FloatingProjectCards() {
         const projectToReplace = Math.floor(Math.random() * 3);
         return currentProjects.map((p, i) => i === projectToReplace ? newProject : p);
       });
-    }, 4000); // Change a random card every 4 seconds
-
+    }, 4000);
     return () => clearInterval(interval);
   }, []);
 
@@ -167,7 +163,7 @@ function FloatingProjectCards() {
             borderRadius: '16px',
             overflow: 'hidden',
             boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
-            border: '1px solid rgba(255,255,255,0.1)',
+            border: '1px solid rgba(16, 185, 129, 0.15)',
           }}
         >
           <Box
@@ -176,8 +172,8 @@ function FloatingProjectCards() {
               top: 0,
               left: 0,
               right: 0,
-              height: '4px',
-              background: project.color,
+              height: '3px',
+              background: 'linear-gradient(90deg, #10b981, #00ED64)',
             }}
           />
           <Box
@@ -188,10 +184,10 @@ function FloatingProjectCards() {
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              filter: 'brightness(0.8)',
+              filter: 'brightness(0.7)',
               transition: 'filter 0.3s ease',
               '&:hover': {
-                filter: 'brightness(1)',
+                filter: 'brightness(0.9)',
               },
             }}
           />
@@ -202,9 +198,9 @@ function FloatingProjectCards() {
               left: 0,
               right: 0,
               p: 2,
-              background: 'rgba(6, 39, 54, 0.9)',
+              background: 'rgba(3, 7, 18, 0.9)',
               backdropFilter: 'blur(10px)',
-              borderTop: '1px solid rgba(255,255,255,0.1)',
+              borderTop: '1px solid rgba(16, 185, 129, 0.1)',
             }}
           >
             <Typography
@@ -234,44 +230,73 @@ const heroBackgroundVariants = {
   },
 };
 
-const ParticleBackground = () => (
-  <Box
-    sx={{
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      overflow: 'hidden',
-      zIndex: 1,
-    }}
-  >
-    {[...Array(50)].map((_, i) => (
-      <motion.div
-        key={i}
-        style={{
-          position: 'absolute',
-          width: Math.random() * 3 + 1,
-          height: Math.random() * 3 + 1,
-          backgroundColor: 'rgba(255, 255, 255, 0.5)',
-          borderRadius: '50%',
-          top: `${Math.random() * 100}%`,
-          left: `${Math.random() * 100}%`,
-        }}
-        animate={{
-          y: [0, 1000],
-          opacity: [1, 0],
-        }}
-        transition={{
-          duration: Math.random() * 10 + 10,
-          repeat: Infinity,
-          ease: "linear",
-          delay: Math.random() * 10,
-        }}
-      />
-    ))}
-  </Box>
-);
+const GridBackground = () => {
+  const theme = useTheme();
+  const isDark = theme.palette.mode === 'dark';
+  const [particles, setParticles] = useState([]);
+
+  useEffect(() => {
+    setParticles([...Array(30)].map((_, i) => ({
+      width: Math.random() * 2 + 1,
+      height: Math.random() * 2 + 1,
+      opacityDark: Math.random() * 0.4 + 0.1,
+      opacityLight: Math.random() * 0.3 + 0.1,
+      top: Math.random() * 100,
+      left: Math.random() * 100,
+      glowSize: Math.random() * 6 + 2,
+      duration: Math.random() * 12 + 8,
+      delay: Math.random() * 10,
+    })));
+  }, []);
+
+  return (
+    <Box
+      sx={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        overflow: 'hidden',
+        zIndex: 1,
+        backgroundImage: isDark
+          ? `linear-gradient(rgba(16, 185, 129, 0.04) 1px, transparent 1px),
+             linear-gradient(90deg, rgba(16, 185, 129, 0.04) 1px, transparent 1px)`
+          : `linear-gradient(rgba(16, 185, 129, 0.03) 1px, transparent 1px),
+             linear-gradient(90deg, rgba(16, 185, 129, 0.03) 1px, transparent 1px)`,
+        backgroundSize: '60px 60px',
+      }}
+    >
+      {particles.map((p, i) => (
+        <motion.div
+          key={i}
+          style={{
+            position: 'absolute',
+            width: p.width,
+            height: p.height,
+            backgroundColor: isDark
+              ? `rgba(0, 237, 100, ${p.opacityDark})`
+              : `rgba(16, 185, 129, ${p.opacityLight})`,
+            borderRadius: '50%',
+            top: `${p.top}%`,
+            left: `${p.left}%`,
+            boxShadow: isDark ? `0 0 ${p.glowSize}px rgba(0, 237, 100, 0.3)` : 'none',
+          }}
+          animate={{
+            y: [0, -800],
+            opacity: [0, 1, 0],
+          }}
+          transition={{
+            duration: p.duration,
+            repeat: Infinity,
+            ease: "linear",
+            delay: p.delay,
+          }}
+        />
+      ))}
+    </Box>
+  );
+};
 
 const StatCard = ({ number, label, theme }) => (
   <MotionPaper
@@ -279,26 +304,32 @@ const StatCard = ({ number, label, theme }) => (
     animate={{ opacity: 1, y: 0 }}
     sx={{
       p: 3,
-      backgroundColor: theme.palette.mode === 'dark' 
-        ? 'rgba(255,255,255,0.08)' 
-        : theme.palette.surface.secondary,
+      backgroundColor: theme.palette.mode === 'dark'
+        ? 'rgba(16, 185, 129, 0.06)'
+        : 'rgba(16, 185, 129, 0.04)',
       backdropFilter: 'blur(10px)',
-      border: `1px solid ${theme.palette.border.subtle}`,
+      border: `1px solid ${theme.palette.mode === 'dark' ? 'rgba(16, 185, 129, 0.12)' : 'rgba(16, 185, 129, 0.1)'}`,
       textAlign: 'center',
       transition: 'all 0.3s ease',
+      backgroundImage: 'none',
       '&:hover': {
         transform: 'translateY(-5px)',
-        backgroundColor: theme.palette.mode === 'dark' 
-          ? 'rgba(255,255,255,0.12)' 
-          : theme.palette.surface.tertiary,
-        boxShadow: theme.shadows[4],
+        backgroundColor: theme.palette.mode === 'dark'
+          ? 'rgba(16, 185, 129, 0.1)'
+          : 'rgba(16, 185, 129, 0.08)',
+        borderColor: theme.palette.mode === 'dark'
+          ? 'rgba(0, 237, 100, 0.25)'
+          : 'rgba(16, 185, 129, 0.2)',
+        boxShadow: theme.palette.mode === 'dark'
+          ? '0 0 20px rgba(0, 237, 100, 0.1)'
+          : theme.shadows[4],
       },
     }}
   >
     <Typography
       variant="h3"
       sx={{
-        color: theme.palette.mode === 'dark' ? '#fff' : theme.palette.text.primary,
+        fontFamily: '"Space Grotesk", sans-serif',
         fontWeight: 700,
         fontSize: { xs: '1.75rem', md: '2.25rem' },
         mb: 1,
@@ -312,11 +343,12 @@ const StatCard = ({ number, label, theme }) => (
     <Typography
       variant="body2"
       sx={{
-        color: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.8)' : theme.palette.text.secondary,
+        color: theme.palette.text.secondary,
         textTransform: 'uppercase',
-        letterSpacing: 1.5,
-        fontSize: '0.75rem',
-        fontWeight: 500,
+        letterSpacing: 2,
+        fontSize: '0.7rem',
+        fontWeight: 600,
+        fontFamily: '"JetBrains Mono", monospace',
       }}
     >
       {label}
@@ -327,6 +359,7 @@ const StatCard = ({ number, label, theme }) => (
 export default function Home() {
   const theme = useTheme();
   const ref = useRef(null);
+  const isDark = theme.palette.mode === 'dark';
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
@@ -361,14 +394,14 @@ export default function Home() {
             left: 0,
             right: 0,
             bottom: 0,
-            background: theme.palette.mode === 'dark' 
-              ? 'rgba(10, 14, 39, 0.85)' 
-              : 'rgba(255, 255, 255, 0.85)',
+            background: isDark
+              ? 'rgba(3, 7, 18, 0.88)'
+              : 'rgba(255, 255, 255, 0.88)',
             zIndex: 1,
           },
         }}
       >
-        <ParticleBackground />
+        <GridBackground />
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 2 }}>
           <Grid container spacing={4} alignItems="center">
             <Grid item xs={12} md={7}>
@@ -382,44 +415,46 @@ export default function Home() {
                   <Typography
                     variant="overline"
                     sx={{
-                      color: theme.palette.mode === 'dark' ? 'rgba(165, 190, 0, 0.8)' : theme.palette.primary.main,
+                      fontFamily: '"JetBrains Mono", monospace',
+                      color: isDark ? 'rgba(0, 237, 100, 0.8)' : theme.palette.primary.main,
                       fontWeight: 500,
-                      letterSpacing: 3,
+                      letterSpacing: 4,
                       mb: 2,
                       display: 'block',
-                      fontSize: '0.75rem',
+                      fontSize: '0.7rem',
                     }}
                   >
-                    WELCOME TO MY WORLD
+                    {'> '}WELCOME_TO_MY_WORLD
                   </Typography>
                   <Typography
                     variant="h1"
                     sx={{
+                      fontFamily: '"Space Grotesk", sans-serif',
                       fontSize: { xs: '2.5rem', md: '4.5rem' },
                       fontWeight: 800,
-                      color: theme.palette.mode === 'dark' ? '#fff' : theme.palette.text.primary,
-                      textShadow: theme.palette.mode === 'dark' ? '2px 2px 4px rgba(0,0,0,0.3)' : 'none',
+                      color: isDark ? '#f1f5f9' : theme.palette.text.primary,
+                      textShadow: isDark ? '0 0 40px rgba(0, 237, 100, 0.08)' : 'none',
                       mb: 2,
                       lineHeight: 1.1,
-                      letterSpacing: '-0.02em',
+                      letterSpacing: '-0.03em',
                     }}
                   >
                     Michael Lynn
                   </Typography>
                 </Box>
-                
+
                 <Box sx={{ transform: 'scale(1.1)', mb: 2 }}>
                   <CyclingTitle />
                 </Box>
-                
+
                 <Typography
                   variant="h6"
                   sx={{
-                    color: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.9)' : theme.palette.text.secondary,
+                    color: isDark ? 'rgba(226, 232, 240, 0.85)' : theme.palette.text.secondary,
                     maxWidth: '600px',
                     lineHeight: 1.8,
                     mb: 6,
-                    fontSize: { xs: '1rem', md: '1.25rem' },
+                    fontSize: { xs: '1rem', md: '1.2rem' },
                     fontWeight: 400,
                   }}
                 >
@@ -428,7 +463,7 @@ export default function Home() {
                   knowledge through teaching and community engagement.
                 </Typography>
 
-                <Stack direction="row" spacing={3} sx={{ mb: 8 }}>
+                <Stack direction="row" spacing={3} sx={{ mb: 8 }} flexWrap="wrap" useFlexGap>
                   <Button
                     variant="contained"
                     size="large"
@@ -444,10 +479,11 @@ export default function Home() {
                       boxShadow: 'none',
                       '&:hover': {
                         background: theme.palette.background.gradient,
+                        filter: 'brightness(1.15)',
                         transform: 'translateY(-2px)',
-                        boxShadow: theme.palette.mode === 'dark'
-                          ? '0 8px 24px rgba(33, 150, 243, 0.3)'
-                          : '0 8px 24px rgba(33, 150, 243, 0.25)',
+                        boxShadow: isDark
+                          ? '0 8px 24px rgba(16, 185, 129, 0.3), 0 0 8px rgba(0, 237, 100, 0.2)'
+                          : '0 8px 24px rgba(16, 185, 129, 0.25)',
                       },
                       transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
                     }}
@@ -460,9 +496,9 @@ export default function Home() {
                     startIcon={<LinkedInIcon />}
                     href="https://linkedin.com/in/mlynn"
                     sx={{
-                      borderColor: theme.palette.border.default,
+                      borderColor: isDark ? 'rgba(16, 185, 129, 0.3)' : theme.palette.border.default,
                       borderWidth: '1.5px',
-                      color: theme.palette.mode === 'dark' ? '#fff' : theme.palette.text.primary,
+                      color: isDark ? '#e2e8f0' : theme.palette.text.primary,
                       px: 4,
                       py: 1.5,
                       fontWeight: 600,
@@ -470,25 +506,29 @@ export default function Home() {
                       '&:hover': {
                         borderWidth: '1.5px',
                         borderColor: theme.palette.primary.main,
-                        backgroundColor: theme.palette.surface.secondary,
+                        backgroundColor: isDark
+                          ? 'rgba(16, 185, 129, 0.08)'
+                          : 'rgba(16, 185, 129, 0.04)',
                         transform: 'translateY(-2px)',
-                        boxShadow: theme.shadows[4],
+                        boxShadow: isDark
+                          ? '0 4px 16px rgba(16, 185, 129, 0.15)'
+                          : theme.shadows[4],
                       },
                       transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
                     }}
                   >
                     LinkedIn
                   </Button>
-                  <CalendarBooking 
-                    variant="button" 
+                  <CalendarBooking
+                    variant="button"
                     buttonProps={{
                       variant: "outlined",
                       size: "large",
                       children: "Schedule a Meeting",
                       sx: {
-                        borderColor: theme.palette.border.default,
+                        borderColor: isDark ? 'rgba(16, 185, 129, 0.3)' : theme.palette.border.default,
                         borderWidth: '1.5px',
-                        color: theme.palette.mode === 'dark' ? '#fff' : theme.palette.text.primary,
+                        color: isDark ? '#e2e8f0' : theme.palette.text.primary,
                         px: 4,
                         py: 1.5,
                         fontWeight: 600,
@@ -496,9 +536,13 @@ export default function Home() {
                         '&:hover': {
                           borderWidth: '1.5px',
                           borderColor: theme.palette.primary.main,
-                          backgroundColor: theme.palette.surface.secondary,
+                          backgroundColor: isDark
+                            ? 'rgba(16, 185, 129, 0.08)'
+                            : 'rgba(16, 185, 129, 0.04)',
                           transform: 'translateY(-2px)',
-                          boxShadow: theme.shadows[4],
+                          boxShadow: isDark
+                            ? '0 4px 16px rgba(16, 185, 129, 0.15)'
+                            : theme.shadows[4],
                         },
                         transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
                       }
@@ -535,8 +579,12 @@ export default function Home() {
                     width: '100%',
                     borderRadius: '24px',
                     overflow: 'hidden',
-                    boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
-                    border: '4px solid rgba(255,255,255,0.1)',
+                    boxShadow: isDark
+                      ? '0 20px 40px rgba(0,0,0,0.5), 0 0 30px rgba(16, 185, 129, 0.08)'
+                      : '0 20px 40px rgba(0,0,0,0.15)',
+                    border: isDark
+                      ? '1px solid rgba(16, 185, 129, 0.15)'
+                      : '1px solid rgba(16, 185, 129, 0.1)',
                     '&::before': {
                       content: '""',
                       position: 'absolute',
@@ -544,23 +592,24 @@ export default function Home() {
                       left: 0,
                       right: 0,
                       bottom: 0,
-                      background: 'linear-gradient(180deg, rgba(6,39,54,0) 0%, rgba(6,39,54,0.6) 100%)',
+                      background: isDark
+                        ? 'linear-gradient(180deg, transparent 0%, rgba(3,7,18,0.5) 100%)'
+                        : 'linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.15) 100%)',
                       zIndex: 1,
-                      opacity: 0.3,
+                      opacity: 0.5,
                       transition: 'all 0.3s ease',
                     },
                     '&:hover::before': {
-                      opacity: 0.1,
+                      opacity: 0.2,
                     },
                     transform: 'perspective(1000px) rotateY(-5deg)',
                     transition: 'all 0.5s ease',
                     '&:hover': {
                       transform: 'perspective(1000px) rotateY(0deg) translateY(-10px)',
-                      boxShadow: '0 30px 60px rgba(0,0,0,0.4)',
-                      '& + .quote-box': {
-                        transform: 'translateX(-50%) translateY(-5px)',
-                        backgroundColor: 'rgba(255,255,255,0.12)',
-                      },
+                      boxShadow: isDark
+                        ? '0 30px 60px rgba(0,0,0,0.6), 0 0 40px rgba(0, 237, 100, 0.1)'
+                        : '0 30px 60px rgba(0,0,0,0.2)',
+                      borderColor: isDark ? 'rgba(0, 237, 100, 0.25)' : 'rgba(16, 185, 129, 0.2)',
                     },
                   }}
                 >
@@ -588,27 +637,31 @@ export default function Home() {
                     transform: 'translateX(-50%)',
                     width: '90%',
                     p: 3,
-                    backgroundColor: 'rgba(255,255,255,0.08)',
-                    backdropFilter: 'blur(10px)',
+                    backgroundColor: isDark
+                      ? 'rgba(3, 7, 18, 0.85)'
+                      : 'rgba(255, 255, 255, 0.9)',
+                    backdropFilter: 'blur(16px)',
                     borderRadius: '16px',
-                    border: '1px solid rgba(255,255,255,0.2)',
+                    border: `1px solid ${isDark ? 'rgba(16, 185, 129, 0.15)' : 'rgba(16, 185, 129, 0.1)'}`,
                     textAlign: 'center',
                     zIndex: 2,
                     transition: 'all 0.3s ease',
                     '&:hover': {
-                      backgroundColor: 'rgba(255,255,255,0.12)',
+                      backgroundColor: isDark
+                        ? 'rgba(3, 7, 18, 0.9)'
+                        : 'rgba(255, 255, 255, 0.95)',
                       transform: 'translateX(-50%) translateY(-5px)',
+                      borderColor: isDark ? 'rgba(0, 237, 100, 0.25)' : 'rgba(16, 185, 129, 0.2)',
                     },
                   }}
                 >
                   <Typography
                     variant="body1"
                     sx={{
-                      color: theme.palette.mode === 'dark' ? 'white' : theme.palette.text.primary,
+                      color: isDark ? 'rgba(226, 232, 240, 0.9)' : theme.palette.text.primary,
                       fontWeight: 500,
-                      fontSize: '1.1rem',
+                      fontSize: '1.05rem',
                       lineHeight: 1.6,
-                      textShadow: theme.palette.mode === 'dark' ? '0 2px 4px rgba(0,0,0,0.2)' : 'none',
                       fontStyle: 'italic',
                       position: 'relative',
                       '&::before': {
@@ -617,7 +670,7 @@ export default function Home() {
                         top: -20,
                         left: -10,
                         fontSize: '3rem',
-                        color: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.2)' : theme.palette.text.secondary,
+                        color: isDark ? 'rgba(0, 237, 100, 0.3)' : theme.palette.primary.main,
                         fontFamily: 'serif',
                         lineHeight: 1,
                       },
@@ -627,7 +680,7 @@ export default function Home() {
                         bottom: -40,
                         right: -10,
                         fontSize: '3rem',
-                        color: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.2)' : theme.palette.text.secondary,
+                        color: isDark ? 'rgba(0, 237, 100, 0.3)' : theme.palette.primary.main,
                         fontFamily: 'serif',
                         lineHeight: 1,
                       },
@@ -640,7 +693,7 @@ export default function Home() {
             </Grid>
           </Grid>
         </Container>
-        
+
         <Box
           sx={{
             position: 'absolute',
@@ -662,10 +715,15 @@ export default function Home() {
           >
             <IconButton
               sx={{
-                color: theme.palette.mode === 'dark' ? 'white' : theme.palette.text.primary,
-                border: `2px solid ${theme.palette.mode === 'dark' ? 'white' : theme.palette.text.primary}`,
+                color: isDark ? '#10b981' : theme.palette.primary.main,
+                border: `2px solid ${isDark ? 'rgba(16, 185, 129, 0.3)' : theme.palette.primary.main}`,
                 '&:hover': {
-                  backgroundColor: theme.palette.surface.secondary,
+                  backgroundColor: isDark
+                    ? 'rgba(16, 185, 129, 0.1)'
+                    : 'rgba(16, 185, 129, 0.06)',
+                  boxShadow: isDark
+                    ? '0 0 15px rgba(0, 237, 100, 0.2)'
+                    : 'none',
                 },
               }}
               onClick={() => window.scrollTo({
@@ -680,11 +738,12 @@ export default function Home() {
       </MotionBox>
 
       {/* Tech Cards Section */}
-      <Box sx={{ 
-        py: 10, 
-        backgroundColor: theme.palette.mode === 'dark' 
+      <Box sx={{
+        py: 10,
+        backgroundColor: isDark
           ? theme.palette.background.default
-          : theme.palette.background.paper 
+          : theme.palette.background.paper,
+        position: 'relative',
       }}>
         <Container maxWidth="lg">
           <Grid container spacing={4}>
@@ -697,32 +756,71 @@ export default function Home() {
                   sx={{
                     p: 3,
                     height: '100%',
-                    backgroundColor: 'rgba(255,255,255,0.05)',
+                    backgroundColor: isDark
+                      ? 'rgba(16, 185, 129, 0.04)'
+                      : 'rgba(16, 185, 129, 0.03)',
+                    backgroundImage: 'none',
                     backdropFilter: 'blur(10px)',
-                    border: '1px solid rgba(255,255,255,0.1)',
-                    borderTop: `4px solid ${card.color}`,
-                    transition: 'transform 0.3s ease',
+                    border: `1px solid ${isDark ? 'rgba(16, 185, 129, 0.1)' : 'rgba(16, 185, 129, 0.08)'}`,
+                    borderTop: `3px solid ${card.color}`,
+                    transition: 'all 0.3s ease',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      background: `radial-gradient(circle at top right, ${card.color}08, transparent 70%)`,
+                    },
                     '&:hover': {
                       transform: 'translateY(-8px)',
+                      borderColor: `${card.color}40`,
+                      boxShadow: isDark
+                        ? `0 0 20px ${card.color}15, 0 8px 24px rgba(0,0,0,0.3)`
+                        : `0 8px 24px rgba(0,0,0,0.08)`,
                     },
                   }}
                 >
-                  <Typography
-                    variant="h5"
-                    sx={{
-                      color: theme.palette.text.primary,
-                      mb: 2,
-                      fontWeight: 600,
-                    }}
-                  >
-                    {card.title}
-                  </Typography>
+                  {/* Terminal-style header */}
+                  <Box sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 1,
+                    mb: 2,
+                  }}>
+                    <Typography
+                      sx={{
+                        fontFamily: '"JetBrains Mono", monospace',
+                        fontSize: '0.7rem',
+                        color: card.color,
+                        opacity: 0.7,
+                        letterSpacing: '0.05em',
+                      }}
+                    >
+                      {card.icon}
+                    </Typography>
+                    <Typography
+                      variant="h5"
+                      sx={{
+                        color: theme.palette.text.primary,
+                        fontFamily: '"Space Grotesk", sans-serif',
+                        fontWeight: 600,
+                      }}
+                    >
+                      {card.title}
+                    </Typography>
+                  </Box>
                   <Typography
                     variant="body2"
                     sx={{
-                      color: theme.palette.text.secondary,
-                      fontFamily: 'monospace',
+                      color: isDark ? 'rgba(148, 163, 184, 0.9)' : theme.palette.text.secondary,
+                      fontFamily: '"JetBrains Mono", monospace',
                       whiteSpace: 'pre-wrap',
+                      fontSize: '0.8rem',
+                      lineHeight: 1.8,
                     }}
                   >
                     {card.content}
@@ -735,7 +833,14 @@ export default function Home() {
       </Box>
 
       {/* Timeline Section */}
-      <Box sx={{ py: 8, background: 'rgba(0, 0, 0, 0.2)' }}>
+      <Box sx={{
+        py: 8,
+        background: isDark
+          ? 'rgba(16, 185, 129, 0.02)'
+          : 'rgba(16, 185, 129, 0.015)',
+        borderTop: `1px solid ${isDark ? 'rgba(16, 185, 129, 0.08)' : 'rgba(16, 185, 129, 0.06)'}`,
+        borderBottom: `1px solid ${isDark ? 'rgba(16, 185, 129, 0.08)' : 'rgba(16, 185, 129, 0.06)'}`,
+      }}>
         <Timeline events={timelineEvents} />
       </Box>
 
@@ -743,12 +848,14 @@ export default function Home() {
       <Certifications />
 
       {/* Calendar Booking Section */}
-      <Box 
-        sx={{ 
+      <Box
+        sx={{
           py: 12,
-          background: 'linear-gradient(180deg, rgba(6,39,54,0.03) 0%, rgba(6,39,54,0.08) 100%)',
-          borderTop: '1px solid rgba(6,39,54,0.1)',
-          borderBottom: '1px solid rgba(6,39,54,0.1)',
+          background: isDark
+            ? 'rgba(16, 185, 129, 0.02)'
+            : 'linear-gradient(180deg, rgba(16, 185, 129, 0.02) 0%, rgba(16, 185, 129, 0.05) 100%)',
+          borderTop: `1px solid ${isDark ? 'rgba(16, 185, 129, 0.08)' : 'rgba(16, 185, 129, 0.06)'}`,
+          borderBottom: `1px solid ${isDark ? 'rgba(16, 185, 129, 0.08)' : 'rgba(16, 185, 129, 0.06)'}`,
         }}
       >
         <Container maxWidth="lg">
@@ -758,6 +865,7 @@ export default function Home() {
               sx={{
                 mb: 3,
                 fontWeight: 700,
+                fontFamily: '"Space Grotesk", sans-serif',
                 color: theme.palette.text.primary,
                 position: 'relative',
                 '&::after': {
@@ -767,9 +875,10 @@ export default function Home() {
                   left: '50%',
                   transform: 'translateX(-50%)',
                   width: 80,
-                  height: 4,
+                  height: 3,
                   background: theme.palette.background.gradientAccent,
                   borderRadius: 2,
+                  boxShadow: isDark ? '0 0 10px rgba(0, 237, 100, 0.3)' : 'none',
                 },
               }}
             >
@@ -795,7 +904,7 @@ export default function Home() {
               Select a convenient time slot from my calendar below. Looking forward to connecting with you!
             </Typography>
           </Box>
-          
+
           <Box
             sx={{
               position: 'relative',
@@ -806,7 +915,9 @@ export default function Home() {
                 left: -20,
                 right: -20,
                 bottom: -20,
-                background: 'linear-gradient(135deg, rgba(66,122,161,0.1) 0%, rgba(165,190,0,0.1) 100%)',
+                background: isDark
+                  ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.06) 0%, rgba(6, 182, 212, 0.04) 100%)'
+                  : 'linear-gradient(135deg, rgba(16, 185, 129, 0.04) 0%, rgba(6, 182, 212, 0.03) 100%)',
                 borderRadius: '24px',
                 zIndex: 0,
               },
@@ -820,8 +931,10 @@ export default function Home() {
                 borderRadius: '16px',
                 overflow: 'hidden',
                 backgroundColor: 'white',
-                boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
-                border: '1px solid rgba(6,39,54,0.1)',
+                boxShadow: isDark
+                  ? '0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(16, 185, 129, 0.08)'
+                  : '0 8px 32px rgba(0,0,0,0.08)',
+                border: `1px solid ${isDark ? 'rgba(16, 185, 129, 0.1)' : 'rgba(16, 185, 129, 0.06)'}`,
               }}
             >
               <CalendarBooking variant="iframe" />
