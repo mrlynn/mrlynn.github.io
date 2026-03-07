@@ -1,7 +1,7 @@
 'use client';
 
 import { Box, Container, Typography, Button, Grid, Paper, Stack, useTheme, IconButton } from '@mui/material';
-import { GitHub as GitHubIcon, LinkedIn as LinkedInIcon, BookOutlined as BookOutlinedIcon, Code as CodeIcon, Terminal as TerminalIcon, Cloud as CloudIcon, ArrowDownward as ArrowDownwardIcon, CalendarToday as CalendarIcon } from '@mui/icons-material';
+import { GitHub as GitHubIcon, LinkedIn as LinkedInIcon, BookOutlined as BookOutlinedIcon, Code as CodeIcon, Terminal as TerminalIcon, Cloud as CloudIcon, ArrowDownward as ArrowDownwardIcon, ArrowForward as ArrowForwardIcon, CalendarToday as CalendarIcon } from '@mui/icons-material';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import ProjectsSection from '../components/ProjectsSection';
@@ -20,20 +20,12 @@ const MotionPaper = motion.create(Paper);
 const MotionStack = motion(Stack);
 
 const titles = [
-  "Creative Technologist",
   "Developer Advocate",
-  "Passionate Teacher",
-  "Open Source Contributor",
-  "Community Builder",
   "Technical Advisor",
-  "Fitness Geek",
-  "Podcaster",
-  "Problem Solver",
-  "Innovator",
-  "Tech Enthusiast",
-  "Creative Mind",
-  "Digital Artist",
-  "Developer",
+  "Community Builder",
+  "Open Source Leader",
+  "Speaker & Educator",
+  "Creative Technologist",
 ];
 
 const techCards = [
@@ -77,8 +69,8 @@ function CyclingTitle() {
       sx={{
         minHeight: '3.5rem',
         display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
         mb: 4,
         position: 'relative',
       }}
@@ -101,7 +93,7 @@ function CyclingTitle() {
               background: theme.palette.background.gradientHero || theme.palette.background.gradient,
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              textAlign: 'center',
+              textAlign: 'left',
               lineHeight: 1.2,
             }}
           >
@@ -360,10 +352,21 @@ export default function Home() {
   const theme = useTheme();
   const ref = useRef(null);
   const isDark = theme.palette.mode === 'dark';
+  const [latestPost, setLatestPost] = useState(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
   });
+
+  useEffect(() => {
+    fetch('/api/blog')
+      .then(res => res.json())
+      .then(posts => {
+        const articles = posts.filter(p => p.category !== 'project');
+        if (articles.length > 0) setLatestPost(articles[0]);
+      })
+      .catch(() => {});
+  }, []);
 
   const stats = [
     { number: '15+', label: 'Years Experience' },
@@ -424,7 +427,7 @@ export default function Home() {
                       fontSize: '0.7rem',
                     }}
                   >
-                    {'> '}WELCOME_TO_MY_WORLD
+                    DEVELOPER ADVOCATE &middot; MONGODB &middot; SPEAKER &middot; ADVISOR
                   </Typography>
                   <Typography
                     variant="h1"
@@ -443,9 +446,7 @@ export default function Home() {
                   </Typography>
                 </Box>
 
-                <Box sx={{ transform: 'scale(1.1)', mb: 2 }}>
-                  <CyclingTitle />
-                </Box>
+                <CyclingTitle />
 
                 <Typography
                   variant="h6"
@@ -458,17 +459,18 @@ export default function Home() {
                     fontWeight: 400,
                   }}
                 >
-                  Building bridges between developers and technology.
-                  Passionate about creating intuitive solutions and sharing
-                  knowledge through teaching and community engagement.
+                  I help developers and teams adopt modern data platforms and
+                  AI-driven tools. With 15+ years in tech, I turn complex ideas
+                  into clear talks, open-source projects, and hands-on workshops
+                  that move the industry forward.
                 </Typography>
 
-                <Stack direction="row" spacing={3} sx={{ mb: 8 }} flexWrap="wrap" useFlexGap>
+                <Stack direction="row" spacing={3} sx={{ mb: 4 }} flexWrap="wrap" useFlexGap alignItems="center">
                   <Button
                     variant="contained"
                     size="large"
-                    startIcon={<GitHubIcon />}
-                    href="https://github.com/mrlynn"
+                    endIcon={<ArrowForwardIcon />}
+                    href={latestPost ? `/blog/${latestPost.slug}` : '/blog'}
                     sx={{
                       background: theme.palette.background.gradient,
                       color: '#fff',
@@ -488,36 +490,7 @@ export default function Home() {
                       transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
                     }}
                   >
-                    GitHub
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    size="large"
-                    startIcon={<LinkedInIcon />}
-                    href="https://linkedin.com/in/mlynn"
-                    sx={{
-                      borderColor: isDark ? 'rgba(16, 185, 129, 0.3)' : theme.palette.border.default,
-                      borderWidth: '1.5px',
-                      color: isDark ? '#e2e8f0' : theme.palette.text.primary,
-                      px: 4,
-                      py: 1.5,
-                      fontWeight: 600,
-                      borderRadius: '12px',
-                      '&:hover': {
-                        borderWidth: '1.5px',
-                        borderColor: theme.palette.primary.main,
-                        backgroundColor: isDark
-                          ? 'rgba(16, 185, 129, 0.08)'
-                          : 'rgba(16, 185, 129, 0.04)',
-                        transform: 'translateY(-2px)',
-                        boxShadow: isDark
-                          ? '0 4px 16px rgba(16, 185, 129, 0.15)'
-                          : theme.shadows[4],
-                      },
-                      transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
-                    }}
-                  >
-                    LinkedIn
+                    Read Latest Article
                   </Button>
                   <CalendarBooking
                     variant="button"
@@ -548,6 +521,37 @@ export default function Home() {
                       }
                     }}
                   />
+                </Stack>
+
+                <Stack direction="row" spacing={2} sx={{ mb: 6 }}>
+                  <IconButton
+                    href="https://github.com/mrlynn"
+                    size="small"
+                    sx={{
+                      color: isDark ? 'rgba(226, 232, 240, 0.6)' : theme.palette.text.secondary,
+                      '&:hover': {
+                        color: theme.palette.primary.main,
+                        backgroundColor: isDark ? 'rgba(16, 185, 129, 0.08)' : 'rgba(16, 185, 129, 0.04)',
+                      },
+                      transition: 'all 0.2s ease',
+                    }}
+                  >
+                    <GitHubIcon fontSize="small" />
+                  </IconButton>
+                  <IconButton
+                    href="https://linkedin.com/in/mlynn"
+                    size="small"
+                    sx={{
+                      color: isDark ? 'rgba(226, 232, 240, 0.6)' : theme.palette.text.secondary,
+                      '&:hover': {
+                        color: theme.palette.primary.main,
+                        backgroundColor: isDark ? 'rgba(16, 185, 129, 0.08)' : 'rgba(16, 185, 129, 0.04)',
+                      },
+                      transition: 'all 0.2s ease',
+                    }}
+                  >
+                    <LinkedInIcon fontSize="small" />
+                  </IconButton>
                 </Stack>
 
                 <Grid container spacing={3}>
@@ -614,29 +618,29 @@ export default function Home() {
                   }}
                 >
                   <Image
-                    src="/mike-mexico.jpg"
-                    alt="Michael Lynn"
+                    src="/images/headshot.jpg"
+                    alt="Michael Lynn - Developer Advocate and Technical Advisor"
                     fill
                     style={{
                       objectFit: 'cover',
-                      objectPosition: 'center',
+                      objectPosition: 'center top',
                     }}
                     priority
                   />
                 </Box>
                 <Box
-                  className="quote-box"
                   component={motion.div}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.2 }}
                   sx={{
                     position: 'absolute',
-                    bottom: -30,
+                    bottom: -20,
                     left: '50%',
                     transform: 'translateX(-50%)',
                     width: '90%',
-                    p: 3,
+                    py: 2,
+                    px: 3,
                     backgroundColor: isDark
                       ? 'rgba(3, 7, 18, 0.85)'
                       : 'rgba(255, 255, 255, 0.9)',
@@ -645,49 +649,63 @@ export default function Home() {
                     border: `1px solid ${isDark ? 'rgba(16, 185, 129, 0.15)' : 'rgba(16, 185, 129, 0.1)'}`,
                     textAlign: 'center',
                     zIndex: 2,
-                    transition: 'all 0.3s ease',
-                    '&:hover': {
-                      backgroundColor: isDark
-                        ? 'rgba(3, 7, 18, 0.9)'
-                        : 'rgba(255, 255, 255, 0.95)',
-                      transform: 'translateX(-50%) translateY(-5px)',
-                      borderColor: isDark ? 'rgba(0, 237, 100, 0.25)' : 'rgba(16, 185, 129, 0.2)',
-                    },
                   }}
                 >
                   <Typography
-                    variant="body1"
+                    variant="overline"
                     sx={{
-                      color: isDark ? 'rgba(226, 232, 240, 0.9)' : theme.palette.text.primary,
-                      fontWeight: 500,
-                      fontSize: '1.05rem',
-                      lineHeight: 1.6,
-                      fontStyle: 'italic',
-                      position: 'relative',
-                      '&::before': {
-                        content: '"\\201C"',
-                        position: 'absolute',
-                        top: -20,
-                        left: -10,
-                        fontSize: '3rem',
-                        color: isDark ? 'rgba(0, 237, 100, 0.3)' : theme.palette.primary.main,
-                        fontFamily: 'serif',
-                        lineHeight: 1,
-                      },
-                      '&::after': {
-                        content: '"\\201D"',
-                        position: 'absolute',
-                        bottom: -40,
-                        right: -10,
-                        fontSize: '3rem',
-                        color: isDark ? 'rgba(0, 237, 100, 0.3)' : theme.palette.primary.main,
-                        fontFamily: 'serif',
-                        lineHeight: 1,
-                      },
+                      color: isDark ? 'rgba(226, 232, 240, 0.5)' : theme.palette.text.secondary,
+                      fontSize: '0.65rem',
+                      letterSpacing: 2,
+                      mb: 1.5,
+                      display: 'block',
                     }}
                   >
-                    Empowering developers to build the future of technology
+                    Previously at &amp; Featured by
                   </Typography>
+                  <Stack
+                    direction="row"
+                    spacing={4}
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    <Box
+                      component="img"
+                      src="/images/mongodb.svg"
+                      alt="MongoDB"
+                      sx={{
+                        height: 22,
+                        opacity: isDark ? 0.6 : 0.5,
+                        filter: isDark ? 'brightness(0) invert(1)' : 'none',
+                        transition: 'opacity 0.2s ease',
+                        '&:hover': { opacity: 1 },
+                      }}
+                    />
+                    <Typography
+                      sx={{
+                        fontWeight: 700,
+                        fontSize: '1rem',
+                        letterSpacing: 1,
+                        color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)',
+                        transition: 'color 0.2s ease',
+                        '&:hover': { color: isDark ? 'rgba(255,255,255,0.85)' : 'rgba(0,0,0,0.7)' },
+                      }}
+                    >
+                      AWS
+                    </Typography>
+                    <Typography
+                      sx={{
+                        fontWeight: 700,
+                        fontSize: '1rem',
+                        letterSpacing: 0.5,
+                        color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)',
+                        transition: 'color 0.2s ease',
+                        '&:hover': { color: isDark ? 'rgba(255,255,255,0.85)' : 'rgba(0,0,0,0.7)' },
+                      }}
+                    >
+                      Google
+                    </Typography>
+                  </Stack>
                 </Box>
               </MotionBox>
             </Grid>
