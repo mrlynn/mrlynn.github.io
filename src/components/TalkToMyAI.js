@@ -45,7 +45,11 @@ const LLM_TARGETS = [
 
 const WELCOME_MESSAGE = {
   role: 'assistant',
-  content: `Hey! I'm an AI assistant that knows about **Michael Lynn** — his career, projects, and technical expertise. What would you like to know?`,
+  content: `Hey! I'm an AI trained on **Michael Lynn**'s ${personalInfo.stats.yearsExperience} years in tech — from Wall Street infrastructure to **MongoDB** developer advocacy.
+
+I can tell you about his **${personalInfo.projects.length}+ projects** (like [vai](https://vaicli.com) and [MongoDB-RAG](https://mongodb-rag.com)), **${personalInfo.stats.techTalks} talks**, podcasts, and deep expertise in **Atlas Vector Search**, **RAG**, and **AI/ML**.
+
+Pick a question below or ask your own!`,
 };
 
 async function copyToClipboard(text) {
@@ -488,7 +492,7 @@ function ChatTab({ isDark, theme }) {
         {/* Suggestion chips below welcome message */}
         {showSuggestions && (
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, justifyContent: 'center', mt: 1, mb: 2 }}>
-            {personalInfo.suggestedQuestions.slice(0, 4).map((q) => (
+            {personalInfo.suggestedQuestions.map((q) => (
               <Chip
                 key={q}
                 label={q}
@@ -623,7 +627,7 @@ function ChatTab({ isDark, theme }) {
 export default function TalkToMyAI({ variant = 'full' }) {
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState(1); // Default to Chat — the impressive part
 
   // Teaser variant for homepage
   if (variant === 'teaser') {
