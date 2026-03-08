@@ -19,6 +19,7 @@ import {
   ListItemText,
   Divider,
   Fade,
+  Typography,
 } from '@mui/material';
 import {
   Home as HomeIcon,
@@ -37,6 +38,7 @@ import {
   Instagram as InstagramIcon,
   Build as BuildIcon,
   Close as CloseIcon,
+  SmartToy as AskAIIcon,
 } from '@mui/icons-material';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTheme as useCustomTheme } from '../theme/ThemeContext';
@@ -86,6 +88,7 @@ const NavigationImproved = () => {
     { text: 'Art', icon: <PaletteIcon />, path: '/art' },
     { text: 'Social', icon: <InstagramIcon />, path: '/social' },
     { text: 'Resume', icon: <ArticleIcon />, path: '/resume' },
+    { text: 'Ask AI', icon: <AskAIIcon />, path: '/ask-ai' },
     { text: 'Contact', icon: <ContactIcon />, path: '/contact' }
   ];
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { Box, Container, Typography, Button, Grid, Paper, Stack, useTheme, IconButton } from '@mui/material';
-import { GitHub as GitHubIcon, LinkedIn as LinkedInIcon, BookOutlined as BookOutlinedIcon, Code as CodeIcon, Terminal as TerminalIcon, Cloud as CloudIcon, ArrowDownward as ArrowDownwardIcon, ArrowForward as ArrowForwardIcon, CalendarToday as CalendarIcon } from '@mui/icons-material';
+import { GitHub as GitHubIcon, LinkedIn as LinkedInIcon, BookOutlined as BookOutlinedIcon, Code as CodeIcon, Terminal as TerminalIcon, Cloud as CloudIcon, ArrowDownward as ArrowDownwardIcon, ArrowForward as ArrowForwardIcon, CalendarToday as CalendarIcon, AutoAwesome as AutoAwesomeIcon } from '@mui/icons-material';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import ProjectsSection from '../components/ProjectsSection';
@@ -10,6 +10,7 @@ import GitHubActivity from '../components/GitHubActivity';
 import Timeline from '../components/Timeline';
 import Certifications from '../components/Certifications';
 import CalendarBooking from '../components/CalendarBooking';
+import TalkToMyAI from '../components/TalkToMyAI';
 import { projects } from '../data/projects';
 import { timelineEvents } from '../data/timeline';
 import Image from 'next/image';
@@ -469,10 +470,10 @@ export default function Home() {
                   <Button
                     variant="contained"
                     size="large"
-                    endIcon={<ArrowForwardIcon />}
-                    href={latestPost ? `/blog/${latestPost.slug}` : '/blog'}
+                    endIcon={<AutoAwesomeIcon />}
+                    href="/ask-ai"
                     sx={{
-                      background: theme.palette.background.gradient,
+                      background: 'linear-gradient(135deg, #10b981, #06b6d4)',
                       color: '#fff',
                       px: 4,
                       py: 1.5,
@@ -480,12 +481,41 @@ export default function Home() {
                       borderRadius: '12px',
                       boxShadow: 'none',
                       '&:hover': {
-                        background: theme.palette.background.gradient,
+                        background: 'linear-gradient(135deg, #059669, #0891b2)',
                         filter: 'brightness(1.15)',
                         transform: 'translateY(-2px)',
                         boxShadow: isDark
                           ? '0 8px 24px rgba(16, 185, 129, 0.3), 0 0 8px rgba(0, 237, 100, 0.2)'
                           : '0 8px 24px rgba(16, 185, 129, 0.25)',
+                      },
+                      transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+                    }}
+                  >
+                    Ask My AI
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    size="large"
+                    endIcon={<ArrowForwardIcon />}
+                    href={latestPost ? `/blog/${latestPost.slug}` : '/blog'}
+                    sx={{
+                      borderColor: isDark ? 'rgba(16, 185, 129, 0.3)' : theme.palette.border.default,
+                      borderWidth: '1.5px',
+                      color: isDark ? '#e2e8f0' : theme.palette.text.primary,
+                      px: 4,
+                      py: 1.5,
+                      fontWeight: 600,
+                      borderRadius: '12px',
+                      '&:hover': {
+                        borderWidth: '1.5px',
+                        borderColor: theme.palette.primary.main,
+                        backgroundColor: isDark
+                          ? 'rgba(16, 185, 129, 0.08)'
+                          : 'rgba(16, 185, 129, 0.04)',
+                        transform: 'translateY(-2px)',
+                        boxShadow: isDark
+                          ? '0 4px 16px rgba(16, 185, 129, 0.15)'
+                          : theme.shadows[4],
                       },
                       transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
                     }}
@@ -864,6 +894,22 @@ export default function Home() {
 
       {/* Certifications Section */}
       <Certifications />
+
+      {/* Ask AI Teaser Section */}
+      <Box
+        sx={{
+          py: { xs: 8, md: 10 },
+          background: isDark
+            ? 'rgba(6, 182, 212, 0.02)'
+            : 'linear-gradient(180deg, rgba(6, 182, 212, 0.02) 0%, rgba(16, 185, 129, 0.04) 100%)',
+          borderTop: `1px solid ${isDark ? 'rgba(16, 185, 129, 0.08)' : 'rgba(16, 185, 129, 0.06)'}`,
+          borderBottom: `1px solid ${isDark ? 'rgba(16, 185, 129, 0.08)' : 'rgba(16, 185, 129, 0.06)'}`,
+        }}
+      >
+        <Container maxWidth="sm">
+          <TalkToMyAI variant="teaser" />
+        </Container>
+      </Box>
 
       {/* Calendar Booking Section */}
       <Box
