@@ -1,0 +1,463 @@
+---
+title: "Asymmetric Embeddings: Building a Personal Brand RAG Pipeline with Voyage 4 + Claude"
+description: "A practical guide to asymmetric retrieval: embed with the best model, query with a lighter one — and learn three different ways to get your docs into MongoDB Atlas."
+date: "2026-03-09"
+author: "Michael Lynn"
+image: "/images/blog/rag-pipeline.png"
+tags: ["RAG", "Voyage AI", "MongoDB", "Atlas Vector Search", "Claude", "Embeddings", "AI", "MCP", "VAI"]
+---
+
+## The Idea That Started on TikTok
+
+Someone on TikTok suggested adding a prompt to your personal brand site that visitors could paste into an AI — instead of a static bio, let people have a conversation with an AI that knows you. It sounded clever. Then it got interesting.
+
+What if the site didn't just hand you a prompt to copy? What if it had its own AI — one trained on your actual writing, your actual work — embedded directly on the page? That's the project. And it turns out it's a perfect vehicle for exploring one of the most underappreciated ideas in modern AI: **asymmetric embeddings**.
+
+> 🎯 **The thesis:** You can embed your knowledge base with `voyage-4-large` for maximum retrieval quality, then query it at runtime with a lighter model like `voyage-4-lite` — and because the entire Voyage 4 family shares a single embedding space, it just works. This isn't a workaround. It's the intended design, and it's industry-first.
+
+There's also a second thesis hiding inside this project: there are multiple valid ways to interact with Voyage AI, from raw Python SDK calls, to the REST API directly, to a high-level tool abstraction called **VAI**. Understanding all three makes you a better systems thinker, not just a better copier-paster.
+
+## Why Asymmetric Embeddings Matter
+
+Most discussions about RAG treat the embedding model as a single choice: pick one, embed everything with it, query with it. The Voyage 4 model family was explicitly designed to break that assumption. All four models — `voyage-4-large`, `voyage-4`, `voyage-4-lite`, and the open-weight `voyage-4-nano` — produce compatible embeddings in a shared space. You can mix and match freely.
+
+Here's what that unlocks in practice:
+
+| Scenario | Symmetric (one model) | Asymmetric (large docs, lite queries) | Winner |
+|---|---|---|---|
+| **Ingestion cost** (10k chunks) | $$$ large model × 10k | $$$ large model × 10k once | Tied |
+| **Query cost** (live users) | $$$ large per query | $ lite per query | **Asymmetric** |
+| **Retrieval quality** | Good | Best-of-both: large doc reps + fast queries | **Asymmetric** |
+| **Re-index cost** | High if model changes | Zero — models share the same space | **Asymmetric** |
+| **Flexibility** | Locked in | Swap query model any time, no re-index | **Asymmetric** |
+
+### The Voyage 4 Family
+
+| Model | Best for | Pricing |
+|---|---|---|
+| `voyage-4-large` | Document ingestion — max retrieval quality, MoE architecture | $0.12/M tokens |
+| `voyage-4` | Balanced quality/cost for docs or queries | $0.06/M tokens |
+| `voyage-4-lite` | High-volume query embedding at runtime | $0.02/M tokens |
+| `voyage-4-nano` | Local dev and prototyping — open-weight, free on HuggingFace | Free |
+
+All four share the same **1024-dimensional embedding space**. A vector from `voyage-4-large` and a vector from `voyage-4-lite` are directly comparable. That's the whole game.
+
+> **Real cost check:** Running `vai_estimate` on 500 docs with 1,000 queries/month over 12 months: ingestion with `voyage-4-large` costs ~$0.02. Queries with `voyage-4-lite` run ~$0.01/month. Total 12-month embedding cost: **under $0.20**. At that price, the only reason not to use the best model for ingestion is impatience.
+
+## The Architecture
+
+**Stack:** Next.js + MUI · MongoDB Atlas Vector Search · `voyage-4-large` (ingestion) · `voyage-4-lite` (query) · Claude Sonnet (generation) · Node.js ingestion pipeline (local)
+
+## Three Ways to Ingest: A Teaching Moment
+
+Before we get to the web app, let's talk about how documents actually get into your vector store — because this is where most tutorials skip the interesting part.
+
+There are three levels of abstraction for working with Voyage AI, and understanding all three makes you a better developer:
+
+```
+Level 1: Python SDK     — voyageai.Client, direct control, explicit batching
+Level 2: REST API       — raw HTTP, portable to any language or runtime
+Level 3: VAI            — single function call, chunking + embedding + storage abstracted away
+```
+
+Each is the right choice in different situations. Let's build the same ingestion pipeline all three ways.
+
+### Level 1: Python SDK (`voyageai` package)
+
+This is the most explicit approach. You control chunking, batching, hashing, and MongoDB writes yourself. It's the most code, but also the most educational — you see exactly what's happening at each step.
+
+```bash
+pip install voyageai pymongo
+```
+
+```python
+# ingest_sdk.py — maximum control, full visibility
+import os, hashlib
+from pathlib import Path
+import voyageai
+from pymongo import MongoClient
+
+# Singleton clients — initialise once, reuse across calls
+voyage = voyageai.Client(api_key=os.environ["VOYAGE_API_KEY"])
+mongo = MongoClient(os.environ["MONGODB_URI"])
+collection = mongo["personal_brand"]["rag_documents"]
+
+def chunk_markdown(text: str, chunk_size=400, overlap=80) -> list[str]:
+    """
+    Sliding window chunker with overlap for context continuity.
+
+    Why overlap? If a key sentence falls at a chunk boundary, overlap ensures
+    it appears in full in at least one chunk — preserving context for the
+    embedding model and avoiding meaning being split across retrieval units.
+    """
+    words = text.split()
+    chunks = []
+    for i in range(0, len(words), chunk_size - overlap):
+        chunk = " ".join(words[i:i + chunk_size])
+        if len(chunk.strip()) > 50:  # discard near-empty tail chunks
+            chunks.append(chunk)
+    return chunks
+
+def ingest_file(filepath: Path) -> int:
+    text = filepath.read_text()
+    content_hash = hashlib.md5(text.encode()).hexdigest()
+
+    # Content-hash deduplication: skip unchanged files entirely.
+    # This makes re-running the script safe and cheap — use it in a cron
+    # job or git hook without worrying about re-embedding costs.
+    existing = collection.find_one({
+        "source.filePath": str(filepath),
+        "contentHash": content_hash
+    })
+    if existing:
+        print(f"  Skipping (unchanged): {filepath.name}")
+        return 0
+
+    chunks = chunk_markdown(text)
+    print(f"  Embedding {len(chunks)} chunks from {filepath.name}...")
+
+    # voyage-4-large + input_type="document":
+    # The SDK prepends an internal retrieval prompt before encoding.
+    # This produces vectors optimised for being *found*, not for finding.
+    # Never skip input_type — it meaningfully changes the vector geometry.
+    result = voyage.embed(
+        chunks,
+        model="voyage-4-large",
+        input_type="document"
+    )
+
+    docs = [
+        {
+            "content": chunk,
+            "contentHash": hashlib.md5(chunk.encode()).hexdigest(),
+            "embedding": embedding,
+            "source": {
+                "filePath": str(filepath),
+                "title": filepath.stem.replace("-", " ").title(),
+                "category": filepath.parent.name,
+            },
+            "chunk": {"index": i, "totalChunks": len(chunks)}
+        }
+        for i, (chunk, embedding) in enumerate(zip(chunks, result.embeddings))
+    ]
+
+    # Delete old chunks for this file, insert fresh — simple upsert pattern
+    collection.delete_many({"source.filePath": str(filepath)})
+    if docs:
+        collection.insert_many(docs)
+    return len(docs)
+
+total = sum(ingest_file(f) for f in Path("./docs").rglob("*.md"))
+print(f"\nDone. Ingested {total} chunks.")
+```
+
+**What you learn here:**
+
+- `input_type="document"` vs `"query"` produces meaningfully different vectors. The SDK prepends a different internal prompt for each. Using the wrong one degrades retrieval quality measurably.
+- Content hashing makes ingestion **idempotent**. Run it in CI, in a cron job, or on every git commit to `./docs` without paying twice for unchanged files.
+- `voyage.embed()` handles API batching internally. You don't need to split 10,000 chunks manually — the SDK does it in groups of 128.
+
+### Level 2: REST API (direct HTTP)
+
+The Python SDK is a thin wrapper around the Voyage REST API. Understanding the raw API matters because:
+
+- You might be ingesting from Node.js, a GitHub Action, or a serverless function where you can't install packages
+- You want to understand what the SDK is actually doing beneath the surface
+- You need the portability of a plain HTTP call
+
+```python
+# ingest_rest.py — same logic, raw HTTP instead of SDK
+import os, hashlib, json
+from pathlib import Path
+import urllib.request
+from pymongo import MongoClient
+
+VOYAGE_API = "https://api.voyageai.com/v1/embeddings"
+VOYAGE_KEY = os.environ["VOYAGE_API_KEY"]
+
+def embed_documents(texts: list[str]) -> list[list[float]]:
+    """
+    Direct REST call to Voyage AI embeddings endpoint.
+    This is exactly what voyageai.Client.embed() calls under the hood.
+    """
+    payload = json.dumps({
+        "input": texts,
+        "model": "voyage-4-large",
+        "input_type": "document"
+    }).encode()
+
+    req = urllib.request.Request(
+        VOYAGE_API,
+        data=payload,
+        headers={
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {VOYAGE_KEY}"
+        }
+    )
+    with urllib.request.urlopen(req) as response:
+        data = json.loads(response.read())
+
+    # Sort by index — the API doesn't guarantee order
+    return [item["embedding"] for item in sorted(data["data"], key=lambda x: x["index"])]
+```
+
+The REST API response shape is worth knowing cold:
+
+```json
+{
+  "object": "list",
+  "data": [
+    { "object": "embedding", "index": 0, "embedding": [0.021, -0.014, "..."] }
+  ],
+  "model": "voyage-4-large",
+  "usage": { "total_tokens": 142 }
+}
+```
+
+The `usage.total_tokens` field is your billing meter. Log it every call. When you build a cost dashboard later — and you will — you'll want this data from day one.
+
+### Level 3: VAI — One Function Call to Rule Them All
+
+VAI is a higher-level abstraction built as an MCP (Model Context Protocol) tool. It wraps the entire ingest pipeline — chunking, embedding, storing to MongoDB — into a single declarative call. Think of it as *infrastructure-as-a-tool*.
+
+Rather than 60 lines of Python, you express your intent:
+
+```python
+vai_ingest(
+  text="...",
+  model="voyage-4-large",
+  chunkStrategy="markdown",
+  chunkSize=512,
+  collection="rag_documents",
+  source="about.md",
+  metadata={ "category": "bio" }
+)
+```
+
+VAI handles:
+
+- Splitting the text using the strategy you specify (markdown, recursive, sentence, paragraph, or fixed)
+- Calling Voyage AI to embed each chunk with `input_type="document"`
+- Writing all chunks, embeddings, and metadata to your MongoDB collection
+- Returning chunk count and token usage
+
+**The full VAI toolkit for RAG work:**
+
+| Tool | What it does |
+|---|---|
+| `vai_ingest` | Chunk + embed + store in one call |
+| `vai_embed` | Get a raw embedding vector back |
+| `vai_query` | Embed a query + vector search + rerank, all at once |
+| `vai_estimate` | Project costs before you commit (e.g. 500 docs × 1,000 queries/month) |
+| `vai_models` | Live model metadata, dimensions, and current pricing |
+
+**When to use VAI vs the SDK vs REST:**
+
+| Situation | Use |
+|---|---|
+| Prototyping quickly, don't want boilerplate | VAI |
+| Working inside an AI assistant or Claude context | VAI |
+| You need custom chunking logic or metadata schemas | Python SDK |
+| Ingesting from Node, CI, or a serverless runtime | REST API |
+| You want to understand what's happening under the hood | SDK or REST |
+| Cost projection before starting a large ingestion job | `vai_estimate` |
+
+> **The mental model:** VAI is the power drill, the SDK is the hand drill, the REST API is the screwdriver. All three drive the same screw. Your job is knowing when to reach for which one.
+
+## Phase 2: Atlas Vector Search Index
+
+After ingestion via any of the three methods above, create the vector search index in MongoDB Atlas. The `numDimensions` must match your model's output dimension — all Voyage 4 models default to 1024.
+
+```json
+{
+  "name": "personal_brand_vector",
+  "type": "vectorSearch",
+  "definition": {
+    "fields": [
+      {
+        "type": "vector",
+        "path": "embedding",
+        "numDimensions": 1024,
+        "similarity": "cosine"
+      },
+      {
+        "type": "filter",
+        "path": "source.category"
+      }
+    ]
+  }
+}
+```
+
+**Why cosine?** Voyage AI normalises its output vectors. On normalised vectors, cosine similarity is equivalent to dot product — fast, accurate, and the right default for semantic retrieval.
+
+## Phase 3: The Query Pipeline (Next.js API Route)
+
+At query time, the visitor's question is embedded with `voyage-4-lite` — lighter and cheaper per request, but producing vectors in the same 1024-dimensional space as the `voyage-4-large` document embeddings. This is the asymmetry paying off.
+
+```typescript
+// pages/api/chat.ts
+import { NextApiRequest, NextApiResponse } from 'next';
+import Anthropic from '@anthropic-ai/sdk';
+import { connectToDatabase } from '@/lib/db/connection';
+import { RagDocumentModel } from '@/lib/db/models/RagDocument';
+
+const VOYAGE_API = "https://api.voyageai.com/v1/embeddings";
+
+async function embedQuery(query: string): Promise<number[]> {
+  // voyage-4-lite: $0.02/M tokens vs voyage-4-large at $0.12/M
+  // Same embedding space — vectors are directly comparable with our ingested docs
+  const res = await fetch(VOYAGE_API, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${process.env.VOYAGE_API_KEY}`
+    },
+    body: JSON.stringify({
+      input: [query],
+      model: "voyage-4-lite",
+      input_type: "query"   // Prepends a different internal prompt — optimised for searching
+    })
+  });
+  const data = await res.json();
+  return data.data[0].embedding;
+}
+
+async function retrieveContext(queryEmbedding: number[], topK = 5) {
+  await connectToDatabase();
+
+  const results = await RagDocumentModel.aggregate([
+    {
+      $vectorSearch: {
+        index: "personal_brand_vector",
+        path: "embedding",
+        queryVector: queryEmbedding,
+        numCandidates: topK * 20,  // over-fetch, then filter by score threshold
+        limit: topK,
+      }
+    },
+    {
+      $project: {
+        content: 1,
+        "source.title": 1,
+        "source.category": 1,
+        score: { $meta: "vectorSearchScore" }
+      }
+    }
+  ]);
+
+  return results.filter(r => r.score >= 0.72);
+}
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const { message, history = [] } = req.body;
+
+  // Asymmetric retrieval in one place:
+  // Documents were embedded once with voyage-4-large (rich, high quality)
+  // Queries are embedded per-request with voyage-4-lite (fast, cheap)
+  // Compatible because they share the Voyage 4 embedding space
+  const queryEmbedding = await embedQuery(message);
+  const context = await retrieveContext(queryEmbedding);
+
+  const contextText = context
+    .map((c, i) => `[Context ${i+1} - ${c.source.title}]\n${c.content}`)
+    .join("\n\n---\n\n");
+
+  const anthropic = new Anthropic();
+  const stream = await anthropic.messages.stream({
+    model: "claude-sonnet-4-20250514",
+    max_tokens: 1024,
+    system: `You are an AI assistant that knows [YOUR NAME] deeply. Use the retrieved context to answer questions about their work, background, and thinking. Be conversational, warm, and specific. If context doesn't cover the question, say so rather than guessing.
+
+Retrieved context: ${contextText}`,
+    messages: [
+      ...history,
+      { role: "user", content: message }
+    ]
+  });
+
+  res.setHeader('Content-Type', 'text/event-stream');
+  for await (const chunk of stream) {
+    if (chunk.type === 'content_block_delta') {
+      res.write(`data: ${JSON.stringify({ text: chunk.delta.text })}\n\n`);
+    }
+  }
+  res.end();
+}
+```
+
+## The Asymmetry, Explained Simply
+
+🧠 When `voyage-4-large` embeds a chunk of your writing, it produces a 1024-dimensional vector. When `voyage-4-lite` embeds a user's question at runtime, it also produces a 1024-dimensional vector — *in the same geometric space*. Cosine similarity between those two vectors is meaningful and accurate. The retrieval works not *despite* the model size difference, but *because* the Voyage 4 family was trained from the ground up with a shared embedding geometry.
+
+- **Document embedding** is a one-time offline cost → use `voyage-4-large`, pay for quality once.
+- **Query embedding** is an online per-request cost → use `voyage-4-lite`, pay $0.02/M tokens instead of $0.12/M.
+
+You get the rich document representations of the large model with the serving economics of the small one.
+
+> **Local dev path:** Use `voyage-4-nano` (open-weight, free on HuggingFace) to build and test your entire pipeline at zero API cost. When you're ready for production, change one string — `"voyage-4-nano"` → `"voyage-4-large"` — and re-run ingestion. Same embedding space. Same Atlas index. No other changes needed.
+
+## What to Put in Your Knowledge Base
+
+| Folder | What goes here |
+|---|---|
+| `./docs/bio/` | `about.md`, `background.md`, `values.md` — the narrative version of who you are |
+| `./docs/work/` | One `.md` per project: what you built, why, what you learned, outcomes |
+| `./docs/writing/` | Blog posts, essays, newsletters — how you think, not just what you've done |
+| `./docs/talks/` | Talk abstracts, keynote notes, podcast appearances |
+| `./docs/faq/` | Common questions you get: hiring, consulting, tools, process |
+| `./docs/contact/` | How to work with you, what you're open to, rates if public |
+
+The goal is not completeness — it's **intentionality**. Write for the questions you want to answer. The AI will be exactly as good as the documents you give it.
+
+## Real-World Cost Breakdown
+
+Figures from `vai_estimate`: 500 docs, 1,000 queries/month, 12-month horizon.
+
+| Operation | Model | Cost | Frequency |
+|---|---|---|---|
+| Embed 500 doc chunks | `voyage-4-large` | ~$0.02 | Once (or on change) |
+| Re-embed a changed file | `voyage-4-large` | ~$0.0001 | As needed |
+| Query embedding | `voyage-4-lite` | ~$0.01/month | Per visitor message |
+| Claude generation | `claude-sonnet-4` | ~$0.003/response | Per visitor message |
+| **Total 12 months** | | **~$0.14 embedding + ~$0.36 generation** | |
+
+100 visitor conversations per month costs roughly **$1–2 all-in**. The ingestion is essentially free at personal-brand scale.
+
+## What This Demonstrates (The Real Teaching Moment)
+
+The personal brand site is almost incidental. What this project actually teaches:
+
+### About RAG architecture
+
+- Asymmetric embedding is a legitimate pattern, not a hack — Voyage 4 was designed for it
+- `input_type="document"` vs `"query"` matters: different internal prompts produce meaningfully different vectors, and mixing them intentionally is the whole point
+- MongoDB Atlas Vector Search makes production RAG accessible without a dedicated vector database
+- Shared embedding spaces eliminate re-indexing cost as you evolve your infrastructure
+
+### About API interaction patterns
+
+- The Python SDK, the REST API, and VAI are three layers of the same abstraction stack
+- Understanding all three makes you adaptable — not every environment can run Python packages
+- Content hashing + idempotent writes is the correct pattern for any ingestion pipeline
+- `usage.total_tokens` in every API response is your billing meter — log it from day one
+
+### About tooling philosophy
+
+- **VAI** is the power drill: fast, declarative, right for prototyping and AI-assisted workflows
+- **The SDK** is the hand drill: explicit, controllable, right when you need custom logic
+- **The REST API** is the screwdriver: portable, dependency-free, right for constrained environments
+- Knowing which tool to reach for — and why — is the actual skill
+
+## What to Build Next
+
+- Add a **feedback mechanism** (thumbs up/down per response) — log to MongoDB, use to improve docs
+- Track which chunks get retrieved most via **score logging** — those are your most resonant ideas
+- Add a **"sources" panel** showing which documents informed each answer
+- **Experiment:** use `vai_query` in your dev workflow to test retrieval quality before wiring up the UI — it embeds, searches, and reranks in one call
+- **Upgrade path:** swap `voyage-4-lite` to `voyage-4` on queries, compare scores in your logs — one string, zero re-indexing
+- **Cost visibility:** pipe `usage.total_tokens` from every Voyage API call into a MongoDB collection, build a lightweight dashboard on top
+
+---
+
+*Built with [Voyage AI](https://voyageai.com) (a MongoDB company) · [MongoDB Atlas Vector Search](https://www.mongodb.com/atlas/search) · [Anthropic Claude](https://anthropic.com) · [Next.js](https://nextjs.org) · [VAI MCP](https://github.com/mongodb-developer/vai)*

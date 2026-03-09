@@ -45,7 +45,7 @@ const LLM_TARGETS = [
 
 const WELCOME_MESSAGE = {
   role: 'assistant',
-  content: `Hey! I'm an AI trained on **Michael Lynn**'s ${personalInfo.stats.yearsExperience} years in tech — from Wall Street infrastructure to **MongoDB** developer advocacy.
+  content: `Hey! I'm an AI grounded in **Michael Lynn**'s actual content — blog posts, project docs, talk abstracts, and more — retrieved in real-time via **MongoDB Atlas Vector Search** with **Voyage AI** embeddings.
 
 I can tell you about his **${personalInfo.projects.length}+ projects** (like [vai](https://vaicli.com) and [MongoDB-RAG](https://mongodb-rag.com)), **${personalInfo.stats.techTalks} talks**, podcasts, and deep expertise in **Atlas Vector Search**, **RAG**, and **AI/ML**.
 
@@ -800,7 +800,7 @@ export default function TalkToMyAI({ variant = 'full' }) {
           fontFamily: '"JetBrains Mono", monospace',
         }}
       >
-        Prompt-powered &middot; No data stored &middot; Works with any AI assistant
+        RAG-powered &middot; Voyage AI + Atlas Vector Search + Claude &middot; No data stored
       </Typography>
     </MotionBox>
   );
