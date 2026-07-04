@@ -1,0 +1,165 @@
+---
+title: "The Software Factory Is Here - and It Runs on Cursor"
+description: "Everyone's talking about an AI-driven SDLC 'software factory.' Here's what that actually looks like now that Cursor has cloud agents, Bugbot, and native intake from Jira, Linear, Slack, and PagerDuty - plus the exact steps to wire each stage up yourself."
+date: "2026-07-04T15:00:00"
+author: "Michael Lynn"
+image: "/images/blog/software-factory/cover.png"
+tags: ["cursor", "ai", "sdlc", "software-factory", "cloud-agents", "bugbot", "workflow"]
+---
+
+"Software factory" has been a buzzword for as long as I've been writing code. It usually meant a pile of CI scripts, a wiki page nobody read, and a promise that this time the pipeline would run itself. It never quite did. There was always a human in the middle - copying a ticket into a branch name, translating a Slack thread into an actual change, babysitting the deploy.
+
+What's different now isn't the metaphor. It's that the human-in-the-middle steps are the ones getting automated. Not the compiling, not the deploying - we solved those a decade ago - but the *translation* work: turning a ticket into a scoped change, a bug report into a fix, a review comment into a follow-up commit. That's the part I always did by hand. That's the part Cursor has quietly closed the loop on over the last several releases.
+
+I want to be concrete about what a software factory actually is now, because the term is doing a lot of hand-waving. So here's the honest version, mapped to features that shipped - not a roadmap. And because a factory you can't build is just a diagram, each stage below ends with **Set it up** - the actual steps to wire that piece into your own repo.
+
+## What a software factory actually is
+
+Strip away the marketing and a factory is four things running in a loop:
+
+- **Intake** - work enters the system where it already lives.
+- **Build** - the work becomes a scoped, testable change.
+- **Inspection** - the change is reviewed and verified before it ships.
+- **Shipping** - it goes to production, and what you learn feeds back into intake.
+
+The classic CI/CD pipeline only ever automated the last two. Intake and build stayed manual because they required *judgment* - reading a ticket, understanding intent, writing the code. The bet everyone is making right now is that agents are good enough to take the first draft of that judgment, with humans reviewing the output instead of producing it.
+
+Here's the loop, and then I'll walk each stage.
+
+![The software factory loop: Intake (Jira, Linear, Slack) feeds Build (cloud agents plus rules), which feeds Inspection (Bugbot, CI, human), which feeds Ship (PR to production) - and production signals reopen intake.](/images/blog/software-factory/loop-diagram.png)
+
+## Intake: work enters where it already lives
+
+The thing that always broke the "factory" was intake. A ticket in Jira and a branch in GitHub lived in two different worlds, and I was the bridge. I'd read the ticket, decide what it meant, and start typing.
+
+That bridge is now native. [Cursor is available directly in Jira](https://www.atlassian.com/blog/company-news/cursor-in-jira): you assign a work item to Cursor or `@Cursor` in a comment, and it kicks off a cloud agent that uses the ticket title, description, comments, and your repo settings to scope the task. When it finishes, the ticket itself shows a completion update with a link to the pull request. The [Linear integration](https://cursor.com/changelog) does the same from an issue, and the [Slack integration](https://cursor.com/changelog/1-1) lets you `@Cursor` in a thread - it reads the *entire* thread for context before it starts, so "the bug we talked about above" actually resolves to something.
+
+The pattern underneath all three is the same: **the trigger is an event in a tool your team already uses**, not a prompt you type into an editor. A new Linear issue, a Slack message, a merged PR, even a [PagerDuty incident](https://cursor.com/blog/automations) can start an agent. Intake stops being a person and starts being a webhook.
+
+![Intake funnel: a Jira ticket, Linear issue, Slack thread, or PagerDuty alert all converge on an @Cursor agent that reads the full context and scopes the task, then opens a pull request with a branch and preview deploy.](/images/blog/software-factory/intake-diagram.png)
+
+**Set it up.** This is the fastest win, so start here:
+
+1. Open the [Cursor dashboard](https://cursor.com/dashboard) and go to **Integrations**.
+2. Click **Connect** next to the tool your work actually lives in - Slack, Linear, or Jira. You'll be bounced through an OAuth screen and then back to Cursor.
+3. Finish the handshake: connect GitHub if you haven't, and pick a **default repository** for that integration. This is the repo agents will branch from.
+4. Test it end to end. In a real ticket or Slack thread, write `@Cursor` and one clear instruction - *"fix the null check in the checkout total and add a test."* Within a minute you should see it acknowledge, then a link to a PR appear back on the ticket.
+
+That's the whole intake layer. You didn't write a webhook - you clicked "Connect" and started addressing an agent the way you'd address a teammate.
+
+## Build: the agent drafts the scoped change
+
+Once work is in, the [cloud agent](https://cursor.com/cloud) does what I used to do at 11pm: clone, branch, write the code, run the tests, open the PR. It runs in an isolated cloud VM with a real terminal, so it isn't tying up my machine, and multiple agents can work different tickets in parallel. The output isn't a suggestion in a chat window - it's a branch pushed to GitHub with a PR opened against it.
+
+Two things keep this from being chaos, and they're the parts teams skip:
+
+- **`.cursor/rules/*.mdc`** encode your repo's conventions - which files are managed and off-limits, that `main` is protected, how tests are structured. The agent reads them the way a new hire reads the onboarding doc, except it actually reads them.
+- **[MCP](https://cursor.com/changelog) servers** connect the agent to your real systems - the database, the ticketing system, internal docs - so the change lands correct against reality the first time instead of hallucinating an API that doesn't exist.
+
+Rules are the guardrails; MCP is the grounding. Without them, an agent factory produces confident, wrong diffs at scale. With them, it produces the boring, correct PR you'd have written yourself.
+
+**Set it up.** Create your first rule from inside Cursor - `Cmd/Ctrl+Shift+P` → **New Cursor Rule** - which drops an `.mdc` file into `.cursor/rules/`. Here's a starter that encodes the exact discipline the factory depends on:
+
+```md
+---
+description: "How this repo ships - agents must follow it"
+alwaysApply: true
+---
+
+- `main` is protected. Never push to it. Every change goes through a PR.
+- One PR = one logical change. Don't bundle unrelated fixes together.
+- Never edit files under `/generated` or `/vendor` - they're managed.
+- Add or update tests for the change in the *same* PR, not a follow-up.
+- Run `npm test` and `npm run lint` before opening the PR.
+```
+
+Keep an `alwaysApply` rule under ~200 words - every word rides along in every request, so treat it as a budget. Use `globs` (e.g. `"*.tsx"`) for rules that should only attach to certain files.
+
+Then give the agent its senses. Drop a `.cursor/mcp.json` in the repo root - project config wins over your global `~/.cursor/mcp.json` - and point one server at your docs and another at a real system:
+
+```json
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "./docs"]
+    },
+    "database": {
+      "command": "npx",
+      "args": ["-y", "@your-org/mcp-postgres"],
+      "env": { "DATABASE_URL": "${DATABASE_URL}" }
+    }
+  }
+}
+```
+
+Keep secrets in environment variables with `${VAR}`, never hard-coded in the file - it's committed to the repo. Now the agent can read your schema instead of guessing at it.
+
+## Inspection: the quality gate that runs on every PR
+
+This is where I've been most surprised, because inspection is the stage I trusted least to a machine. [Bugbot](https://cursor.com/changelog) reviews every pull request, and when it finds a real bug it doesn't just leave a comment - as of early 2026 it can spin up its *own* cloud agent, test a fix, and propose it directly on the PR. Cursor has cited resolution rates around 80% and more than a third of those autofix suggestions getting merged straight in. Security Bugbot does the same pass for a security lens.
+
+![Inspection gate: an open PR fans out to Bugbot plus Autofix, Security Bugbot, and CI status checks in parallel, which fan back into a human review that decides if the change is right, and only then merges to production.](/images/blog/software-factory/inspection-diagram.png)
+
+The important design choice: this all happens **on the open branch, before merge**. The review comment, the CI status check, the autofixed commit - they land on the PR while it's still a proposal. Nothing reaches `main` until the gate is green. That's exactly the discipline I [wrote about learning the hard way](/blog/i-knew-git-never-had-a-reason-to-branch) - a protected `main`, every change through a PR - except now the first reviewer isn't a tired human, it's a bot that never skips the diff.
+
+Humans still sit at the end of this stage. But the job changes from "find the bugs" to "decide if this change is right." That's a much better use of a senior engineer's afternoon.
+
+**Set it up.** Bugbot lives in the dashboard, not a config file:
+
+1. In the [Cursor dashboard](https://cursor.com/dashboard), open the **Bugbot** tab and connect your GitHub org - you'll need org-admin access to install the app.
+2. **Select the repositories** you want reviewed. Start with one.
+3. Choose a trigger: run **on every PR update**, or only when someone comments `bugbot run` (or `cursor review`) on a PR. Every-PR is the factory setting.
+4. Turn on **Autofix** and pick **Create New Branch** - it keeps the bot's proposed fix on its own branch so you review it as a diff instead of finding it already committed under you.
+
+From then on every PR - including the ones an agent opened - gets a second reader before a human ever looks at it.
+
+## Shipping - and the loop that closes itself
+
+The last mile is the part CI/CD already did well, and Cursor plugs into it rather than replacing it. The PR carries a preview deploy so you see the change running before it ships. Merge publishes production. The branch squash-merges and disappears. No one runs a deploy by hand.
+
+What makes it a *factory* rather than a very good assistant is the feedback edge. [Automations](https://cursor.com/blog/automations) let agents run on schedules or fire on events - and "an incident was declared" or "an error rate crossed a threshold" is an event. A production signal can open the next ticket, which starts the next agent, which opens the next PR. The loop closes without returning to a human keyboard for the routine cases.
+
+**Set it up.** Two pieces, and the first one isn't Cursor at all:
+
+1. **Protect `main` in GitHub first.** In your repo settings, add a branch ruleset that requires a pull request, requires status checks to pass, and blocks direct pushes and force-pushes. This is the wall the whole factory leans on - I learned [why the hard way](/blog/i-knew-git-never-had-a-reason-to-branch). Without it, an agent can push straight to production and every gate above is theater.
+2. **Wire the feedback edge** from the same **Integrations** page: point an automation at an event you already have - a merged PR, a new Linear issue, a PagerDuty incident - so a production signal can open the next ticket without anyone retyping it.
+
+Here's how the four stages map to what actually does the work:
+
+| SDLC stage | What runs it | Who's in the loop |
+| --- | --- | --- |
+| **Intake** | Cursor in Jira / Linear / Slack, event triggers | Whoever files the ticket - no engineer needed to translate it |
+| **Build** | Cloud / Background Agents, grounded by `.cursor/rules` + MCP | Agent drafts; engineer sets scope and constraints |
+| **Inspection** | Bugbot, Security Bugbot, Bugbot Autofix, CI status checks | Bots review first; human approves the final call |
+| **Shipping** | PR preview deploys, squash-merge to production | Reviewer merges; deploy is automatic |
+| **Feedback** | Automations on schedules + events (incidents, merges, alerts) | Signals reopen intake automatically |
+
+## The shortest path to your first working loop
+
+If you want to stop reading and go build it, here's the order I'd do it in - each step is worth doing even if you never do the next one:
+
+1. **Protect `main`.** GitHub branch ruleset: require a PR, require checks, block direct pushes. Ten minutes, and everything downstream depends on it.
+2. **Turn on Bugbot** for one repo, on every PR, with Autofix → Create New Branch. Now you have an automated reviewer even for the code *you* write.
+3. **Add a `.cursor/rules/*.mdc`** that says `main` is protected, one PR per logical change, and where the managed files are. This is what keeps agents in their lane.
+4. **Connect one intake source** - Slack, Linear, or Jira - and pick a default repo.
+5. **Run one real ticket through it.** `@Cursor`, one clear instruction, and watch a PR come back. Review the preview, let Bugbot weigh in, merge.
+6. **Add MCP and one automation** once the basic loop feels trustworthy - ground the agent in your real systems, then let a production event open the next ticket.
+
+Steps 1-2 are worth it on their own. Steps 3-5 are where it starts to feel like a factory. Step 6 is where it starts running without you.
+
+## The part the buzzword leaves out
+
+I'd be doing the same hand-waving I'm complaining about if I stopped there, so here's the honest boundary.
+
+A software factory is only as good as the scoping around it. The single most reliable way to break this loop is to hand an agent a vague, three-things-in-one ticket - it produces an un-mergeable mega-diff, and now a human has to untangle it, which is slower than if you'd written it yourself. Everything I learned about **one PR, one logical change** matters *more* in a factory, not less, because the factory will happily manufacture a bad batch at machine speed. The judgment moved; it didn't disappear. You spend it on intake and review now instead of on typing.
+
+And the factory doesn't run without the boring infrastructure: a genuinely protected `main`, meaningful CI, rules files that reflect how your repo actually works, MCP connections to your real systems. Skip those and you don't have a factory - you have an agent making confident guesses into your production branch. The tooling finally exists to build the assembly line. It still won't pour the foundation for you.
+
+## Where this actually leaves us
+
+The reason "software factory" felt hollow for so long is that the pipeline could build and ship, but it couldn't *decide what to build next* or *turn intent into a change* - those were the human stages, and they were the whole bottleneck. What shipped over the last several Cursor releases is exactly those two stages: intake that starts from a ticket or a thread, and a build step that produces a real, reviewable PR.
+
+I don't think this replaces engineers any more than the assembly line replaced people who make things - it moves us up a level, to designing the line and inspecting what comes off it. But for the first time the metaphor is load-bearing. The factory floor is real, the machines run themselves for the routine cases, and my job is to scope the work going in and judge the work coming out.
+
+If you've been rolling your eyes at "AI software factory" the same way I did - fair. But go set up one `@Cursor` trigger from your ticketing system, with a protected `main` and Bugbot on the other end, and watch one real ticket become one real PR without you in the middle. It's a lot harder to roll your eyes after that.
