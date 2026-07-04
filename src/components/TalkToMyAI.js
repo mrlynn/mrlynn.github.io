@@ -86,7 +86,7 @@ function TypingIndicator({ isDark }) {
             width: 8,
             height: 8,
             borderRadius: '50%',
-            backgroundColor: isDark ? 'rgba(0, 237, 100, 0.6)' : '#10b981',
+            backgroundColor: isDark ? 'rgba(232, 121, 74, 0.6)' : '#d9622b',
           }}
         />
       ))}
@@ -106,20 +106,20 @@ function MarkdownMessage({ content, isDark, theme }) {
         '& li': { mb: 0.3 },
         '& strong': { fontWeight: 600 },
         '& code': {
-          fontFamily: '"JetBrains Mono", monospace',
+          fontFamily: 'var(--font-mono), monospace',
           fontSize: '0.8rem',
           px: 0.7,
           py: 0.2,
           borderRadius: 0.5,
-          background: isDark ? 'rgba(0, 237, 100, 0.1)' : 'rgba(16, 185, 129, 0.08)',
+          background: isDark ? 'rgba(232, 121, 74, 0.1)' : 'rgba(217, 98, 43, 0.08)',
         },
         '& a': {
-          color: isDark ? '#00ED64' : '#10b981',
+          color: isDark ? '#e8794a' : '#d9622b',
           textDecoration: 'none',
           '&:hover': { textDecoration: 'underline' },
         },
         '& pre': {
-          background: isDark ? 'rgba(0, 0, 0, 0.4)' : 'rgba(16, 185, 129, 0.04)',
+          background: isDark ? 'rgba(0, 0, 0, 0.4)' : 'rgba(217, 98, 43, 0.04)',
           borderRadius: 1,
           p: 1.5,
           overflow: 'auto',
@@ -170,7 +170,7 @@ function QuickLaunchTab({ isDark, theme }) {
             startIcon={copied ? <CheckIcon /> : <ContentCopyIcon />}
             onClick={handleCopy}
             sx={{
-              color: copied ? '#10b981' : theme.palette.text.secondary,
+              color: copied ? '#d9622b' : theme.palette.text.secondary,
               textTransform: 'none',
               fontSize: '0.8rem',
             }}
@@ -184,9 +184,9 @@ function QuickLaunchTab({ isDark, theme }) {
         sx={{
           p: 2,
           borderRadius: 2,
-          background: isDark ? 'rgba(0, 0, 0, 0.4)' : 'rgba(16, 185, 129, 0.03)',
-          border: `1px solid ${isDark ? 'rgba(16, 185, 129, 0.1)' : 'rgba(16, 185, 129, 0.08)'}`,
-          fontFamily: '"JetBrains Mono", monospace',
+          background: isDark ? 'rgba(0, 0, 0, 0.4)' : 'rgba(217, 98, 43, 0.03)',
+          border: `1px solid ${isDark ? 'rgba(217, 98, 43, 0.1)' : 'rgba(217, 98, 43, 0.08)'}`,
+          fontFamily: 'var(--font-mono), monospace',
           fontSize: '0.75rem',
           color: theme.palette.text.secondary,
           lineHeight: 1.7,
@@ -195,7 +195,7 @@ function QuickLaunchTab({ isDark, theme }) {
           overflowY: 'auto',
           '&::-webkit-scrollbar': { width: 4 },
           '&::-webkit-scrollbar-thumb': {
-            background: isDark ? 'rgba(16, 185, 129, 0.3)' : 'rgba(16, 185, 129, 0.2)',
+            background: isDark ? 'rgba(217, 98, 43, 0.3)' : 'rgba(217, 98, 43, 0.2)',
             borderRadius: 4,
           },
         }}
@@ -215,9 +215,9 @@ function QuickLaunchTab({ isDark, theme }) {
               label={q}
               size="small"
               sx={{
-                background: isDark ? 'rgba(16, 185, 129, 0.08)' : 'rgba(16, 185, 129, 0.06)',
+                background: isDark ? 'rgba(217, 98, 43, 0.08)' : 'rgba(217, 98, 43, 0.06)',
                 color: theme.palette.text.secondary,
-                border: `1px solid ${isDark ? 'rgba(16, 185, 129, 0.15)' : 'rgba(16, 185, 129, 0.1)'}`,
+                border: `1px solid ${isDark ? 'rgba(217, 98, 43, 0.15)' : 'rgba(217, 98, 43, 0.1)'}`,
                 fontSize: '0.72rem',
                 cursor: 'default',
               }}
@@ -227,7 +227,7 @@ function QuickLaunchTab({ isDark, theme }) {
       </Box>
 
       {/* Compact LLM launch row */}
-      <Divider sx={{ borderColor: isDark ? 'rgba(16, 185, 129, 0.08)' : 'rgba(16, 185, 129, 0.05)', mb: 2 }} />
+      <Divider sx={{ borderColor: isDark ? 'rgba(217, 98, 43, 0.08)' : 'rgba(217, 98, 43, 0.05)', mb: 2 }} />
 
       {/* Copied confirmation */}
       {copied && (
@@ -242,11 +242,11 @@ function QuickLaunchTab({ isDark, theme }) {
             px: 1.5,
             py: 0.75,
             borderRadius: 1.5,
-            background: isDark ? 'rgba(0, 237, 100, 0.1)' : 'rgba(16, 185, 129, 0.07)',
-            border: `1px solid ${isDark ? 'rgba(0, 237, 100, 0.2)' : 'rgba(16, 185, 129, 0.15)'}`,
+            background: isDark ? 'rgba(232, 121, 74, 0.1)' : 'rgba(217, 98, 43, 0.07)',
+            border: `1px solid ${isDark ? 'rgba(232, 121, 74, 0.2)' : 'rgba(217, 98, 43, 0.15)'}`,
           }}
         >
-          <CheckIcon sx={{ fontSize: 14, color: isDark ? '#00ED64' : '#10b981' }} />
+          <CheckIcon sx={{ fontSize: 14, color: isDark ? '#e8794a' : '#d9622b' }} />
           <Typography sx={{ fontSize: '0.75rem', color: theme.palette.text.primary, fontWeight: 500 }}>
             Prompt copied!
           </Typography>
@@ -435,7 +435,7 @@ function ChatTab({ isDark, theme }) {
           pr: 1,
           '&::-webkit-scrollbar': { width: 4 },
           '&::-webkit-scrollbar-thumb': {
-            background: isDark ? 'rgba(16, 185, 129, 0.3)' : 'rgba(16, 185, 129, 0.2)',
+            background: isDark ? 'rgba(217, 98, 43, 0.3)' : 'rgba(217, 98, 43, 0.2)',
             borderRadius: 4,
           },
         }}
@@ -459,15 +459,15 @@ function ChatTab({ isDark, theme }) {
                 ...(msg.role === 'user'
                   ? {
                       background: isDark
-                        ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(0, 237, 100, 0.15))'
-                        : 'linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(0, 237, 100, 0.08))',
-                      border: `1px solid ${isDark ? 'rgba(0, 237, 100, 0.2)' : 'rgba(16, 185, 129, 0.15)'}`,
+                        ? 'linear-gradient(135deg, rgba(217, 98, 43, 0.2), rgba(232, 121, 74, 0.15))'
+                        : 'linear-gradient(135deg, rgba(217, 98, 43, 0.12), rgba(232, 121, 74, 0.08))',
+                      border: `1px solid ${isDark ? 'rgba(232, 121, 74, 0.2)' : 'rgba(217, 98, 43, 0.15)'}`,
                     }
                   : {
                       background: isDark
                         ? 'rgba(255, 255, 255, 0.04)'
-                        : 'rgba(16, 185, 129, 0.03)',
-                      border: `1px solid ${isDark ? 'rgba(16, 185, 129, 0.1)' : 'rgba(16, 185, 129, 0.08)'}`,
+                        : 'rgba(217, 98, 43, 0.03)',
+                      border: `1px solid ${isDark ? 'rgba(217, 98, 43, 0.1)' : 'rgba(217, 98, 43, 0.08)'}`,
                     }),
               }}
             >
@@ -499,14 +499,14 @@ function ChatTab({ isDark, theme }) {
                 size="small"
                 onClick={() => handleSuggestionClick(q)}
                 sx={{
-                  background: isDark ? 'rgba(16, 185, 129, 0.08)' : 'rgba(16, 185, 129, 0.06)',
+                  background: isDark ? 'rgba(217, 98, 43, 0.08)' : 'rgba(217, 98, 43, 0.06)',
                   color: theme.palette.text.secondary,
-                  border: `1px solid ${isDark ? 'rgba(16, 185, 129, 0.15)' : 'rgba(16, 185, 129, 0.1)'}`,
+                  border: `1px solid ${isDark ? 'rgba(217, 98, 43, 0.15)' : 'rgba(217, 98, 43, 0.1)'}`,
                   fontSize: '0.72rem',
                   cursor: 'pointer',
                   transition: 'all 0.15s',
                   '&:hover': {
-                    background: isDark ? 'rgba(16, 185, 129, 0.15)' : 'rgba(16, 185, 129, 0.1)',
+                    background: isDark ? 'rgba(217, 98, 43, 0.15)' : 'rgba(217, 98, 43, 0.1)',
                     transform: 'translateY(-1px)',
                   },
                 }}
@@ -523,8 +523,8 @@ function ChatTab({ isDark, theme }) {
                 p: 1.5,
                 borderRadius: 2,
                 backgroundImage: 'none',
-                background: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(16, 185, 129, 0.03)',
-                border: `1px solid ${isDark ? 'rgba(16, 185, 129, 0.1)' : 'rgba(16, 185, 129, 0.08)'}`,
+                background: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(217, 98, 43, 0.03)',
+                border: `1px solid ${isDark ? 'rgba(217, 98, 43, 0.1)' : 'rgba(217, 98, 43, 0.08)'}`,
               }}
             >
               <TypingIndicator isDark={isDark} />
@@ -564,15 +564,15 @@ function ChatTab({ isDark, theme }) {
               fontSize: '0.85rem',
               borderRadius: 2,
               height: 40,
-              backgroundColor: isDark ? 'rgba(0, 0, 0, 0.3)' : 'rgba(16, 185, 129, 0.02)',
+              backgroundColor: isDark ? 'rgba(0, 0, 0, 0.3)' : 'rgba(217, 98, 43, 0.02)',
               '& fieldset': {
-                borderColor: isDark ? 'rgba(16, 185, 129, 0.15)' : 'rgba(16, 185, 129, 0.12)',
+                borderColor: isDark ? 'rgba(217, 98, 43, 0.15)' : 'rgba(217, 98, 43, 0.12)',
               },
               '&:hover fieldset': {
-                borderColor: isDark ? 'rgba(0, 237, 100, 0.3)' : 'rgba(16, 185, 129, 0.25)',
+                borderColor: isDark ? 'rgba(232, 121, 74, 0.3)' : 'rgba(217, 98, 43, 0.25)',
               },
               '&.Mui-focused fieldset': {
-                borderColor: '#10b981',
+                borderColor: '#d9622b',
               },
             },
           }}
@@ -585,12 +585,12 @@ function ChatTab({ isDark, theme }) {
             minWidth: 44,
             height: 40,
             borderRadius: 2,
-            background: 'linear-gradient(135deg, #10b981, #059669)',
+            background: 'linear-gradient(135deg, #d9622b, #be4e1c)',
             '&:hover': {
-              background: 'linear-gradient(135deg, #059669, #047857)',
+              background: 'linear-gradient(135deg, #be4e1c, #9c3e15)',
             },
             '&.Mui-disabled': {
-              background: isDark ? 'rgba(16, 185, 129, 0.1)' : 'rgba(16, 185, 129, 0.08)',
+              background: isDark ? 'rgba(217, 98, 43, 0.1)' : 'rgba(217, 98, 43, 0.08)',
             },
           }}
         >
@@ -606,7 +606,7 @@ function ChatTab({ isDark, theme }) {
               fontSize: '0.68rem',
               color: input.length >= MAX_INPUT_LENGTH ? '#ef4444' : theme.palette.text.secondary,
               opacity: 0.7,
-              fontFamily: '"JetBrains Mono", monospace',
+              fontFamily: 'var(--font-mono), monospace',
             }}
           >
             {input.length}/{MAX_INPUT_LENGTH}
@@ -615,7 +615,7 @@ function ChatTab({ isDark, theme }) {
           <span />
         )}
         {remainingRequests !== null && (
-          <Typography sx={{ color: theme.palette.text.secondary, fontSize: '0.68rem', opacity: 0.5, fontFamily: '"JetBrains Mono", monospace' }}>
+          <Typography sx={{ color: theme.palette.text.secondary, fontSize: '0.68rem', opacity: 0.5, fontFamily: 'var(--font-mono), monospace' }}>
             {remainingRequests} messages remaining
           </Typography>
         )}
@@ -645,26 +645,26 @@ export default function TalkToMyAI({ variant = 'full' }) {
             borderRadius: 3,
             backgroundImage: 'none',
             background: isDark
-              ? 'rgba(16, 185, 129, 0.04)'
-              : 'rgba(16, 185, 129, 0.03)',
-            border: `1px solid ${isDark ? 'rgba(16, 185, 129, 0.12)' : 'rgba(16, 185, 129, 0.08)'}`,
+              ? 'rgba(217, 98, 43, 0.04)'
+              : 'rgba(217, 98, 43, 0.03)',
+            border: `1px solid ${isDark ? 'rgba(217, 98, 43, 0.12)' : 'rgba(217, 98, 43, 0.08)'}`,
             textAlign: 'center',
             transition: 'all 0.3s ease',
             '&:hover': {
-              borderColor: isDark ? 'rgba(0, 237, 100, 0.25)' : 'rgba(16, 185, 129, 0.2)',
-              boxShadow: isDark ? '0 0 20px rgba(0, 237, 100, 0.08)' : '0 4px 20px rgba(16, 185, 129, 0.08)',
+              borderColor: isDark ? 'rgba(232, 121, 74, 0.25)' : 'rgba(217, 98, 43, 0.2)',
+              boxShadow: isDark ? '0 0 20px rgba(232, 121, 74, 0.08)' : '0 4px 20px rgba(217, 98, 43, 0.08)',
             },
           }}
         >
           <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 1, mb: 2 }}>
-            <AutoAwesomeIcon sx={{ fontSize: 16, color: isDark ? '#00ED64' : '#10b981' }} />
+            <AutoAwesomeIcon sx={{ fontSize: 16, color: isDark ? '#e8794a' : '#d9622b' }} />
             <Typography
               sx={{
                 fontSize: '0.7rem',
-                color: isDark ? 'rgba(0, 237, 100, 0.8)' : '#10b981',
+                color: isDark ? 'rgba(232, 121, 74, 0.8)' : '#d9622b',
                 letterSpacing: 1.5,
                 textTransform: 'uppercase',
-                fontFamily: '"JetBrains Mono", monospace',
+                fontFamily: 'var(--font-mono), monospace',
                 fontWeight: 500,
               }}
             >
@@ -675,7 +675,7 @@ export default function TalkToMyAI({ variant = 'full' }) {
           <Typography
             variant="h5"
             sx={{
-              fontFamily: '"Space Grotesk", sans-serif',
+              fontFamily: 'var(--font-fraunces), Georgia, serif',
               fontWeight: 600,
               color: theme.palette.text.primary,
               mb: 1.5,
@@ -704,9 +704,9 @@ export default function TalkToMyAI({ variant = 'full' }) {
                 label={q}
                 size="small"
                 sx={{
-                  background: isDark ? 'rgba(16, 185, 129, 0.08)' : 'rgba(16, 185, 129, 0.06)',
+                  background: isDark ? 'rgba(217, 98, 43, 0.08)' : 'rgba(217, 98, 43, 0.06)',
                   color: theme.palette.text.secondary,
-                  border: `1px solid ${isDark ? 'rgba(16, 185, 129, 0.15)' : 'rgba(16, 185, 129, 0.1)'}`,
+                  border: `1px solid ${isDark ? 'rgba(217, 98, 43, 0.15)' : 'rgba(217, 98, 43, 0.1)'}`,
                   fontSize: '0.72rem',
                 }}
               />
@@ -719,17 +719,17 @@ export default function TalkToMyAI({ variant = 'full' }) {
             variant="contained"
             endIcon={<AutoAwesomeIcon />}
             sx={{
-              background: 'linear-gradient(135deg, #10b981, #059669)',
+              background: 'linear-gradient(135deg, #d9622b, #be4e1c)',
               textTransform: 'none',
-              fontFamily: '"Space Grotesk", sans-serif',
+              fontFamily: 'var(--font-fraunces), Georgia, serif',
               fontWeight: 600,
               px: 4,
               py: 1.2,
               borderRadius: 2,
               '&:hover': {
-                background: 'linear-gradient(135deg, #059669, #047857)',
+                background: 'linear-gradient(135deg, #be4e1c, #9c3e15)',
                 transform: 'translateY(-2px)',
-                boxShadow: isDark ? '0 0 20px rgba(0, 237, 100, 0.2)' : '0 4px 12px rgba(16, 185, 129, 0.3)',
+                boxShadow: isDark ? '0 0 20px rgba(232, 121, 74, 0.2)' : '0 4px 12px rgba(217, 98, 43, 0.3)',
               },
             }}
           >
@@ -753,9 +753,9 @@ export default function TalkToMyAI({ variant = 'full' }) {
           borderRadius: 3,
           backgroundImage: 'none',
           background: isDark
-            ? 'rgba(16, 185, 129, 0.04)'
-            : 'rgba(16, 185, 129, 0.02)',
-          border: `1px solid ${isDark ? 'rgba(16, 185, 129, 0.12)' : 'rgba(16, 185, 129, 0.08)'}`,
+            ? 'rgba(217, 98, 43, 0.04)'
+            : 'rgba(217, 98, 43, 0.02)',
+          border: `1px solid ${isDark ? 'rgba(217, 98, 43, 0.12)' : 'rgba(217, 98, 43, 0.08)'}`,
           overflow: 'hidden',
         }}
       >
@@ -770,12 +770,12 @@ export default function TalkToMyAI({ variant = 'full' }) {
               color: theme.palette.text.secondary,
               textTransform: 'none',
               fontSize: '0.875rem',
-              fontFamily: '"Space Grotesk", sans-serif',
+              fontFamily: 'var(--font-fraunces), Georgia, serif',
               fontWeight: 500,
               '&.Mui-selected': { color: theme.palette.text.primary },
             },
             '& .MuiTabs-indicator': {
-              backgroundColor: isDark ? '#00ED64' : '#10b981',
+              backgroundColor: isDark ? '#e8794a' : '#d9622b',
             },
           }}
         >
@@ -783,7 +783,7 @@ export default function TalkToMyAI({ variant = 'full' }) {
           <Tab label="Chat" icon={<SmartToyIcon sx={{ fontSize: 16 }} />} iconPosition="start" />
         </Tabs>
 
-        <Divider sx={{ borderColor: isDark ? 'rgba(16, 185, 129, 0.08)' : 'rgba(16, 185, 129, 0.06)' }} />
+        <Divider sx={{ borderColor: isDark ? 'rgba(217, 98, 43, 0.08)' : 'rgba(217, 98, 43, 0.06)' }} />
 
         {activeTab === 0 && <QuickLaunchTab isDark={isDark} theme={theme} />}
         {activeTab === 1 && <ChatTab isDark={isDark} theme={theme} />}
@@ -797,7 +797,7 @@ export default function TalkToMyAI({ variant = 'full' }) {
           fontSize: '0.72rem',
           mt: 2,
           opacity: 0.5,
-          fontFamily: '"JetBrains Mono", monospace',
+          fontFamily: 'var(--font-mono), monospace',
         }}
       >
         RAG-powered &middot; Voyage AI + Atlas Vector Search + Claude &middot; No data stored

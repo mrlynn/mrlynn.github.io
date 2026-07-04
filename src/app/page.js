@@ -1,1017 +1,595 @@
 'use client';
 
-import { Box, Container, Typography, Button, Grid, Paper, Stack, useTheme, IconButton } from '@mui/material';
-import { GitHub as GitHubIcon, LinkedIn as LinkedInIcon, BookOutlined as BookOutlinedIcon, Code as CodeIcon, Terminal as TerminalIcon, Cloud as CloudIcon, ArrowDownward as ArrowDownwardIcon, ArrowForward as ArrowForwardIcon, CalendarToday as CalendarIcon, AutoAwesome as AutoAwesomeIcon } from '@mui/icons-material';
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { Box, Container, Typography, Button, Grid, Stack, useTheme, IconButton, Divider } from '@mui/material';
+import { GitHub as GitHubIcon, LinkedIn as LinkedInIcon, ArrowForward as ArrowForwardIcon, AutoAwesome as AutoAwesomeIcon } from '@mui/icons-material';
+import { motion } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import ProjectsSection from '../components/ProjectsSection';
 import VideosSection from '../components/VideosSection';
 import GitHubActivity from '../components/GitHubActivity';
-import Timeline from '../components/Timeline';
 import Certifications from '../components/Certifications';
 import CalendarBooking from '../components/CalendarBooking';
 import TalkToMyAI from '../components/TalkToMyAI';
-import { projects } from '../data/projects';
-import { timelineEvents } from '../data/timeline';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const MotionBox = motion.create(Box);
-const MotionTypography = motion.create(Typography);
-const MotionPaper = motion.create(Paper);
-const MotionStack = motion(Stack);
 
-const titles = [
-  "Developer Advocate",
-  "Technical Advisor",
-  "Community Builder",
-  "Open Source Leader",
-  "Speaker & Educator",
-  "Creative Technologist",
+// Areas of focus — editorial prose instead of code snippets
+const focusAreas = [
+  {
+    no: '01',
+    title: 'Developer Advocacy',
+    body: 'Meeting developers where they are — talks, workshops, and writing that turn dense platform concepts into things people can actually build with.',
+  },
+  {
+    no: '02',
+    title: 'Data & AI Platforms',
+    body: 'Fifteen years helping teams adopt modern databases and, more recently, AI-native tooling — retrieval, vector search, and agents grounded in real data.',
+  },
+  {
+    no: '03',
+    title: 'Advising & Speaking',
+    body: 'Working with founders and engineering teams as an advisor, and taking the stage at conferences to share what is working and what is still hard.',
+  },
 ];
 
-const techCards = [
-  {
-    title: 'MongoDB',
-    content: '{ "database": "NoSQL", "type": "Document" }',
-    color: '#10b981',
-    icon: '{ }',
-  },
-  {
-    title: 'Node.js',
-    content: 'async function build() {\n  await dream();\n  return future;\n}',
-    color: '#06b6d4',
-    icon: 'fn()',
-  },
-  {
-    title: 'React',
-    content: '<Innovation\n  future={tech}\n  passion={true}\n/>',
-    color: '#00ED64',
-    icon: '</>',
-  }
+const stats = [
+  { number: '15+', label: 'Years in tech' },
+  { number: '200+', label: 'Talks given' },
+  { number: '50K+', label: 'Developers reached' },
+  { number: '11+', label: 'Open projects' },
 ];
 
-function CyclingTitle() {
-  const [currentTitle, setCurrentTitle] = useState(titles[0]);
-  const theme = useTheme();
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      let newTitle;
-      do {
-        newTitle = titles[Math.floor(Math.random() * titles.length)];
-      } while (newTitle === currentTitle);
-      setCurrentTitle(newTitle);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [currentTitle]);
-
-  return (
-    <Box
-      sx={{
-        minHeight: '3.5rem',
-        display: 'flex',
-        justifyContent: 'flex-start',
-        alignItems: 'flex-start',
-        mb: 4,
-        position: 'relative',
-      }}
-    >
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentTitle}
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: -20, opacity: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <Typography
-            variant="h2"
-            component="h2"
-            sx={{
-              fontSize: { xs: '1.75rem', md: '2.5rem' },
-              fontWeight: 600,
-              fontFamily: '"Space Grotesk", sans-serif',
-              background: theme.palette.background.gradientHero || theme.palette.background.gradient,
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              textAlign: 'left',
-              lineHeight: 1.2,
-            }}
-          >
-            {currentTitle}
-          </Typography>
-        </motion.div>
-      </AnimatePresence>
-    </Box>
-  );
-}
-
-function FloatingProjectCards() {
-  const [visibleProjects, setVisibleProjects] = useState(projects.slice(0, 3));
-  const theme = useTheme();
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setVisibleProjects(currentProjects => {
-        const availableProjects = projects.filter(p => !currentProjects.includes(p));
-        const newProject = availableProjects[Math.floor(Math.random() * availableProjects.length)];
-        const projectToReplace = Math.floor(Math.random() * 3);
-        return currentProjects.map((p, i) => i === projectToReplace ? newProject : p);
-      });
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <Box
-      sx={{
-        position: 'relative',
-        height: '500px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      {visibleProjects.map((project, i) => (
-        <motion.div
-          key={`${project.title}-${i}`}
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{
-            opacity: 1,
-            scale: 1,
-            x: [0, 20, 0],
-            y: [0, -20, 0],
-            rotate: [0, i % 2 === 0 ? 3 : -3, 0],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            delay: i * 0.8,
-            ease: "easeInOut"
-          }}
-          style={{
-            position: 'absolute',
-            width: '280px',
-            height: '180px',
-            borderRadius: '16px',
-            overflow: 'hidden',
-            boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
-            border: '1px solid rgba(16, 185, 129, 0.15)',
-          }}
-        >
-          <Box
-            sx={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              height: '3px',
-              background: 'linear-gradient(90deg, #10b981, #00ED64)',
-            }}
-          />
-          <Box
-            component="img"
-            src={project.image}
-            alt={project.title}
-            sx={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              filter: 'brightness(0.7)',
-              transition: 'filter 0.3s ease',
-              '&:hover': {
-                filter: 'brightness(0.9)',
-              },
-            }}
-          />
-          <Box
-            sx={{
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              p: 2,
-              background: 'rgba(3, 7, 18, 0.9)',
-              backdropFilter: 'blur(10px)',
-              borderTop: '1px solid rgba(16, 185, 129, 0.1)',
-            }}
-          >
-            <Typography
-              variant="subtitle2"
-              sx={{
-                color: 'white',
-                fontWeight: 600,
-              }}
-            >
-              {project.title}
-            </Typography>
-          </Box>
-        </motion.div>
-      ))}
-    </Box>
-  );
-}
-
-const heroBackgroundVariants = {
-  animate: {
-    backgroundPosition: ['0% 0%', '100% 100%'],
-    transition: {
-      duration: 20,
-      repeat: Infinity,
-      repeatType: 'reverse',
-    },
-  },
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  show: (i = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] },
+  }),
 };
 
-const GridBackground = () => {
+// Small mono eyebrow used across sections
+function Eyebrow({ children, sx }) {
   const theme = useTheme();
-  const isDark = theme.palette.mode === 'dark';
-  const [particles, setParticles] = useState([]);
-
-  useEffect(() => {
-    setParticles([...Array(30)].map((_, i) => ({
-      width: Math.random() * 2 + 1,
-      height: Math.random() * 2 + 1,
-      opacityDark: Math.random() * 0.4 + 0.1,
-      opacityLight: Math.random() * 0.3 + 0.1,
-      top: Math.random() * 100,
-      left: Math.random() * 100,
-      glowSize: Math.random() * 6 + 2,
-      duration: Math.random() * 12 + 8,
-      delay: Math.random() * 10,
-    })));
-  }, []);
-
   return (
-    <Box
-      sx={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        overflow: 'hidden',
-        zIndex: 1,
-        backgroundImage: isDark
-          ? `linear-gradient(rgba(16, 185, 129, 0.04) 1px, transparent 1px),
-             linear-gradient(90deg, rgba(16, 185, 129, 0.04) 1px, transparent 1px)`
-          : `linear-gradient(rgba(16, 185, 129, 0.03) 1px, transparent 1px),
-             linear-gradient(90deg, rgba(16, 185, 129, 0.03) 1px, transparent 1px)`,
-        backgroundSize: '60px 60px',
-      }}
-    >
-      {particles.map((p, i) => (
-        <motion.div
-          key={i}
-          style={{
-            position: 'absolute',
-            width: p.width,
-            height: p.height,
-            backgroundColor: isDark
-              ? `rgba(0, 237, 100, ${p.opacityDark})`
-              : `rgba(16, 185, 129, ${p.opacityLight})`,
-            borderRadius: '50%',
-            top: `${p.top}%`,
-            left: `${p.left}%`,
-            boxShadow: isDark ? `0 0 ${p.glowSize}px rgba(0, 237, 100, 0.3)` : 'none',
-          }}
-          animate={{
-            y: [0, -800],
-            opacity: [0, 1, 0],
-          }}
-          transition={{
-            duration: p.duration,
-            repeat: Infinity,
-            ease: "linear",
-            delay: p.delay,
-          }}
-        />
-      ))}
-    </Box>
-  );
-};
-
-const StatCard = ({ number, label, theme }) => (
-  <MotionPaper
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    sx={{
-      p: 3,
-      backgroundColor: theme.palette.mode === 'dark'
-        ? 'rgba(16, 185, 129, 0.06)'
-        : 'rgba(16, 185, 129, 0.04)',
-      backdropFilter: 'blur(10px)',
-      border: `1px solid ${theme.palette.mode === 'dark' ? 'rgba(16, 185, 129, 0.12)' : 'rgba(16, 185, 129, 0.1)'}`,
-      textAlign: 'center',
-      transition: 'all 0.3s ease',
-      backgroundImage: 'none',
-      '&:hover': {
-        transform: 'translateY(-5px)',
-        backgroundColor: theme.palette.mode === 'dark'
-          ? 'rgba(16, 185, 129, 0.1)'
-          : 'rgba(16, 185, 129, 0.08)',
-        borderColor: theme.palette.mode === 'dark'
-          ? 'rgba(0, 237, 100, 0.25)'
-          : 'rgba(16, 185, 129, 0.2)',
-        boxShadow: theme.palette.mode === 'dark'
-          ? '0 0 20px rgba(0, 237, 100, 0.1)'
-          : theme.shadows[4],
-      },
-    }}
-  >
     <Typography
-      variant="h3"
+      component="span"
       sx={{
-        fontFamily: '"Space Grotesk", sans-serif',
-        fontWeight: 700,
-        fontSize: { xs: '1.75rem', md: '2.25rem' },
-        mb: 1,
-        background: theme.palette.background.gradientAccent,
-        WebkitBackgroundClip: 'text',
-        WebkitTextFillColor: 'transparent',
-      }}
-    >
-      {number}
-    </Typography>
-    <Typography
-      variant="body2"
-      sx={{
-        color: theme.palette.text.secondary,
+        fontFamily: 'var(--font-mono), monospace',
+        fontSize: '0.72rem',
+        letterSpacing: '0.22em',
         textTransform: 'uppercase',
-        letterSpacing: 2,
-        fontSize: '0.7rem',
-        fontWeight: 600,
-        fontFamily: '"JetBrains Mono", monospace',
+        color: theme.palette.primary.main,
+        fontWeight: 500,
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: 1.5,
+        '&::before': {
+          content: '""',
+          width: 28,
+          height: '1px',
+          backgroundColor: theme.palette.primary.main,
+          opacity: 0.6,
+        },
+        ...sx,
       }}
     >
-      {label}
+      {children}
     </Typography>
-  </MotionPaper>
-);
+  );
+}
+
+function SectionHeading({ eyebrow, title, intro, align = 'left' }) {
+  const theme = useTheme();
+  return (
+    <Box sx={{ maxWidth: 720, mb: { xs: 5, md: 7 }, mx: align === 'center' ? 'auto' : 0, textAlign: align }}>
+      {eyebrow && (
+        <Box sx={{ mb: 2.5, ...(align === 'center' && { display: 'flex', justifyContent: 'center' }) }}>
+          <Eyebrow>{eyebrow}</Eyebrow>
+        </Box>
+      )}
+      <Typography
+        variant="h2"
+        sx={{
+          fontFamily: 'var(--font-fraunces), Georgia, serif',
+          fontWeight: 600,
+          fontSize: { xs: '2rem', md: '2.75rem' },
+          lineHeight: 1.1,
+          color: theme.palette.text.primary,
+          mb: intro ? 2 : 0,
+          letterSpacing: '-0.015em',
+        }}
+      >
+        {title}
+      </Typography>
+      {intro && (
+        <Typography
+          sx={{
+            fontSize: { xs: '1.05rem', md: '1.15rem' },
+            lineHeight: 1.7,
+            color: theme.palette.text.secondary,
+            maxWidth: 620,
+            mx: align === 'center' ? 'auto' : 0,
+          }}
+        >
+          {intro}
+        </Typography>
+      )}
+    </Box>
+  );
+}
+
+function formatDate(value) {
+  if (!value) return '';
+  try {
+    return new Date(value).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  } catch {
+    return '';
+  }
+}
 
 export default function Home() {
   const theme = useTheme();
   const ref = useRef(null);
-  const isDark = theme.palette.mode === 'dark';
-  const [latestPost, setLatestPost] = useState(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     fetch('/api/blog')
-      .then(res => res.json())
-      .then(posts => {
-        const articles = posts.filter(p => p.category !== 'project');
-        if (articles.length > 0) setLatestPost(articles[0]);
+      .then((res) => res.json())
+      .then((all) => {
+        const articles = Array.isArray(all) ? all.filter((p) => p.category !== 'project') : [];
+        setPosts(articles.slice(0, 3));
       })
       .catch(() => {});
   }, []);
 
-  const stats = [
-    { number: '15+', label: 'Years Experience' },
-    { number: '200+', label: 'Tech Talks' },
-    { number: '50K+', label: 'Developers Reached' },
-    { number: '100+', label: 'Open Source Contributions' },
-  ];
+  const hairline = theme.palette.border.subtle;
 
   return (
-    <Box ref={ref}>
-      {/* Hero Section */}
-      <MotionBox
-        component={motion.div}
-        variants={heroBackgroundVariants}
-        animate="animate"
+    <Box ref={ref} sx={{ backgroundColor: theme.palette.background.default }}>
+      {/* ---------- HERO ---------- */}
+      <Box
+        component="section"
         sx={{
-          minHeight: '100vh',
-          background: theme.palette.background.mesh,
-          backgroundSize: '400% 400%',
-          display: 'flex',
-          alignItems: 'center',
           position: 'relative',
           overflow: 'hidden',
-          '&::before': {
-            content: '""',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: isDark
-              ? 'rgba(3, 7, 18, 0.88)'
-              : 'rgba(255, 255, 255, 0.88)',
-            zIndex: 1,
-          },
+          pt: { xs: 14, md: 20 },
+          pb: { xs: 8, md: 12 },
+          background: theme.palette.background.mesh,
         }}
       >
-        <GridBackground />
-        <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 2 }}>
-          <Grid container spacing={4} alignItems="center">
+        <Container maxWidth="lg">
+          <Grid container spacing={{ xs: 6, md: 8 }} alignItems="center">
             <Grid item xs={12} md={7}>
-              <MotionStack
-                spacing={4}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-              >
-                <Box sx={{ mb: 2 }}>
-                  <Typography
-                    variant="overline"
-                    sx={{
-                      fontFamily: '"JetBrains Mono", monospace',
-                      color: isDark ? 'rgba(0, 237, 100, 0.8)' : theme.palette.primary.main,
-                      fontWeight: 500,
-                      letterSpacing: 4,
-                      mb: 2,
-                      display: 'block',
-                      fontSize: '0.7rem',
-                    }}
-                  >
-                    DEVELOPER ADVOCATE &middot; MONGODB &middot; SPEAKER &middot; ADVISOR
-                  </Typography>
-                  <Typography
-                    variant="h1"
-                    sx={{
-                      fontFamily: '"Space Grotesk", sans-serif',
-                      fontSize: { xs: '2.5rem', md: '4.5rem' },
-                      fontWeight: 800,
-                      color: isDark ? '#f1f5f9' : theme.palette.text.primary,
-                      textShadow: isDark ? '0 0 40px rgba(0, 237, 100, 0.08)' : 'none',
-                      mb: 2,
-                      lineHeight: 1.1,
-                      letterSpacing: '-0.03em',
-                    }}
-                  >
-                    Michael Lynn
-                  </Typography>
-                </Box>
+              <MotionBox initial="hidden" animate="show" variants={fadeUp} custom={0}>
+                <Eyebrow>AI Adoption Engineer · Developer Advocate · Advisor</Eyebrow>
+              </MotionBox>
 
-                <CyclingTitle />
-
+              <MotionBox initial="hidden" animate="show" variants={fadeUp} custom={1}>
                 <Typography
-                  variant="h6"
+                  variant="h1"
                   sx={{
-                    color: isDark ? 'rgba(226, 232, 240, 0.85)' : theme.palette.text.secondary,
-                    maxWidth: '600px',
-                    lineHeight: 1.8,
-                    mb: 6,
-                    fontSize: { xs: '1rem', md: '1.2rem' },
-                    fontWeight: 400,
+                    fontFamily: 'var(--font-fraunces), Georgia, serif',
+                    fontWeight: 600,
+                    fontSize: { xs: '3.25rem', sm: '4.25rem', md: '5.5rem' },
+                    lineHeight: 0.98,
+                    letterSpacing: '-0.03em',
+                    color: theme.palette.text.primary,
+                    mt: 3,
+                    mb: 0,
                   }}
                 >
-                  I help developers and teams adopt modern data platforms and
-                  AI-driven tools. With 15+ years in tech, I turn complex ideas
-                  into clear talks, open-source projects, and hands-on workshops
-                  that move the industry forward.
+                  Michael
+                  <br />
+                  Lynn
                 </Typography>
+              </MotionBox>
 
-                <Stack direction="row" spacing={3} sx={{ mb: 4 }} flexWrap="wrap" useFlexGap alignItems="center">
+              <MotionBox initial="hidden" animate="show" variants={fadeUp} custom={2}>
+                <Typography
+                  sx={{
+                    fontFamily: 'var(--font-fraunces), Georgia, serif',
+                    fontStyle: 'italic',
+                    fontWeight: 400,
+                    fontSize: { xs: '1.4rem', md: '1.7rem' },
+                    color: theme.palette.primary.main,
+                    mt: 3,
+                    mb: 3,
+                  }}
+                >
+                  I help people build with data &amp; AI.
+                </Typography>
+              </MotionBox>
+
+              <MotionBox initial="hidden" animate="show" variants={fadeUp} custom={3}>
+                <Typography
+                  sx={{
+                    fontSize: { xs: '1.05rem', md: '1.2rem' },
+                    lineHeight: 1.75,
+                    color: theme.palette.text.secondary,
+                    maxWidth: 540,
+                    mb: 4.5,
+                  }}
+                >
+                  I&apos;m an AI Adoption Engineer at Cursor. For fifteen years I&apos;ve
+                  turned complex ideas into clear talks, open-source projects, and
+                  hands-on workshops — helping developers and teams adopt AI-driven
+                  tools and modern data platforms.
+                </Typography>
+              </MotionBox>
+
+              <MotionBox initial="hidden" animate="show" variants={fadeUp} custom={4}>
+                <Stack direction="row" spacing={2} flexWrap="wrap" useFlexGap alignItems="center" sx={{ mb: 4 }}>
                   <Button
                     variant="contained"
                     size="large"
-                    endIcon={<AutoAwesomeIcon />}
-                    href="/ask-ai"
+                    endIcon={<ArrowForwardIcon />}
+                    component={Link}
+                    href="/blog"
+                    disableElevation
                     sx={{
-                      background: 'linear-gradient(135deg, #10b981, #06b6d4)',
+                      backgroundColor: theme.palette.primary.main,
                       color: '#fff',
-                      px: 4,
-                      py: 1.5,
+                      px: 3.5,
+                      py: 1.4,
                       fontWeight: 600,
-                      borderRadius: '12px',
-                      boxShadow: 'none',
-                      '&:hover': {
-                        background: 'linear-gradient(135deg, #059669, #0891b2)',
-                        filter: 'brightness(1.15)',
-                        transform: 'translateY(-2px)',
-                        boxShadow: isDark
-                          ? '0 8px 24px rgba(16, 185, 129, 0.3), 0 0 8px rgba(0, 237, 100, 0.2)'
-                          : '0 8px 24px rgba(16, 185, 129, 0.25)',
-                      },
-                      transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+                      fontSize: '0.95rem',
+                      borderRadius: '8px',
+                      '&:hover': { backgroundColor: theme.palette.primary.dark },
                     }}
                   >
-                    Ask My AI
+                    Read the writing
                   </Button>
                   <Button
                     variant="outlined"
                     size="large"
-                    endIcon={<ArrowForwardIcon />}
-                    href={latestPost ? `/blog/${latestPost.slug}` : '/blog'}
+                    endIcon={<AutoAwesomeIcon sx={{ fontSize: '1rem !important' }} />}
+                    component={Link}
+                    href="/ask-ai"
                     sx={{
-                      borderColor: isDark ? 'rgba(16, 185, 129, 0.3)' : theme.palette.border.default,
-                      borderWidth: '1.5px',
-                      color: isDark ? '#e2e8f0' : theme.palette.text.primary,
-                      px: 4,
-                      py: 1.5,
+                      borderColor: theme.palette.border.default,
+                      color: theme.palette.text.primary,
+                      px: 3.5,
+                      py: 1.4,
                       fontWeight: 600,
-                      borderRadius: '12px',
+                      fontSize: '0.95rem',
+                      borderRadius: '8px',
                       '&:hover': {
-                        borderWidth: '1.5px',
                         borderColor: theme.palette.primary.main,
-                        backgroundColor: isDark
-                          ? 'rgba(16, 185, 129, 0.08)'
-                          : 'rgba(16, 185, 129, 0.04)',
-                        transform: 'translateY(-2px)',
-                        boxShadow: isDark
-                          ? '0 4px 16px rgba(16, 185, 129, 0.15)'
-                          : theme.shadows[4],
+                        backgroundColor: theme.palette.surface.primary,
                       },
-                      transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
                     }}
                   >
-                    Read Latest Article
+                    Ask my AI
                   </Button>
                   <CalendarBooking
                     variant="button"
                     buttonProps={{
-                      variant: "outlined",
-                      size: "large",
-                      children: "Schedule a Meeting",
+                      variant: 'text',
+                      size: 'large',
+                      children: 'Book a call',
                       sx: {
-                        borderColor: isDark ? 'rgba(16, 185, 129, 0.3)' : theme.palette.border.default,
-                        borderWidth: '1.5px',
-                        color: isDark ? '#e2e8f0' : theme.palette.text.primary,
-                        px: 4,
-                        py: 1.5,
+                        color: theme.palette.text.secondary,
+                        px: 1,
+                        py: 1.4,
                         fontWeight: 600,
-                        borderRadius: '12px',
-                        '&:hover': {
-                          borderWidth: '1.5px',
-                          borderColor: theme.palette.primary.main,
-                          backgroundColor: isDark
-                            ? 'rgba(16, 185, 129, 0.08)'
-                            : 'rgba(16, 185, 129, 0.04)',
-                          transform: 'translateY(-2px)',
-                          boxShadow: isDark
-                            ? '0 4px 16px rgba(16, 185, 129, 0.15)'
-                            : theme.shadows[4],
-                        },
-                        transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
-                      }
+                        fontSize: '0.95rem',
+                        '&:hover': { color: theme.palette.primary.main, backgroundColor: 'transparent' },
+                      },
                     }}
                   />
                 </Stack>
+              </MotionBox>
 
-                <Stack direction="row" spacing={2} sx={{ mb: 6 }}>
-                  <IconButton
-                    href="https://github.com/mrlynn"
-                    size="small"
-                    sx={{
-                      color: isDark ? 'rgba(226, 232, 240, 0.6)' : theme.palette.text.secondary,
-                      '&:hover': {
-                        color: theme.palette.primary.main,
-                        backgroundColor: isDark ? 'rgba(16, 185, 129, 0.08)' : 'rgba(16, 185, 129, 0.04)',
-                      },
-                      transition: 'all 0.2s ease',
-                    }}
-                  >
+              <MotionBox initial="hidden" animate="show" variants={fadeUp} custom={5}>
+                <Stack direction="row" spacing={1}>
+                  <IconButton href="https://github.com/mrlynn" size="small" aria-label="GitHub"
+                    sx={{ color: theme.palette.text.secondary, '&:hover': { color: theme.palette.primary.main } }}>
                     <GitHubIcon fontSize="small" />
                   </IconButton>
-                  <IconButton
-                    href="https://linkedin.com/in/mlynn"
-                    size="small"
-                    sx={{
-                      color: isDark ? 'rgba(226, 232, 240, 0.6)' : theme.palette.text.secondary,
-                      '&:hover': {
-                        color: theme.palette.primary.main,
-                        backgroundColor: isDark ? 'rgba(16, 185, 129, 0.08)' : 'rgba(16, 185, 129, 0.04)',
-                      },
-                      transition: 'all 0.2s ease',
-                    }}
-                  >
+                  <IconButton href="https://linkedin.com/in/mlynn" size="small" aria-label="LinkedIn"
+                    sx={{ color: theme.palette.text.secondary, '&:hover': { color: theme.palette.primary.main } }}>
                     <LinkedInIcon fontSize="small" />
                   </IconButton>
                 </Stack>
-
-                <Grid container spacing={3}>
-                  {stats.map((stat, index) => (
-                    <Grid item xs={6} sm={3} key={stat.label}>
-                      <StatCard {...stat} theme={theme} />
-                    </Grid>
-                  ))}
-                </Grid>
-              </MotionStack>
+              </MotionBox>
             </Grid>
+
+            {/* Portrait — editorial framed treatment */}
             <Grid item xs={12} md={5}>
               <MotionBox
-                initial={{ opacity: 0, scale: 0.95 }}
+                initial={{ opacity: 0, scale: 0.97 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.8 }}
+                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                 sx={{
                   position: 'relative',
-                  height: { xs: '400px', md: '460px' },
-                  width: '100%',
+                  maxWidth: 380,
+                  mx: 'auto',
                   display: { xs: 'none', md: 'block' },
-                  mt: 4,
                 }}
               >
+                {/* offset accent block */}
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    inset: 0,
+                    transform: 'translate(18px, 18px)',
+                    border: `1px solid ${theme.palette.primary.main}`,
+                    borderRadius: '4px',
+                    opacity: 0.5,
+                  }}
+                />
                 <Box
                   sx={{
                     position: 'relative',
-                    height: '100%',
-                    width: '100%',
-                    borderRadius: '24px',
+                    aspectRatio: '4 / 5',
+                    borderRadius: '4px',
                     overflow: 'hidden',
-                    boxShadow: isDark
-                      ? '0 20px 40px rgba(0,0,0,0.5), 0 0 30px rgba(16, 185, 129, 0.08)'
-                      : '0 20px 40px rgba(0,0,0,0.15)',
-                    border: isDark
-                      ? '1px solid rgba(16, 185, 129, 0.15)'
-                      : '1px solid rgba(16, 185, 129, 0.1)',
-                    '&::before': {
-                      content: '""',
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      background: isDark
-                        ? 'linear-gradient(180deg, transparent 0%, rgba(3,7,18,0.5) 100%)'
-                        : 'linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.15) 100%)',
-                      zIndex: 1,
-                      opacity: 0.5,
-                      transition: 'all 0.3s ease',
-                    },
-                    '&:hover::before': {
-                      opacity: 0.2,
-                    },
-                    transform: 'perspective(1000px) rotateY(-5deg)',
-                    transition: 'all 0.5s ease',
-                    '&:hover': {
-                      transform: 'perspective(1000px) rotateY(0deg) translateY(-10px)',
-                      boxShadow: isDark
-                        ? '0 30px 60px rgba(0,0,0,0.6), 0 0 40px rgba(0, 237, 100, 0.1)'
-                        : '0 30px 60px rgba(0,0,0,0.2)',
-                      borderColor: isDark ? 'rgba(0, 237, 100, 0.25)' : 'rgba(16, 185, 129, 0.2)',
-                    },
+                    border: `1px solid ${theme.palette.border.default}`,
+                    boxShadow: theme.shadows[6],
+                    filter: 'grayscale(0.15)',
                   }}
                 >
                   <Image
                     src="/images/headshot.jpg"
-                    alt="Michael Lynn - Developer Advocate and Technical Advisor"
+                    alt="Michael Lynn"
                     fill
-                    style={{
-                      objectFit: 'cover',
-                      objectPosition: 'center top',
-                    }}
+                    style={{ objectFit: 'cover', objectPosition: 'center top' }}
                     priority
                   />
                 </Box>
-                <Box
-                  component={motion.div}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
+                <Typography
                   sx={{
-                    position: 'absolute',
-                    bottom: -20,
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    width: '90%',
-                    py: 2,
-                    px: 3,
-                    backgroundColor: isDark
-                      ? 'rgba(3, 7, 18, 0.85)'
-                      : 'rgba(255, 255, 255, 0.9)',
-                    backdropFilter: 'blur(16px)',
-                    borderRadius: '16px',
-                    border: `1px solid ${isDark ? 'rgba(16, 185, 129, 0.15)' : 'rgba(16, 185, 129, 0.1)'}`,
-                    textAlign: 'center',
-                    zIndex: 2,
+                    mt: 2,
+                    fontFamily: 'var(--font-mono), monospace',
+                    fontSize: '0.68rem',
+                    letterSpacing: '0.14em',
+                    textTransform: 'uppercase',
+                    color: theme.palette.text.secondary,
+                    textAlign: 'right',
                   }}
                 >
-                  <Typography
-                    variant="overline"
-                    sx={{
-                      color: isDark ? 'rgba(226, 232, 240, 0.5)' : theme.palette.text.secondary,
-                      fontSize: '0.65rem',
-                      letterSpacing: 2,
-                      mb: 1.5,
-                      display: 'block',
-                    }}
-                  >
-                    Previously at &amp; Featured by
-                  </Typography>
-                  <Stack
-                    direction="row"
-                    spacing={4}
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    <Box
-                      component="img"
-                      src="/images/mongodb.svg"
-                      alt="MongoDB"
-                      sx={{
-                        height: 22,
-                        opacity: isDark ? 0.6 : 0.5,
-                        filter: isDark ? 'brightness(0) invert(1)' : 'none',
-                        transition: 'opacity 0.2s ease',
-                        '&:hover': { opacity: 1 },
-                      }}
-                    />
-                    <Typography
-                      sx={{
-                        fontWeight: 700,
-                        fontSize: '1rem',
-                        letterSpacing: 1,
-                        color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)',
-                        transition: 'color 0.2s ease',
-                        '&:hover': { color: isDark ? 'rgba(255,255,255,0.85)' : 'rgba(0,0,0,0.7)' },
-                      }}
-                    >
-                      AWS
-                    </Typography>
-                    <Typography
-                      sx={{
-                        fontWeight: 700,
-                        fontSize: '1rem',
-                        letterSpacing: 0.5,
-                        color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)',
-                        transition: 'color 0.2s ease',
-                        '&:hover': { color: isDark ? 'rgba(255,255,255,0.85)' : 'rgba(0,0,0,0.7)' },
-                      }}
-                    >
-                      Google
-                    </Typography>
-                  </Stack>
-                </Box>
+                  Based in the Northeast US
+                </Typography>
               </MotionBox>
             </Grid>
           </Grid>
         </Container>
+      </Box>
 
+      {/* ---------- STATS STRIP ---------- */}
+      <Container maxWidth="lg">
         <Box
           sx={{
-            position: 'absolute',
-            bottom: 32,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            zIndex: 2,
+            display: 'grid',
+            gridTemplateColumns: { xs: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' },
+            borderTop: `1px solid ${hairline}`,
+            borderBottom: `1px solid ${hairline}`,
           }}
         >
-          <motion.div
-            animate={{
-              y: [0, 10, 0],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          >
-            <IconButton
+          {stats.map((s, i) => (
+            <Box
+              key={s.label}
               sx={{
-                color: isDark ? '#10b981' : theme.palette.primary.main,
-                border: `2px solid ${isDark ? 'rgba(16, 185, 129, 0.3)' : theme.palette.primary.main}`,
-                '&:hover': {
-                  backgroundColor: isDark
-                    ? 'rgba(16, 185, 129, 0.1)'
-                    : 'rgba(16, 185, 129, 0.06)',
-                  boxShadow: isDark
-                    ? '0 0 15px rgba(0, 237, 100, 0.2)'
-                    : 'none',
-                },
+                py: { xs: 3, md: 4 },
+                px: 2,
+                textAlign: 'center',
+                borderLeft: { md: i === 0 ? 'none' : `1px solid ${hairline}` },
+                borderTop: { xs: i > 1 ? `1px solid ${hairline}` : 'none', md: 'none' },
               }}
-              onClick={() => window.scrollTo({
-                top: window.innerHeight,
-                behavior: 'smooth',
-              })}
             >
-              <ArrowDownwardIcon />
-            </IconButton>
-          </motion.div>
+              <Typography
+                sx={{
+                  fontFamily: 'var(--font-fraunces), Georgia, serif',
+                  fontWeight: 600,
+                  fontSize: { xs: '2rem', md: '2.75rem' },
+                  lineHeight: 1,
+                  color: theme.palette.text.primary,
+                  mb: 1,
+                }}
+              >
+                {s.number}
+              </Typography>
+              <Typography
+                sx={{
+                  fontFamily: 'var(--font-mono), monospace',
+                  fontSize: '0.68rem',
+                  letterSpacing: '0.14em',
+                  textTransform: 'uppercase',
+                  color: theme.palette.text.secondary,
+                }}
+              >
+                {s.label}
+              </Typography>
+            </Box>
+          ))}
         </Box>
-      </MotionBox>
+      </Container>
 
-      {/* Tech Cards Section */}
-      <Box sx={{
-        py: 10,
-        backgroundColor: isDark
-          ? theme.palette.background.default
-          : theme.palette.background.paper,
-        position: 'relative',
-      }}>
-        <Container maxWidth="lg">
-          <Grid container spacing={4}>
-            {techCards.map((card, index) => (
-              <Grid item xs={12} md={4} key={card.title}>
-                <MotionPaper
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.2 }}
+      {/* ---------- FOCUS AREAS ---------- */}
+      <Container maxWidth="lg" sx={{ py: { xs: 10, md: 14 } }}>
+        <SectionHeading
+          eyebrow="What I do"
+          title="Turning hard problems into things people can build with."
+        />
+        <Grid container spacing={{ xs: 5, md: 6 }}>
+          {focusAreas.map((area, i) => (
+            <Grid item xs={12} md={4} key={area.no}>
+              <MotionBox
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, margin: '-80px' }}
+                variants={fadeUp}
+                custom={i}
+              >
+                <Typography
                   sx={{
-                    p: 3,
-                    height: '100%',
-                    backgroundColor: isDark
-                      ? 'rgba(16, 185, 129, 0.04)'
-                      : 'rgba(16, 185, 129, 0.03)',
-                    backgroundImage: 'none',
-                    backdropFilter: 'blur(10px)',
-                    border: `1px solid ${isDark ? 'rgba(16, 185, 129, 0.1)' : 'rgba(16, 185, 129, 0.08)'}`,
-                    borderTop: `3px solid ${card.color}`,
-                    transition: 'all 0.3s ease',
-                    position: 'relative',
-                    overflow: 'hidden',
-                    '&::before': {
-                      content: '""',
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      background: `radial-gradient(circle at top right, ${card.color}08, transparent 70%)`,
-                    },
-                    '&:hover': {
-                      transform: 'translateY(-8px)',
-                      borderColor: `${card.color}40`,
-                      boxShadow: isDark
-                        ? `0 0 20px ${card.color}15, 0 8px 24px rgba(0,0,0,0.3)`
-                        : `0 8px 24px rgba(0,0,0,0.08)`,
-                    },
+                    fontFamily: 'var(--font-mono), monospace',
+                    fontSize: '0.8rem',
+                    color: theme.palette.primary.main,
+                    mb: 2,
+                    letterSpacing: '0.1em',
                   }}
                 >
-                  {/* Terminal-style header */}
-                  <Box sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 1,
-                    mb: 2,
-                  }}>
-                    <Typography
-                      sx={{
-                        fontFamily: '"JetBrains Mono", monospace',
-                        fontSize: '0.7rem',
-                        color: card.color,
-                        opacity: 0.7,
-                        letterSpacing: '0.05em',
-                      }}
-                    >
-                      {card.icon}
-                    </Typography>
-                    <Typography
-                      variant="h5"
-                      sx={{
-                        color: theme.palette.text.primary,
-                        fontFamily: '"Space Grotesk", sans-serif',
-                        fontWeight: 600,
-                      }}
-                    >
-                      {card.title}
-                    </Typography>
-                  </Box>
+                  {area.no}
+                </Typography>
+                <Divider sx={{ mb: 2.5, borderColor: hairline }} />
+                <Typography
+                  variant="h4"
+                  sx={{
+                    fontFamily: 'var(--font-fraunces), Georgia, serif',
+                    fontWeight: 600,
+                    fontSize: '1.5rem',
+                    color: theme.palette.text.primary,
+                    mb: 1.5,
+                  }}
+                >
+                  {area.title}
+                </Typography>
+                <Typography sx={{ color: theme.palette.text.secondary, lineHeight: 1.7, fontSize: '1rem' }}>
+                  {area.body}
+                </Typography>
+              </MotionBox>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
+
+      {/* ---------- LATEST WRITING ---------- */}
+      {posts.length > 0 && (
+        <Box sx={{ borderTop: `1px solid ${hairline}`, backgroundColor: theme.palette.background.paper }}>
+          <Container maxWidth="lg" sx={{ py: { xs: 10, md: 14 } }}>
+            <Stack direction="row" justifyContent="space-between" alignItems="flex-end" sx={{ mb: { xs: 5, md: 7 } }}>
+              <Box>
+                <Box sx={{ mb: 2.5 }}><Eyebrow>From the journal</Eyebrow></Box>
+                <Typography
+                  variant="h2"
+                  sx={{
+                    fontFamily: 'var(--font-fraunces), Georgia, serif',
+                    fontWeight: 600,
+                    fontSize: { xs: '2rem', md: '2.75rem' },
+                    color: theme.palette.text.primary,
+                    letterSpacing: '-0.015em',
+                  }}
+                >
+                  Latest writing
+                </Typography>
+              </Box>
+              <Button
+                component={Link}
+                href="/blog"
+                endIcon={<ArrowForwardIcon />}
+                sx={{ color: theme.palette.text.primary, fontWeight: 600, display: { xs: 'none', sm: 'inline-flex' }, '&:hover': { color: theme.palette.primary.main, backgroundColor: 'transparent' } }}
+              >
+                All posts
+              </Button>
+            </Stack>
+
+            <Box>
+              {posts.map((post, i) => (
+                <MotionBox
+                  key={post.slug || i}
+                  initial="hidden"
+                  whileInView="show"
+                  viewport={{ once: true, margin: '-60px' }}
+                  variants={fadeUp}
+                  custom={i}
+                  component={Link}
+                  href={`/blog/${post.slug}`}
+                  sx={{
+                    display: 'grid',
+                    gridTemplateColumns: { xs: '1fr', md: '160px 1fr auto' },
+                    gap: { xs: 1, md: 4 },
+                    alignItems: 'baseline',
+                    py: { xs: 3, md: 4 },
+                    borderTop: `1px solid ${hairline}`,
+                    borderBottom: i === posts.length - 1 ? `1px solid ${hairline}` : 'none',
+                    textDecoration: 'none',
+                    transition: 'all 0.25s ease',
+                    '&:hover': { backgroundColor: theme.palette.surface.primary },
+                    '&:hover .post-title': { color: theme.palette.primary.main },
+                    px: { xs: 1, md: 2 },
+                  }}
+                >
                   <Typography
-                    variant="body2"
                     sx={{
-                      color: isDark ? 'rgba(148, 163, 184, 0.9)' : theme.palette.text.secondary,
-                      fontFamily: '"JetBrains Mono", monospace',
-                      whiteSpace: 'pre-wrap',
-                      fontSize: '0.8rem',
-                      lineHeight: 1.8,
+                      fontFamily: 'var(--font-mono), monospace',
+                      fontSize: '0.72rem',
+                      letterSpacing: '0.08em',
+                      textTransform: 'uppercase',
+                      color: theme.palette.text.secondary,
                     }}
                   >
-                    {card.content}
+                    {formatDate(post.date || post.publishedAt || post.createdAt)}
                   </Typography>
-                </MotionPaper>
-              </Grid>
-            ))}
-          </Grid>
-        </Container>
+                  <Box>
+                    <Typography
+                      className="post-title"
+                      sx={{
+                        fontFamily: 'var(--font-fraunces), Georgia, serif',
+                        fontWeight: 600,
+                        fontSize: { xs: '1.35rem', md: '1.6rem' },
+                        lineHeight: 1.2,
+                        color: theme.palette.text.primary,
+                        mb: 1,
+                        transition: 'color 0.2s ease',
+                      }}
+                    >
+                      {post.title}
+                    </Typography>
+                    {post.excerpt && (
+                      <Typography sx={{ color: theme.palette.text.secondary, lineHeight: 1.6, fontSize: '0.98rem', maxWidth: 620 }}>
+                        {post.excerpt}
+                      </Typography>
+                    )}
+                  </Box>
+                  <ArrowForwardIcon sx={{ color: theme.palette.text.secondary, display: { xs: 'none', md: 'block' }, fontSize: '1.2rem' }} />
+                </MotionBox>
+              ))}
+            </Box>
+          </Container>
+        </Box>
+      )}
+
+      {/* ---------- SELECTED WORK ---------- */}
+      <Box sx={{ borderTop: `1px solid ${hairline}`, backgroundColor: theme.palette.background.paper }}>
+        <ProjectsSection />
       </Box>
 
-      {/* Timeline Section */}
-      <Box sx={{
-        py: 8,
-        background: isDark
-          ? 'rgba(16, 185, 129, 0.02)'
-          : 'rgba(16, 185, 129, 0.015)',
-        borderTop: `1px solid ${isDark ? 'rgba(16, 185, 129, 0.08)' : 'rgba(16, 185, 129, 0.06)'}`,
-        borderBottom: `1px solid ${isDark ? 'rgba(16, 185, 129, 0.08)' : 'rgba(16, 185, 129, 0.06)'}`,
-      }}>
-        <Timeline events={timelineEvents} />
-      </Box>
-
-      {/* Certifications Section */}
+      {/* ---------- CERTIFICATIONS ---------- */}
       <Certifications />
 
-      {/* Ask AI Teaser Section */}
-      <Box
-        sx={{
-          py: { xs: 8, md: 10 },
-          background: isDark
-            ? 'rgba(6, 182, 212, 0.02)'
-            : 'linear-gradient(180deg, rgba(6, 182, 212, 0.02) 0%, rgba(16, 185, 129, 0.04) 100%)',
-          borderTop: `1px solid ${isDark ? 'rgba(16, 185, 129, 0.08)' : 'rgba(16, 185, 129, 0.06)'}`,
-          borderBottom: `1px solid ${isDark ? 'rgba(16, 185, 129, 0.08)' : 'rgba(16, 185, 129, 0.06)'}`,
-        }}
-      >
+      {/* ---------- ASK AI TEASER ---------- */}
+      <Box sx={{ borderTop: `1px solid ${hairline}`, py: { xs: 10, md: 12 } }}>
         <Container maxWidth="sm">
           <TalkToMyAI variant="teaser" />
         </Container>
       </Box>
 
-      {/* Calendar Booking Section */}
-      <Box
-        sx={{
-          py: 12,
-          background: isDark
-            ? 'rgba(16, 185, 129, 0.02)'
-            : 'linear-gradient(180deg, rgba(16, 185, 129, 0.02) 0%, rgba(16, 185, 129, 0.05) 100%)',
-          borderTop: `1px solid ${isDark ? 'rgba(16, 185, 129, 0.08)' : 'rgba(16, 185, 129, 0.06)'}`,
-          borderBottom: `1px solid ${isDark ? 'rgba(16, 185, 129, 0.08)' : 'rgba(16, 185, 129, 0.06)'}`,
-        }}
-      >
-        <Container maxWidth="lg">
-          <Box sx={{ maxWidth: '800px', mx: 'auto', textAlign: 'center', mb: 8 }}>
-            <Typography
-              variant="h3"
-              sx={{
-                mb: 3,
-                fontWeight: 700,
-                fontFamily: '"Space Grotesk", sans-serif',
-                color: theme.palette.text.primary,
-                position: 'relative',
-                '&::after': {
-                  content: '""',
-                  position: 'absolute',
-                  bottom: -16,
-                  left: '50%',
-                  transform: 'translateX(-50%)',
-                  width: 80,
-                  height: 3,
-                  background: theme.palette.background.gradientAccent,
-                  borderRadius: 2,
-                  boxShadow: isDark ? '0 0 10px rgba(0, 237, 100, 0.3)' : 'none',
-                },
-              }}
-            >
-              Schedule a Meeting
-            </Typography>
-            <Typography
-              variant="h6"
-              sx={{
-                color: theme.palette.text.secondary,
-                lineHeight: 1.8,
-                mb: 2,
-              }}
-            >
-              Book a time to discuss your project, collaboration opportunities, or just to chat about technology.
-            </Typography>
-            <Typography
-              variant="body1"
-              sx={{
-                color: theme.palette.text.secondary,
-                opacity: 0.8,
-              }}
-            >
-              Select a convenient time slot from my calendar below. Looking forward to connecting with you!
-            </Typography>
-          </Box>
+      {/* ---------- GITHUB + VIDEOS ---------- */}
+      <Container maxWidth="lg" sx={{ py: { xs: 8, md: 10 } }}>
+        <GitHubActivity />
+        <Box sx={{ mt: { xs: 8, md: 12 } }}>
+          <VideosSection />
+        </Box>
+      </Container>
 
-          <Box
-            sx={{
-              position: 'relative',
-              '&::before': {
-                content: '""',
-                position: 'absolute',
-                top: -20,
-                left: -20,
-                right: -20,
-                bottom: -20,
-                background: isDark
-                  ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.06) 0%, rgba(6, 182, 212, 0.04) 100%)'
-                  : 'linear-gradient(135deg, rgba(16, 185, 129, 0.04) 0%, rgba(6, 182, 212, 0.03) 100%)',
-                borderRadius: '24px',
-                zIndex: 0,
-              },
-            }}
-          >
-            <Paper
-              elevation={0}
-              sx={{
-                position: 'relative',
-                zIndex: 1,
-                borderRadius: '16px',
-                overflow: 'hidden',
-                backgroundColor: 'white',
-                boxShadow: isDark
-                  ? '0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(16, 185, 129, 0.08)'
-                  : '0 8px 32px rgba(0,0,0,0.08)',
-                border: `1px solid ${isDark ? 'rgba(16, 185, 129, 0.1)' : 'rgba(16, 185, 129, 0.06)'}`,
-              }}
-            >
-              <CalendarBooking variant="iframe" />
-            </Paper>
+      {/* ---------- SCHEDULE ---------- */}
+      <Box sx={{ borderTop: `1px solid ${hairline}`, backgroundColor: theme.palette.background.paper, py: { xs: 10, md: 14 } }}>
+        <Container maxWidth="lg">
+          <SectionHeading
+            align="center"
+            eyebrow="Let's talk"
+            title="Have something to build or discuss?"
+            intro="Book a time and we can dig into your project, a collaboration, or whatever's on your mind."
+          />
+          <Box sx={{ maxWidth: 900, mx: 'auto', borderRadius: '10px', overflow: 'hidden', border: `1px solid ${hairline}`, boxShadow: theme.shadows[4] }}>
+            <CalendarBooking variant="iframe" />
           </Box>
         </Container>
       </Box>
-
-      <Container maxWidth="lg" sx={{ py: 8 }}>
-        <ProjectsSection />
-        <GitHubActivity />
-        <VideosSection />
-      </Container>
     </Box>
   );
 }

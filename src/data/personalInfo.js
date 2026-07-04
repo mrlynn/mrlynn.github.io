@@ -1,9 +1,9 @@
 export const personalInfo = {
   name: 'Michael Lynn',
-  currentRole: 'Principal Developer Advocate',
-  company: 'MongoDB',
-  tenure: '2018-present',
-  bio: 'I help developers and teams adopt modern data platforms and AI-driven tools. With 15+ years in tech, I turn complex ideas into clear talks, open-source projects, and hands-on workshops that move the industry forward.',
+  currentRole: 'AI Adoption Engineer',
+  company: 'Cursor',
+  tenure: '2026-present',
+  bio: 'I help developers and teams adopt AI-driven tools and modern data platforms. As an AI Adoption Engineer at Cursor, I create and present workshops and AI education programs. With 15+ years in tech, I turn complex ideas into clear talks, open-source projects, and hands-on workshops that move the industry forward.',
   titles: [
     'Developer Advocate',
     'Technical Advisor',
@@ -18,7 +18,8 @@ export const personalInfo = {
     { role: 'Senior Software Consultant', company: 'BMC Software', period: '2010-2013', description: 'Led pre-sales consulting team, demonstrated server automation and cloud computing solutions bridging business and IT.' },
     { role: 'Solutions Consultant', company: 'Medallia', period: '2013-2015', description: 'Led teams in pre-sales and resell partnerships, developed custom solutions and demonstrations across various industries.' },
     { role: 'Senior Solutions Architect', company: 'MongoDB', period: '2016-2018', description: 'Guided customers in designing scalable systems, led proof of concepts, and developed enablement content for technical teams.' },
-    { role: 'Principal Developer Advocate', company: 'MongoDB', period: '2018-present', description: 'Focused on developer enablement for Data Modeling, AI, MongoDB Atlas, and Vector Search. Creates labs, workshops, and training programs for practical technology implementation.' },
+    { role: 'Principal Developer Advocate', company: 'MongoDB', period: '2018-2026', description: 'Focused on developer enablement for Data Modeling, AI, MongoDB Atlas, and Vector Search. Creates labs, workshops, and training programs for practical technology implementation.' },
+    { role: 'AI Adoption Engineer', company: 'Cursor', period: '2026-present', description: 'Creates and presents workshops and AI education programs, helping engineering teams and developers adopt AI-assisted development and get the most out of Cursor.' },
   ],
   stats: {
     yearsExperience: '15+',

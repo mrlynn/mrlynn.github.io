@@ -29,13 +29,34 @@ const BlogCard = ({ post }) => {
           sx={{ objectFit: 'cover' }}
         />
         <CardContent sx={{ flexGrow: 1 }}>
-          <Typography variant="h6" component="h2" gutterBottom>
+          <Typography
+            variant="h6"
+            component="h2"
+            gutterBottom
+            sx={{
+              fontFamily: 'var(--font-fraunces), Georgia, serif',
+              fontWeight: 600,
+              fontSize: '1.3rem',
+              lineHeight: 1.2,
+              letterSpacing: '-0.01em',
+            }}
+          >
             {title}
           </Typography>
-          <Typography variant="body2" color="text.secondary" gutterBottom>
+          <Typography
+            variant="body2"
+            gutterBottom
+            sx={{
+              fontFamily: 'var(--font-mono), monospace',
+              fontSize: '0.72rem',
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase',
+              color: 'text.secondary',
+            }}
+          >
             {format(new Date(date), 'MMMM d, yyyy')}
           </Typography>
-          <Typography variant="body2" color="text.secondary" paragraph>
+          <Typography variant="body2" color="text.secondary" paragraph sx={{ mt: 1 }}>
             {description}
           </Typography>
           <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
@@ -44,7 +65,14 @@ const BlogCard = ({ post }) => {
                 key={tag}
                 label={tag}
                 size="small"
-                sx={{ backgroundColor: 'primary.light', color: 'primary.contrastText' }}
+                variant="outlined"
+                sx={{
+                  backgroundColor: 'transparent',
+                  borderColor: 'border.default',
+                  color: 'text.secondary',
+                  fontFamily: 'var(--font-mono), monospace',
+                  fontSize: '0.68rem',
+                }}
               />
             ))}
           </Box>

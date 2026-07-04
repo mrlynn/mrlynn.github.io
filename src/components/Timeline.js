@@ -6,8 +6,10 @@ import { Box, Container, Grid, Typography, Card, CardMedia, CardContent, CardAct
 import Image from 'next/image';
 import styles from './Timeline.module.css';
 
-const getCompanyLogo = (company) => {
+const getCompanyLogo = (company, isDark = false) => {
   const logoMap = {
+    // Cursor's mark is monochrome — pick the variant that reads on the card
+    'Cursor': isDark ? '/images/cursor-logo-white.png' : '/images/cursor-logo-dark.png',
     'MongoDB': '/images/mongodb.svg',
     'Medallia': '/images/medallia.svg',
     'BMC Software': '/images/bmc.svg',
@@ -17,7 +19,7 @@ const getCompanyLogo = (company) => {
   return logoMap[company] || null;
 };
 
-const Timeline = ({ events }) => {
+const Timeline = ({ events, heading }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const theme = useTheme();
@@ -41,20 +43,22 @@ const Timeline = ({ events }) => {
 
   return (
     <div className={styles.timelineContainer}>
-      <Typography
-        variant="h2"
-        component="h2"
-        align="center"
-        gutterBottom
-        sx={{
-          mb: 6,
-          background: theme.palette.background.gradient,
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-        }}
-      >
-        Professional Timeline
-      </Typography>
+      {heading && (
+        <Typography
+          variant="h2"
+          component="h2"
+          align="center"
+          gutterBottom
+          sx={{
+            mb: 6,
+            fontFamily: 'var(--font-fraunces), Georgia, serif',
+            fontWeight: 600,
+            color: theme.palette.text.primary,
+          }}
+        >
+          {heading}
+        </Typography>
+      )}
       <div className={styles.timelineWrapper}>
         <div className={styles.timelineTrack}>
           {reversedEvents.map((event, index) => (
@@ -77,10 +81,10 @@ const Timeline = ({ events }) => {
                 )}
               </div>
               <div className={styles.content}>
-                {getCompanyLogo(event.company) && (
+                {getCompanyLogo(event.company, isDark) && (
                   <div className={styles.logoContainer}>
                     <Image
-                      src={getCompanyLogo(event.company)}
+                      src={getCompanyLogo(event.company, isDark)}
                       alt={`${event.company} logo`}
                       width={120}
                       height={40}

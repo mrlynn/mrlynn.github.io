@@ -18,8 +18,8 @@ export default function ProjectsSection() {
       sx={{
         py: 12,
         background: isDark
-          ? 'radial-gradient(circle at center, rgba(16, 185, 129, 0.06) 0%, transparent 70%)'
-          : 'radial-gradient(circle at center, rgba(16, 185, 129, 0.04) 0%, transparent 70%)',
+          ? 'radial-gradient(circle at center, rgba(217, 98, 43, 0.06) 0%, transparent 70%)'
+          : 'radial-gradient(circle at center, rgba(217, 98, 43, 0.04) 0%, transparent 70%)',
       }}
     >
       <Container maxWidth="lg">
@@ -30,11 +30,10 @@ export default function ProjectsSection() {
           gutterBottom
           sx={{
             mb: 6,
-            fontWeight: 700,
-            fontFamily: '"Space Grotesk", sans-serif',
-            background: theme.palette.background.gradientAccent,
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
+            fontWeight: 600,
+            fontFamily: 'var(--font-fraunces), Georgia, serif',
+            color: theme.palette.text.primary,
+            letterSpacing: '-0.015em',
           }}
         >
           Featured Projects
@@ -59,9 +58,9 @@ export default function ProjectsSection() {
                   transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                   '&:hover': {
                     transform: 'translateY(-8px)',
-                    borderColor: isDark ? 'rgba(16, 185, 129, 0.25)' : theme.palette.border.default,
+                    borderColor: isDark ? 'rgba(217, 98, 43, 0.25)' : theme.palette.border.default,
                     boxShadow: isDark
-                      ? '0 8px 24px rgba(0,0,0,0.3), 0 0 15px rgba(16, 185, 129, 0.08)'
+                      ? '0 8px 24px rgba(0,0,0,0.3), 0 0 15px rgba(217, 98, 43, 0.08)'
                       : theme.shadows[8],
                   },
                 }}
@@ -74,7 +73,7 @@ export default function ProjectsSection() {
                     alt={project.title}
                     sx={{
                       objectFit: 'cover',
-                      borderBottom: `1px solid ${isDark ? 'rgba(16, 185, 129, 0.1)' : 'rgba(16, 185, 129, 0.06)'}`,
+                      borderBottom: `1px solid ${isDark ? 'rgba(217, 98, 43, 0.1)' : 'rgba(217, 98, 43, 0.06)'}`,
                       filter: project.private ? 'brightness(0.7)' : 'none',
                     }}
                   />
@@ -109,7 +108,7 @@ export default function ProjectsSection() {
                     gutterBottom
                     sx={{
                       color: theme.palette.text.primary,
-                      fontFamily: '"Space Grotesk", sans-serif',
+                      fontFamily: 'var(--font-fraunces), Georgia, serif',
                       fontWeight: 600,
                     }}
                   >
@@ -132,7 +131,7 @@ export default function ProjectsSection() {
                         sx={{
                           m: 0.5,
                           fontSize: { xs: '0.7rem', sm: '0.8rem' },
-                          fontFamily: '"JetBrains Mono", monospace',
+                          fontFamily: 'var(--font-mono), monospace',
                           height: { xs: 24, sm: 28 },
                         }}
                       />
@@ -176,7 +175,7 @@ export default function ProjectsSection() {
             size="large"
             endIcon={<ArrowForwardIcon />}
             sx={{
-              borderColor: isDark ? 'rgba(16, 185, 129, 0.3)' : theme.palette.border.default,
+              borderColor: isDark ? 'rgba(217, 98, 43, 0.3)' : theme.palette.border.default,
               borderWidth: '1.5px',
               color: theme.palette.text.primary,
               px: 4,
@@ -188,11 +187,11 @@ export default function ProjectsSection() {
                 borderWidth: '1.5px',
                 borderColor: theme.palette.primary.main,
                 backgroundColor: isDark
-                  ? 'rgba(16, 185, 129, 0.08)'
-                  : 'rgba(16, 185, 129, 0.04)',
+                  ? 'rgba(217, 98, 43, 0.08)'
+                  : 'rgba(217, 98, 43, 0.04)',
                 transform: 'translateY(-2px)',
                 boxShadow: isDark
-                  ? '0 4px 16px rgba(16, 185, 129, 0.15)'
+                  ? '0 4px 16px rgba(217, 98, 43, 0.15)'
                   : theme.shadows[4],
               },
             }}

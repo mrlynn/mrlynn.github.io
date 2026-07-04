@@ -1,4 +1,4 @@
-import { Space_Grotesk } from 'next/font/google';
+import { Fraunces, Inter, JetBrains_Mono } from 'next/font/google';
 import { ThemeProvider } from '../theme/ThemeContext';
 import Layout from '../components/Layout';
 import ErrorBoundary from '../components/ErrorBoundary';
@@ -6,17 +6,31 @@ import './globals.css';
 import Script from 'next/script';
 import { GA_TRACKING_ID } from '../lib/analytics';
 
-const spaceGrotesk = Space_Grotesk({
+// Editorial display serif — characterful, optical-sized
+const fraunces = Fraunces({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-space-grotesk',
-  adjustFontFallback: false,
+  variable: '--font-fraunces',
+});
+
+// Clean, neutral body & UI sans
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+});
+
+// Mono for labels, metadata, and code
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-mono',
 });
 
 export const metadata = {
   metadataBase: new URL('https://mlynn.org'),
-  title: 'Michael Lynn - Creative Developer',
-  description: 'Pushing the boundaries of web development with innovative solutions and creative coding',
+  title: 'Michael Lynn — AI Adoption Engineer, Developer Advocate & Advisor',
+  description: 'AI Adoption Engineer at Cursor. I help developers and teams build with AI and modern data platforms — talks, open-source projects, writing, and hands-on workshops from 15+ years in tech.',
   authors: [{ name: 'Michael Lynn' }],
   creator: 'Michael Lynn',
   publisher: 'Michael Lynn',
@@ -66,7 +80,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={spaceGrotesk.variable}>
+    <html lang="en" className={`${fraunces.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/letter-m.svg" type="image/svg+xml" />

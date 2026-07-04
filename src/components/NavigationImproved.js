@@ -109,7 +109,7 @@ const NavigationImproved = () => {
         elevation={0}
         sx={{
           background: isDarkMode
-            ? 'rgba(3, 7, 18, 0.88)'
+            ? 'rgba(20, 18, 14, 0.88)'
             : 'rgba(255, 255, 255, 0.88)',
           backdropFilter: 'blur(20px) saturate(180%)',
           WebkitBackdropFilter: 'blur(20px) saturate(180%)',
@@ -126,8 +126,8 @@ const NavigationImproved = () => {
             right: 0,
             height: '1px',
             background: isDarkMode
-              ? 'linear-gradient(90deg, transparent 0%, rgba(0, 237, 100, 0.4) 20%, rgba(16, 185, 129, 0.6) 50%, rgba(6, 182, 212, 0.4) 80%, transparent 100%)'
-              : 'linear-gradient(90deg, transparent 0%, rgba(16, 185, 129, 0.5) 50%, transparent 100%)',
+              ? 'linear-gradient(90deg, transparent 0%, rgba(232, 121, 74, 0.4) 20%, rgba(217, 98, 43, 0.6) 50%, rgba(199, 154, 58, 0.4) 80%, transparent 100%)'
+              : 'linear-gradient(90deg, transparent 0%, rgba(217, 98, 43, 0.5) 50%, transparent 100%)',
             opacity: 1,
           },
         }}
@@ -162,12 +162,12 @@ const NavigationImproved = () => {
                   alignItems: 'center',
                   justifyContent: 'center',
                   boxShadow: isDarkMode
-                    ? '0 0 12px rgba(0, 237, 100, 0.3)'
+                    ? '0 0 12px rgba(232, 121, 74, 0.3)'
                     : theme.shadows[2],
                   transition: 'all 0.3s',
                   '&:hover': {
                     boxShadow: isDarkMode
-                      ? '0 0 20px rgba(0, 237, 100, 0.5)'
+                      ? '0 0 20px rgba(232, 121, 74, 0.5)'
                       : theme.shadows[4],
                     transform: 'rotate(-5deg)',
                   },
@@ -183,6 +183,20 @@ const NavigationImproved = () => {
                   }}
                 />
               </Box>
+              <Typography
+                component="span"
+                sx={{
+                  ml: 1.5,
+                  fontFamily: 'var(--font-fraunces), Georgia, serif',
+                  fontWeight: 600,
+                  fontSize: '1.15rem',
+                  letterSpacing: '-0.01em',
+                  color: theme.palette.text.primary,
+                  display: { xs: 'none', sm: 'block' },
+                }}
+              >
+                Michael Lynn
+              </Typography>
             </MotionBox>
 
             {/* Desktop Navigation */}
@@ -220,13 +234,13 @@ const NavigationImproved = () => {
                           borderRadius: '2px',
                           transition: 'all 0.3s',
                           boxShadow: isActive && isDarkMode
-                            ? '0 0 8px rgba(0, 237, 100, 0.4)'
+                            ? '0 0 8px rgba(232, 121, 74, 0.4)'
                             : 'none',
                         },
                         '&:hover': {
                           background: isDarkMode
-                            ? 'rgba(16, 185, 129, 0.08)'
-                            : 'rgba(16, 185, 129, 0.05)',
+                            ? 'rgba(217, 98, 43, 0.08)'
+                            : 'rgba(217, 98, 43, 0.05)',
                           color: theme.palette.primary.main,
                           transform: 'translateY(-1px)',
                           '&::before': {
@@ -257,8 +271,8 @@ const NavigationImproved = () => {
                     transition: 'all 0.2s',
                     '&:hover': {
                       background: isDarkMode
-                        ? 'rgba(16, 185, 129, 0.08)'
-                        : 'rgba(16, 185, 129, 0.05)',
+                        ? 'rgba(217, 98, 43, 0.08)'
+                        : 'rgba(217, 98, 43, 0.05)',
                       transform: 'translateY(-1px)',
                     },
                   }}
@@ -281,7 +295,7 @@ const NavigationImproved = () => {
                       border: `1px solid ${theme.palette.border.subtle}`,
                       boxShadow: isDarkMode ? theme.shadows[8] : theme.shadows[4],
                       background: isDarkMode
-                        ? 'rgba(3, 7, 18, 0.95)'
+                        ? 'rgba(20, 18, 14, 0.95)'
                         : theme.palette.background.paper,
                       backdropFilter: 'blur(20px)',
                       overflow: 'visible',
@@ -293,7 +307,7 @@ const NavigationImproved = () => {
                         right: 14,
                         width: 10,
                         height: 10,
-                        bgcolor: isDarkMode ? 'rgba(3, 7, 18, 0.95)' : theme.palette.background.paper,
+                        bgcolor: isDarkMode ? 'rgba(20, 18, 14, 0.95)' : theme.palette.background.paper,
                         transform: 'translateY(-50%) rotate(45deg)',
                         borderLeft: `1px solid ${theme.palette.border.subtle}`,
                         borderTop: `1px solid ${theme.palette.border.subtle}`,
@@ -316,7 +330,7 @@ const NavigationImproved = () => {
                               letterSpacing: '0.1em',
                               py: 0.75,
                               px: 2,
-                              fontFamily: '"JetBrains Mono", monospace',
+                              fontFamily: 'var(--font-mono), monospace',
                               opacity: '0.8 !important',
                             }}
                           >
@@ -337,17 +351,17 @@ const NavigationImproved = () => {
                                 mx: 1,
                                 '&:hover': {
                                   background: isDarkMode
-                                    ? 'rgba(16, 185, 129, 0.1)'
-                                    : 'rgba(16, 185, 129, 0.06)',
+                                    ? 'rgba(217, 98, 43, 0.1)'
+                                    : 'rgba(217, 98, 43, 0.06)',
                                 },
                                 '&.Mui-selected': {
                                   background: isDarkMode
-                                    ? 'rgba(16, 185, 129, 0.15)'
-                                    : 'rgba(16, 185, 129, 0.1)',
+                                    ? 'rgba(217, 98, 43, 0.15)'
+                                    : 'rgba(217, 98, 43, 0.1)',
                                   '&:hover': {
                                     background: isDarkMode
-                                      ? 'rgba(16, 185, 129, 0.18)'
-                                      : 'rgba(16, 185, 129, 0.12)',
+                                      ? 'rgba(217, 98, 43, 0.18)'
+                                      : 'rgba(217, 98, 43, 0.12)',
                                   },
                                 },
                               }}
@@ -375,17 +389,17 @@ const NavigationImproved = () => {
                             mx: 1,
                             '&:hover': {
                               background: isDarkMode
-                                ? 'rgba(16, 185, 129, 0.1)'
-                                : 'rgba(16, 185, 129, 0.06)',
+                                ? 'rgba(217, 98, 43, 0.1)'
+                                : 'rgba(217, 98, 43, 0.06)',
                             },
                             '&.Mui-selected': {
                               background: isDarkMode
-                                ? 'rgba(16, 185, 129, 0.15)'
-                                : 'rgba(16, 185, 129, 0.1)',
+                                ? 'rgba(217, 98, 43, 0.15)'
+                                : 'rgba(217, 98, 43, 0.1)',
                               '&:hover': {
                                 background: isDarkMode
-                                  ? 'rgba(16, 185, 129, 0.18)'
-                                  : 'rgba(16, 185, 129, 0.12)',
+                                  ? 'rgba(217, 98, 43, 0.18)'
+                                  : 'rgba(217, 98, 43, 0.12)',
                               },
                             },
                           }}
@@ -417,15 +431,15 @@ const NavigationImproved = () => {
                     ml: 1.5,
                     borderRadius: '10px',
                     transition: 'all 0.2s',
-                    border: `1px solid ${isDarkMode ? 'rgba(16, 185, 129, 0.15)' : 'rgba(16, 185, 129, 0.2)'}`,
+                    border: `1px solid ${isDarkMode ? 'rgba(217, 98, 43, 0.15)' : 'rgba(217, 98, 43, 0.2)'}`,
                     '&:hover': {
                       background: isDarkMode
-                        ? 'rgba(16, 185, 129, 0.12)'
-                        : 'rgba(16, 185, 129, 0.08)',
+                        ? 'rgba(217, 98, 43, 0.12)'
+                        : 'rgba(217, 98, 43, 0.08)',
                       borderColor: theme.palette.primary.main,
                       transform: 'rotate(15deg) scale(1.05)',
                       boxShadow: isDarkMode
-                        ? '0 0 12px rgba(0, 237, 100, 0.2)'
+                        ? '0 0 12px rgba(232, 121, 74, 0.2)'
                         : 'none',
                     },
                   }}
@@ -447,11 +461,11 @@ const NavigationImproved = () => {
                   sx={{
                     borderRadius: '10px',
                     transition: 'all 0.2s',
-                    border: `1px solid ${isDarkMode ? 'rgba(16, 185, 129, 0.15)' : 'rgba(16, 185, 129, 0.2)'}`,
+                    border: `1px solid ${isDarkMode ? 'rgba(217, 98, 43, 0.15)' : 'rgba(217, 98, 43, 0.2)'}`,
                     '&:hover': {
                       background: isDarkMode
-                        ? 'rgba(16, 185, 129, 0.12)'
-                        : 'rgba(16, 185, 129, 0.08)',
+                        ? 'rgba(217, 98, 43, 0.12)'
+                        : 'rgba(217, 98, 43, 0.08)',
                       transform: 'rotate(15deg)',
                     },
                   }}
@@ -471,8 +485,8 @@ const NavigationImproved = () => {
                     transition: 'all 0.2s',
                     '&:hover': {
                       background: isDarkMode
-                        ? 'rgba(16, 185, 129, 0.1)'
-                        : 'rgba(16, 185, 129, 0.06)',
+                        ? 'rgba(217, 98, 43, 0.1)'
+                        : 'rgba(217, 98, 43, 0.06)',
                       borderColor: theme.palette.primary.main,
                     },
                   }}
@@ -495,7 +509,7 @@ const NavigationImproved = () => {
           '& .MuiDrawer-paper': {
             width: 300,
             background: isDarkMode
-              ? 'rgba(3, 7, 18, 0.98)'
+              ? 'rgba(20, 18, 14, 0.98)'
               : theme.palette.background.paper,
             backdropFilter: 'blur(20px)',
             borderLeft: `1px solid ${theme.palette.border.subtle}`,
@@ -512,7 +526,7 @@ const NavigationImproved = () => {
           }}>
             <Typography
               sx={{
-                fontFamily: '"JetBrains Mono", monospace',
+                fontFamily: 'var(--font-mono), monospace',
                 fontSize: '0.7rem',
                 color: theme.palette.primary.main,
                 letterSpacing: '0.1em',
@@ -537,16 +551,16 @@ const NavigationImproved = () => {
                     transition: 'all 0.2s',
                     background: isActive
                       ? isDarkMode
-                        ? 'rgba(16, 185, 129, 0.12)'
-                        : 'rgba(16, 185, 129, 0.08)'
+                        ? 'rgba(217, 98, 43, 0.12)'
+                        : 'rgba(217, 98, 43, 0.08)'
                       : 'transparent',
                     borderLeft: isActive
                       ? `2px solid ${theme.palette.primary.main}`
                       : '2px solid transparent',
                     '&:hover': {
                       background: isDarkMode
-                        ? 'rgba(16, 185, 129, 0.08)'
-                        : 'rgba(16, 185, 129, 0.05)',
+                        ? 'rgba(217, 98, 43, 0.08)'
+                        : 'rgba(217, 98, 43, 0.05)',
                       transform: 'translateX(4px)',
                     },
                   }}
