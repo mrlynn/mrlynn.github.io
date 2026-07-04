@@ -48,7 +48,7 @@ const CalendarBooking = ({ variant = 'button', buttonProps = {} }) => {
   useEffect(() => {
     if (isScriptLoaded && variant === 'button' && window.calendar?.schedulingButton && containerRef.current) {
       window.calendar.schedulingButton.load({
-        url: 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ22pDnyxL4HQX5BuG5tS9zzj3z58zaoB2oqDwHUl2rfBKM5O6oJ2MnHzVKSBaHOW23TKtvQ1_6I?gv=true',
+        url: 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ2QFBjXXlNk5fK-AeYLAkGBdT6tKZnmS0wtU5sVWtW4DPl5iajADiMFwa5zggu6yrJL2e7lKGS5?gv=true',
         color: '#fff',
         label: buttonProps.children || 'Schedule a Meeting',
         target: containerRef.current,
@@ -97,7 +97,7 @@ const CalendarBooking = ({ variant = 'button', buttonProps = {} }) => {
         }}
       >
         <iframe 
-          src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ22pDnyxL4HQX5BuG5tS9zzj3z58zaoB2oqDwHUl2rfBKM5O6oJ2MnHzVKSBaHOW23TKtvQ1_6I?gv=true" 
+          src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ2QFBjXXlNk5fK-AeYLAkGBdT6tKZnmS0wtU5sVWtW4DPl5iajADiMFwa5zggu6yrJL2e7lKGS5?gv=true" 
           style={{ 
             border: 0, 
             width: '100%', 

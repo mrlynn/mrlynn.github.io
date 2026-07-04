@@ -25,9 +25,9 @@ export default function Section({ title, subtitle, children }) {
           sx={{
             fontSize: { xs: '2rem', md: '2.5rem' },
             fontWeight: 600,
-            background: theme.palette.background.gradient,
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
+            fontFamily: 'var(--font-fraunces), Georgia, serif',
+            color: theme.palette.text.primary,
+            letterSpacing: '-0.015em',
           }}
         >
           {title}

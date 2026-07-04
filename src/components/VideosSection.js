@@ -57,9 +57,9 @@ export default function VideosSection() {
               sx={{
                 fontSize: { xs: '2rem', md: '3rem' },
                 fontWeight: 600,
-                background: theme.palette.background.gradient,
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
+                fontFamily: 'var(--font-fraunces), Georgia, serif',
+                color: theme.palette.text.primary,
+                letterSpacing: '-0.015em',
                 mb: 2,
               }}
             >

@@ -16,11 +16,11 @@ export default function GitHubActivity() {
   // Theme with exactly 5 colors for dark mode
   const colorTheme = {
     dark: [
-      '#141414', // No contributions
-      '#0a4208', // Level 1
-      '#047526', // Level 2
-      '#45a045', // Level 3
-      '#39dd34', // Level 4
+      '#211d16', // No contributions
+      '#652c15', // Level 1
+      '#9c3e15', // Level 2
+      '#be4e1c', // Level 3
+      '#e8794a', // Level 4
     ]
   };
 

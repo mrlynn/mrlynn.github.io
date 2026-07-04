@@ -27,12 +27,12 @@ export default function PageHeader({ title, subtitle, align = 'center', maxWidth
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           sx={{
+            fontFamily: 'var(--font-fraunces), Georgia, serif',
             fontSize: { xs: '2.5rem', sm: '3rem', md: '3.75rem' },
             fontWeight: 600,
+            letterSpacing: '-0.02em',
             mb: 2,
-            background: (theme) => theme.palette.background.gradient,
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
+            color: (theme) => theme.palette.text.primary,
           }}
         >
           {title}

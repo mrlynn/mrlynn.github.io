@@ -25,6 +25,13 @@ const coreStrengths = [
   'Technical Enablement & Workshop Design',
 ];
 
+const cursorResponsibilities = [
+  'Create and present hands-on workshops that teach engineering teams how to adopt AI-assisted development workflows with Cursor',
+  'Build AI education and enablement programs — curricula, labs, and live sessions — that accelerate developer proficiency and adoption',
+  'Partner with engineering organizations to integrate AI-native tooling into their existing SDLC and day-to-day development practices',
+  'Translate real-world adoption patterns and developer feedback into improved enablement content and product insight',
+];
+
 const mongodbPrincipalResponsibilities = [
   'Partner with VP Engineering and CTO stakeholders to align AI and data platform adoption with business and engineering objectives',
   'Design and deliver Developer Day programs used globally to drive hands-on product adoption and usage growth',
@@ -110,6 +117,7 @@ const technicalSkills = {
     'Prompt Engineering',
   ],
   'Development': [
+    'Cursor',
     'JavaScript',
     'Node.js',
     'Python',
@@ -149,9 +157,9 @@ export default function Resume() {
   const paperStyle = {
     p: { xs: 2, sm: 3 },
     mb: { xs: 2, sm: 3 },
-    background: isDark ? 'rgba(6, 39, 54, 0.9)' : 'rgba(255, 255, 255, 0.9)',
-    backdropFilter: 'blur(10px)',
-    border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
+    background: theme.palette.background.paper,
+    backgroundImage: 'none',
+    border: `1px solid ${theme.palette.border.subtle}`,
     color: theme.palette.text.primary,
   };
 
@@ -159,6 +167,9 @@ export default function Resume() {
     variant: 'h5',
     gutterBottom: true,
     sx: {
+      fontFamily: 'var(--font-fraunces), Georgia, serif',
+      fontWeight: 600,
+      letterSpacing: '-0.01em',
       fontSize: { xs: '1.5rem', sm: '1.75rem' },
       color: theme.palette.text.primary,
     },
@@ -256,7 +267,7 @@ export default function Resume() {
             ))}
           </Stack>
           <Typography variant="h6" gutterBottom sx={{ fontWeight: 600, color: theme.palette.text.primary }}>
-            Enterprise AI Deployment & Developer Productivity Leader
+            AI Adoption Engineer & Developer Productivity Leader
           </Typography>
           <Typography
             variant="body1"
@@ -266,7 +277,7 @@ export default function Resume() {
               color: theme.palette.text.primary,
             }}
           >
-            Enterprise AI DevRel leader helping engineering organizations adopt intelligent developer tooling at scale. 25+ years of experience across software engineering, infrastructure, enterprise architecture, and developer platforms. Currently driving strategic AI adoption at MongoDB for priority enterprise accounts in financial services, healthcare, and retail. Trusted partner to VP Engineering and CTO stakeholders on rollout strategy, developer enablement, and measurable productivity outcomes.
+            AI Adoption Engineer at Cursor, creating and presenting workshops and AI education programs that help engineering teams adopt AI-assisted development. 25+ years across software engineering, infrastructure, enterprise architecture, and developer platforms — including nearly a decade driving developer enablement and AI adoption at MongoDB. Trusted partner to VP Engineering and CTO stakeholders on rollout strategy, developer enablement, and measurable productivity outcomes.
           </Typography>
         </MotionPaper>
 
@@ -297,6 +308,31 @@ export default function Resume() {
               </Stack>
             </MotionPaper>
 
+            {/* Cursor Experience */}
+            <MotionPaper
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.08 }}
+              sx={paperStyle}
+            >
+              <Typography {...sectionTitleProps}>Cursor (Anysphere)</Typography>
+              <Typography
+                variant="subtitle1"
+                gutterBottom
+                sx={{ fontSize: { xs: '0.875rem', sm: '1rem' }, color: theme.palette.text.secondary }}
+              >
+                Remote | 2026 - Present
+              </Typography>
+
+              <Typography variant="h6" sx={{ mt: 2, mb: 1, fontSize: '1.1rem' }}>
+                AI Adoption Engineer
+              </Typography>
+              <Typography variant="body2" paragraph sx={{ color: theme.palette.text.primary }}>
+                Create and present workshops and AI education programs that help engineering teams and developers adopt AI-assisted development with Cursor.
+              </Typography>
+              {renderListItems(cursorResponsibilities)}
+            </MotionPaper>
+
             {/* MongoDB Experience */}
             <MotionPaper
               initial={{ opacity: 0, y: 20 }}
@@ -310,14 +346,14 @@ export default function Resume() {
                 gutterBottom
                 sx={{ fontSize: { xs: '0.875rem', sm: '1rem' }, color: theme.palette.text.secondary }}
               >
-                Philadelphia, PA | 10+ Years
+                Philadelphia, PA | 2016 - 2026 (10 Years)
               </Typography>
 
               <Typography variant="h6" sx={{ mt: 2, mb: 1, fontSize: '1.1rem' }}>
                 Principal Staff Developer Advocate — Manager, Strategic Developer Relations
               </Typography>
               <Typography variant="body2" paragraph sx={{ color: theme.palette.text.primary }}>
-                Lead AI adoption and developer enablement for MongoDB&apos;s priority enterprise accounts across financial services, healthcare, and retail.
+                Led AI adoption and developer enablement for MongoDB&apos;s priority enterprise accounts across financial services, healthcare, and retail.
               </Typography>
               {renderListItems(mongodbPrincipalResponsibilities)}
 

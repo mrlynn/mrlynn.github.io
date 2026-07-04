@@ -7,10 +7,24 @@ const MotionPaper = motion(Paper);
 
 const experiences = [
   {
+    title: 'AI Adoption Engineer',
+    company: 'Cursor (Anysphere)',
+    location: 'Remote',
+    period: '2026 - Present',
+    description: 'Helping engineering teams and developers adopt AI-assisted development — designing and presenting workshops and AI education programs that turn Cursor into an everyday productivity multiplier.',
+    highlights: 'AI Education, Enablement & Workshops',
+    responsibilities: [
+      'Create and present hands-on workshops that teach engineering teams how to adopt AI-assisted development workflows with Cursor',
+      'Build AI education and enablement programs — curricula, labs, and live sessions — that accelerate developer proficiency and adoption',
+      'Partner with engineering organizations to integrate AI-native tooling into their existing SDLC and day-to-day development practices',
+      'Translate real-world adoption patterns and developer feedback into improved enablement content and product insight',
+    ],
+  },
+  {
     title: 'Principal Developer Advocate, Instructional Developer Advocacy Team',
     company: 'MongoDB',
     location: 'New York City Metropolitan Area',
-    period: 'Mar 2018 - Present',
+    period: 'Mar 2018 - 2026',
     description: 'Leading enterprise developer enablement and AI strategy, empowering Fortune 500 development teams to build production-scale AI applications on modern data platforms.',
     highlights: 'Enterprise Developer Enablement & AI Strategy',
     responsibilities: [
@@ -175,7 +189,7 @@ export default function Resume() {
             fontWeight: 400,
           }}
         >
-          MongoDB Expert & AI-Driven Developer Advocate with 10+ years empowering enterprise development teams
+          AI Adoption Engineer at Cursor & developer-enablement leader with 15+ years helping enterprise teams build with AI and modern data platforms
         </Typography>
       </Box>
 
@@ -484,19 +498,19 @@ export default function Resume() {
                         sx={{
                           background: isDark 
                             ? 'linear-gradient(135deg, rgba(0, 104, 94, 0.3) 0%, rgba(0, 73, 66, 0.3) 100%)'
-                            : 'linear-gradient(135deg, rgba(0, 237, 100, 0.15) 0%, rgba(0, 189, 242, 0.15) 100%)',
+                            : 'linear-gradient(135deg, rgba(232, 121, 74, 0.15) 0%, rgba(0, 189, 242, 0.15) 100%)',
                           color: theme.palette.text.primary,
-                          border: `1px solid ${isDark ? 'rgba(0, 237, 100, 0.2)' : 'rgba(0, 104, 94, 0.2)'}`,
+                          border: `1px solid ${isDark ? 'rgba(232, 121, 74, 0.2)' : 'rgba(0, 104, 94, 0.2)'}`,
                           fontSize: { xs: '0.7rem', sm: '0.8rem' },
                           fontWeight: 500,
                           transition: 'all 0.2s ease-in-out',
                           '&:hover': {
                             background: isDark
                               ? 'linear-gradient(135deg, rgba(0, 104, 94, 0.5) 0%, rgba(0, 73, 66, 0.5) 100%)'
-                              : 'linear-gradient(135deg, rgba(0, 237, 100, 0.25) 0%, rgba(0, 189, 242, 0.25) 100%)',
+                              : 'linear-gradient(135deg, rgba(232, 121, 74, 0.25) 0%, rgba(0, 189, 242, 0.25) 100%)',
                             transform: 'translateY(-2px)',
                             boxShadow: isDark 
-                              ? '0 4px 8px rgba(0, 237, 100, 0.2)'
+                              ? '0 4px 8px rgba(232, 121, 74, 0.2)'
                               : '0 4px 8px rgba(0, 104, 94, 0.2)',
                           },
                         }}

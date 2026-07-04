@@ -1,0 +1,98 @@
+---
+title: "I Knew Git. I Just Never Had a Reason to Branch."
+description: "I learned version control back in the Subversion days - but I never learned how to work like a team. Here's how a protected main, a PR-only workflow, and Cursor holding the discipline finally closed the gap."
+date: "2026-07-04T12:00:00"
+author: "Michael Lynn"
+image: "/images/blog/working-with-cursor/cover.png"
+tags: ["cursor", "git", "ai", "developer-experience", "workflow"]
+---
+
+Let me be precise about the confession, because "I never learned git" would undersell it. I learned version control before git even existed - Subversion first, then PVCS at an early job - so the concept was never foreign. I know my way around a terminal. For most of my career, though, my "workflow" was this, unedited:
+
+```bash
+git clone <project>
+cd <project>
+# ...modify...
+git add .
+git commit -m "description of change"
+git push origin main
+```
+
+That's it. Clone it, change it, commit it, push it to `main`. It worked, because for most of that time I wasn't on a team large enough to need anything else. There was no one else's branch to collide with, no review gate, no reason to learn what a feature branch was actually for. The rigor never had anywhere to attach itself.
+
+So when I started building inside a codebase where `main` is genuinely protected - where you can't push to it even if you wanted to, where every change has to go through a pull request - I felt like an impostor. Not because I didn't know git. Because I didn't know how to work like a team, and it looked like everyone else already did.
+
+I wasn't the only one. If most of your git history reads "push to `main` and move on" - because you've spent your career solo, in a small shop, or as the only technical person in the room - this is for you. Here's what actually closed the gap, and it wasn't a refresher course. It was Cursor holding the discipline while I learned what it was for.
+
+## Three facts I had to figure out by breaking things
+
+None of this is exotic knowledge. It's just knowledge you only pick up by working alongside other people's branches, which I mostly hadn't.
+
+- **`main` is protected.** A ruleset requires a PR, green CI, and review before anything lands. No force-push, no admin-merge. Every PR builds a preview first, so breakage shows up before it ships - not after.
+- **The PR is the unit of work.** Pushing to a branch publishes a preview deploy. Merging the PR publishes production. Nobody runs a deploy command by hand.
+- **A merged PR's branch is gone.** Merges squash and auto-delete the head branch. Anything pushed after that point goes nowhere - it isn't on `main`, and the PR won't reopen.
+
+![The golden path: branch off main, drive Cursor and push, open a PR with a preview deploy, pass Bugbot and CI and review, then merge to production.](/images/blog/working-with-cursor/golden-path-diagram.png)
+
+I didn't need a refresher course to follow this. Cursor follows it by default - I just had to stop overriding it: branch off the latest `main` → drive Cursor, push → open a PR (preview deploy) → Bugbot + CI + review → merge → production.
+
+## One PR, one logical change - the rule that exposed my old habits
+
+My solo-dev instinct was always to just keep going. One sitting, one commit, whatever piled up during that session went in together. "Scope" wasn't a word I used. Splitting work into one logical change per PR felt like busywork at first.
+
+It turned out to be the whole trick - small PRs merge faster, isolate risk with their own preview URL, and mean you're never tempted to bolt "one more fix" onto a branch that's already in flight, or already dead.
+
+## The mistake that outed me as a solo-shop dev: the stranded-commit trap
+
+This is the one that got me. Not because it's complicated - it's four steps - but because it's exactly the instinct you build when it's just you and `main` for years. Something just merged. You're still sitting in the file. You spot one more thing. You fix it. You push. That reflex worked fine for years. It does not work here.
+
+![The stranded-commit trap: after a branch is squash-merged and deleted, a follow-up push to that branch lands nowhere.](/images/blog/working-with-cursor/stranded-commit-trap-diagram.png)
+
+1. You open a PR from `feature-x`.
+2. It gets squash-merged - sometimes within minutes.
+3. You - or an agent - push "just one more fix" to `feature-x`.
+4. That fix goes nowhere. The branch is deleted, the PR is closed, and the "fixed" bug is still live.
+
+I found this out the hard way, watching a bug I thought I'd fixed sit there, still broken, because my "fix" had nowhere to land. It felt like the tool failed me. It hadn't - I just didn't know the rule yet.
+
+**Recovery, if it already happened:** cut a fresh branch off the current `main`, cherry-pick the stranded commit, run your checks, push, and open a new PR.
+
+```bash
+git checkout main && git pull
+git checkout -b fix-stranded-change
+git cherry-pick <stranded-commit-sha>
+# run tests / checks
+git push -u origin fix-stranded-change
+# open a new PR
+```
+
+## The commands were never the hard part
+
+I could always run `git branch` and `git checkout`. What I didn't have was a reason to - or a feel for when to split work, how to keep a PR reviewable, or what to do when Bugbot leaves a comment. Cursor's features slot into exactly those gaps.
+
+| Feature | What it does for the workflow |
+| --- | --- |
+| **Tab** | In-flow multi-line edits. Keeps small PRs small. |
+| **Composer / Agent mode** | Multi-file changes scoped to one PR. Lands a complete, reviewable change in one pass. |
+| **Background / Cloud Agents** | Offload a well-scoped task. They branch and open a PR for you - one change per run. |
+| **`.cursor/rules/*.mdc`** | Encode repo conventions so the agent doesn't touch managed files or push to `main`. |
+| **MCP (`mcp.json`)** | Connect the agent to real tools and data so changes land correct the first time. |
+| **Cursor CLI** | Scripted, headless agent runs with the same branch → PR discipline. |
+| **Bugbot / Security Bugbot** | Automated review on every PR. Respond on the same open branch before merge, not after. |
+
+## Four habits that mattered more than any git command I could've memorized
+
+- **Scope the ask to one PR.** "Add X, refactor Y, and fix Z" produces an un-mergeable mega-diff.
+- **Tell the agent the constraints.** Point it at the repo's rules so it doesn't try to deploy directly or edit managed files.
+- **Ask for tests as part of the change**, not as a follow-up request after the fact.
+- **Let the agent open the PR**, then review the preview URL yourself and merge.
+
+## You don't owe anyone a git history that reads like you led a ten-person team
+
+If you've spent your career solo, in a small shop, as a consultant, or as the only technical person in the room - I want to be direct about something: knowing git and knowing how to work like a team are two different skills, and most of us who never got the second one are quietly assuming we're the only ones missing it. I was sure everyone else had already internalized this. Most of us are patching the same gap, at different speeds.
+
+What actually changed for me wasn't a refresher on commands I already knew. It's that a protected `main`, a PR-only workflow, and Cursor holding the discipline I'd never had a reason to build gave me the missing piece for free - the workflow catches the mistake before it ships, instead of relying on me to have already internalized team hygiene I never needed until now.
+
+One branch. One PR. One change. And the moment it merges, that branch is history. You can operate at that level starting today, regardless of how many years you spent as the only name in the commit log.
+
+If most of your career has been solo, or in a shop too small to force branch discipline on you - what's the workflow gap nobody ever forced you to close? I'd guess you're not the only one who has one.

@@ -69,7 +69,7 @@ export function ThemeProvider({ children }) {
         glow: isDarkMode ? colors.dark.border.glow : colors.light.border.strong,
       },
       text: {
-        primary: isDarkMode ? '#e2e8f0' : colors.gray[900],
+        primary: isDarkMode ? '#f0ebe0' : colors.gray[900],
         secondary: isDarkMode ? colors.gray[400] : colors.gray[600],
         disabled: isDarkMode ? colors.gray[600] : colors.gray[400],
       },
@@ -80,10 +80,10 @@ export function ThemeProvider({ children }) {
       h1: {
         fontFamily: typography.fontFamily.display,
         fontSize: typography.fontSize['5xl'],
-        fontWeight: typography.fontWeight.bold,
+        fontWeight: typography.fontWeight.semibold,
         lineHeight: typography.lineHeight.tight,
         marginBottom: '1.5rem',
-        letterSpacing: '-0.03em',
+        letterSpacing: '-0.02em',
       },
       h2: {
         fontFamily: typography.fontFamily.display,
@@ -91,7 +91,7 @@ export function ThemeProvider({ children }) {
         fontWeight: typography.fontWeight.semibold,
         lineHeight: typography.lineHeight.snug,
         marginBottom: '1.25rem',
-        letterSpacing: '-0.02em',
+        letterSpacing: '-0.015em',
       },
       h3: {
         fontFamily: typography.fontFamily.display,
@@ -104,7 +104,7 @@ export function ThemeProvider({ children }) {
       h4: {
         fontFamily: typography.fontFamily.display,
         fontSize: typography.fontSize['2xl'],
-        fontWeight: typography.fontWeight.semibold,
+        fontWeight: typography.fontWeight.medium,
         lineHeight: typography.lineHeight.normal,
         marginBottom: '0.75rem',
       },
@@ -226,13 +226,13 @@ export function ThemeProvider({ children }) {
         styleOverrides: {
           ':root': {
             '--color-calendar-graph-day-bg': isDarkMode ? colors.dark.bg.secondary : colors.light.bg.secondary,
-            '--color-calendar-graph-day-L1-bg': isDarkMode ? '#064e3b' : '#a7f3d0',
-            '--color-calendar-graph-day-L2-bg': isDarkMode ? '#047857' : '#6ee7b7',
-            '--color-calendar-graph-day-L3-bg': isDarkMode ? '#059669' : '#34d399',
-            '--color-calendar-graph-day-L4-bg': isDarkMode ? '#10b981' : '#10b981',
+            '--color-calendar-graph-day-L1-bg': isDarkMode ? '#652c15' : '#fbe2d5',
+            '--color-calendar-graph-day-L2-bg': isDarkMode ? '#9c3e15' : '#f6c3a9',
+            '--color-calendar-graph-day-L3-bg': isDarkMode ? '#be4e1c' : '#ef9d76',
+            '--color-calendar-graph-day-L4-bg': isDarkMode ? '#d9622b' : '#d9622b',
             // Accent glow custom property
             '--glow-color': colors.accent.main,
-            '--glow-color-rgb': '0, 237, 100',
+            '--glow-color-rgb': '217, 98, 43',
           },
           '*': {
             boxSizing: 'border-box',
@@ -244,7 +244,7 @@ export function ThemeProvider({ children }) {
           },
           body: {
             backgroundColor: isDarkMode ? colors.dark.bg.primary : colors.light.bg.primary,
-            color: isDarkMode ? '#e2e8f0' : colors.gray[900],
+            color: isDarkMode ? '#f0ebe0' : colors.gray[900],
             transition: `background-color ${transitions.base}, color ${transitions.base}`,
             scrollbarWidth: 'thin',
             scrollbarColor: isDarkMode
@@ -283,8 +283,8 @@ export function ThemeProvider({ children }) {
           },
           '::selection': {
             backgroundColor: isDarkMode
-              ? 'rgba(0, 237, 100, 0.25)'
-              : 'rgba(16, 185, 129, 0.25)',
+              ? 'rgba(232, 121, 74, 0.25)'
+              : 'rgba(217, 98, 43, 0.25)',
             color: isDarkMode ? '#ffffff' : colors.gray[900],
           },
           'code': {
@@ -293,10 +293,10 @@ export function ThemeProvider({ children }) {
             padding: '0.15em 0.4em',
             borderRadius: borderRadius.sm,
             backgroundColor: isDarkMode
-              ? 'rgba(16, 185, 129, 0.1)'
-              : 'rgba(16, 185, 129, 0.08)',
+              ? 'rgba(217, 98, 43, 0.1)'
+              : 'rgba(217, 98, 43, 0.08)',
             color: isDarkMode ? colors.primary[300] : colors.primary[700],
-            border: `1px solid ${isDarkMode ? 'rgba(16, 185, 129, 0.15)' : 'rgba(16, 185, 129, 0.12)'}`,
+            border: `1px solid ${isDarkMode ? 'rgba(217, 98, 43, 0.15)' : 'rgba(217, 98, 43, 0.12)'}`,
           },
           'pre': {
             fontFamily: typography.fontFamily.mono,
@@ -305,7 +305,7 @@ export function ThemeProvider({ children }) {
             borderRadius: borderRadius.lg,
             overflow: 'auto',
             backgroundColor: isDarkMode
-              ? 'rgba(3, 7, 18, 0.8)'
+              ? 'rgba(20, 18, 14, 0.8)'
               : colors.gray[50],
             border: `1px solid ${isDarkMode ? colors.dark.border.subtle : colors.light.border.subtle}`,
             '& code': {
@@ -354,13 +354,13 @@ export function ThemeProvider({ children }) {
         styleOverrides: {
           root: {
             backgroundColor: isDarkMode
-              ? 'rgba(3, 7, 18, 0.85)'
+              ? 'rgba(20, 18, 14, 0.85)'
               : 'rgba(255, 255, 255, 0.85)',
             backgroundImage: 'none',
             backdropFilter: 'blur(20px) saturate(180%)',
             borderBottom: `1px solid ${isDarkMode ? colors.dark.border.subtle : colors.light.border.subtle}`,
             boxShadow: isDarkMode
-              ? '0 1px 0 0 rgba(16, 185, 129, 0.05)'
+              ? '0 1px 0 0 rgba(217, 98, 43, 0.05)'
               : shadows.light.xs,
             transition: `all ${transitions.base}`,
           },
@@ -406,8 +406,8 @@ export function ThemeProvider({ children }) {
               borderWidth: '1.5px',
               borderColor: colors.primary[500],
               backgroundColor: isDarkMode
-                ? 'rgba(16, 185, 129, 0.08)'
-                : 'rgba(16, 185, 129, 0.04)',
+                ? 'rgba(217, 98, 43, 0.08)'
+                : 'rgba(217, 98, 43, 0.04)',
             },
           },
         },
@@ -416,18 +416,18 @@ export function ThemeProvider({ children }) {
         styleOverrides: {
           root: {
             backgroundColor: isDarkMode
-              ? 'rgba(16, 185, 129, 0.1)'
-              : 'rgba(16, 185, 129, 0.08)',
+              ? 'rgba(217, 98, 43, 0.1)'
+              : 'rgba(217, 98, 43, 0.08)',
             color: isDarkMode ? colors.primary[300] : colors.primary[700],
             borderRadius: borderRadius.md,
             fontWeight: typography.fontWeight.medium,
             fontSize: typography.fontSize.xs,
-            border: `1px solid ${isDarkMode ? 'rgba(16, 185, 129, 0.2)' : 'rgba(16, 185, 129, 0.15)'}`,
+            border: `1px solid ${isDarkMode ? 'rgba(217, 98, 43, 0.2)' : 'rgba(217, 98, 43, 0.15)'}`,
             transition: `all ${transitions.fast}`,
             '&:hover': {
               backgroundColor: isDarkMode
-                ? 'rgba(16, 185, 129, 0.18)'
-                : 'rgba(16, 185, 129, 0.12)',
+                ? 'rgba(217, 98, 43, 0.18)'
+                : 'rgba(217, 98, 43, 0.12)',
               boxShadow: isDarkMode ? shadows.glow.subtle : 'none',
             },
           },
@@ -440,8 +440,8 @@ export function ThemeProvider({ children }) {
             transition: `all ${transitions.fast}`,
             '&:hover': {
               backgroundColor: isDarkMode
-                ? 'rgba(16, 185, 129, 0.1)'
-                : 'rgba(16, 185, 129, 0.06)',
+                ? 'rgba(217, 98, 43, 0.1)'
+                : 'rgba(217, 98, 43, 0.06)',
               color: colors.primary[isDarkMode ? 400 : 600],
               transform: 'scale(1.05)',
             },
