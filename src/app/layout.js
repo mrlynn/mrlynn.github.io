@@ -4,6 +4,7 @@ import Layout from '../components/Layout';
 import ErrorBoundary from '../components/ErrorBoundary';
 import './globals.css';
 import Script from 'next/script';
+import { Analytics } from '@vercel/analytics/next';
 import { GA_TRACKING_ID } from '../lib/analytics';
 
 // Editorial display serif — characterful, optical-sized
@@ -119,6 +120,7 @@ export default function RootLayout({ children }) {
             <Layout>{children}</Layout>
           </ThemeProvider>
         </ErrorBoundary>
+        <Analytics />
       </body>
     </html>
   );

@@ -1,6 +1,29 @@
 # Blog analytics — reporting guide
 
-This site sends blog engagement data to **Google Analytics 4** via `NEXT_PUBLIC_GA_ID` (configured in Vercel env vars).
+This site uses two analytics layers:
+
+1. **Vercel Web Analytics** — page views, visitors, referrers, countries (Vercel dashboard)
+2. **Google Analytics 4** — custom blog events (CTA clicks, scroll depth, PDF downloads)
+
+## Vercel Web Analytics
+
+Enabled via `@vercel/analytics` in [`src/app/layout.js`](../src/app/layout.js).
+
+**View reports:** [Vercel Dashboard](https://vercel.com) → your project → **Analytics**
+
+After deploy, page views appear automatically. No env var required when Analytics is enabled on the project in Vercel.
+
+**Verify locally:** In Network tab, look for a request to `/_vercel/insights/view` when navigating (production/preview deploys; local dev may not send data).
+
+**Cursor misconceptions post:** filter or search for `/blog/cursor-misconceptions` in the Vercel Analytics pages panel.
+
+Vercel covers traffic summaries. It does **not** replace GA4 for custom events (`blog_cta_click`, `blog_pdf_download`, etc.) unless you add [Vercel custom events](https://vercel.com/docs/analytics/custom-events) separately.
+
+---
+
+## Google Analytics 4
+
+Configured via `NEXT_PUBLIC_GA_ID` (Vercel env vars).
 
 ## Events fired on every blog post
 
@@ -65,6 +88,14 @@ Without this step, parameters still appear in **Realtime** and **Explorations** 
 3. Confirm `blog_post_view` appears
 4. Scroll and click a CTA — confirm `blog_scroll_depth` and `blog_cta_click`
 
-## Optional: Vercel Analytics
+## Optional: Vercel Analytics vs GA4
 
-If `@vercel/analytics` is added later, it complements GA4 with Web Vitals but does not replace CTA/read-depth events unless separately instrumented.
+| Question | Use Vercel Analytics | Use GA4 |
+| --- | --- | --- |
+| How many people visited the post? | Yes | Yes |
+| Where did traffic come from? | Yes | Yes |
+| Which CTA button was clicked? | No (unless custom events added) | Yes |
+| Scroll depth / read completion? | No | Yes |
+| PDF download count? | No | Yes |
+
+Both run in parallel — no conflict.
