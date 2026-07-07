@@ -72,6 +72,36 @@ What's the assumption that kept *you* from trying it?
 
 ---
 
+## LinkedIn post — personal share (Michael Lynn)
+
+**Hook + body (paste as-is):**
+
+I'm a little over a month into Cursor, and I keep having the same conversation.
+
+Someone will tell me they're not interested because "it's just VS Code with Copilot." Or because AI coding tools are going to ship garbage straight to production. Or because they tried Tab completion once and figured they'd seen the whole product.
+
+I get it. That was me, too.
+
+Before I joined, I'd been burned by AI tools that sounded confident and weren't. I had Copilot fatigue. I assumed Cursor was a familiar editor with a chat box bolted on. I was wrong about the category, wrong about the ceiling, and wrong about how much of the product I'd actually never opened.
+
+Six weeks in, the thing that's surprised me most isn't any single feature. It's how fast the product moves, and how slowly everyone's mental model updates to match. Tab is real and useful. It's also the calculator app on a smartphone. Agent Mode, cloud agents, integrations with the tools teams already use - that's where the product actually lives now.
+
+I wrote up the five assumptions I hear most often, what turned out to be true, and one low-stakes experiment you can run in five minutes without reorganizing your SDLC:
+
+https://mlynn.org/blog/cursor-misconceptions
+
+There's also a printable one-pager on the post if you want something to pass around to a skeptical teammate.
+
+If you've been sitting on the sidelines - what's the assumption that blocked you?
+
+---
+
+**Optional first comment (PDF link):**
+
+Grab the one-pager PDF from the post if you want to share it internally: https://mlynn.org/blog/cursor-misconceptions
+
+---
+
 ## Suggested share copy (single post)
 
 I almost didn't try Cursor. I thought it was VS Code + autocomplete.

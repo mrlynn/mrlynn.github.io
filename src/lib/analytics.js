@@ -65,6 +65,85 @@ export const trackContentView = (contentType, contentId, contentTitle) => {
   });
 };
 
+export const trackBlogPostView = (slug, title) => {
+  event({
+    action: AnalyticsEvents.BLOG_POST_VIEW,
+    category: 'blog',
+    label: title,
+    custom_parameters: {
+      content_type: 'blog',
+      content_id: slug,
+      content_title: title,
+      page_path: `/blog/${slug}`,
+    },
+  });
+};
+
+export const trackBlogScrollDepth = (slug, title, depthPercent) => {
+  event({
+    action: 'blog_scroll_depth',
+    category: 'blog_engagement',
+    label: `${slug}:${depthPercent}`,
+    value: depthPercent,
+    custom_parameters: {
+      content_id: slug,
+      content_title: title,
+      scroll_depth: depthPercent,
+      page_path: `/blog/${slug}`,
+    },
+  });
+};
+
+export const trackBlogReadComplete = (slug, title, metrics = {}) => {
+  event({
+    action: 'blog_read_complete',
+    category: 'blog_engagement',
+    label: title,
+    custom_parameters: {
+      content_id: slug,
+      content_title: title,
+      page_path: `/blog/${slug}`,
+      ...metrics,
+    },
+  });
+};
+
+export const trackBlogCtaClick = ({
+  slug,
+  ctaId,
+  label,
+  href,
+  destination,
+}) => {
+  event({
+    action: 'blog_cta_click',
+    category: 'blog_conversion',
+    label: label,
+    custom_parameters: {
+      content_id: slug,
+      cta_id: ctaId,
+      cta_label: label,
+      cta_href: href,
+      cta_destination: destination,
+      page_path: `/blog/${slug}`,
+    },
+  });
+};
+
+export const trackBlogPdfDownload = ({ slug, ctaId, fileName }) => {
+  event({
+    action: 'blog_pdf_download',
+    category: 'blog_conversion',
+    label: fileName,
+    custom_parameters: {
+      content_id: slug,
+      cta_id: ctaId,
+      file_name: fileName,
+      page_path: `/blog/${slug}`,
+    },
+  });
+};
+
 // Helper function to track video plays
 export const trackVideoPlay = (videoId, videoTitle, platform) => {
   event({

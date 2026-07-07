@@ -22,6 +22,8 @@ import ImageGrid from './includes/ImageGrid';
 import VideoPlayer from './includes/VideoPlayer';
 import ScreenshotSlideshow from '../ScreenshotSlideshow';
 import CodeBlock from '../CodeBlock';
+import BlogCTA from './includes/BlogCTA';
+import BlogPdfDownload from './includes/BlogPdfDownload';
 
 
 export const mdxComponents = {
@@ -199,4 +201,6 @@ export const mdxComponents = {
   ImageGrid,
   VideoPlayer,
   ScreenshotSlideshow,
+  BlogCTA,
+  BlogPdfDownload,
 }; 

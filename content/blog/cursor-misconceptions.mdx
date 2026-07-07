@@ -27,6 +27,23 @@ If you're skeptical the way I was, this is for you. Five assumptions I carried i
 | Another IDE on my laptop | Integrations that start work from Slack, Linear, Jira, and MCP-connected systems |
 | Locked to one AI vendor | Claude, GPT, Gemini, Grok, and Cursor's own models - I pick per task |
 
+<BlogPdfDownload
+  title="5 myths — printable one-pager"
+  description="Shareable PDF cheat sheet: what skeptics assume vs. what's actually true. Built for team leads passing this around."
+  ctaId="pdf-one-pager-top"
+/>
+
+<BlogCTA
+  title="Skeptical? Good. Try one thing."
+  description="Download Cursor and run a single scoped Agent task. Read the diff. Don't merge blind. That's the whole test."
+  primaryLabel="Download Cursor"
+  primaryHref="https://cursor.com/download"
+  secondaryLabel="Jump to the 5-minute experiment"
+  secondaryHref="#one-boring-experiment"
+  ctaId="tldr-download"
+  variant="primary"
+/>
+
 ## Myth 1: "It's just VS Code with Copilot bolted on"
 
 **Why I believed it:** Cursor *is* forked from VS Code. The keybindings work. My extensions mostly work. On day one it feels like home - which is exactly why I filed it under "VS Code plus AI" and moved on.
@@ -40,6 +57,15 @@ A plugin is a passenger seat. Cursor rebuilt the car around the driver.
 **The proof that convinced me:** I asked Agent Mode to fix a bug in a utility file I'd never opened that session. It searched the codebase, found the caller, edited two files, and ran tests - without me `@`-tagging every path. A plugin can't do that reliably because it doesn't own the indexing pipeline or the agent loop.
 
 **One line to remember:** Familiar UI doesn't mean familiar architecture - Cursor is a different product category wearing VS Code's clothes.
+
+<BlogCTA
+  title="See the difference in 30 seconds"
+  description="Open Agent Mode and ask it to fix something in a file you haven't opened this session. Watch it search the codebase without you hand-tagging every path."
+  primaryLabel="Agent Mode docs"
+  primaryHref="https://cursor.com/docs/agent/overview"
+  ctaId="myth1-agent-docs"
+  variant="subtle"
+/>
 
 ## Myth 2: "AI-assisted coding means unreviewed garbage in production"
 
@@ -57,6 +83,17 @@ None of that replaces judgment. It removes excuses. I treat agent output the way
 
 **One line to remember:** Cursor makes you faster at writing code - it doesn't remove the need to read it.
 
+<BlogCTA
+  title="Trust, but verify - with guardrails"
+  description="Turn on Privacy Mode before your first real task. Pair it with a protected main and PR-only workflow so nothing ships without your sign-off."
+  primaryLabel="Privacy Mode overview"
+  primaryHref="https://cursor.com/data-use"
+  secondaryLabel="How I learned PR discipline"
+  secondaryHref="/blog/i-knew-git-never-had-a-reason-to-branch"
+  ctaId="myth2-privacy"
+  variant="subtle"
+/>
+
 ## Myth 3: "It's just autocomplete"
 
 **Why I believed it:** Tab completion is the most visible feature. It's what Twitter clips show. If you've never opened Agent Mode, it's fair to assume the whole product is a very good inline suggestion engine - because for a long time, that *was* most of what AI coding tools did.
@@ -68,6 +105,17 @@ None of that replaces judgment. It removes excuses. I treat agent output the way
 **The proof that convinced me:** I typed one sentence - *"Extract the pricing logic into its own module and update the imports"* - and got a four-file diff with tests passing. Tab never would've attempted that. Tab completes the line you're on. Agent completes the *task* you described.
 
 **One line to remember:** Tab is where you start. Agent Mode is where the product actually lives.
+
+<BlogCTA
+  title="Skip Tab. Start with Agent Mode."
+  description="Open Cursor, press Cmd/Ctrl+I, and describe one small task in plain English. The diff is the demo - not a marketing clip."
+  primaryLabel="Download Cursor"
+  primaryHref="https://cursor.com/download"
+  secondaryLabel="See the experiment prompt"
+  secondaryHref="#one-boring-experiment"
+  ctaId="myth3-agent-mode"
+  variant="primary"
+/>
 
 ## Myth 4: "It's just another IDE on my laptop"
 
@@ -81,6 +129,17 @@ None of that replaces judgment. It removes excuses. I treat agent output the way
 
 **One line to remember:** Cursor lives where your work already lives - not only inside a window on your laptop.
 
+<BlogCTA
+  title="Ready for the full loop?"
+  description="If the Slack-to-PR story landed, I mapped the entire intake → build → inspect → ship workflow in a follow-up post - with setup steps for each stage."
+  primaryLabel="Read: The software factory"
+  primaryHref="/blog/the-software-factory-runs-on-cursor"
+  secondaryLabel="Cursor integrations"
+  secondaryHref="https://cursor.com/dashboard"
+  ctaId="myth4-software-factory"
+  variant="subtle"
+/>
+
 ## Myth 5: "It's locked to one AI vendor"
 
 **Why I believed it:** Most tools in this space are tied to their parent's model stack. If the underlying model plateaus, so does the product. Lock-in felt inevitable.
@@ -90,6 +149,15 @@ None of that replaces judgment. It removes excuses. I treat agent output the way
 **The proof that convinced me:** I route models the way I'd route tools. A fast model for everyday Tab and small edits. A stronger reasoning model when I'm touching auth, migrations, or anything security-sensitive. I didn't configure a pipeline - I changed a dropdown.
 
 **One line to remember:** You're not betting on one AI company. You're betting on a product that rides whichever model is best this month.
+
+<BlogCTA
+  title="Pick your model per task"
+  description="Fast model for everyday edits. Stronger model for auth, migrations, or anything security-sensitive. Change a dropdown - no pipeline required."
+  primaryLabel="Browse available models"
+  primaryHref="https://cursor.com/docs/models"
+  ctaId="myth5-models"
+  variant="subtle"
+/>
 
 ## One boring experiment
 
@@ -107,8 +175,42 @@ Read every changed line. Run the tests yourself if you want to be sure. If the d
 
 If that worked and you're curious what a full loop looks like - protected `main`, Bugbot on every PR, `@Cursor` from a ticket - [I wrote that up separately](/blog/the-software-factory-runs-on-cursor). Start with the boring experiment. The factory can wait.
 
+<BlogCTA
+  title="Your move: one task, five minutes"
+  description="Download Cursor, paste the prompt above, read every changed line, and decide for yourself. No SDLC overhaul required."
+  primaryLabel="Download Cursor - free to start"
+  primaryHref="https://cursor.com/download"
+  secondaryLabel="Wire up the full factory"
+  secondaryHref="/blog/the-software-factory-runs-on-cursor"
+  ctaId="experiment-download"
+  variant="primary"
+/>
+
+### Keep reading
+
+- [The Software Factory Is Here - and It Runs on Cursor](/blog/the-software-factory-runs-on-cursor) - intake, build, inspect, ship
+- [I Knew Git. I Just Never Had a Reason to Branch.](/blog/i-knew-git-never-had-a-reason-to-branch) - PR discipline for solo devs
+- [Boosting productivity with Cursor](/blog/cursor-rules) - `.cursor/rules` deep dive
+
 ## What's the assumption that kept you from trying it?
 
 Mine was that I'd seen this movie before: familiar editor, AI bolted on, hype cycle, disappointment. I was wrong about the category, wrong about the ceiling, and almost wrong about whether it was worth an afternoon.
 
 If you've been sitting on the sidelines - what's the one assumption that blocked you? I'd guess you're not the only one carrying it.
+
+<BlogCTA
+  title="Still skeptical? Let's talk."
+  description="I'm happy to walk through how I use Cursor day to day, or hear what's holding your team back. Grab time on my calendar or connect on LinkedIn."
+  primaryLabel="Book a meeting"
+  primaryHref="/meet"
+  secondaryLabel="Connect on LinkedIn"
+  secondaryHref="https://linkedin.com/in/mlynn"
+  ctaId="connect-michael"
+  variant="subtle"
+/>
+
+<BlogPdfDownload
+  title="Take it with you"
+  description="Download the stylized one-pager — all five myths on a single landscape sheet."
+  ctaId="pdf-one-pager-bottom"
+/>

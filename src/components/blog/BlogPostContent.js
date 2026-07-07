@@ -1,30 +1,27 @@
 'use client';
 
 import { Box } from '@mui/material';
-import { useEffect } from 'react';
 import { MDXRemote } from 'next-mdx-remote';
-import { Typography } from '@mui/material';
 import Image from 'next/image';
-import { trackContentView } from '../../lib/analytics';
+import BlogEngagementTracker from './BlogEngagementTracker';
+import BlogCTA from '../mdx/includes/BlogCTA';
+import BlogPdfDownload from '../mdx/includes/BlogPdfDownload';
 import { mdxComponents } from '../mdx/MDXComponents';
 
 export default function BlogPostContent({ post, slug }) {
-  useEffect(() => {
-    if (post?.title) {
-      trackContentView(slug);
-    }
-  }, [post?.title, slug]);
-
   if (!post?.content) {
     return null;
   }
 
   return (
     <Box sx={{ mt: 4 }}>
+      <BlogEngagementTracker slug={slug} title={post.title} />
       <MDXRemote
         {...post.content}
         components={{
           ...mdxComponents,
+          BlogCTA: (props) => <BlogCTA {...props} slug={slug} />,
+          BlogPdfDownload: (props) => <BlogPdfDownload {...props} slug={slug} />,
           img: ({ src, alt }) => (
             <Box sx={{ my: 4, position: 'relative', height: '400px', width: '100%' }}>
               <Image

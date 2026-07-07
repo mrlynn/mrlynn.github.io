@@ -17,6 +17,9 @@ const nextConfig = {
     unoptimized: true,
   },
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
+  experimental: {
+    serverComponentsExternalPackages: ['pdfkit'],
+  },
   webpack: (config) => {
     config.resolve.extensions = ['.js', '.jsx', '.json'];
     return config;
