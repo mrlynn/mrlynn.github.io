@@ -1,0 +1,114 @@
+---
+title: "I Almost Didn't Try Cursor. Here's What I Was Wrong About."
+description: "I assumed Cursor was VS Code with autocomplete. Five wrong assumptions later, here's what actually changed my mind - and one low-stakes way to find out for yourself."
+date: "2026-06-07T10:00:00"
+author: "Michael Lynn"
+image: "/images/blog/cursor-misconceptions/cover.png"
+tags: ["cursor", "ai", "developer-experience", "agent-mode", "myths", "productivity"]
+---
+
+I almost didn't install Cursor. I'd been burned by AI tools that generated confident garbage, I'd watched the hype cycle roll through my timeline twice, and the pitch sounded familiar: *it's VS Code, but smarter.* I already had VS Code. I already had Copilot fatigue. Why would I download another editor?
+
+What finally got me to try it wasn't a demo video. It was boredom with a small, scoped task - add a null check, write a test, open a PR - and a friend who said, "Just give Agent Mode one boring job and read the diff." I did. It touched a file I didn't have open, ran the tests, and stopped before pushing anything. That wasn't autocomplete. That was the moment I realized my mental model of the product was wrong.
+
+If you're skeptical the way I was, this is for you. Five assumptions I carried in, what turned out to be true, and one low-stakes experiment at the end.
+
+**TL;DR**
+
+- Cursor isn't a VS Code plugin - it's a fork rebuilt around AI, with whole-codebase indexing and multi-file agents baked into the core.
+- The product defaults push *against* shipping unreviewed code; you're still the reviewer, not the passenger.
+- Tab completion is the entry point, not the ceiling - Agent Mode, cloud agents, and toolchain integrations are the actual product now.
+
+| What I assumed | What I saw when I actually used it |
+| --- | --- |
+| VS Code with Copilot bolted on | A fork with indexing, agents, and context wired into the editor core |
+| AI writes unreviewed code straight to production | Ask-before-terminal, Privacy Mode, and review gates - I still approve every merge |
+| Fancy autocomplete | Agent Mode that plans, edits across files, runs commands, and waits for me |
+| Another IDE on my laptop | Integrations that start work from Slack, Linear, Jira, and MCP-connected systems |
+| Locked to one AI vendor | Claude, GPT, Gemini, Grok, and Cursor's own models - I pick per task |
+
+## Myth 1: "It's just VS Code with Copilot bolted on"
+
+**Why I believed it:** Cursor *is* forked from VS Code. The keybindings work. My extensions mostly work. On day one it feels like home - which is exactly why I filed it under "VS Code plus AI" and moved on.
+
+**What's actually true:** "Forked from" and "plugin for" are opposite architectural choices. A plugin bolts AI onto an editor that wasn't built for it; the model only sees what you manually feed it - the open file, a selection, maybe a `@` mention. Cursor's team deliberately chose not to ship a VS Code extension so they could rebuild the editing surface around AI: [semantic codebase indexing](https://cursor.com/docs/enterprise/privacy-and-data-governance), a unified context model across the project, and agents that search and edit across files without you hand-assembling context.
+
+A plugin is a passenger seat. Cursor rebuilt the car around the driver.
+
+![Plugin vs fork: AI bolted onto VS Code vs AI integrated into Cursor's core](/images/blog/cursor-misconceptions/fork-vs-plugin.png)
+
+**The proof that convinced me:** I asked Agent Mode to fix a bug in a utility file I'd never opened that session. It searched the codebase, found the caller, edited two files, and ran tests - without me `@`-tagging every path. A plugin can't do that reliably because it doesn't own the indexing pipeline or the agent loop.
+
+**One line to remember:** Familiar UI doesn't mean familiar architecture - Cursor is a different product category wearing VS Code's clothes.
+
+## Myth 2: "AI-assisted coding means unreviewed garbage in production"
+
+**Why I believed it:** Every AI horror story follows the same plot: someone accepted a diff they didn't read, merged on a Friday, and spent Monday undoing it. I'd done smaller versions of that myself with early copilots. The reasonable conclusion was that more AI meant more unreviewed code.
+
+**What's actually true:** Cursor is built for a workflow where *you* review before anything lands - and the defaults nudge you there. [Agent Mode asks before running terminal commands](https://cursor.com/docs/agent/overview). [Privacy Mode](https://cursor.com/data-use) (available on free and Pro plans) stops your code from being used for training and puts zero-data-retention agreements in place with model providers. Cursor is [SOC 2 Type II certified](https://cursor.com/security), with enterprise controls like SSO and audit logs for teams that need them.
+
+None of that replaces judgment. It removes excuses. I treat agent output the way I'd treat a capable junior teammate's PR: verify, don't rubber-stamp. If `main` is protected and every change goes through a PR - the discipline I [finally learned the hard way](/blog/i-knew-git-never-had-a-reason-to-branch) - the agent can't push to production even if you stop paying attention.
+
+**The honest boundary:** Cursor will happily manufacture a bad batch at machine speed if you skip review. The tool multiplies execution; it doesn't multiply wisdom. That's on you, same as always.
+
+![The trust stack: Privacy Mode, ask-before-terminal, human review, optional Bugbot](/images/blog/cursor-misconceptions/trust-stack.png)
+
+**The proof that convinced me:** I turned on Privacy Mode, scoped one task ("add a test for the null case in checkout"), read the diff, ran the preview deploy myself, and merged only after Bugbot and CI were green. Nothing shipped because the AI "felt confident." It shipped because I said so.
+
+**One line to remember:** Cursor makes you faster at writing code - it doesn't remove the need to read it.
+
+## Myth 3: "It's just autocomplete"
+
+**Why I believed it:** Tab completion is the most visible feature. It's what Twitter clips show. If you've never opened Agent Mode, it's fair to assume the whole product is a very good inline suggestion engine - because for a long time, that *was* most of what AI coding tools did.
+
+**What's actually true:** Tab is excellent, and I still use it every day. But judging Cursor by Tab alone is like judging a smartphone by its calculator app. The center of gravity has moved to [Agent Mode](https://cursor.com/docs/agent/overview): give it a natural-language task and it can plan, edit across multiple files, run terminal commands, search the web, and verify its own work - with checkpoints you can roll back if it takes a wrong turn.
+
+[Cloud Agents](https://cursor.com/docs/enterprise/privacy-and-data-governance) push that further: kick off work from the web, your phone, or integrations like Slack, and it runs on Cursor's infrastructure in an isolated VM - not tied to your laptop being open. You get a branch and a PR back, not a chat suggestion floating in a side panel.
+
+**The proof that convinced me:** I typed one sentence - *"Extract the pricing logic into its own module and update the imports"* - and got a four-file diff with tests passing. Tab never would've attempted that. Tab completes the line you're on. Agent completes the *task* you described.
+
+**One line to remember:** Tab is where you start. Agent Mode is where the product actually lives.
+
+## Myth 4: "It's just another IDE on my laptop"
+
+**Why I believed it:** An IDE sits on your machine and waits for you to type. That's the category. I assumed Cursor was a better local editor - faster completions, nicer chat - not something that could participate in how work *enters* the system.
+
+**What's actually true:** Cursor increasingly behaves like a development platform, not just an editing surface. Native integrations let you `@Cursor` in [Slack](https://cursor.com/changelog/1-1), assign work from [Linear](https://cursor.com/changelog) or [Jira](https://www.atlassian.com/blog/company-news/cursor-in-jira), and connect to your real systems through [MCP](https://cursor.com/changelog) - databases, docs, ticketing - so agents ground changes in reality instead of guessing. [Bugbot](https://cursor.com/docs/bugbot) reviews pull requests automatically and can propose fixes on the branch before a human opens the diff.
+
+"IDE" describes where you edit code. It doesn't describe a system that intake-tickets, builds, inspects, and loops back - which is exactly what I mapped out in [The Software Factory Is Here - and It Runs on Cursor](/blog/the-software-factory-runs-on-cursor). I won't repeat that setup here; the point for skeptics is simpler: the editor is one entry point, not the whole product.
+
+**The proof that convinced me:** I `@Cursor`'d in a Slack thread about a bug, walked away, and came back to a PR link. I hadn't opened the editor. The trigger was the conversation, not a prompt I typed at my desk.
+
+**One line to remember:** Cursor lives where your work already lives - not only inside a window on your laptop.
+
+## Myth 5: "It's locked to one AI vendor"
+
+**Why I believed it:** Most tools in this space are tied to their parent's model stack. If the underlying model plateaus, so does the product. Lock-in felt inevitable.
+
+**What's actually true:** Cursor is [model-agnostic by design](https://cursor.com/docs/models). Claude, GPT, Gemini, Grok, and Cursor's own purpose-built coding models (Composer) are all available - you pick per task, or let Auto route for you. When a frontier model improves, Cursor users benefit without waiting for a vendor roadmap. Cursor also tunes agent instructions and tools per model, so you're not just getting a raw API passthrough.
+
+**The proof that convinced me:** I route models the way I'd route tools. A fast model for everyday Tab and small edits. A stronger reasoning model when I'm touching auth, migrations, or anything security-sensitive. I didn't configure a pipeline - I changed a dropdown.
+
+**One line to remember:** You're not betting on one AI company. You're betting on a product that rides whichever model is best this month.
+
+## One boring experiment
+
+You don't need to reorganize your SDLC to find out if your assumptions are wrong. You need one scoped task and five minutes of review.
+
+Open Cursor. Switch to Agent Mode (`Cmd/Ctrl+I`). Paste something like this:
+
+```
+Add a null check to the checkout total calculation, write a unit test
+for the null case, and run the test suite. Do not commit or push -
+show me the diff first.
+```
+
+Read every changed line. Run the tests yourself if you want to be sure. If the diff is wrong, tell it what's wrong - that's the job.
+
+If that worked and you're curious what a full loop looks like - protected `main`, Bugbot on every PR, `@Cursor` from a ticket - [I wrote that up separately](/blog/the-software-factory-runs-on-cursor). Start with the boring experiment. The factory can wait.
+
+## What's the assumption that kept you from trying it?
+
+Mine was that I'd seen this movie before: familiar editor, AI bolted on, hype cycle, disappointment. I was wrong about the category, wrong about the ceiling, and almost wrong about whether it was worth an afternoon.
+
+If you've been sitting on the sidelines - what's the one assumption that blocked you? I'd guess you're not the only one carrying it.
