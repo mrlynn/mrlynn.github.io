@@ -37,6 +37,8 @@ If it's a repeatable multi-step procedure with steps, scripts, or a checklist, t
 
 If the work needs its own context window, or needs to run in parallel without flooding the main chat, that's a Subagent.
 
+![Decision guide: an always-on constraint becomes a Rule in .cursor/rules, a repeatable procedure becomes a Skill in .cursor/skills, and work that needs its own context window becomes a Subagent in .cursor/agents.](/images/blog/skills-rules-subagents/decision-guide.png)
+
 | Primitive | One line |
 |-----------|----------|
 | **Rules** | Always-on instructions injected into Agent conversations. |
@@ -56,6 +58,8 @@ A Rule is not a prompt you paste once. It gets injected at the start of the conv
 ### How a Rule can fire
 
 Cursor gives you four app modes for each rule. 
+
+![The four rule modes: Always Apply injects into every conversation, Apply Intelligently fires off the description field, Apply to Specific Files matches glob patterns, and Apply Manually waits for an @-mention.](/images/blog/skills-rules-subagents/rule-trigger-modes.png)
 
 **Always Apply.** Every Agent conversation. Use this sparingly. Copyright headers, a hard ban on default exports, a security constraint that really is universal. If everything is Always Apply, nothing is.
 
@@ -219,6 +223,8 @@ Most teams should start with Skills and stay there for a while. Subagents earn t
 
 The question I ask: does this need context isolation? If the answer is no, use a Skill.
 
+![Context isolation: the main conversation hands noisy work to Explore, Bash, or a custom verifier subagent, each with its own context window, and only a summary comes back to the main thread.](/images/blog/skills-rules-subagents/subagent-isolation.png)
+
 ### Built-ins you already have
 
 Cursor ships three built-in subagents and uses them automatically when the job fits:
@@ -282,6 +288,8 @@ I've also watched teams build a custom subagent for something they ran twice, le
 Creating a skill is a PR. Reviewing a skill is a PR. Rolling back a bad skill is `git revert`. The history of why a rule exists is `git blame`.
 
 I keep repeating that because most teams still treat Cursor configuration as personal preference, something each engineer tunes on their laptop between meetings. Then a new hire joins and rediscovers the staging flag in week three. Then someone leaves and takes the only working deploy prompt with them. The tooling didn't break. The team never put the knowledge somewhere another person could find it.
+
+![Two endings for the same prompt: the private one works on Monday, dies when the chat closes, and the next engineer starts from scratch — the shared one becomes a SKILL.md, gets reviewed in a PR, and every teammate inherits it on clone.](/images/blog/skills-rules-subagents/prompt-vs-skill.png)
 
 Review this the same way you review the code it governs.
 
