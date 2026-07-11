@@ -319,17 +319,19 @@ function ChatTab({ isDark, theme }) {
       (m) => m !== WELCOME_MESSAGE
     );
     const apiMessages = [...conversationHistory, userMessage];
+    const requestId = Symbol('chat-request');
 
     setMessages((prev) => [...prev, userMessage]);
     setInput('');
     setLoading(true);
     setError(null);
 
-    // Abort any in-flight request
+    // Abort any in-flight request and drop its empty placeholder bubble
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
     }
     abortControllerRef.current = new AbortController();
+    abortControllerRef.current._requestId = requestId;
 
     try {
       const res = await fetch('/api/chat', {
@@ -378,6 +380,21 @@ function ChatTab({ isDark, theme }) {
 
           try {
             const parsed = JSON.parse(data);
+            if (parsed.error) {
+              setError(parsed.error);
+              setMessages((prev) => {
+                const updated = [...prev];
+                if (
+                  updated.length > 0 &&
+                  updated[updated.length - 1].role === 'assistant' &&
+                  !updated[updated.length - 1].content
+                ) {
+                  return updated.slice(0, -1);
+                }
+                return updated;
+              });
+              continue;
+            }
             if (parsed.content) {
               fullContent += parsed.content;
               const snapshot = fullContent;
@@ -395,12 +412,44 @@ function ChatTab({ isDark, theme }) {
           }
         }
       }
+
+      if (!fullContent) {
+        setMessages((prev) => {
+          const updated = [...prev];
+          if (
+            updated.length > 0 &&
+            updated[updated.length - 1].role === 'assistant' &&
+            !updated[updated.length - 1].content
+          ) {
+            return updated.slice(0, -1);
+          }
+          return updated;
+        });
+        setError((prev) => prev || 'No reply came back. Please try again.');
+      }
     } catch (err) {
-      if (err.name === 'AbortError') return;
+      if (err.name === 'AbortError') {
+        // Remove an unfinished empty assistant bubble from the aborted request
+        setMessages((prev) => {
+          const updated = [...prev];
+          if (
+            updated.length > 0 &&
+            updated[updated.length - 1].role === 'assistant' &&
+            !updated[updated.length - 1].content
+          ) {
+            return updated.slice(0, -1);
+          }
+          return updated;
+        });
+        return;
+      }
       setError('Failed to connect. Please try again.');
     } finally {
-      setLoading(false);
-      abortControllerRef.current = null;
+      // Only clear loading if this request is still the active one
+      if (abortControllerRef.current?._requestId === requestId) {
+        setLoading(false);
+        abortControllerRef.current = null;
+      }
     }
   }, [input, loading, messages]);
 

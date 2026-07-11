@@ -69,8 +69,10 @@ export default async function BlogPost({ params }) {
       author={post.author}
       demoUrl={post.demoUrl}
       githubUrl={post.githubUrl}
+      slug={params.slug}
+      enableAskArticle
     >
       <BlogPostContent post={post} slug={params.slug} />
     </BlogLayout>
   );
-} 
+}

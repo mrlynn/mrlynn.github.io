@@ -5,6 +5,7 @@ import { styled } from '@mui/material/styles';
 import Image from 'next/image';
 import { GitHub as GitHubIcon, Launch as LaunchIcon } from '@mui/icons-material';
 import ShareButton from '../ShareButton';
+import AskArticleDock from './AskArticleDock';
 
 const HeroSection = styled(Box)(({ theme }) => ({
   position: 'relative',
@@ -34,7 +35,19 @@ const HeroContent = styled(Box)(({ theme }) => ({
   padding: theme.spacing(4),
 }));
 
-const BlogLayout = ({ children, title, description, image, date, author, demoUrl, githubUrl }) => {
+const BlogLayout = ({
+  children,
+  title,
+  description,
+  image,
+  date,
+  author,
+  demoUrl,
+  githubUrl,
+  slug,
+  enableAskArticle = false,
+  askSuggestedQuestions,
+}) => {
   // Add JSON-LD schema
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -137,13 +150,21 @@ const BlogLayout = ({ children, title, description, image, date, author, demoUrl
           />
         </Box>
 
-        {/* Content */}
-        <Container maxWidth="md" sx={{ py: 8 }}>
+        {/* Content — extra bottom padding when ask dock is present */}
+        <Container maxWidth="md" sx={{ py: 8, pb: enableAskArticle ? 16 : 8 }}>
           {children}
         </Container>
       </Box>
+
+      {enableAskArticle && slug && (
+        <AskArticleDock
+          slug={slug}
+          title={title}
+          suggestedQuestions={askSuggestedQuestions}
+        />
+      )}
     </Container>
   );
 };
 
-export { BlogLayout }; 
+export { BlogLayout };

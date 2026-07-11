@@ -278,17 +278,21 @@ function buildStructuredDataSources() {
 
     // Extract the personalInfo object content as text
     // We'll build markdown from the known structure
-    const bioText = `# Michael Lynn — Principal Developer Advocate at MongoDB
+    const bioText = `# Michael Lynn — AI Adoption Engineer at Cursor
 
-Michael Lynn is a Principal Developer Advocate at MongoDB (2018-present) with 15+ years in technology. He helps developers and teams adopt modern data platforms and AI-driven tools.
+Michael Lynn is an AI Adoption Engineer at Cursor (2026–present). He creates and presents workshops and AI education programs that help engineering teams adopt AI-assisted development. Before Cursor, he spent a decade at MongoDB, most recently as Principal Developer Advocate (2018–2026).
+
+## Current role (authoritative)
+- AI Adoption Engineer at Cursor (2026–present): Creates and presents workshops and AI education programs; helps engineering teams and developers adopt AI-assisted development and get the most out of Cursor.
 
 ## Career History
-- VP, Head of UNIX Engineering at Merrill Lynch (2000-2006): Set UNIX/Linux standards and strategic direction, managed engineering teams.
-- Engineering Manager at Bank of America (2006-2010): Led system design and infrastructure integration teams, developed server visibility tools.
-- Senior Software Consultant at BMC Software (2010-2013): Led pre-sales consulting team, demonstrated server automation and cloud computing solutions.
-- Solutions Consultant at Medallia (2013-2015): Led teams in pre-sales and resell partnerships.
-- Senior Solutions Architect at MongoDB (2016-2018): Guided customers in designing scalable systems, led proof of concepts.
-- Principal Developer Advocate at MongoDB (2018-present): Focused on developer enablement for Data Modeling, AI, MongoDB Atlas, and Vector Search.
+- AI Adoption Engineer at Cursor (2026–present): Workshops, AI education programs, and adoption enablement for engineering teams.
+- Principal Developer Advocate at MongoDB (2018–2026): Developer enablement for Data Modeling, AI, MongoDB Atlas, and Vector Search. Labs, workshops, and training programs.
+- Senior Solutions Architect at MongoDB (2016–2018): Guided customers in designing scalable systems, led proof of concepts.
+- Solutions Consultant at Medallia (2013–2015): Led teams in pre-sales and resell partnerships.
+- Senior Software Consultant at BMC Software (2010–2013): Led pre-sales consulting team, demonstrated server automation and cloud computing solutions.
+- Engineering Manager at Bank of America (2006–2010): Led system design and infrastructure integration teams, developed server visibility tools.
+- VP, Head of UNIX Engineering at Merrill Lynch (2000–2006): Set UNIX/Linux standards and strategic direction, managed engineering teams.
 
 ## Impact & Stats
 - 200+ tech talks and presentations delivered worldwide
@@ -296,13 +300,13 @@ Michael Lynn is a Principal Developer Advocate at MongoDB (2018-present) with 15
 - 100+ open source contributions
 
 ## Technical Expertise
-MongoDB Atlas, Atlas Vector Search, RAG (Retrieval Augmented Generation), AI/ML Applications, Data Modeling, Node.js, React & Next.js, Developer Advocacy & Developer Experience, Cloud Architecture, Real-time Data (Change Streams)`;
+AI-assisted development, Cursor, developer education & enablement, MongoDB Atlas, Atlas Vector Search, RAG (Retrieval Augmented Generation), AI/ML Applications, Data Modeling, Node.js, React & Next.js, Developer Advocacy & Developer Experience, Cloud Architecture, Real-time Data (Change Streams)`;
 
     sources.push({
       filePath: 'src/data/personalInfo.js',
       title: 'Michael Lynn — Biography & Career',
       category: 'bio',
-      tags: ['biography', 'career', 'MongoDB'],
+      tags: ['biography', 'career', 'Cursor', 'MongoDB'],
       date: null,
       text: bioText,
     });
@@ -358,7 +362,7 @@ MongoDB Atlas, Atlas Vector Search, RAG (Retrieval Augmented Generation), AI/ML 
 
 ## The MongoDB Podcast
 Host: Michael Lynn
-The MongoDB Podcast features guest interviews including developers, startups, and founders with MongoDB Principal Developer Advocate Michael Lynn. Learn about new and emerging technology, how to use the various MongoDB products and best practices, how organizations are using MongoDB, and what lead them to choose MongoDB over other databases.
+The MongoDB Podcast features guest interviews including developers, startups, and founders. Michael Lynn hosted the show while he was a Principal Developer Advocate at MongoDB (2018–2026). Episodes cover emerging technology, MongoDB products and best practices, and how organizations adopt MongoDB.
 Listen: https://podcasts.apple.com/us/podcast/the-mongodb-podcast/id1500452446
 
 ## Daily Reflection Podcast
