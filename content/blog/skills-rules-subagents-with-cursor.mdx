@@ -1,29 +1,35 @@
 ---
 title: "The Best Prompt on Your Team Is the One Nobody Else Can See"
-description: "I knew Skills and Rules before I joined Cursor. What I didn't know was how hard they get on a large enterprise team. Here's what I found after digging into how teams that make them work actually set things up."
+description: "You prompt, let it run, deslop it, re-prompt. It works until the window closes. Skills, Rules, and Subagents are how you teach the agent once and let it remember — alone and on a team."
 date: "2026-07-11T12:00:00"
 author: "Michael Lynn"
 image: "/images/blog/skills-rules-subagents/cover.png"
 tags: ["cursor", "skills", "rules", "subagents", "ai", "developer-experience", "team"]
 ---
 
-I thought I understood Skills and Rules before I joined Cursor.
+A lot of people I know are building with AI right now. You're shipping things in an afternoon that would've eaten a week a couple years ago, if you could even get past the blockers that used to steal whole evenings.
 
-I'd written them. I'd used them on my own projects. I really felt like I understand the power behind them.  Rules are basically always-on constraints, Skills are procedures you invoke when the work matches. File goes in `.cursor/`, agent reads it, life gets easier. For a single developer, that story mostly holds.
+And if you're anything like me, you've gotten pretty good with the tools. Cursor, Claude Code, Codex, whatever's in your rotation. You prompt, let it run, check the diff, maybe deslop it, re-prompt, and keep shaping the thing until it looks right. It works. Then the chat closes. The good result lived and died in one session. Next week you hit the same wall and spend twenty minutes hunting for the prompt that saved you last time.
 
-What I didn't understand was the hard part. Not the markdown. Not the frontmatter. The hard part shows up when a few hundred engineers share a codebase and nobody has decided who owns the agent knowledge.
+What if you could teach the agent once, and let it remember? Take the prompt that finally worked and turn it into something it reaches for on its own.
 
-The same pattern kept showing up once I started talking to enterprise teams. Someone spends a week getting the staging deploy prompt right: which secrets file, which smoke checks, which Slack channel gets the link, the weird flag you have to pass or the health check lies. By Friday it works. By Monday it lives nowhere except that person's chat history. The next engineer types a worse version, misses the flag, burns an afternoon, and both of them walk away thinking Cursor is inconsistent. It wasn't. The knowledge was private.
+That's Skills, Rules, and Subagents. Skills are your best prompts, saved. Rules are the standards the agent always follows. Subagents are the specialists for the heavy lifting. Cursor is where they sit together in the repo instead of in your head.
+
+I thought I understood all three before I joined Cursor. I'd written them on my own projects. File goes in `.cursor/`, agent reads it, life gets easier. For a single developer grinding alone, that story mostly holds.
+
+What I didn't understand was the hard part once a few hundred engineers share a codebase. Not the markdown. Not the frontmatter. Who owns the agent knowledge, and what happens when nobody does.
+
+The same pattern kept showing up once I started talking to enterprise teams. Someone spends a week getting the staging deploy prompt right: which secrets file, which smoke checks, which Slack channel gets the link, the weird flag you have to pass or the health check lies. By Friday it works. By Monday it lives nowhere except that person's chat history. The next engineer types a worse version, misses the flag, burns an afternoon, and both of them walk away thinking Cursor is inconsistent. It wasn't. The knowledge was private. Same wall I hit alone, just multiplied.
 
 So I dug in. How do teams that make this work actually organize Rules vs Skills vs Subagents? Where does ownership live? What belongs in the dashboard versus the repo? What breaks when you treat agent config like personal preference instead of something you review in a PR?
 
-This post is what I found.
+This post is what I found. If you're already getting results and want them to stick around past one chat window, start here.
 
 ---
 
 ## Before you build anything
 
-The best advice I can give any engineer or building is before you write a single file, figure out what you're actually trying to do.  Sounds simple... but think about it from the perspective of behaviors first.
+Before you write a single file, figure out what you're actually trying to do. Sounds simple, but start from the behavior you want, not the file format.
 
 If it's always-on behavior, a constraint the agent should never forget, that's a Rule.
 
@@ -329,7 +335,7 @@ The signal I watch for: as Skills accumulate, average PR size tends to come down
 
 ## Where to start
 
-The first five skills are the hardest. You're inventing the habit: write it down, put it in git, let someone else review the description. After that, people start contributing because they've felt the difference between rediscovering a deploy prompt on Monday and having `/deploy-to-staging` already know the steps.
+The first five skills are the hardest. You're inventing the habit: write it down, put it in git, let someone else review the description. After that, people start contributing because they've felt the difference between rediscovering a deploy prompt on Monday and having `/deploy-to-staging` already know the steps. That's the gap between getting lucky in a session and building a setup that makes you a little faster every week.
 
 If you want the canonical reference from here:
 
