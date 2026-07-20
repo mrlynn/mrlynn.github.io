@@ -7,6 +7,18 @@ const withMDX = require('@next/mdx')({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Multi-zone: /cursteroids is served by the separate Cursteroids deployment
+  // (github.com/mrlynn/cursteroids, built with basePath: '/cursteroids').
+  // Set CURSTEROIDS_URL in Vercel env (e.g. https://cursteroids.vercel.app);
+  // until it is set, these rewrites are skipped and the site behaves as before.
+  async rewrites() {
+    const zone = process.env.CURSTEROIDS_URL;
+    if (!zone) return [];
+    return [
+      { source: '/cursteroids', destination: `${zone}/cursteroids` },
+      { source: '/cursteroids/:path+', destination: `${zone}/cursteroids/:path+` },
+    ];
+  },
   images: {
     remotePatterns: [
       {

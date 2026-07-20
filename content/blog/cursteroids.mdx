@@ -1,0 +1,41 @@
+---
+category: "project"
+title: "Cursteroids"
+description: "A recruiting microsite where the job description is a playable Asteroids-style game. Every mechanic teaches part of the AI Adoption Engineer role at Cursor."
+image: "/images/projects/cursteroids.png"
+tags: ["Game", "Recruiting", "Canvas", "Next.js", "TypeScript"]
+demoUrl: "https://mlynn.org/cursteroids"
+githubUrl: "https://github.com/mrlynn/cursteroids"
+private: false
+color: "#2dd4bf"
+date: "2026-07-20"
+author: "Michael Lynn"
+technologies: ["Next.js", "TypeScript", "Material UI", "Canvas API", "Vercel AI SDK"]
+---
+
+# Cursteroids
+
+Job descriptions are where curiosity goes to die. Cursteroids is an experiment in doing the opposite: take a real role — AI Adoption Engineer at Cursor — and make it playable, so that ninety seconds with the arrow keys tells you more about the work than three paragraphs of bullet points would.
+
+## The idea
+
+The role is about turning AI pilots into permanent practice inside enterprise engineering teams. So the game's mechanics *are* the job:
+
+- The asteroids are adoption blockers pulled from real engagements: low trust in AI, docs drift, unclear ROI, flaky CI.
+- A dotted suggestion line tracks the best target, and you press **Tab** to accept it — firing feels like accepting a completion.
+- Your health bar is **Trust**. Collisions burn it, and so does overclaiming (a long streak of missed shots). Converting a skeptic restores it.
+- Some blockers can't be shot at all. "Low trust in AI" only converts if you fly alongside it and pair with it. You build *with* the team, not in front of them.
+- Cloud Agent pickups bank charges you can deploy on the chore blockers while you handle the judgment calls yourself.
+- Rules pickups permanently weaken a blocker type for the rest of the run, because a good rules library outlives the session that produced it.
+
+## What happens after a run
+
+Every finished run produces a shareable permalink with a builder identity — Trust Guardian, Workflow Diagnoser, Systems Operator — rendered as an Open Graph card that unfurls in feeds. The whole result is bit-packed into an eleven-character code in the URL, so there's no database and nothing stored.
+
+The game is deliberately not the hiring filter. The real filter is an artifact challenge: fork the repo and ship one adoption artifact a real team could own. The repo's own `.cursorrules` file is written as a model of what that leave-behind looks like.
+
+## Build notes
+
+Canvas game loop with the engine owning all state and React reading a snapshot at ~7Hz. Touch controls with a virtual joystick for mobile. The site runs as a Next.js multi-zone under `/cursteroids` on this domain, deployed separately so the game and this site never share a dependency tree.
+
+There are a few things hidden in it for the curious — the browser console is a reasonable place to start.
