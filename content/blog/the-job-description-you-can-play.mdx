@@ -1,0 +1,52 @@
+---
+title: "Cursor Is Hiring. I Built a Game So You Can Try the Job Before You Apply."
+description: "Cursor has an opening called AI Adoption Engineer, and it's a hard role to explain in a job posting. So instead of describing it, I built a small arcade game where every mechanic is a piece of the actual job. Here's what it is and why I think it's worth ninety seconds of your time."
+date: "2026-07-20T15:30:00"
+author: "Michael Lynn"
+image: "/images/blog/cursteroids/cover.png"
+tags: ["cursor", "hiring", "game-design", "ai-adoption-engineer", "side-project"]
+---
+
+Job postings are bad at the one thing they're supposed to do. They're supposed to tell you what a role actually feels like day to day, and instead you get a wall of bullet points that could describe fifty different jobs at fifty different companies. "Cross-functional collaborator." "Comfortable with ambiguity." You've read it before, and you probably skimmed it again just now.
+
+Cursor, the company behind the AI-native code editor a lot of engineers have switched to over the last couple of years, has an opening right now for something called an **AI Adoption Engineer**. It's a real role and, once you understand what it actually involves, a genuinely interesting one. But it's also one of those jobs that's almost impossible to describe in a posting, because the whole point of the job is judgment calls you make in the room, not tasks you check off a list.
+
+So here's the job in plain language, and then here's the thing I built so you don't have to take my word for it.
+
+## What the job actually is
+
+Companies buy Cursor for their engineering teams. Sometimes it sticks immediately. More often, a pilot gets rolled out, a few engineers use it well, most don't, and six months later leadership is asking why the usage numbers look flat despite the investment.
+
+An AI Adoption Engineer is the person who goes into that situation and fixes it, not by running another training session, but by building real things the team keeps using after you leave. A rules file that encodes how *this specific team* writes code, so the AI's suggestions actually match their conventions instead of fighting them. A set of prompt templates tuned to the tasks this team does every week, not generic advice. An automated workflow that clears out the boring, repetitive tickets so engineers can spend their attention on the harder problems. Then you document it well enough that the team can run it themselves, and you move on to the next team.
+
+It's part technical work, part diagnosis, and part something closer to change management, except done by actually building things instead of by presenting slides about building things.
+
+## Why a job posting can't teach you that, and a game maybe can
+
+You can read the paragraph above twice and still not have a feel for what the job is like under pressure. What happens when the team doesn't trust the tool yet? What happens when the easy fix isn't actually the right fix? Those are the interesting parts of the role, and they don't fit in a bullet point.
+
+So I built a small arcade game called **Cursteroids**. It's an Asteroids clone: you fly a ship around, and the rocks floating around you are labeled with real adoption problems, "low trust in AI," "unclear ROI," "docs drift," the actual situations someone in this role runs into. The twist is that every mechanic in the game is built to mirror something specific about how you'd actually handle those situations, not just describe them.
+
+A few examples, because this is easier to show than explain:
+
+**You can aim and fire by hand, or accept a suggestion.** A dotted line on screen tracks the best target nearby, and pressing Tab snap-fires at it instead of you aiming yourself. It's a small mechanic, but it's meant to feel like the difference between doing everything the slow way and knowing when to accept a good suggestion instead, which is a decent chunk of what this job is actually judging.
+
+**Your health bar is called Trust, not lives.** Getting hit by a blocker costs you Trust. So does missing a long streak of shots in a row, because showing up and overclaiming what you can do burns credibility with a team just as fast as an actual mistake does. You get Trust back by clearing a phase or handling a hard situation well. Run out, and the game ends. Score a lot of points while your Trust is in the floor, and the game makes sure you know that doesn't count for much.
+
+**Some problems can't be solved by attacking them.** Two of the blocker types, "low trust in AI" and "IDE skepticism," literally cannot be destroyed by shooting them. The only way through is to fly close and stay near them long enough for them to come around, at which point they switch sides and start helping you. That's the whole job compressed into one mechanic: you don't win over a skeptical team by talking at them from the front of the room. You win them over by working alongside them until they're convinced on their own terms.
+
+There's more: a Rules pickup that permanently weakens a recurring problem instead of a one-time shield, because a good rules file is supposed to outlast the session that produced it, and a Cloud Agent pickup that lets you automate the boring problems so you can spend your attention on the ones that need a human judgment call. Small details, but every one of them ties back to something a good adoption engineer actually does.
+
+While I was testing the finished version, I noticed the on-screen assistant, the one that highlights the best thing to shoot next, was pointing straight at the blockers you're not supposed to shoot at all. I'd built the "suggest a target" feature and the "some things you pair with instead" feature separately and never checked whether they'd contradict each other. They did. I fixed it so the assistant goes quiet near those blockers instead of pointing at them, which felt like an accidentally honest lesson: some things really don't have a shortcut, even in a game built specifically to teach that.
+
+## What happens when you're done playing
+
+Finish a run and the game gives you a short read on what kind of builder you look like, based on how you played, plus a link you can share that turns into a real card when it lands in a feed instead of a bare URL. That part's just for fun. It's not the point.
+
+The actual point, and the part I want to be upfront about, sits at the bottom of the page: none of the arcade score matters for getting hired. The game is free to fork, and the real ask is to ship one small, real example of the kind of thing this role builds, a rules snippet, a prompt template, a short workflow guide, anything a real engineering team could plausibly pick up and use, and open a pull request against the repo. That's the actual audition. It takes longer than ninety seconds, but it tells you and Cursor a lot more than a resume does.
+
+I don't work on Cursor's hiring team. I just thought the role was worth a better shot at being understood than most job postings get, so I made the case for it in a form more people might actually finish.
+
+Play it here: [mlynn.org/cursteroids](https://mlynn.org/cursteroids)
+
+If it feels like something you'd already want to be doing: [here's the actual posting](https://cursor.com/careers/ai-adoption-engineer).
