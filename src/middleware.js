@@ -5,17 +5,12 @@ import { NextResponse } from 'next/server';
 // methods are challenged on /api/blog.
 const MUTATING_METHODS = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
 
-function unauthorized(configured) {
+function unauthorized() {
   return new NextResponse('Authentication required.', {
     status: 401,
     headers: {
       'WWW-Authenticate': 'Basic realm="Admin", charset="UTF-8"',
       'Cache-Control': 'no-store',
-      // Temporary diagnostic: reports whether ADMIN_PASSWORD reached the
-      // runtime, never its value. Remove once auth is confirmed working.
-      'X-Auth-Configured': configured ? 'yes' : 'no',
-      'X-Auth-Len': String((process.env.ADMIN_PASSWORD || '').length),
-      'X-Auth-Len-Trimmed': String((process.env.ADMIN_PASSWORD || '').trim().length),
     },
   });
 }
@@ -44,28 +39,28 @@ export function middleware(request) {
   // trailing newline, which would silently break every comparison.
   const expected = (process.env.ADMIN_PASSWORD || '').trim();
   if (!expected) {
-    return unauthorized(false);
+    return unauthorized();
   }
 
   const header = request.headers.get('authorization') || '';
   if (!header.startsWith('Basic ')) {
-    return unauthorized(true);
+    return unauthorized();
   }
 
   let decoded;
   try {
     decoded = atob(header.slice(6));
   } catch {
-    return unauthorized(true);
+    return unauthorized();
   }
 
   const separator = decoded.indexOf(':');
   if (separator === -1) {
-    return unauthorized(true);
+    return unauthorized();
   }
 
   if (!safeEqual(decoded.slice(separator + 1), expected)) {
-    return unauthorized(true);
+    return unauthorized();
   }
 
   return NextResponse.next();
