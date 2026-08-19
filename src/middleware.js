@@ -14,6 +14,8 @@ function unauthorized(configured) {
       // Temporary diagnostic: reports whether ADMIN_PASSWORD reached the
       // runtime, never its value. Remove once auth is confirmed working.
       'X-Auth-Configured': configured ? 'yes' : 'no',
+      'X-Auth-Len': String((process.env.ADMIN_PASSWORD || '').length),
+      'X-Auth-Len-Trimmed': String((process.env.ADMIN_PASSWORD || '').trim().length),
     },
   });
 }
@@ -38,7 +40,9 @@ export function middleware(request) {
 
   // Fail closed: with no password configured there is no way to authenticate,
   // so the route stays locked rather than silently open.
-  const expected = process.env.ADMIN_PASSWORD;
+  // Trim the stored value: pasting into `vercel env add` commonly captures a
+  // trailing newline, which would silently break every comparison.
+  const expected = (process.env.ADMIN_PASSWORD || '').trim();
   if (!expected) {
     return unauthorized(false);
   }
