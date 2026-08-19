@@ -5,12 +5,15 @@ import { NextResponse } from 'next/server';
 // methods are challenged on /api/blog.
 const MUTATING_METHODS = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
 
-function unauthorized() {
+function unauthorized(configured) {
   return new NextResponse('Authentication required.', {
     status: 401,
     headers: {
       'WWW-Authenticate': 'Basic realm="Admin", charset="UTF-8"',
       'Cache-Control': 'no-store',
+      // Temporary diagnostic: reports whether ADMIN_PASSWORD reached the
+      // runtime, never its value. Remove once auth is confirmed working.
+      'X-Auth-Configured': configured ? 'yes' : 'no',
     },
   });
 }
@@ -37,28 +40,28 @@ export function middleware(request) {
   // so the route stays locked rather than silently open.
   const expected = process.env.ADMIN_PASSWORD;
   if (!expected) {
-    return unauthorized();
+    return unauthorized(false);
   }
 
   const header = request.headers.get('authorization') || '';
   if (!header.startsWith('Basic ')) {
-    return unauthorized();
+    return unauthorized(true);
   }
 
   let decoded;
   try {
     decoded = atob(header.slice(6));
   } catch {
-    return unauthorized();
+    return unauthorized(true);
   }
 
   const separator = decoded.indexOf(':');
   if (separator === -1) {
-    return unauthorized();
+    return unauthorized(true);
   }
 
   if (!safeEqual(decoded.slice(separator + 1), expected)) {
-    return unauthorized();
+    return unauthorized(true);
   }
 
   return NextResponse.next();
