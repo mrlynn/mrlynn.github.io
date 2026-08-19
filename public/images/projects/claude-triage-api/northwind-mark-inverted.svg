@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-labelledby="nw-title-inv">
+  <title id="nw-title-inv">Northwind Outfitters</title>
+  <rect width="64" height="64" rx="15" fill="#F2EDE4"/>
+  <path d="M42 26 L58 47 H30 Z" fill="#5C9A86"/>
+  <path d="M26 16 L44 47 H8 Z" fill="#1F3D33"/>
+  <path d="M26 16 L32 26 L28.5 25 L26 28 L23 24.5 L20 26 Z" fill="#F2EDE4"/>
+</svg>

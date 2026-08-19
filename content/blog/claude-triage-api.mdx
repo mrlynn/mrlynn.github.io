@@ -1,7 +1,7 @@
 ---
 category: "project"
 title: "Claude Triage API"
-description: "A teaching-grade reference implementation of a customer-support triage service on the Claude API — four routes, six labs, and a fictional outdoor retailer where you can file a real ticket and watch it get classified."
+description: "A reference customer-support triage service on the Claude API — four routes, six labs, and a fake outdoor retailer where you can file a ticket and watch it get classified live."
 image: "/images/projects/claude-triage-api.png"
 tags: ["Claude", "AI", "API", "Structured Outputs", "Tool Use", "Streaming", "Evals", "Course"]
 demoUrl: "https://claude-triage-labs.vercel.app"
@@ -15,15 +15,15 @@ technologies: ["Claude API", "TypeScript", "Zod", "Next.js", "Docusaurus", "Mong
 
 # Claude Triage API
 
-Most Claude API tutorials show you one capability in isolation. Structured outputs in one repo, tool use in another, streaming in a third. That is fine for a hello world. It is a bad way to teach production, where the same request might need a validated schema, a policy lookup, a streamed reply, and a cost estimate before anyone hits send.
+Most Claude API tutorials show you one thing at a time. Structured outputs in one repo. Tool use in another. Streaming in a third. Fine for a hello world. Not fine for production, where the same request might need a validated schema, a policy lookup, a streamed reply, and a cost estimate before anyone hits send.
 
-This project is the version I wanted when I was learning it: one coherent domain, four routes that each introduce exactly one new idea, and a course built to be read and taught from — not just cloned and run once.
+I built the version I wanted when I was learning this stuff. One domain. Four routes, each adding exactly one new idea. And a course you can actually read and teach from, not just clone and run once.
 
 ## Three things, one scenario
 
-Everything hangs off a fictional company called Northwind Outfitters. They sell outdoor gear on a lifetime workmanship guarantee, which sounds nice until you learn they take 4,100 support tickets a week and once left a child's injury report sitting unrouted for three days because it opened with "probably nothing."
+Everything hangs off a fictional company called Northwind Outfitters. They sell outdoor gear on a lifetime workmanship guarantee, which sounds nice until you hear they take 4,100 support tickets a week. And once they left a child's injury report sitting unrouted for three days because it opened with "probably nothing."
 
-That incident is not decoration. It is why the triage schema has a calibrated confidence score, why `/v1/resolve` returns the full tool trace, and why the eval set includes a deliberately ambiguous case that is allowed to fail.
+That incident is not decoration. It is why the triage schema has a calibrated confidence score. It is why `/v1/resolve` returns the full tool trace. And it is why the eval set includes a deliberately ambiguous case that is allowed to fail.
 
 | What | Where |
 |---|---|
@@ -31,7 +31,7 @@ That incident is not decoration. It is why the triage schema has a calibrated co
 | The course | [claude-triage-labs.vercel.app](https://claude-triage-labs.vercel.app) — six labs, solutions, instructor guide, interactive playgrounds |
 | The scenario, made real | [northwind-outfitters.vercel.app](https://northwind-outfitters.vercel.app) — browse the catalog, file a ticket, watch your words get classified live |
 
-The storefront calls Claude for real. It is rate-limited and spend-capped through MongoDB Atlas — five requests per IP per ten minutes, a global daily ceiling, and it fails closed rather than running uncapped.
+The storefront calls Claude for real. Rate-limited and spend-capped through MongoDB Atlas. Five requests per IP per ten minutes, a global daily ceiling, and it fails closed rather than running uncapped.
 
 ## Four routes
 
@@ -44,9 +44,9 @@ Each route builds on the one before it.
 | `POST /v1/draft` | Streaming | Token-by-token delivery over SSE, with real cost accounting |
 | `POST /v1/estimate` | Token counting | Know the bill before you pay it |
 
-Cross-cutting throughout: prompt caching on a ~1,400-word policy handbook, usage and cost accounting on every response, typed error handling, and an eval harness with both deterministic scoring and an LLM judge.
+Prompt caching on a ~1,400-word policy handbook runs through all of it. So does usage and cost accounting on every response, typed error handling, and an eval harness with both deterministic scoring and an LLM judge.
 
-The structured output route is the one I keep coming back to. One Zod schema in `src/schemas.ts` is simultaneously the model's output constraint, the runtime validator, and the TypeScript type your consumers get. No `JSON.parse` in a try/catch, no "respond only with JSON" in the prompt, no repair loop.
+The structured output route is the one I keep coming back to. One Zod schema in `src/schemas.ts` is the model's output constraint, the runtime validator, and the TypeScript type your consumers get. No `JSON.parse` in a try/catch. No "respond only with JSON" in the prompt. No repair loop.
 
 ## The course
 
@@ -59,7 +59,7 @@ Roughly four hours end to end, with solutions included.
 5. Prompt caching and cost (35 min)
 6. Evals and LLM-as-judge (45 min)
 
-The Docusaurus site at [claude-triage-labs.vercel.app](https://claude-triage-labs.vercel.app) has inline knowledge checks, four interactive playgrounds (cost explorer, trace stepper, cache inspector, queue demo), and an auto-scored assessment. The markdown source lives in `curriculum/` in the repo and syncs into the site — edit the markdown on GitHub, not the generated docs.
+The Docusaurus site at [claude-triage-labs.vercel.app](https://claude-triage-labs.vercel.app) has inline knowledge checks, four interactive playgrounds (cost explorer, trace stepper, cache inspector, queue demo), and an auto-scored assessment. The markdown source lives in `curriculum/` in the repo and syncs into the site. Edit the markdown on GitHub, not the generated docs.
 
 Start with the scenario page before Lab 1. Most of the questions the labs ask only make sense once you know why a refund cap exists or why the trace has to come back with the decision.
 
@@ -80,15 +80,15 @@ npm run smoke
 
 ## What I was trying to get right
 
-A few details that mattered more than the feature list:
+A few details mattered more than the feature list.
 
-**Caching economics.** Two identical-prefix calls to `/v1/triage` came back 81% cheaper on the warm call — but the cold call cost *more* than no caching at all, because of the write premium. Caching a one-shot prefix loses money. That is Lab 5, not a footnote.
+Two identical-prefix calls to `/v1/triage` came back 81% cheaper on the warm call. But the cold call cost *more* than no caching at all, because of the write premium. Caching a one-shot prefix loses money. That is Lab 5, not a footnote.
 
-**Agent loop accounting.** Usage on `/v1/resolve` is summed across every turn. Reporting only the final message's usage under-reports a five-turn loop by roughly 5×. The tool trace comes back with the decision because in support tooling, "show your work" is an audit requirement, not a nice-to-have.
+Usage on `/v1/resolve` is summed across every turn. Report only the final message's usage and you under-report a five-turn loop by roughly 5×. The tool trace comes back with the decision because in support tooling, "show your work" is an audit requirement. Not a nice-to-have.
 
-**Judge variance.** Three eval runs scored the tone judge at 3/4, 1/4, and 2/4 on the same four-case sample. Same route, same rubric, same model. CI gates on the deterministic half of the eval, not the judge — and Lab 6 explains why.
+Three eval runs scored the tone judge at 3/4, 1/4, and 2/4 on the same four-case sample. Same route, same rubric, same model. CI gates on the deterministic half of the eval, not the judge. Lab 6 explains why.
 
-**Calibration over accuracy theater.** The only case that flips between runs is the one labelled deliberately ambiguous. It scores 0.45–0.50 confidence both times, against ~0.84 on the cases that pass. A confidence field that behaves like that supports threshold routing. One that reports 0.9 on everything does not.
+The only case that flips between runs is the one labelled deliberately ambiguous. It scores 0.45–0.50 confidence both times, against ~0.84 on the cases that pass. A confidence field that behaves like that supports threshold routing. One that reports 0.9 on everything does not.
 
 ## Links
 
