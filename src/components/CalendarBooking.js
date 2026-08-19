@@ -31,7 +31,14 @@ const CalendarBooking = ({ variant = 'button', buttonProps = {} }) => {
 
       document.body.appendChild(scriptRef.current);
     } else {
-      setIsScriptLoaded(true);
+      // The script tag exists, but it may still be in flight — a second
+      // instance on the same page must wait for the API, not assume it.
+      if (window.calendar?.schedulingButton) {
+        setIsScriptLoaded(true);
+      } else {
+        const existing = document.querySelector('script[src*="scheduling-button-script.js"]');
+        existing.addEventListener('load', () => setIsScriptLoaded(true), { once: true });
+      }
     }
 
     return () => {
