@@ -1,7 +1,7 @@
 'use client';
 
 import { Box, Container, Typography, Button, Grid, Stack, useTheme, Chip } from '@mui/material';
-import { ArrowForward as ArrowForwardIcon, EventAvailable as EventIcon } from '@mui/icons-material';
+import { ArrowForward as ArrowForwardIcon } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import CalendarBooking from '../../components/CalendarBooking';
@@ -220,14 +220,26 @@ export default function ConsultingPage() {
       </Box>
 
       {/* ---------- OFFERS ---------- */}
-      <Box component="section" sx={{ py: { xs: 10, md: 14 } }}>
+      {consulting.tracks.map((track, t) => (
+      <Box
+        key={track.id}
+        component="section"
+        sx={{
+          py: { xs: 10, md: 14 },
+          ...(t > 0 && {
+            backgroundColor: theme.palette.background.card,
+            borderTop: `1px solid ${hairline}`,
+          }),
+        }}
+      >
         <Container maxWidth="lg">
           <SectionHeading
-            eyebrow="How we could work together"
-            title="Four ways in, depending on what you need"
+            eyebrow={track.eyebrow}
+            title={track.title}
+            intro={track.blurb}
           />
           <Grid container spacing={4}>
-            {consulting.offers.map((offer, i) => (
+            {track.offers.map((offer, i) => (
               <Grid item xs={12} md={6} key={offer.title}>
                 <MotionBox
                   initial="hidden"
@@ -301,9 +313,10 @@ export default function ConsultingPage() {
           </Grid>
         </Container>
       </Box>
+      ))}
 
       {/* ---------- WHO THIS IS FOR ---------- */}
-      <Box component="section" sx={{ py: { xs: 8, md: 10 }, backgroundColor: theme.palette.background.card }}>
+      <Box component="section" sx={{ py: { xs: 8, md: 10 }, borderTop: `1px solid ${hairline}` }}>
         <Container maxWidth="lg">
           <Grid container spacing={{ xs: 4, md: 8 }} alignItems="flex-start">
             <Grid item xs={12} md={5}>
