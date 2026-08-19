@@ -1,5 +1,14 @@
 export const projects = [
   {
+    title: 'Claude Triage API',
+    description: 'A teaching-grade reference API for the Claude API — structured outputs, tool use, streaming, caching, and evals, with a six-lab course and a live storefront.',
+    image: '/images/projects/claude-triage-api.png',
+    tags: ['Claude', 'AI', 'API', 'Course'],
+    demoUrl: 'https://claude-triage-labs.vercel.app',
+    private: false,
+    color: '#1F3D33',
+  },
+  {
     title: 'AA Companion',
     description: 'A recovery companion app with daily reflections, meeting tools, journaling, and guided support for people in sobriety.',
     image: '/images/projects/aacompanion.jpg',
