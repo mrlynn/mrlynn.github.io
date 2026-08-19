@@ -23,6 +23,7 @@ import {
 } from '@mui/material';
 import {
   Home as HomeIcon,
+  Handshake as HandshakeIcon,
   Work as WorkIcon,
   MoreVert as MoreIcon,
   Menu as MenuIcon,
@@ -72,6 +73,7 @@ const NavigationImproved = () => {
 
   const primaryItems = [
     { text: 'Home', icon: <HomeIcon />, path: '/' },
+    { text: 'Consulting', icon: <HandshakeIcon />, path: '/consulting' },
     { text: 'Projects', icon: <WorkIcon />, path: '/projects' },
     { text: 'Blog', icon: <BookIcon />, path: '/blog' },
     { text: 'Speaking', icon: <SpeakingIcon />, path: '/speaking' },
