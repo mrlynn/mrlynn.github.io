@@ -30,6 +30,7 @@ import {
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { personalInfo, generateUserFacingPrompt } from '../data/personalInfo';
 
 const MotionBox = motion(Box);
@@ -118,6 +119,27 @@ function MarkdownMessage({ content, isDark, theme }) {
           textDecoration: 'none',
           '&:hover': { textDecoration: 'underline' },
         },
+        '& table': {
+          display: 'block',
+          width: '100%',
+          maxWidth: '100%',
+          overflowX: 'auto',
+          borderCollapse: 'collapse',
+          mb: 1,
+          fontSize: '0.8rem',
+          lineHeight: 1.45,
+        },
+        '& th, & td': {
+          border: `1px solid ${isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.1)'}`,
+          px: 0.9,
+          py: 0.6,
+          textAlign: 'left',
+          verticalAlign: 'top',
+        },
+        '& th': {
+          fontWeight: 600,
+          background: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)',
+        },
         '& pre': {
           background: isDark ? 'rgba(0, 0, 0, 0.4)' : 'rgba(217, 98, 43, 0.04)',
           borderRadius: 1,
@@ -127,7 +149,7 @@ function MarkdownMessage({ content, isDark, theme }) {
         },
       }}
     >
-      <ReactMarkdown>{content}</ReactMarkdown>
+      <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
     </Box>
   );
 }

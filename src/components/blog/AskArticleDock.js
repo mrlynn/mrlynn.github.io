@@ -20,6 +20,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 const MotionBox = motion(Box);
 
@@ -58,9 +59,38 @@ function MarkdownReply({ content, isDark }) {
           textDecoration: 'none',
           '&:hover': { textDecoration: 'underline' },
         },
+        '& table': {
+          display: 'block',
+          width: '100%',
+          maxWidth: '100%',
+          overflowX: 'auto',
+          borderCollapse: 'collapse',
+          mb: 1,
+          fontSize: '0.78rem',
+          lineHeight: 1.45,
+        },
+        '& th, & td': {
+          border: `1px solid ${isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.1)'}`,
+          px: 0.85,
+          py: 0.55,
+          textAlign: 'left',
+          verticalAlign: 'top',
+        },
+        '& th': {
+          fontWeight: 600,
+          background: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)',
+        },
+        '& pre': {
+          background: isDark ? 'rgba(0,0,0,0.35)' : 'rgba(190, 78, 28, 0.05)',
+          borderRadius: 1,
+          p: 1.25,
+          overflow: 'auto',
+          mb: 1,
+          '& code': { px: 0, py: 0, background: 'none' },
+        },
       }}
     >
-      <ReactMarkdown>{content}</ReactMarkdown>
+      <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
     </Box>
   );
 }
