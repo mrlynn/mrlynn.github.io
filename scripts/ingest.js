@@ -322,6 +322,8 @@ AI-assisted development, Cursor, developer education & enablement, MongoDB Atlas
     // Dynamic import won't work for .js with export syntax in this context,
     // so we'll parse the key data manually from personalInfo
     const projectTexts = [
+      { name: 'Claude Triage API', desc: 'Teaching-grade Claude API reference for structured outputs, tool use, streaming, caching, and evals — six-lab course plus a live Northwind Outfitters storefront where you file a ticket and watch it get classified', url: 'https://claude-triage-labs.vercel.app', demo: 'https://northwind-outfitters.vercel.app', github: 'https://github.com/mrlynn/claude-triage-api', tech: ['Claude API', 'TypeScript', 'Zod', 'Next.js', 'Docusaurus', 'MongoDB Atlas'] },
+      { name: 'Northwind Outfitters', desc: 'Fictional outdoor retailer used as the live demo scenario for the Claude Triage API course — browse the catalog, file a support ticket, and see Claude triage it in real time', url: 'https://northwind-outfitters.vercel.app', tech: ['Claude API', 'Next.js', 'MongoDB Atlas'] },
       { name: 'vai', desc: 'Developer toolkit and CLI for semantic search and RAG workflows — document chunking, Voyage AI embeddings, MongoDB Atlas Vector Search, reranking, conversational RAG, MCP server integration, and a web playground', url: 'https://vaicli.com', docs: 'https://docs.vaicli.com', tech: ['Voyage AI', 'MongoDB', 'MCP', 'CLI'] },
       { name: 'MongoDB-RAG', desc: 'Lightweight NPM package — the easiest way to build RAG applications with MongoDB Atlas Vector Search and document ingestion', url: 'https://mongodb-rag.com', tech: ['MongoDB', 'Vector Search', 'LangChain'] },
       { name: 'AA Companion', desc: 'Recovery companion app with daily reflections, meeting finder, journaling, and guided support for people in sobriety', url: 'https://aacompanion.com', tech: ['Next.js', 'MongoDB', 'AI'] },
@@ -338,7 +340,9 @@ AI-assisted development, Cursor, developer education & enablement, MongoDB Atlas
     const projectMarkdown = projectTexts.map(p => {
       let md = `## ${p.name}\n${p.desc}`;
       if (p.url) md += `\nURL: ${p.url}`;
+      if (p.demo) md += `\nDemo: ${p.demo}`;
       if (p.docs) md += `\nDocs: ${p.docs}`;
+      if (p.github) md += `\nGitHub: ${p.github}`;
       if (p.tech) md += `\nTech: ${p.tech.join(', ')}`;
       return md;
     }).join('\n\n');
@@ -504,6 +508,7 @@ async function main() {
   const sources = [
     ...readMdxFiles(join(ROOT, 'content/blog'), 'blog'),
     ...readMdxFiles(join(ROOT, 'content/speaking'), 'speaking'),
+    ...readMdxFiles(join(ROOT, 'sources'), 'resume'),
     ...buildStructuredDataSources(),
   ];
 
