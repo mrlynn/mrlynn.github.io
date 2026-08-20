@@ -17,13 +17,15 @@ technologies: ["Claude API", "TypeScript", "Zod", "Next.js", "Docusaurus", "Mong
 
 Most Claude API tutorials show you one thing at a time. Structured outputs in one repo. Tool use in another. Streaming in a third. Fine for a hello world. Not fine for production, where the same request might need a validated schema, a policy lookup, a streamed reply, and a cost estimate before anyone hits send.
 
-I built the version I wanted when I was learning this stuff. One domain. Four routes, each adding exactly one new idea. And a course you can actually read and teach from, not just clone and run once.
+I built the version I wanted when I was learning this early on.
 
 ## Three things, one scenario
 
-Everything hangs off a fictional company called Northwind Outfitters. They sell outdoor gear on a lifetime workmanship guarantee, which sounds nice until you hear they take 4,100 support tickets a week. And once they left a child's injury report sitting unrouted for three days because it opened with "probably nothing."
+Everything hangs off of a fictional company called **Northwind Outfitters**. Imagine that they sell outdoor gear on a lifetime workmanship guarantee, which sounds nice until you hear they take 4,100 support tickets a week. And once they left a child's injury report sitting unrouted for three days because it opened with "probably nothing."
 
-That incident is not decoration. It is why the triage schema has a calibrated confidence score. It is why `/v1/resolve` returns the full tool trace. And it is why the eval set includes a deliberately ambiguous case that is allowed to fail.
+This closely mirrors a company, and a use case I encountered when I was executing Developer Days interviews back at MongoDB. 
+
+That incident in question was not fiction... but it shaped the way I looked at implementing support case triage and helped me crystalize how I wanted to create a learning lab. It is precisely why the triage schema was created with a calibrated confidence score. It is also why `/v1/resolve` returns the full tool trace. And it is why the eval set includes a deliberately ambiguous case that is allowed to fail.
 
 | What | Where |
 |---|---|
@@ -89,6 +91,8 @@ Usage on `/v1/resolve` is summed across every turn. Report only the final messag
 Three eval runs scored the tone judge at 3/4, 1/4, and 2/4 on the same four-case sample. Same route, same rubric, same model. CI gates on the deterministic half of the eval, not the judge. Lab 6 explains why.
 
 The only case that flips between runs is the one labelled deliberately ambiguous. It scores 0.45–0.50 confidence both times, against ~0.84 on the cases that pass. A confidence field that behaves like that supports threshold routing. One that reports 0.9 on everything does not.
+
+If you're looking for enablement content for your product, I hope you'll find this refreshing and perhaps a source of inspiration.  Feel free to [reach out to discuss your specific enablement requirements](https://mlynn.org/meet) and how we might work together. 
 
 ## Links
 
