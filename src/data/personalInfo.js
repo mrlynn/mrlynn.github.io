@@ -40,6 +40,8 @@ export const personalInfo = {
     'Real-time Data (Change Streams)',
   ],
   projects: [
+    { name: 'Claude Triage API', description: 'Teaching-grade Claude API reference for structured outputs, tool use, streaming, caching, and evals — six-lab course plus a live Northwind Outfitters storefront where you file a ticket and watch it get classified', url: 'https://claude-triage-labs.vercel.app', demoUrl: 'https://northwind-outfitters.vercel.app', github: 'https://github.com/mrlynn/claude-triage-api', tech: ['Claude API', 'TypeScript', 'Zod', 'Next.js', 'Docusaurus', 'MongoDB Atlas'] },
+    { name: 'Northwind Outfitters', description: 'Fictional outdoor retailer used as the live demo scenario for the Claude Triage API course — browse the catalog, file a support ticket, and see Claude triage it in real time', url: 'https://northwind-outfitters.vercel.app', tech: ['Claude API', 'Next.js', 'MongoDB Atlas'] },
     { name: 'vai', description: 'Developer toolkit and CLI for semantic search and RAG workflows — document chunking, Voyage AI embeddings, MongoDB Atlas Vector Search, reranking, conversational RAG, MCP server integration, and a web playground', url: 'https://vaicli.com', docs: 'https://docs.vaicli.com', tech: ['Voyage AI', 'MongoDB', 'MCP', 'CLI'] },
     { name: 'MongoDB-RAG', description: 'Lightweight NPM package — the easiest way to build RAG applications with MongoDB Atlas Vector Search and document ingestion', url: 'https://mongodb-rag.com', tech: ['MongoDB', 'Vector Search', 'LangChain'] },
     { name: 'AA Companion', description: 'Recovery companion app with daily reflections, meeting finder, journaling, and guided support for people in sobriety', url: 'https://aacompanion.com', tech: ['Next.js', 'MongoDB', 'AI'] },
@@ -78,6 +80,7 @@ export const personalInfo = {
   featuredBy: ['MongoDB', 'AWS', 'Google'],
   suggestedQuestions: [
     "What's Michael's latest project?",
+    "Tell me about the Claude Triage API / Northwind Outfitters course",
     "Tell me about his MongoDB Vector Search work",
     "What talks has he given recently?",
     "How did he get into developer advocacy?",
@@ -97,6 +100,7 @@ export function generateSystemPrompt() {
     .map(p => {
       let line = `- **${p.name}**: ${p.description}`;
       if (p.url) line += ` → [${p.url}](${p.url})`;
+      if (p.demoUrl) line += ` | [Demo](${p.demoUrl})`;
       if (p.docs) line += ` | [Docs](${p.docs})`;
       if (p.github) line += ` → [GitHub](${p.github})`;
       if (p.tech) line += ` _(${p.tech.join(', ')})_`;
@@ -177,7 +181,7 @@ ${videoList}
 - For ambiguous questions, ask a brief clarifying question.
 - End detailed answers naturally: "Want me to dive deeper into any of these?" — not robotic sign-offs.
 - When a project has a URL, include it as a clickable link.
-- If someone asks "what's his latest/newest project?" — lead with **vai** as it's the most recent.`;
+- If someone asks "what's his latest/newest project?" — lead with **Claude Triage API** / **Northwind Outfitters** (course: https://claude-triage-labs.vercel.app, storefront: https://northwind-outfitters.vercel.app), then mention **vai**.`;
 }
 
 /**
@@ -230,7 +234,7 @@ ${careerLines}
 - For ambiguous questions, ask a brief clarifying question.
 - End detailed answers naturally: "Want me to dive deeper into any of these?" — not robotic sign-offs.
 - When a project has a URL, include it as a clickable link.
-- If someone asks "what's his latest/newest project?" — lead with **vai** as it's the most recent.
+- If someone asks "what's his latest/newest project?" — lead with **Claude Triage API** / **Northwind Outfitters** (course: https://claude-triage-labs.vercel.app, storefront: https://northwind-outfitters.vercel.app), then mention **vai**.
 - If someone asks where he works / his current job — lead with **${currentRole} at ${company}**. Mention MongoDB only as prior experience.`;
 }
 

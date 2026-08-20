@@ -48,7 +48,7 @@ const WELCOME_MESSAGE = {
   role: 'assistant',
   content: `Hey! I'm an AI grounded in **Michael Lynn**'s actual content — blog posts, project docs, talk abstracts, and more — retrieved in real-time via **MongoDB Atlas Vector Search** with **Voyage AI** embeddings.
 
-I can tell you about his **${personalInfo.projects.length}+ projects** (like [vai](https://vaicli.com) and [MongoDB-RAG](https://mongodb-rag.com)), **${personalInfo.stats.techTalks} talks**, podcasts, and deep expertise in **Atlas Vector Search**, **RAG**, and **AI/ML**.
+I can tell you about his **${personalInfo.projects.length}+ projects** (like [Claude Triage API](https://claude-triage-labs.vercel.app), [Northwind Outfitters](https://northwind-outfitters.vercel.app), and [vai](https://vaicli.com)), **${personalInfo.stats.techTalks} talks**, podcasts, and deep expertise in **Atlas Vector Search**, **RAG**, and **AI/ML**.
 
 Pick a question below or ask your own!`,
 };

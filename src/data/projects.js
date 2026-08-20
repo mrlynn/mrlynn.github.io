@@ -5,6 +5,7 @@ export const projects = [
     image: '/images/projects/claude-triage-api.png',
     tags: ['Claude', 'AI', 'API', 'Course'],
     demoUrl: 'https://claude-triage-labs.vercel.app',
+    githubUrl: 'https://github.com/mrlynn/claude-triage-api',
     private: false,
     color: '#1F3D33',
   },
