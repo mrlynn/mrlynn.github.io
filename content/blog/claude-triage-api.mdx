@@ -1,19 +1,23 @@
 ---
 category: "project"
 title: "Claude Triage API"
-description: "A reference customer-support triage service on the Claude API — four routes, six labs, and a fake outdoor retailer where you can file a ticket and watch it get classified live."
+description: "A reference customer-support triage service on the Claude API — eleven labs, a fake outdoor retailer where you can file a ticket and watch it get classified live, and an open-source version you can point at your own helpdesk."
 image: "/images/projects/claude-triage-api.png"
-tags: ["Claude", "AI", "API", "Structured Outputs", "Tool Use", "Streaming", "Evals", "Course"]
-demoUrl: "https://claude-triage-labs.vercel.app"
+tags: ["Claude", "AI", "API", "Structured Outputs", "Tool Use", "Streaming", "Evals", "Guardrails", "Course"]
+demoUrl: "https://triage.mlynn.dev"
 githubUrl: "https://github.com/mrlynn/claude-triage-api"
 private: false
 color: "#1F3D33"
-date: "2026-08-19"
+date: "2026-08-29"
 author: "Michael Lynn"
-technologies: ["Claude API", "TypeScript", "Zod", "Next.js", "Docusaurus", "MongoDB Atlas", "Server-Sent Events"]
+technologies: ["Claude API", "TypeScript", "Python", "FastAPI", "Zod", "Next.js", "Docusaurus", "MongoDB Atlas", "Server-Sent Events"]
 ---
 
 # Claude Triage API
+
+Before anything else, go do this: [twenty support tickets, unsorted, the way an agent sees them](https://triage.mlynn.dev/playground/queue). One of them is a parent reporting that their child got sick. See how long it takes you to find it.
+
+That page is the whole argument. Everything below is how I built around it.
 
 Most Claude API tutorials show you one thing at a time. Structured outputs in one repo. Tool use in another. Streaming in a third. Fine for a hello world. Not fine for production, where the same request might need a validated schema, a policy lookup, a streamed reply, and a cost estimate before anyone hits send.
 
@@ -23,17 +27,17 @@ I built the version I wanted when I was learning this early on.
 
 Everything hangs off of a fictional company called **Northwind Outfitters**. Imagine that they sell outdoor gear on a lifetime workmanship guarantee, which sounds nice until you hear they take 4,100 support tickets a week. And once they left a child's injury report sitting unrouted for three days because it opened with "probably nothing."
 
-This closely mirrors a company, and a use case I encountered when I was executing Developer Days interviews back at MongoDB. 
+This closely mirrors a company, and a use case I encountered when I was executing Developer Days interviews back at MongoDB.
 
 That incident in question was not fiction... but it shaped the way I looked at implementing support case triage and helped me crystalize how I wanted to create a learning lab. It is precisely why the triage schema was created with a calibrated confidence score. It is also why `/v1/resolve` returns the full tool trace. And it is why the eval set includes a deliberately ambiguous case that is allowed to fail.
 
 | What | Where |
 |---|---|
 | The service | [`src/`](https://github.com/mrlynn/claude-triage-api) — runs locally, not deployed |
-| The course | [claude-triage-labs.vercel.app](https://claude-triage-labs.vercel.app) — six labs, solutions, instructor guide, interactive playgrounds |
-| The scenario, made real | [northwind-outfitters.vercel.app](https://northwind-outfitters.vercel.app) — browse the catalog, file a ticket, watch your words get classified live |
+| The course | [triage.mlynn.dev](https://triage.mlynn.dev) — eleven labs, solutions, instructor guide, interactive playgrounds |
+| The scenario, made real | [northwind.mlynn.dev](https://northwind.mlynn.dev) — browse the catalog, file a ticket, watch your words get classified live |
 
-The storefront calls Claude for real. Rate-limited and spend-capped through MongoDB Atlas. Five requests per IP per ten minutes, a global daily ceiling, and it fails closed rather than running uncapped.
+The storefront calls Claude for real. Rate-limited and spend-capped through MongoDB Atlas. Five requests per IP per ten minutes on the support form, separate windows for the other paid pages so the injection playground can't starve the thing that actually has to work, a global daily ceiling on top of both, and it fails closed rather than running uncapped.
 
 ## Four routes
 
@@ -52,16 +56,27 @@ The structured output route is the one I keep coming back to. One Zod schema in 
 
 ## The course
 
-Roughly four hours end to end, with solutions included.
+It started at six labs. It's eleven now, and the split matters more than the count.
 
-1. Your first call, and reading usage (20 min)
-2. Structured outputs and schema design (35 min)
-3. Tool use and the agentic loop (45 min)
-4. Streaming and SSE (30 min)
-5. Prompt caching and cost (35 min)
-6. Evals and LLM-as-judge (45 min)
+Day 1 is the course. Four hours, and someone who does only this has learned the Claude API and has a working service to show for it.
 
-The Docusaurus site at [claude-triage-labs.vercel.app](https://claude-triage-labs.vercel.app) has inline knowledge checks, four interactive playgrounds (cost explorer, trace stepper, cache inspector, queue demo), and an auto-scored assessment. The markdown source lives in `curriculum/` in the repo and syncs into the site. Edit the markdown on GitHub, not the generated docs.
+1. Establish your evaluation baseline (20 min)
+2. Your first call, and reading usage (20 min)
+3. Structured outputs and schema design (35 min)
+4. Tool use and the agentic loop (45 min)
+5. Streaming and SSE (30 min)
+6. Prompt caching and cost (35 min)
+7. Eval design and LLM-as-judge (45 min)
+
+Day 2 is three more hours and it's optional. It's for people who are going to ship, and it covers the decisions that only show up once something is real. Which model. What happens when the input is hostile. What separates a demo from a service. Skip it without loss if you're here to learn the API.
+
+Then there's a capstone, Lab 10, and it's the odd one. It's a reading lab that works through Ask Northwind, the assistant already running on both public sites, instead of building another route. No key, no terminal. You can hand it to someone who doesn't write code.
+
+There's also a Python track covering the four things that genuinely differ between the SDKs. I found those four by porting the service to FastAPI rather than by remembering them, which is why it's four and not twenty.
+
+The site at [triage.mlynn.dev](https://triage.mlynn.dev) has inline knowledge checks, seven interactive playgrounds, and an auto-scored assessment. The playgrounds render results from real runs, not illustrations of results. The markdown source lives in `curriculum/` in the repo and syncs into the site. Edit the markdown on GitHub, not the generated docs.
+
+If you're going to teach this rather than take it, the instructor guide has timing, the failure modes learners actually hit, and what to do when a lab goes sideways. There's a minute-by-minute run of show, and the opening two segments have a deck at [triage.mlynn.dev/talk](https://triage.mlynn.dev/talk). Press `P` and the speaker notes open in a second window that stays in step with the slides, so a mirrored projector doesn't show the room your notes.
 
 Start with the scenario page before Lab 1. Most of the questions the labs ask only make sense once you know why a refund cap exists or why the trace has to come back with the decision.
 
@@ -92,12 +107,24 @@ Three eval runs scored the tone judge at 3/4, 1/4, and 2/4 on the same four-case
 
 The only case that flips between runs is the one labelled deliberately ambiguous. It scores 0.45–0.50 confidence both times, against ~0.84 on the cases that pass. A confidence field that behaves like that supports threshold routing. One that reports 0.9 on everything does not.
 
-If you're looking for enablement content for your product, I hope you'll find this refreshing and perhaps a source of inspiration.  Feel free to [reach out to discuss your specific enablement requirements](https://mlynn.org/meet) and how we might work together. 
+## After the course
+
+The service in `src/` is Northwind's on purpose. Hardcoded taxonomy, one company's handbook, order data from a JSON fixture, and nothing writes back anywhere because there's no ticketing system to write back to. All four of those are right for a course. Parameterizing the taxonomy would have turned the structured-outputs lab into a lesson about config files. All four are wrong for production.
+
+So there's a second repo. [triage-api](https://github.com/mrlynn/triage-api) is the same technique with those four things moved behind a config seam: policy packs you copy and edit, a data provider interface, signed webhook ingest with connectors for Chatwoot, Zammad, Zendesk, GitHub Issues and a plain signed POST, a reviewer queue, and a conformance suite for writing your own adapter.
+
+The guardrails are literally the same code. What's new is the stuff that only shows up once something has to run. My favorite is the one I got wrong first: if a deployment has no customer lookup, the rolling refund ceiling can't run at all. The old behavior was to quietly approve the refunds it couldn't check while the summary still read "0 violations." Now it escalates them and says so on `/readyz`. A guardrail that stops running without telling you is worse than not having one.
+
+It ships with no sinks configured. It classifies, it stores, it recommends, and it writes nothing back until you turn that on deliberately.
+
+If you're looking for enablement content for your product, I hope you'll find this refreshing and perhaps a source of inspiration. Feel free to [reach out to discuss your specific enablement requirements](https://mlynn.org/meet) and how we might work together.
 
 ## Links
 
 | | |
 |---|---|
-| **Course & labs** | [claude-triage-labs.vercel.app](https://claude-triage-labs.vercel.app) |
-| **Northwind storefront** | [northwind-outfitters.vercel.app](https://northwind-outfitters.vercel.app) |
-| **GitHub** | [github.com/mrlynn/claude-triage-api](https://github.com/mrlynn/claude-triage-api) |
+| **Course & labs** | [triage.mlynn.dev](https://triage.mlynn.dev) |
+| **Northwind storefront** | [northwind.mlynn.dev](https://northwind.mlynn.dev) |
+| **The queue puzzle** | [triage.mlynn.dev/playground/queue](https://triage.mlynn.dev/playground/queue) |
+| **Course GitHub** | [github.com/mrlynn/claude-triage-api](https://github.com/mrlynn/claude-triage-api) |
+| **triage-api** | [github.com/mrlynn/triage-api](https://github.com/mrlynn/triage-api) |
