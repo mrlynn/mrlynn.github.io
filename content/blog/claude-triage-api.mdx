@@ -15,13 +15,25 @@ technologies: ["Claude API", "TypeScript", "Python", "FastAPI", "Zod", "Next.js"
 
 # Claude Triage API
 
-Before anything else, go do this: [twenty support tickets, unsorted, the way an agent sees them](https://triage.mlynn.dev/playground/queue). One of them is a parent reporting that their child got sick. See how long it takes you to find it.
+Before anything else, go do this: [twenty support tickets, unsorted, the way an agent sees them at 9am](https://triage.mlynn.dev/playground/queue). One of them needed a human that day. See how long it takes you to find it.
 
 That page is the whole argument. Everything below is how I built around it.
 
 Most Claude API tutorials show you one thing at a time. Structured outputs in one repo. Tool use in another. Streaming in a third. Fine for a hello world. Not fine for production, where the same request might need a validated schema, a policy lookup, a streamed reply, and a cost estimate before anyone hits send.
 
-I built the version I wanted when I was learning this early on.
+I built the version I wanted when I was learning this early on. I kept finding the same gap: a useful API example would end just before the uncomfortable part. The output had to be reliable enough for code to consume. The tool had to be bounded. Somebody had to notice when a cost optimization quietly stopped working. And eventually someone had to decide whether the thing was safe enough to put in front of customers. Those are the decisions I wanted to practice in one place.
+
+## A note about Cursor and Claude
+
+I work at Cursor. This is a personal educational project, and it is not affiliated with, sponsored by, or endorsed by Cursor. The views here are mine.
+
+That is worth saying plainly because this project teaches the Claude API, and I do not want the fact that I work at Cursor to make the project seem more mysterious than it is. I picked Claude because I wanted to teach a backend service built around the Messages API. The triage service is a request/response application: a customer message comes in, the service classifies it, sometimes checks a few facts, and returns a recommendation or a draft. Claude is the API sitting inside that example.
+
+Cursor belongs elsewhere in the picture. A model API is what I would reach for when I am adding an AI feature to an application I own. An agent runtime is useful when the job itself is to work in a development environment: inspect a repository, use a shell, work with MCP servers, make a change, and open a pull request. Those are different starting points. Sometimes they meet in the same system, but they are not substitutes wearing different names.
+
+There is a companion [architecture note](https://triage.mlynn.dev/docs/comparison) and a sibling implementation that make this distinction concrete. I wrote them to hold the service, policy, schemas, and evaluation cases still while looking at how different primitives shape the implementation. It is not a benchmark, and it is not a vendor scorecard. I am much more interested in helping someone recognize which kind of tool they need before they start building than in producing a table that declares a winner.
+
+If you are here for Cursor, I hope the useful part is not a sales pitch. It is the same habit the course tries to teach everywhere else: be specific about the job, make the boundaries visible, and measure the behavior that matters. If you are here for the Claude API, I hope the same distinction keeps the course honest. The API is a means to build this service, not a reason to stop thinking about the rest of the system.
 
 ## Three things, one scenario
 
