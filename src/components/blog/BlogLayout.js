@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { GitHub as GitHubIcon, Launch as LaunchIcon } from '@mui/icons-material';
 import ShareButton from '../ShareButton';
 import AskArticleDock from './AskArticleDock';
+import { SITE_URL } from '../../lib/siteUrl';
 
 const HeroSection = styled(Box)(({ theme }) => ({
   position: 'relative',
@@ -65,7 +66,7 @@ const BlogLayout = ({
       name: 'Michael Lynn',
       logo: {
         '@type': 'ImageObject',
-        url: `${process.env.NEXT_PUBLIC_SITE_URL}/images/logo.png`,
+        url: `${SITE_URL}/images/logo.png`,
       },
     },
   };

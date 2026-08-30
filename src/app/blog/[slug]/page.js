@@ -2,6 +2,7 @@ import { getPostBySlug, getAllPosts } from '../../../lib/blog';
 import { BlogLayout } from '../../../components/blog/BlogLayout';
 import BlogPostContent from '../../../components/blog/BlogPostContent';
 import { Typography, Container } from '@mui/material';
+import { SITE_URL } from '../../../lib/siteUrl';
 
 export async function generateStaticParams() {
   const posts = await getAllPosts();
@@ -14,14 +15,16 @@ export async function generateMetadata({ params }) {
   const post = await getPostBySlug(params.slug);
   if (!post) return {};
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://mlynn.org';
-  const fullUrl = `${baseUrl}/blog/${params.slug}`;
-  const imageUrl = post.image ? `${baseUrl}${post.image}` : `${baseUrl}/images/og-image.jpg`;
+  const fullUrl = `${SITE_URL}/blog/${params.slug}`;
+  const imageUrl = post.image ? `${SITE_URL}${post.image}` : `${SITE_URL}/images/og-image.jpg`;
 
   return {
     title: post.title,
     description: post.description,
     authors: [{ name: post.author }],
+    alternates: {
+      canonical: `${SITE_URL}/blog/${params.slug}`,
+    },
     openGraph: {
       title: post.title,
       description: post.description,
@@ -29,6 +32,7 @@ export async function generateMetadata({ params }) {
       url: fullUrl,
       siteName: 'Michael Lynn',
       publishedTime: post.date,
+      modifiedTime: post.updated || post.date,
       authors: [post.author],
       images: [
         {

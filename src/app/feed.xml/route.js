@@ -1,16 +1,15 @@
 import { getAllPosts } from '../../utils/blog';
+import { SITE_URL } from '../../lib/siteUrl';
 import RSS from 'rss';
 
 export async function GET() {
   const posts = await getAllPosts();
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
-
   const feed = new RSS({
     title: 'Michael Lynn\'s Blog',
     description: 'Thoughts and insights on technology, development, and more',
-    site_url: baseUrl,
-    feed_url: `${baseUrl}/feed.xml`,
-    image_url: `${baseUrl}/images/logo.png`,
+    site_url: SITE_URL,
+    feed_url: `${SITE_URL}/feed.xml`,
+    image_url: `${SITE_URL}/images/logo.png`,
     language: 'en',
     pubDate: new Date(),
     copyright: `All rights reserved ${new Date().getFullYear()}, Michael Lynn`,
@@ -20,7 +19,7 @@ export async function GET() {
     feed.item({
       title: post.title,
       description: post.description,
-      url: `${baseUrl}/blog/${post.slug}`,
+      url: `${SITE_URL}/blog/${post.slug}`,
       guid: post.slug,
       categories: post.tags,
       author: post.author,
@@ -38,4 +37,4 @@ export async function GET() {
       'Cache-Control': 'public, max-age=3600, s-maxage=3600',
     },
   });
-} 
+}

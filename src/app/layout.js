@@ -6,6 +6,7 @@ import './globals.css';
 import Script from 'next/script';
 import { Analytics } from '@vercel/analytics/next';
 import { GA_TRACKING_ID } from '../lib/analytics';
+import { SITE_URL } from '../lib/siteUrl';
 
 // Editorial display serif — characterful, optical-sized
 const fraunces = Fraunces({
@@ -29,7 +30,10 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata = {
-  metadataBase: new URL('https://mlynn.org'),
+  metadataBase: new URL(SITE_URL),
+  alternates: {
+    canonical: '/',
+  },
   title: 'Michael Lynn — AI Adoption Engineer, Developer Advocate & Advisor',
   description: 'AI Adoption Engineer at Cursor. I help developers and teams build with AI and modern data platforms — talks, open-source projects, writing, and hands-on workshops from 15+ years in tech.',
   authors: [{ name: 'Michael Lynn' }],
@@ -43,10 +47,10 @@ export const metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://mrlynn.github.io',
+    url: SITE_URL,
     siteName: 'Michael Lynn',
-    title: 'Michael Lynn - Creative Developer',
-    description: 'Pushing the boundaries of web development with innovative solutions and creative coding',
+    title: 'Michael Lynn — AI Adoption Engineer, Developer Advocate & Advisor',
+    description: 'Writing, open-source projects, talks, and hands-on workshops about building useful AI systems.',
     images: [
       {
         url: '/images/og-image.jpg',
@@ -58,10 +62,10 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Michael Lynn - Creative Developer',
-    description: 'Pushing the boundaries of web development with innovative solutions and creative coding',
+    title: 'Michael Lynn — AI Adoption Engineer, Developer Advocate & Advisor',
+    description: 'Writing, open-source projects, talks, and hands-on workshops about building useful AI systems.',
     images: ['/images/og-image.jpg'],
-    creator: '@yourtwitterhandle',
+    creator: '@mlynn',
   },
   robots: {
     index: true,
@@ -74,9 +78,9 @@ export const metadata = {
       'max-snippet': -1,
     },
   },
-  verification: {
-    google: 'your-google-site-verification',
-  },
+  verification: process.env.GOOGLE_SITE_VERIFICATION
+    ? { google: process.env.GOOGLE_SITE_VERIFICATION }
+    : undefined,
 };
 
 export default function RootLayout({ children }) {
