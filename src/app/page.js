@@ -1,7 +1,7 @@
 'use client';
 
 import { Box, Container, Typography, Button, Grid, Stack, useTheme, IconButton, Divider } from '@mui/material';
-import { GitHub as GitHubIcon, LinkedIn as LinkedInIcon, ArrowForward as ArrowForwardIcon, AutoAwesome as AutoAwesomeIcon } from '@mui/icons-material';
+import { GitHub as GitHubIcon, LinkedIn as LinkedInIcon, ArrowForward as ArrowForwardIcon, AutoAwesome as AutoAwesomeIcon, Storefront as StorefrontIcon } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import ProjectsSection from '../components/ProjectsSection';
@@ -356,6 +356,105 @@ export default function Home() {
               </MotionBox>
             </Grid>
           </Grid>
+        </Container>
+      </Box>
+
+      {/* ---------- FEATURED RELEASE ---------- */}
+      <Box sx={{ borderTop: `1px solid ${hairline}`, borderBottom: `1px solid ${hairline}` }}>
+        <Container maxWidth="lg">
+          <MotionBox
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: '-60px' }}
+            variants={fadeUp}
+            sx={{
+              py: { xs: 4, md: 4.5 },
+              display: 'flex',
+              flexDirection: { xs: 'column', md: 'row' },
+              alignItems: { xs: 'flex-start', md: 'center' },
+              justifyContent: 'space-between',
+              gap: { xs: 2.5, md: 4 },
+            }}
+          >
+            <Box>
+              <Box sx={{ mb: 1.25 }}>
+                <Eyebrow>Just shipped</Eyebrow>
+              </Box>
+              <Typography
+                sx={{
+                  fontFamily: 'var(--font-fraunces), Georgia, serif',
+                  fontWeight: 600,
+                  fontSize: { xs: '1.35rem', md: '1.6rem' },
+                  color: theme.palette.text.primary,
+                  lineHeight: 1.3,
+                  mb: 0.75,
+                }}
+              >
+                The Claude Triage API course is live.
+              </Typography>
+              <Typography sx={{ color: theme.palette.text.secondary, fontSize: '0.98rem', lineHeight: 1.6, maxWidth: 620 }}>
+                A hands-on course on building an AI triage layer with Claude — complete with a
+                sample storefront, an LMS, and a full reference implementation you can pull apart.
+              </Typography>
+            </Box>
+            <Stack direction={{ xs: 'row', md: 'row' }} spacing={1.25} flexWrap="wrap" useFlexGap sx={{ flexShrink: 0 }}>
+              <Button
+                variant="contained"
+                size="medium"
+                endIcon={<ArrowForwardIcon />}
+                href="https://triage.mlynn.dev"
+                target="_blank"
+                rel="noopener noreferrer"
+                disableElevation
+                sx={{
+                  backgroundColor: theme.palette.primary.main,
+                  color: '#fff',
+                  px: 2.75,
+                  fontWeight: 600,
+                  fontSize: '0.88rem',
+                  borderRadius: '8px',
+                  whiteSpace: 'nowrap',
+                  '&:hover': { backgroundColor: theme.palette.primary.dark },
+                }}
+              >
+                Take the course
+              </Button>
+              <Button
+                variant="outlined"
+                size="medium"
+                startIcon={<StorefrontIcon sx={{ fontSize: '1.05rem !important' }} />}
+                href="https://northwind.mlynn.dev"
+                target="_blank"
+                rel="noopener noreferrer"
+                sx={{
+                  borderColor: theme.palette.border.default,
+                  color: theme.palette.text.primary,
+                  px: 2.5,
+                  fontWeight: 600,
+                  fontSize: '0.88rem',
+                  borderRadius: '8px',
+                  whiteSpace: 'nowrap',
+                  '&:hover': { borderColor: theme.palette.primary.main, backgroundColor: theme.palette.surface.primary },
+                }}
+              >
+                See the demo
+              </Button>
+              <IconButton
+                href="https://github.com/mrlynn/claude-triage-api"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="View source on GitHub"
+                sx={{
+                  color: theme.palette.text.secondary,
+                  border: `1px solid ${theme.palette.border.default}`,
+                  borderRadius: '8px',
+                  '&:hover': { color: theme.palette.primary.main, borderColor: theme.palette.primary.main },
+                }}
+              >
+                <GitHubIcon fontSize="small" />
+              </IconButton>
+            </Stack>
+          </MotionBox>
         </Container>
       </Box>
 
