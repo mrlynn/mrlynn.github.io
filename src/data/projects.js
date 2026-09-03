@@ -1,5 +1,15 @@
 export const projects = [
   {
+    title: 'LanceScope',
+    description: 'A workbench for reading LanceDB datasets — schema, versions, indices, fragments and rows, with the byte cost of every read shown as you go.',
+    image: '/images/projects/lancescope.png',
+    tags: ['LanceDB', 'Vector Search', 'Multimodal', 'MCP', 'Python'],
+    demoUrl: 'https://lancescope.mlynn.dev',
+    githubUrl: 'https://github.com/mrlynn/lancescope',
+    private: false,
+    color: '#ff734a',
+  },
+  {
     title: 'Claude Triage API',
     description: 'A teaching-grade reference API for the Claude API — structured outputs, tool use, streaming, caching, and evals, with a six-lab course and a live storefront.',
     image: '/images/projects/claude-triage-api.png',

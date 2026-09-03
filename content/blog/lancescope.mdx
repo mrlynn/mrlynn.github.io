@@ -1,0 +1,140 @@
+---
+title: "LanceScope: A Workbench for Reading LanceDB Datasets"
+description: "A console, CLI, MCP server, and macOS app for understanding a LanceDB database — schema, versions, indices, fragments and rows, with the byte cost of every read shown as you go."
+date: "2026-09-03T12:00:00"
+author: "Michael Lynn"
+image: "/images/projects/lancescope.png"
+tags: ["LanceDB", "Lance", "Vector Search", "Multimodal", "MCP", "Python", "FastAPI", "Next.js", "Open Source"]
+color: "#ff734a"
+category: "project"
+private: false
+screenshots: [
+  "/images/projects/lancescope/console-blob-ratio.png",
+  "/images/projects/lancescope/console-findings.png",
+  "/images/projects/lancescope/console-rows.png",
+  "/images/projects/lancescope/console-training.png",
+  "/images/projects/lancescope/console-versions.png"
+]
+technologies: ["Python 3.12", "FastAPI", "PyLance / LanceDB", "Next.js 16", "Model Context Protocol", "Docker / GHCR", "Apache-2.0"]
+demoUrl: "https://lancescope.mlynn.dev"
+githubUrl: "https://github.com/mrlynn/lancescope"
+---
+
+# LanceScope: A Workbench for Reading LanceDB Datasets
+
+**Site:** [lancescope.mlynn.dev](https://lancescope.mlynn.dev) · **Live console:** [demo.lancescope.mlynn.dev/console](https://demo.lancescope.mlynn.dev/console) · **Docs:** [lancescope.mlynn.dev/docs](https://lancescope.mlynn.dev/docs) · **Repo:** [github.com/mrlynn/lancescope](https://github.com/mrlynn/lancescope)
+
+LanceScope is a workbench for understanding a LanceDB database: what's in it, why it
+behaves the way it does, and what every answer cost to get. Schema, versions, indices,
+fragments and rows, each with the bytes it took to read them printed next to it.
+
+<ScreenshotSlideshow
+  screenshots={[
+    "/images/projects/lancescope/console-blob-ratio.png",
+    "/images/projects/lancescope/console-findings.png",
+    "/images/projects/lancescope/console-rows.png",
+    "/images/projects/lancescope/console-training.png",
+    "/images/projects/lancescope/console-versions.png"
+  ]}
+  title="The LanceScope console"
+/>
+
+## The property it was built around
+
+A Lance table can hold gigabytes of video in a Blob V2 column while a search over that
+table reads kilobytes. The bytes a search touches and the bytes a table holds live in
+different files, so they're free to diverge, and on the demo corpus they diverge by a
+factor of 132: 2.65 GB of video in `.blob` side files against 20.0 MB of everything a
+search actually opens.
+
+Most tools show you the same result either way. LanceScope measures both, from Lance's
+own IO counters, and puts the number next to whatever you just did.
+
+## Four interfaces
+
+**Web console.** Browse a Lance directory (or a Hugging Face URI, read over the network
+without downloading anything), inspect schemas and versions and fragments, run scalar,
+full-text, vector or hybrid searches, and see which access path Lance chose along with
+what it read. Heavy columns are described from the schema rather than materialised, so
+browsing a table holding gigabytes of video costs kilobytes.
+
+**CLI.** Headless ingestion and scanning. Survey a directory of media, check what the
+current build can decode, and build Lance tables with progress reporting.
+
+**MCP server.** Seven read-only tools — `list_tables`, `describe_table`, `read_rows`,
+`table_findings`, `table_fragments`, `table_indices`, `table_versions` — so an agent
+gets the same evidence the console shows instead of guessing.
+
+**macOS app.** `make app` produces a self-contained `LanceScope.app` with its own
+title bar, running a server it starts and stops itself. No Python, no Node, no Lance
+on the target machine. 160 MB as a DMG.
+
+All four share the same core. The CLI and the console call the same functions in
+`ingest.core`, and the MCP server wraps the same HTTP routes the console uses, so
+there's nowhere for the behaviors to drift apart.
+
+## Findings, derived rather than generated
+
+A set of rules runs over the same manifests the other tabs read — seven when I wrote
+the guide page, ten by the time the README caught up. An unindexed vector column. Small
+file counts that would mislead if you acted on them. Tombstone debt. A manifest that
+understates the size of the thing it describes. Each finding carries the numbers it
+was computed from on the same row, and each also shows up under the panel holding
+those numbers.
+
+No model is involved in any of it. It's arithmetic over metadata Lance already reports.
+
+## Optional language layer, fully metered
+
+With a local Ollama model, an Anthropic API key, or any OpenAI-compatible endpoint,
+LanceScope will translate a question into a filter and describe a table in a few
+sentences. Every response reports the tokens and the dollars it spent beside the bytes
+it read. A tool built to make read cost visible shouldn't hide inference cost.
+
+## The write boundary
+
+Reading a table cannot change it, and that's checked rather than asserted: a test
+drives the entire read API and every MCP tool over a real corpus, then verifies that
+not one byte on disk moved.
+
+The ingest wizard is the only thing in the project that writes a dataset, and it's
+create-only by construction. It refuses a destination that already exists, only ever
+appends into a table it made itself during that run, and has no reachable path to an
+overwrite. The whole write surface is one module, and CI fails if a dataset mutation
+shows up anywhere else.
+
+## Running it
+
+```bash
+git clone https://github.com/mrlynn/lancescope && cd lancescope
+make setup
+make dev
+```
+
+Open `localhost:3000/console` and point it at a directory holding `.lance` tables.
+Needs [uv](https://docs.astral.sh/uv/) and Node 22.
+
+In a container, there's one image per Lance reader, because a Lance reader isn't
+universal — a dataset written by one version may need that version to read it. The tag
+names the reader:
+
+```bash
+docker run --rm -p 8088:8080 \
+  -v /path/to/your/lance:/data:ro \
+  ghcr.io/mrlynn/lancescope:pylance-11.0.0
+```
+
+No database handy? `make ingest LIMIT=8` builds the demo corpus from a handful of
+conference talks, giving you two tables: `moments` (keyframes with embeddings) and
+`segments` (playable video chunks in Blob V2 columns).
+
+## Where it came from
+
+LanceScope grew out of a conference demo called Ctrl-F for Video, where the video and
+its index are the same table. You type "a diagram with boxes and arrows," get frames
+back from a corpus of talks, click one, and the video plays at that second while a
+meter along the bottom shows how few bytes moved to make it happen. Building the meter
+turned out to be more interesting than the demo, so it became its own tool.
+
+LanceScope is Apache-2.0 and works with LanceDB 3.0+ on macOS, Linux, and in
+containers.
