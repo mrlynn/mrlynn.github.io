@@ -1,6 +1,6 @@
 ---
-title: "I Built LanceScope Because I Couldn't See What My Queries Were Costing"
-description: "A Lance table can hold 2.65 GB of video while a search over it reads none. Most database tools show you the same result either way. LanceScope shows you the difference, measured from Lance's own IO counters."
+title: "A LanceDB Table Can Hold 2.65 GB of Video While a Search Over It Reads None"
+description: "The bytes a search touches and the bytes a table holds live in different files. LanceScope measures both, from Lance's own IO counters, and puts the number next to whatever you just did."
 date: "2026-09-03T12:00:00"
 author: "Michael Lynn"
 image: "/images/blog/lancescope/console-blob-ratio.png"
@@ -153,8 +153,8 @@ There's also a container image per Lance reader version, because a Lance reader 
 universal and a dataset written by one version may need that version to read it. The
 tag names the reader.
 
-I built this because LanceDB lets you put architectures together that weren't
-practical before, and I couldn't see what any of them were doing. If you've got a table
+LanceDB makes some architectures practical that weren't before, and the numbers behind
+them are worth looking at directly rather than taking on faith. If you've got a table
 somewhere that you *think* is cheap to search, I'd genuinely like to know what the
 meter says when you point it at yours.
 
