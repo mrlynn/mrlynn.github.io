@@ -7,17 +7,34 @@ image: "/images/blog/lancescope/console-blob-ratio.png"
 tags: ["lancedb", "lance", "vector-search", "multimodal", "mcp", "python", "open-source"]
 ---
 
-I spent most of the spring building a conference demo I called Ctrl-F for Video. You
-type "a diagram with boxes and arrows," you get back actual frames from a corpus of
-recorded talks, you click one, and the video starts playing at that exact second. The
-whole point of the demo was that the video and its index are the same table. Not a
-video store next to a vector store. One table.
+Searching video has been sitting in the back of my head for years. At MongoDB I spent a
+lot of time on vector search, and the pattern I kept building and kept teaching was
+always the same shape underneath. You break the media into pieces, embed the pieces,
+put the vectors in the database, and leave the actual bytes somewhere else. Object
+storage, a CDN, a bucket with a naming convention someone documented once. It works
+fine. It also means you're running two systems that have to agree about what a row is,
+and every so often they don't.
 
-The demo worked. What I couldn't do was prove the interesting part. When I told people
-that a semantic search over the entire corpus never touched a single video byte,
-they'd nod politely, and I could tell they'd filed it under "sure, in theory." I had
-no way to put the number on screen. Everything I had for looking at a Lance dataset
-would happily tell me the query returned ten rows in a millisecond and stop there.
+Then a friend started telling me about LanceDB. The thing he described was that the
+media and the index could be the same table, and that searching it wouldn't read the
+media. I didn't believe him. Not in a hostile way, but the claim ran against everything
+I'd assumed about how storage works, and I've heard enough database pitches to know
+that "and it's fast" usually has a footnote attached.
+
+So I went and read the format. Blob V2 columns keep heavy payloads in separate `.blob`
+files and hand back a lazy handle instead of the bytes, which means a scan over the
+table genuinely never opens them. That's not a trick or a cache warming up. It's how
+the files are laid out. The more I poked at it the better it got, and after a couple of
+evenings I was far enough in that I wanted to build something on it rather than just
+read about it.
+
+What I built was a demo I called Ctrl-F for Video. You type "a diagram with boxes and
+arrows," you get back actual frames from a corpus of recorded talks, you click one, and
+the video starts playing at that exact second. It worked. What I couldn't do was prove
+the interesting part. When I told people the search had never touched a single video
+byte, they'd nod politely and I could tell they'd filed it under "sure, in theory."
+Everything I had for looking at a Lance dataset would happily report ten rows in a
+millisecond and stop there.
 
 So I put a byte meter along the bottom of the demo, and building the meter turned out
 to be more interesting than the demo. That's LanceScope.
