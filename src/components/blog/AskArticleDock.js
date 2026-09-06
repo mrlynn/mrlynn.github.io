@@ -33,6 +33,11 @@ const PILOT_SUGGESTIONS = {
     'What belongs in Team Rules vs project rules?',
     'What should I do in week one?',
   ],
+  'wire-grok-bot-to-local-llm': [
+    'When should I stay on cloud vs go local?',
+    'How do I teach the router the handoff?',
+    'What if oMLX is down?',
+  ],
 };
 
 function MarkdownReply({ content, isDark }) {
