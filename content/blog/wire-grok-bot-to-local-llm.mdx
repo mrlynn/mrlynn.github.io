@@ -7,7 +7,7 @@ image: "/images/blog/wire-grok-bot-local-llm/cover.png"
 tags: ["grok-bot", "local-llm", "omlx", "apple-silicon", "agents", "privacy", "cursor"]
 ---
 
-I keep a fleet of desktop agents running for real work: intake, research, ops, the occasional weird specialist that only exists because I got tired of repeating myself. Most of the time they call cloud models and that's fine. Then I hit a prompt I didn't want leaving my laptop, - customer notes, a half-finished demo script, something private enough that "just paste it into the chat" felt wrong.
+I keep a fleet of desktop agents running for real work: intake, research, ops, the occasional weird specialist that only exists because I got tired of repeating myself. Most of the time they call cloud models and that's fine. Then I hit a prompt I didn't want leaving my laptop - customer notes, a half-finished demo script, something private enough that "just paste it into the chat" felt wrong.
 
 So I wired the fleet to a model that never leaves my Mac.
 
@@ -33,7 +33,7 @@ High level, the chain looks like this:
   oMLX --> Model["Local model e.g. Qwen MLX"]'
 />
 
-Phaedrus (my intake /and router) doesn't pretend to be a local model. It hands the job to a specialist whose only job is local inference. That specialist uses Shell on my registered Mac, hits oMLX's OpenAI-compatible endpoint, and reports back with the model label attached.
+Phaedrus (my intake / router) doesn't pretend to be a local model. It hands the job to a specialist whose only job is local inference. That specialist uses Shell on my registered Mac, hits oMLX's OpenAI-compatible endpoint, and reports back with the model label attached.
 
 The request path is a sequence, not magic:
 
