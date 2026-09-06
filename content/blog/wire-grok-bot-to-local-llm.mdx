@@ -1,0 +1,183 @@
+---
+title: "Wire Grok Bot to a Local LLM on Your Mac"
+description: "How I wired my Grok Bot agent fleet to oMLX on Apple Silicon for private local inference - architecture, setup steps, benefits, drawbacks, and a copy-paste agent brief."
+date: "2026-09-06T19:00:00"
+author: "Michael Lynn"
+image: "/images/blog/wire-grok-bot-local-llm/cover.png"
+tags: ["grok-bot", "local-llm", "omlx", "apple-silicon", "agents", "privacy", "cursor"]
+---
+
+I keep a fleet of desktop agents running for real work: intake, research, ops, the occasional weird specialist that only exists because I got tired of repeating myself. Most of the time they call cloud models and that's fine. Then I hit a prompt I didn't want leaving my laptop - customer notes, a half-finished demo script, something private enough that "just paste it into the chat" felt wrong.
+
+So I wired the fleet to a model that never leaves my Mac.
+
+This post is how I did it: Grok Bot as the router, a Local LLM Ops agent that only talks to my machine, and [oMLX](https://omlx.ai) serving an OpenAI-compatible API on `localhost:8000`. If you already run agent fleets and want private or local inference without rewriting your whole setup, this pattern is for you.
+
+## Why bother
+
+Cloud models are strong. They're also somewhere else. When I'm drafting enablement that still has customer names in it, or poking at a local experiment I don't want logged upstream, I want the answer to come from silicon on my desk.
+
+There's a second reason that's less noble and more practical: demos. Showing a specialist agent answer from a labeled local model - with the model id in the response - lands differently than "trust me, it's private." People can see the path.
+
+## Architecture
+
+High level, the chain looks like this:
+
+<MermaidDiagram
+  title="Grok Bot to local LLM architecture"
+  chart={`
+flowchart LR
+  User[You] --> Phaedrus[Router agent<br/>Phaedrus]
+  Phaedrus --> Ops[Local LLM Ops agent]
+  Ops --> Mac[Registered Mac<br/>machine connector]
+  Mac --> oMLX[oMLX on localhost:8000]
+  oMLX --> Model[Local model<br/>e.g. Qwen MLX]
+  `}
+/>
+
+Phaedrus (my intake / router) doesn't pretend to be a local model. It hands the job to a specialist whose only job is local inference. That specialist uses Shell on my registered Mac, hits oMLX's OpenAI-compatible endpoint, and reports back with the model label attached.
+
+The request path is a sequence, not magic:
+
+<MermaidDiagram
+  title="Local inference request sequence"
+  chart={`
+sequenceDiagram
+  participant U as You
+  participant R as Router (Phaedrus)
+  participant O as Local LLM Ops
+  participant S as Shell on Mac
+  participant L as oMLX :8000/v1
+
+  U->>R: Ask something that must stay local
+  R->>O: SendToAgent (force local backend)
+  O->>S: curl localhost:8000/v1/...
+  S->>L: chat completions (+ API key)
+  L-->>S: completion
+  S-->>O: stdout / JSON
+  O-->>R: Answer + model label
+  R-->>U: Report back
+  `}
+/>
+
+Two rules keep this honest:
+
+1. The Ops agent answers **only** via the oMLX HTTP API on the registered Mac.
+2. It never claims cloud output was local. If oMLX is down, it says so.
+
+## The stack I actually used
+
+**[oMLX](https://omlx.ai)** ([github.com/jundot/omlx](https://github.com/jundot/omlx)) is an Apple Silicon inference server. Continuous batching, tiered KV cache, OpenAI-compatible at `http://localhost:8000/v1`. That's the piece agents curl.
+
+**Pi** ([pi.dev](https://pi.dev)) is optional. If you want a coding harness on the same metal, oMLX can launch it (`omlx launch pi`) and there's an admin integrations path. I didn't need Pi for the Grok Bot wire-up; it's there if you want a local coding loop next to the API.
+
+**Grok Bot** is the fleet side. I created a specialist agent whose job is install/config plus routing answers through local models via Shell on a registered Mac (machine connector). The router stays dumb on purpose: it `SendToAgent`s that specialist when the prompt says "local."
+
+**Ollama** may already be on your machine. Mine had `qwen3.8` sitting around. That's fine - Ollama is not required for this pattern - but RAM is a shared pie. If you're about to load a large oMLX model, unload Ollama models first or you'll spend the evening watching fans and thrash. My test box for this was an **M5 Max with 64GB**; still not infinite.
+
+## How to configure it
+
+### 1. Install oMLX
+
+Grab the DMG from [omlx.ai](https://omlx.ai), or:
+
+```bash
+brew tap jundot/omlx https://github.com/jundot/omlx
+brew install jundot/omlx/omlx
+omlx start
+```
+
+oMLX wants **macOS 15+ on Apple Silicon**. If you're on Intel or an older macOS, stop here and stay on cloud for now.
+
+### 2. Start the server and confirm the API
+
+```bash
+omlx start
+curl http://localhost:8000/v1/models
+```
+
+You should see your loaded (or available) models. Completions go to the usual OpenAI-shaped routes under `/v1`. The API key lives in `~/.omlx/settings.json` - treat that file like a secret even though the server is localhost.
+
+### 3. Optional: wire Pi
+
+If you want the coding harness:
+
+```bash
+omlx launch pi
+```
+
+Or use the admin integrations UI. Skip this if you only need HTTP completions for agents.
+
+### 4. Register your Mac with Grok Bot
+
+Your Local LLM Ops agent needs a `machineId` for that Mac. Without the connector online, every curl is fiction. Keep the machine connected when you expect local answers.
+
+### 5. Create a Local LLM Ops agent
+
+Give it a narrow brief: install/config help is OK; inference answers must go through oMLX on the registered Mac; always label the model; never invent a local completion from a cloud call. There's a paste-ready brief in the appendix.
+
+### 6. Teach your router the handoff
+
+When you want local, tell your intake agent to `SendToAgent` the specialist with a prompt that forces the local backend. Something like: "Answer only via oMLX on my Mac. Label the model. If the server is down, say so."
+
+That's the whole loop. Router stays the front door. Ops owns the metal.
+
+## What it felt like in practice
+
+I asked about continuous batching on Apple Silicon - the kind of question where I wanted a local model to speak for itself, not a cloud summary of someone else's blog.
+
+The Ops agent curled `localhost:8000/v1`, authenticated with the key from `~/.omlx/settings.json`, and came back from **Qwen3.8-27B-Uncensored-MLX-4bit**. Seeing that model id in the report mattered more than the prose. The fleet hadn't "kind of" gone local. It had gone local.
+
+## Benefits (honest)
+
+| Benefit | What I actually get |
+| --- | --- |
+| Privacy | Prompt and completion stay on the Mac for that hop |
+| Cost control | Heavy local traffic doesn't rack up cloud tokens |
+| Demo clarity | You can point at a labeled model id in the answer |
+| Offline-ish | Works when the Mac is up and connected, even if you're picky about cloud egress |
+| Fleet reuse | Same Grok Bot patterns; you add a specialist, not a new product |
+
+None of that means local beats frontier quality. It means you get a private path when you need one.
+
+## Drawbacks (also honest)
+
+| Drawback | Why it bites |
+| --- | --- |
+| Mac must be online and connected | No connector, no local answers - the fleet can't invent hardware |
+| RAM fights | oMLX + Ollama + browser tabs will make you sad; unload what you're not using |
+| Round-trip latency | Router → Ops → oMLX → back is slower than a direct cloud call |
+| Model quality | A solid local 4-bit is not a frontier cloud model; know when to switch |
+| localhost security | API keys in `~/.omlx/settings.json` still matter; localhost isn't "no threat model" |
+| Ops burden | Updates, model downloads, "is oMLX running?" become your problem |
+| Platform floor | oMLX needs macOS 15+ Apple Silicon |
+
+If any row above is a dealbreaker for your day-to-day, keep that workload on cloud and use local for the slice that needs it.
+
+## When this shines vs when to stay on cloud
+
+This pattern shines when privacy, cost, or a live demo of "it really ran on my laptop" matters more than peak model quality. It's also useful for offline-ish work sessions where the Mac is the trusted box and the fleet is just orchestration.
+
+Stay on cloud when you need frontier reasoning, when your Mac is asleep or disconnected, or when latency of a multi-hop agent path would annoy you more than a remote API. I still send most traffic to cloud. The local specialist is a door I open on purpose, not a replacement for every call.
+
+If you already have agents and a Mac that can run oMLX, you don't need a new platform. You need one specialist, one honest router handoff, and the discipline to label what actually answered.
+
+---
+
+## Appendix: Copy-paste agent brief
+
+Use this (or tighten it) when you create your Local LLM Ops agent:
+
+```text
+You are Local LLM Ops. Your job is install/config help for oMLX on the user's registered Mac, and answering prompts ONLY via the local oMLX OpenAI-compatible API.
+
+Rules:
+- Use Shell on the registered Mac (machineId). Never invent shell output.
+- Inference path: curl http://localhost:8000/v1 (chat completions / models). Read the API key from ~/.omlx/settings.json when needed. Do not print the key in full in user-facing replies.
+- Always label the model id that produced the answer.
+- If oMLX is down, the Mac is disconnected, or the model fails to load, say so clearly. Do not fall back to a cloud model and pretend it was local.
+- Ollama may exist on the machine; it is optional. Warn about RAM contention. Prefer unloading other local runtimes before loading large oMLX models.
+- Keep answers concrete: commands, status checks, model labels. No corporate filler.
+```
+
+That's enough to keep the specialist honest and the router simple.
