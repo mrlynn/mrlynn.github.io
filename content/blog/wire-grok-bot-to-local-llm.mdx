@@ -27,11 +27,11 @@ High level, the chain looks like this:
   title="Grok Bot to local LLM architecture"
   chart={`
 flowchart LR
-  User[You] --> Phaedrus[Router agent<br/>Phaedrus]
-  Phaedrus --> Ops[Local LLM Ops agent]
-  Ops --> Mac[Registered Mac<br/>machine connector]
-  Mac --> oMLX[oMLX on localhost:8000]
-  oMLX --> Model[Local model<br/>e.g. Qwen MLX]
+  User["You"] --> Phaedrus["Router agent: Phaedrus"]
+  Phaedrus --> Ops["Local LLM Ops agent"]
+  Ops --> Mac["Registered Mac"]
+  Mac --> oMLX["oMLX on localhost 8000"]
+  oMLX --> Model["Local model e.g. Qwen MLX"]
   `}
 />
 
@@ -44,18 +44,18 @@ The request path is a sequence, not magic:
   chart={`
 sequenceDiagram
   participant U as You
-  participant R as Router (Phaedrus)
+  participant R as Router
   participant O as Local LLM Ops
   participant S as Shell on Mac
-  participant L as oMLX :8000/v1
+  participant L as oMLX API
 
-  U->>R: Ask something that must stay local
-  R->>O: SendToAgent (force local backend)
-  O->>S: curl localhost:8000/v1/...
-  S->>L: chat completions (+ API key)
+  U->>R: Ask for a local answer
+  R->>O: SendToAgent force local backend
+  O->>S: curl localhost 8000 v1
+  S->>L: chat completions with API key
   L-->>S: completion
-  S-->>O: stdout / JSON
-  O-->>R: Answer + model label
+  S-->>O: JSON stdout
+  O-->>R: Answer plus model label
   R-->>U: Report back
   `}
 />
