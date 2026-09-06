@@ -25,14 +25,12 @@ High level, the chain looks like this:
 
 <MermaidDiagram
   title="Grok Bot to local LLM architecture"
-  chart={`
-flowchart LR
+  chart='flowchart LR
   User["You"] --> Phaedrus["Router agent: Phaedrus"]
   Phaedrus --> Ops["Local LLM Ops agent"]
   Ops --> Mac["Registered Mac"]
   Mac --> oMLX["oMLX on localhost 8000"]
-  oMLX --> Model["Local model e.g. Qwen MLX"]
-  `}
+  oMLX --> Model["Local model e.g. Qwen MLX"]'
 />
 
 Phaedrus (my intake /and router) doesn't pretend to be a local model. It hands the job to a specialist whose only job is local inference. That specialist uses Shell on my registered Mac, hits oMLX's OpenAI-compatible endpoint, and reports back with the model label attached.
@@ -41,14 +39,12 @@ The request path is a sequence, not magic:
 
 <MermaidDiagram
   title="Local inference request sequence"
-  chart={`
-sequenceDiagram
+  chart='sequenceDiagram
   participant U as You
   participant R as Router
   participant O as Local LLM Ops
   participant S as Shell on Mac
   participant L as oMLX API
-
   U->>R: Ask for a local answer
   R->>O: SendToAgent force local backend
   O->>S: curl localhost 8000 v1
@@ -56,8 +52,7 @@ sequenceDiagram
   L-->>S: completion
   S-->>O: JSON stdout
   O-->>R: Answer plus model label
-  R-->>U: Report back
-  `}
+  R-->>U: Report back'
 />
 
 Two rules keep this honest:
