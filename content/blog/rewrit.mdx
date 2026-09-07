@@ -14,8 +14,6 @@ demoUrl: "https://rewr.it"
 
 # Your Client Can Tell
 
-# Your Client Can Tell
-
 There's a sentence I keep finding in my own drafts.
 
 "I wanted to reach out and provide a comprehensive update on where the integration work stands."
@@ -38,7 +36,7 @@ Left is what the checker gives you. Right is what the rewriter gives you. Same d
 
 I want to be careful about what this is, because the category it sits in is full of tools that promise something they can't do.
 
-It is not a detector. It does not tell you who wrote something. There's a reading on the check page that says "100% likely machine-written" and even that is a mapping rather than a measurement, — the tell score normalized to density and pushed through a curve that saturates. It answers how machine-shaped a piece of prose reads. It does not answer who typed it, and anything claiming the second one is guessing.
+It is not a detector. It does not tell you who wrote something. There's a reading on the check page that says "100% likely machine-written" and even that is a mapping rather than a measurement. It's the tell score normalized to density and pushed through a curve that saturates. It answers how machine-shaped a piece of prose reads. It does not answer who typed it, and anything claiming the second one is guessing.
 
 What it actually does is name phrases. Every mark you see is a string the checker found in the words in front of it.
 
@@ -50,7 +48,7 @@ What it actually does is name phrases. Every mark you see is a string the checke
 
 Those numbers come out of the policy at render time. They are not typed into the page, and there's a reason for that. The first version of the landing page claimed "120+ terms" when the list held 97. Nobody would ever have checked it, and the page would have gone on repeating the wrong number for as long as the page existed. So now the marketing copy counts the software instead of describing it. If somebody adds a term tomorrow the page says 98 without anyone editing it.
 
-The whole check runs in your browser. Nothing is uploaded, there's no account, and there's no limit on it. That wasn't generosity so much as the only version of the claim I could actually stand behind. —If if I'm going to tell somebody their draft never leaves the tab, the cheapest way to be telling the truth is to build it so it can't.
+The whole check runs in your browser. Nothing is uploaded, there's no account, and there's no limit on it. That wasn't generosity so much as the only version of the claim I could actually stand behind. If I'm going to tell somebody their draft never leaves the tab, the cheapest way to be telling the truth is to build it so it can't.
 
 <img
   src="/images/projects/rewrit/check.png"
@@ -68,7 +66,7 @@ So the rewrite is fenced in. Every claim in the output has to trace back to a sp
 
 <MermaidDiagram
   title="What happens to a draft"
-  caption="The checker runs locally. The audit gates the copy button, — a rewrite that moved a fact does not get handed to you quietly."
+  caption="The checker runs locally. The audit gates the copy button. A rewrite that moved a fact does not get handed to you quietly."
   chart={`
 flowchart LR
     Draft([Your draft]) --> Check[Check<br/>in your browser]
@@ -87,7 +85,7 @@ flowchart LR
 
 The audit pulls numbers, dates, names, quotes and links out of both versions and compares them as multisets. Not as sets. That distinction cost me an afternoon and it's my favorite thing in the codebase.
 
-Here's why it matters. In the demo email, August 28 gets counted twice, — once as a date, once as the bare number 28. If the audit compared sets, a rewrite that helpfully repeated the date for emphasis would look identical to one that didn't. As multisets, repeating it reports an added fact and the panel stops reading zero. It also means a rewrite that quietly drops the month and leaves the 28 trips the check, which is the failure I actually care about, because that's the one nobody proofreads for.
+Here's why it matters. In the demo email, August 28 gets counted twice, once as a date and once as the bare number 28. If the audit compared sets, a rewrite that helpfully repeated the date for emphasis would look identical to one that didn't. As multisets, repeating it reports an added fact and the panel stops reading zero. It also means a rewrite that quietly drops the month and leaves the 28 trips the check, which is the failure I actually care about, because that's the one nobody proofreads for.
 
 <MermaidDiagram
   title="Facts in, facts out"
@@ -164,7 +162,7 @@ The MCP server is the one I use most, and it's free and needs no account for the
 
 It won't beat a detector, and I'm not going to claim it does. That's an arms race with a moving target on the other end, and a product that promises it is lying to you on a schedule.
 
-It also won't write your vocabulary. A saved voice profile measures rhythm, — sentence length, how you join clauses, where you land the point. It doesn't learn your words. I say that on the one page where profiles come up, because it's the thing people assume and I'd rather disappoint them up front than after they've paid.
+It also won't write your vocabulary. A saved voice profile measures rhythm. Sentence length, how you join clauses, where you land the point. It doesn't learn your words. I say that on the one page where profiles come up, because it's the thing people assume and I'd rather disappoint them up front than after they've paid.
 
 And it's not going to make bad writing good. All it does is take the accent off. The judgment still has to be yours, which is the part you were being paid for anyway.
 
