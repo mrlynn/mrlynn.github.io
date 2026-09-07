@@ -15,7 +15,12 @@ export async function generateMetadata({ params }) {
   const post = await getPostBySlug(params.slug);
   if (!post) return {};
 
-  const fullUrl = `${SITE_URL}/blog/${params.slug}`;
+  // Project posts also render at /projects/<slug>, which is where they are
+  // linked from and listed. Point the canonical there so the two URLs don't
+  // compete as duplicate content.
+  const canonicalPath =
+    post.category === 'project' ? `/projects/${params.slug}` : `/blog/${params.slug}`;
+  const fullUrl = `${SITE_URL}${canonicalPath}`;
   const imageUrl = post.image ? `${SITE_URL}${post.image}` : `${SITE_URL}/images/og-image.jpg`;
 
   return {
@@ -23,7 +28,7 @@ export async function generateMetadata({ params }) {
     description: post.description,
     authors: [{ name: post.author }],
     alternates: {
-      canonical: `${SITE_URL}/blog/${params.slug}`,
+      canonical: fullUrl,
     },
     openGraph: {
       title: post.title,

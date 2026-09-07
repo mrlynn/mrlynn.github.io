@@ -19,6 +19,13 @@ const nextConfig = {
       { source: '/cursteroids/:path+', destination: `${zone}/cursteroids/:path+` },
     ];
   },
+  // /videos was retired; keep the indexed URL from 404ing.
+  async redirects() {
+    return [
+      { source: '/videos', destination: '/', permanent: true },
+      { source: '/videos/:path*', destination: '/', permanent: true },
+    ];
+  },
   images: {
     remotePatterns: [
       {
@@ -26,7 +33,6 @@ const nextConfig = {
         hostname: '**',
       },
     ],
-    unoptimized: true,
   },
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
   experimental: {
