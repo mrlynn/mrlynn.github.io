@@ -64,6 +64,9 @@ export async function getPostBySlug(slug) {
     const { data: frontmatter, content } = matter(fileContents);
     
     const mdxSource = await serialize(content, {
+      // Posts are first-party MDX from this repo, so keep JSX expression props
+      // (e.g. MermaidDiagram chart={`...`}) that next-mdx-remote strips by default.
+      blockJS: false,
       mdxOptions: {
         development: process.env.NODE_ENV === 'development',
         remarkPlugins: [remarkGfm],

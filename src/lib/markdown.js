@@ -9,6 +9,8 @@ import remarkGfm from 'remark-gfm';
 const BLOG_DIR = path.join(process.cwd(), 'src/content/blog');
 
 const mdxOptions = {
+  // First-party MDX: keep JSX expression props that next-mdx-remote strips by default.
+  blockJS: false,
   mdxOptions: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [rehypeSlug, [rehypePrism, { ignoreMissing: true }]],

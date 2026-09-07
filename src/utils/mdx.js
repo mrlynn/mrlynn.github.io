@@ -58,6 +58,8 @@ export async function getMDXContent(filePath) {
     
     // Serialize the MDX content
     const mdxSource = await serialize(processedContent, {
+      // First-party MDX: keep JSX expression props that next-mdx-remote strips by default.
+      blockJS: false,
       parseFrontmatter: true,
       mdxOptions: {
         development: process.env.NODE_ENV === 'development',

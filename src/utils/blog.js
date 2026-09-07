@@ -87,6 +87,8 @@ export async function getPostBySlug(slug) {
     const processedContent = processComponentImports(content);
     
     const mdxSource = await serialize(processedContent, {
+      // First-party MDX: keep JSX expression props that next-mdx-remote strips by default.
+      blockJS: false,
       mdxOptions: {
         development: process.env.NODE_ENV === 'development',
         remarkPlugins: [remarkGfm],

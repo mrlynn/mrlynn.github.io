@@ -31,7 +31,7 @@ export async function getAllSpeakingEngagements() {
         const isUpcoming = date >= now;
 
         // Serialize the MDX content
-        const mdxSource = await serialize(content);
+        const mdxSource = await serialize(content, { blockJS: false });
 
         // Combine the data with the slug and content
         return {
