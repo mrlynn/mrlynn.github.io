@@ -90,30 +90,52 @@ const CalendarBooking = ({ variant = 'button', buttonProps = {} }) => {
   }, [isScriptLoaded, variant, buttonProps.children]);
 
   if (variant === 'iframe') {
+    const isDark = theme.palette.mode === 'dark';
+
+    // Google's appointment scheduler has no dark mode and no theme parameter,
+    // and it is cross-origin, so its content cannot be restyled. Inverting the
+    // iframe does produce a dark widget, but it also renders the headshot
+    // Google shows inside it as a photo negative.
+    //
+    // So the widget stays light and gets framed instead: a warm inset that
+    // matches the site's cream palette, so the light panel reads as a
+    // deliberate card rather than a white hole punched in a near-black page.
     return (
-      <Box 
-        sx={{ 
-          width: '100%', 
-          height: '600px', 
-          border: 'none',
-          borderRadius: '8px',
-          overflow: 'hidden',
-          boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
-          mb: 4,
-          backgroundColor: 'white',
+      <Box
+        sx={{
+          width: '100%',
+          p: isDark ? { xs: 1.5, md: 2 } : 0,
+          borderRadius: '12px',
+          backgroundColor: isDark ? 'rgba(250, 246, 240, 0.92)' : 'transparent',
+          border: isDark ? '1px solid rgba(217, 98, 43, 0.22)' : 'none',
+          boxShadow: isDark
+            ? '0 12px 40px rgba(0,0,0,0.45)'
+            : '0 4px 20px rgba(0,0,0,0.1)',
         }}
       >
-        <iframe 
-          src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ2QFBjXXlNk5fK-AeYLAkGBdT6tKZnmS0wtU5sVWtW4DPl5iajADiMFwa5zggu6yrJL2e7lKGS5?gv=true" 
-          style={{ 
-            border: 0, 
-            width: '100%', 
-            height: '100%',
-            backgroundColor: 'white',
-          }} 
-          frameBorder="0"
-          title="Calendar Booking"
-        />
+        <Box
+          sx={{
+            width: '100%',
+            // 600px clipped the time-slot list mid-row. The widget does not
+            // report its own height across origins, so this is sized to fit
+            // the tallest state it renders.
+            height: { xs: '760px', sm: '700px' },
+            borderRadius: '8px',
+            overflow: 'hidden',
+            backgroundColor: '#fff',
+          }}
+        >
+          <iframe
+            src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ2QFBjXXlNk5fK-AeYLAkGBdT6tKZnmS0wtU5sVWtW4DPl5iajADiMFwa5zggu6yrJL2e7lKGS5?gv=true"
+            style={{
+              border: 0,
+              width: '100%',
+              height: '100%',
+              backgroundColor: '#fff',
+            }}
+            title="Book a meeting with Michael Lynn"
+          />
+        </Box>
       </Box>
     );
   }

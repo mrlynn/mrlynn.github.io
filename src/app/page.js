@@ -697,7 +697,10 @@ export default function Home() {
             title="Have something to build or discuss?"
             intro="Book a time and we can dig into your project, a collaboration, or whatever's on your mind."
           />
-          <Box sx={{ maxWidth: 900, mx: 'auto', borderRadius: '10px', overflow: 'hidden', border: `1px solid ${hairline}`, boxShadow: theme.shadows[4] }}>
+          {/* CalendarBooking owns its own frame — in dark mode it insets the
+              light Google widget in a warm card. Wrapping it in a second
+              bordered box here just doubled the border. */}
+          <Box sx={{ maxWidth: 900, mx: 'auto' }}>
             <CalendarBooking variant="iframe" />
           </Box>
         </Container>
