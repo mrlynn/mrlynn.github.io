@@ -1,6 +1,7 @@
 import { getAllPosts } from '../../lib/blog';
-import BlogList from '../../components/blog/BlogList';
+import CollectionBrowser from '../../components/common/CollectionBrowser';
 import PageHeader from '../../components/PageHeader';
+import { collectFilterTags, toCardPost } from '../../lib/collection';
 
 export const metadata = {
   title: 'Projects | Michael Lynn',
@@ -8,8 +9,8 @@ export const metadata = {
 };
 
 export default async function ProjectsPage() {
-  // Get only project posts
-  const projects = await getAllPosts('project');
+  const projects = (await getAllPosts('project')).map(toCardPost);
+  const filterTags = collectFilterTags(projects);
 
   return (
     <>
@@ -17,7 +18,13 @@ export default async function ProjectsPage() {
         title="Projects"
         subtitle="A showcase of my work in software development, from experimental prototypes to production applications."
       />
-      <BlogList posts={projects} />
+      <CollectionBrowser
+        posts={projects}
+        filterTags={filterTags}
+        kind="project"
+        searchLabel="Search projects by name, description, or stack"
+        emptyMessage="No projects match that. Try a different search or clear the filters."
+      />
     </>
   );
-} 
+}

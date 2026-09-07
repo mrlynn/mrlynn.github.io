@@ -1,94 +1,160 @@
-import { Card, CardContent, CardMedia, Typography, Box, Chip, Stack } from '@mui/material';
+'use client';
+
+import { Box, Card, CardContent, Chip, Stack, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { GitHub as GitHubIcon, Launch as LaunchIcon, Lock as LockIcon } from '@mui/icons-material';
 import Link from 'next/link';
-import { format, parseISO } from 'date-fns';
+
+// Kept in step with BlogCard's thumbnail: a fixed ratio so titles share a
+// baseline across a row.
+const Thumb = styled('img')({
+  width: '100%',
+  aspectRatio: '16 / 9',
+  objectFit: 'cover',
+  display: 'block',
+});
+
+const StyledCard = styled(Card)({
+  height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  transition: 'transform 0.2s ease-in-out',
+  '&:hover': {
+    transform: 'translateY(-4px)',
+  },
+});
+
+const MAX_VISIBLE_TECH = 4;
 
 export default function ProjectCard({ project }) {
-  const { title, description, image, tags = [], color, date, private: isPrivate } = project;
+  const {
+    slug,
+    title,
+    description,
+    image,
+    technologies = [],
+    tags = [],
+    demoUrl,
+    githubUrl,
+    isPrivate,
+  } = project;
 
-  const formatDate = (dateString) => {
-    try {
-      // First try parsing with parseISO since we're using ISO format
-      return format(parseISO(dateString), 'MMMM yyyy');
-    } catch (error) {
-      try {
-        // Fallback to new Date if parseISO fails
-        return format(new Date(dateString), 'MMMM yyyy');
-      } catch (error) {
-        // If all parsing fails, return a default value
-        return 'Date unavailable';
-      }
-    }
-  };
+  // Projects carry both `technologies` (the real stack) and `tags` (looser
+  // keywords). The stack is the more useful thing on a card; fall back to tags
+  // for the handful of projects that predate the field.
+  const stack = technologies.length ? technologies : tags;
+  const visibleStack = stack.slice(0, MAX_VISIBLE_TECH);
+  const overflowCount = stack.length - visibleStack.length;
 
   return (
-    <Link href={`/projects/${project.slug}`} style={{ textDecoration: 'none' }}>
-      <Card 
-        sx={{ 
-          height: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          transition: 'transform 0.2s ease-in-out',
-          '&:hover': {
-            transform: 'translateY(-4px)',
-          },
-        }}
-      >
-        <CardMedia
-          component="img"
-          height="200"
-          image={image}
-          alt={title}
-          sx={{
-            objectFit: 'cover',
-            borderTopLeftRadius: 4,
-            borderTopRightRadius: 4,
-          }}
-        />
-        <CardContent sx={{ flexGrow: 1 }}>
-          <Stack spacing={2}>
-            <Box>
-              <Typography variant="h6" component="h2" gutterBottom>
-                {title}
-                {isPrivate && (
-                  <Chip
-                    label="Private"
-                    size="small"
-                    sx={{ ml: 1 }}
-                    color="primary"
-                  />
-                )}
-              </Typography>
-              <Typography variant="body2" color="text.secondary" gutterBottom>
-                {formatDate(date)}
-              </Typography>
-            </Box>
-            
-            <Typography variant="body2" color="text.secondary">
-              {description}
-            </Typography>
+    // Projects live at /projects/<slug>. The shared card this replaced sent
+    // every project card to /blog/<slug> instead — the non-canonical copy.
+    <Link
+      href={`/projects/${slug}`}
+      style={{ textDecoration: 'none', display: 'block', height: '100%' }}
+    >
+      <StyledCard>
+        <Box sx={{ position: 'relative' }}>
+          {image && <Thumb src={image} alt="" loading="lazy" />}
+          {isPrivate && (
+            <Chip
+              icon={<LockIcon sx={{ fontSize: '0.8rem' }} />}
+              label="Private"
+              size="small"
+              sx={{
+                position: 'absolute',
+                top: 10,
+                right: 10,
+                fontFamily: 'var(--font-mono), monospace',
+                fontSize: '0.65rem',
+                backgroundColor: 'rgba(0,0,0,0.72)',
+                color: '#fff',
+                '& .MuiChip-icon': { color: '#fff' },
+              }}
+            />
+          )}
+        </Box>
 
-            {tags && tags.length > 0 && (
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                {tags.map((tag) => (
-                  <Chip
-                    key={tag}
-                    label={tag}
-                    size="small"
-                    sx={{
-                      bgcolor: color,
-                      color: 'white',
-                      '&:hover': {
-                        bgcolor: color,
-                        opacity: 0.9,
-                      },
-                    }}
-                  />
-                ))}
-              </Box>
+        <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+          <Typography
+            variant="h6"
+            component="h3"
+            sx={{
+              fontFamily: 'var(--font-fraunces), Georgia, serif',
+              fontWeight: 600,
+              fontSize: '1.25rem',
+              lineHeight: 1.25,
+              letterSpacing: '-0.01em',
+              mb: 1.5,
+            }}
+          >
+            {title}
+          </Typography>
+
+          <Typography variant="body2" color="text.secondary" sx={{ flexGrow: 1, mb: 2 }}>
+            {description}
+          </Typography>
+
+          <Box sx={{ display: 'flex', gap: 0.75, flexWrap: 'wrap', mb: 1.5 }}>
+            {visibleStack.map((item) => (
+              <Chip
+                key={item}
+                label={item}
+                size="small"
+                variant="outlined"
+                sx={{
+                  backgroundColor: 'transparent',
+                  borderColor: 'border.default',
+                  color: 'text.secondary',
+                  fontFamily: 'var(--font-mono), monospace',
+                  fontSize: '0.68rem',
+                }}
+              />
+            ))}
+            {overflowCount > 0 && (
+              <Typography
+                component="span"
+                sx={{
+                  fontFamily: 'var(--font-mono), monospace',
+                  fontSize: '0.68rem',
+                  color: 'text.secondary',
+                  alignSelf: 'center',
+                }}
+              >
+                +{overflowCount}
+              </Typography>
             )}
-          </Stack>
+          </Box>
+
+          {/* Private projects still carry demoUrl/githubUrl in frontmatter, but
+              they point at internal repos and gated apps. Advertising "Live" and
+              "Source" on a card badged Private promises access that isn't there. */}
+          {!isPrivate && (demoUrl || githubUrl) && (
+            <Stack
+              direction="row"
+              spacing={2}
+              sx={{
+                fontFamily: 'var(--font-mono), monospace',
+                fontSize: '0.7rem',
+                color: 'text.secondary',
+              }}
+            >
+              {demoUrl && (
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                  <LaunchIcon sx={{ fontSize: '0.85rem' }} />
+                  Live
+                </Box>
+              )}
+              {githubUrl && (
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                  <GitHubIcon sx={{ fontSize: '0.85rem' }} />
+                  Source
+                </Box>
+              )}
+            </Stack>
+          )}
         </CardContent>
-      </Card>
+      </StyledCard>
     </Link>
   );
-} 
+}
