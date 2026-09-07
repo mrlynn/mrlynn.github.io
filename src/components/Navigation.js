@@ -26,7 +26,6 @@ import {
   Menu as MenuIcon,
   LightMode,
   DarkMode,
-  YouTube as YouTubeIcon,
   Palette as PaletteIcon,
   Article as ArticleIcon,
   ContactMail as ContactIcon,
@@ -79,7 +78,6 @@ const Navigation = () => {
       { text: 'MongoDB Introspector', path: '/tools/introspect' },
       { text: 'MongoDB RAG Explainer', path: 'https://rag-chunk-explainer.vercel.app/' }
     ]},
-    { text: 'Videos', icon: <YouTubeIcon />, path: '/videos' },
     { text: 'Art', icon: <PaletteIcon />, path: '/art' },
     { text: 'Social', icon: <InstagramIcon />, path: '/social' },
     { text: 'Resume', icon: <ArticleIcon />, path: '/resume' },

@@ -5,7 +5,6 @@ import { GitHub as GitHubIcon, LinkedIn as LinkedInIcon, ArrowForward as ArrowFo
 import { motion } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import ProjectsSection from '../components/ProjectsSection';
-import VideosSection from '../components/VideosSection';
 import GitHubActivity from '../components/GitHubActivity';
 import Certifications from '../components/Certifications';
 import CalendarBooking from '../components/CalendarBooking';
@@ -167,10 +166,18 @@ export default function Home() {
                 <Eyebrow>AI Adoption Engineer · Developer Advocate · Advisor</Eyebrow>
               </MotionBox>
 
-              <MotionBox initial="hidden" animate="show" variants={fadeUp} custom={1}>
-                <Typography
-                  variant="h1"
+              {/* One h1 carrying both the name and what I do, so the accessible
+                  name reads "Michael Lynn. I help people build with data & AI."
+                  rather than the run-together "MichaelLynn". */}
+              <Typography variant="h1" sx={{ m: 0 }}>
+                <MotionBox
+                  component="span"
+                  initial="hidden"
+                  animate="show"
+                  variants={fadeUp}
+                  custom={1}
                   sx={{
+                    display: 'block',
                     fontFamily: 'var(--font-fraunces), Georgia, serif',
                     fontWeight: 600,
                     fontSize: { xs: '3.25rem', sm: '4.25rem', md: '5.5rem' },
@@ -181,27 +188,35 @@ export default function Home() {
                     mb: 0,
                   }}
                 >
-                  Michael
-                  <br />
-                  Lynn
-                </Typography>
-              </MotionBox>
-
-              <MotionBox initial="hidden" animate="show" variants={fadeUp} custom={2}>
-                <Typography
+                  <Box component="span" sx={{ display: 'block' }}>
+                    Michael
+                  </Box>{' '}
+                  <Box component="span" sx={{ display: 'block' }}>
+                    Lynn
+                  </Box>
+                </MotionBox>{' '}
+                <MotionBox
+                  component="span"
+                  initial="hidden"
+                  animate="show"
+                  variants={fadeUp}
+                  custom={2}
                   sx={{
+                    display: 'block',
                     fontFamily: 'var(--font-fraunces), Georgia, serif',
                     fontStyle: 'italic',
                     fontWeight: 400,
                     fontSize: { xs: '1.4rem', md: '1.7rem' },
+                    lineHeight: 1.3,
+                    letterSpacing: 'normal',
                     color: theme.palette.primary.main,
                     mt: 3,
                     mb: 3,
                   }}
                 >
                   I help people build with data &amp; AI.
-                </Typography>
-              </MotionBox>
+                </MotionBox>
+              </Typography>
 
               <MotionBox initial="hidden" animate="show" variants={fadeUp} custom={3}>
                 <Typography
@@ -537,6 +552,7 @@ export default function Home() {
                 <Divider sx={{ mb: 2.5, borderColor: hairline }} />
                 <Typography
                   variant="h4"
+                  component="h3"
                   sx={{
                     fontFamily: 'var(--font-fraunces), Georgia, serif',
                     fontWeight: 600,
@@ -667,12 +683,9 @@ export default function Home() {
         </Container>
       </Box>
 
-      {/* ---------- GITHUB + VIDEOS ---------- */}
+      {/* ---------- GITHUB ---------- */}
       <Container maxWidth="lg" sx={{ py: { xs: 8, md: 10 } }}>
         <GitHubActivity />
-        <Box sx={{ mt: { xs: 8, md: 12 } }}>
-          <VideosSection />
-        </Box>
       </Container>
 
       {/* ---------- SCHEDULE ---------- */}
