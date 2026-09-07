@@ -1,0 +1,169 @@
+---
+title: "Your Client Can Tell"
+description: "I built a tool that marks every phrase in a draft that gives it away as machine-written, and rewrites around them without moving a date, a number, or a caveat you wrote."
+date: "2026-09-07"
+author: "Michael Lynn"
+image: "/images/projects/rewrit/manuscript.png"
+tags: ["AI", "Writing", "Next.js", "MongoDB", "Claude", "Chrome Extension", "MCP"]
+color: "#2f5d50"
+category: "project"
+private: false
+technologies: ["Next.js", "React", "MongoDB Atlas", "Claude API", "Stripe", "Chrome Extension", "MCP", "Tauri"]
+demoUrl: "https://rewr.it"
+---
+
+# Your Client Can Tell
+
+There's a sentence I keep finding in my own drafts.
+
+"I wanted to reach out and provide a comprehensive update on where the integration work stands."
+
+Nothing in it is wrong. The grammar is fine, the update is real, and the person waiting on it gets what they asked for. It still tells them something I didn't mean to say. They read that opener and they file me under people who send AI email, and they do it without deciding to, the way you notice a bad wig before you notice the person wearing it.
+
+That's the part that bothered me. The writing isn't bad. It's competent and clear and it gives itself away anyway, because a handful of habits show up in every draft a model hands you.
+
+So I built rewr.it. It does two things. It shows you every phrase in your draft that gives it away, and then it writes around them without moving a date, a number, or a caveat you wrote.
+
+<img
+  src="/images/projects/rewrit/manuscript.png"
+  alt="Two panels side by side. On the left, a status email in monospace with phrases struck through in red and a pill reading 38 tells. On the right, the same email rewritten in a serif reading face with a pill reading 0 tells."
+  style={{ width: '100%', borderRadius: '8px' }}
+/>
+
+Left is what the checker gives you. Right is what the rewriter gives you. Same date, same condition attached to it.
+
+## The marks are phrases, not a verdict
+
+I want to be careful about what this is, because the category it sits in is full of tools that promise something they can't do.
+
+It is not a detector. It does not tell you who wrote something. There's a reading on the check page that says "100% likely machine-written" and even that is a mapping rather than a measurement. It's the tell score normalized to density and pushed through a curve that saturates. It answers how machine-shaped a piece of prose reads. It does not answer who typed it, and anything claiming the second one is guessing.
+
+What it actually does is name phrases. Every mark you see is a string the checker found in the words in front of it.
+
+| What it looks for | How many |
+|---|---|
+| Model vocabulary, in 7 categories | 97 terms |
+| Sentence shapes, mostly antithesis | 8 |
+| Stock openers | 12 |
+
+Those numbers come out of the policy at render time. They are not typed into the page, and there's a reason for that. The first version of the landing page claimed "120+ terms" when the list held 97. Nobody would ever have checked it, and the page would have gone on repeating the wrong number for as long as the page existed. So now the marketing copy counts the software instead of describing it. If somebody adds a term tomorrow the page says 98 without anyone editing it.
+
+The whole check runs in your browser. Nothing is uploaded, there's no account, and there's no limit on it. That wasn't generosity so much as the only version of the claim I could actually stand behind. If I'm going to tell somebody their draft never leaves the tab, the cheapest way to be telling the truth is to build it so it can't.
+
+<img
+  src="/images/projects/rewrit/check.png"
+  alt="The rewr.it check page with a pasted draft, a large reading of 100 percent likely machine-written, and a count of 38 machine tells."
+  style={{ width: '100%', borderRadius: '8px' }}
+/>
+
+## The rewrite is the hard half
+
+Marking bad phrases is a word list. Anybody can build that in an afternoon, and I mostly did.
+
+Rewriting is where it gets real, and it's where every tool I tried fell down. They paraphrase. Paraphrase drifts. A date moves by a day. A hedge disappears and a maybe turns into a did. You send it, your client reads a commitment you never made, and you find out six weeks later when they hold you to it.
+
+So the rewrite is fenced in. Every claim in the output has to trace back to a specific sentence in your draft, and a sentence too tangled to move safely stays exactly as you wrote it and gets flagged instead. Then the rewrite is checked against the draft before you ever see it.
+
+<MermaidDiagram
+  title="What happens to a draft"
+  caption="The checker runs locally. The audit gates the copy button. A rewrite that moved a fact does not get handed to you quietly."
+  chart={`
+flowchart LR
+    Draft([Your draft]) --> Check[Check<br/>in your browser]
+    Check --> Marks[Every tell marked<br/>in place]
+    Marks --> Rewrite[Rewrite]
+    Rewrite --> Audit{Fact audit}
+    Audit -->|nothing moved| Copy([Copy it])
+    Audit -->|something moved| Flag[Flagged, and shown<br/>the row that changed]
+
+    classDef local fill:#2f5d50,stroke:#24473d,color:white;
+    classDef warn fill:#a33,stroke:#822,color:white;
+    class Check,Marks local;
+    class Flag warn;
+  `}
+/>
+
+The audit pulls numbers, dates, names, quotes and links out of both versions and compares them as multisets. Not as sets. That distinction cost me an afternoon and it's my favorite thing in the codebase.
+
+Here's why it matters. In the demo email, August 28 gets counted twice, once as a date and once as the bare number 28. If the audit compared sets, a rewrite that helpfully repeated the date for emphasis would look identical to one that didn't. As multisets, repeating it reports an added fact and the panel stops reading zero. It also means a rewrite that quietly drops the month and leaves the 28 trips the check, which is the failure I actually care about, because that's the one nobody proofreads for.
+
+<MermaidDiagram
+  title="Facts in, facts out"
+  caption="Counted, not just present. Repeating a date is a change, and so is dropping half of one."
+  chart={`
+flowchart TB
+    subgraph Before[In your draft]
+      A1["August 28 (date)"]
+      A2["28 (number)"]
+      A3["vendor API access"]
+    end
+    subgraph After[In the rewrite]
+      B1["August 28 (date)"]
+      B2["28 (number)"]
+      B3["vendor API access"]
+    end
+    Before --> Compare{Compare as multisets}
+    After --> Compare
+    Compare -->|counts match| Zero[0 warnings]
+    Compare -->|count moved| One[Warning, with the row]
+
+    classDef good fill:#2f5d50,stroke:#24473d,color:white;
+    classDef bad fill:#a33,stroke:#822,color:white;
+    class Zero good;
+    class One bad;
+  `}
+/>
+
+Where the writing is going changes the shape it comes back in. There are nine registers to pick from, because a Slack message is not a skip-level, and you can point it at your own writing instead, which measures your rhythm rather than guessing at it.
+
+<img
+  src="/images/projects/rewrit/write.png"
+  alt="The rewr.it rewrite surface, showing the draft pane on the left and the result pane on the right."
+  style={{ width: '100%', borderRadius: '8px' }}
+/>
+
+## Watch it run
+
+This is the check page taking that same status email and reading it. No cuts and no captions. Everything on screen is computed by the same functions the app calls, so the recording can't show you a result the software wouldn't produce.
+
+<video
+  src="/images/projects/rewrit/demo.mp4"
+  poster="/images/projects/rewrit/demo-poster.jpg"
+  autoPlay
+  muted
+  loop
+  playsInline
+  style={{ width: '100%', borderRadius: '8px', border: '1px solid #ddd' }}
+/>
+
+That clip is in the repo because re-cutting it costs one command now. It didn't used to. The first recording sat on the landing page until the headline changed underneath it, and then it sat in a folder for weeks with the old headline burned into its first frame, because re-recording meant somebody sitting down with a screen recorder for an afternoon. Nobody pays that twice. So I wrote a capture script that drives the real app in a real browser and takes real pictures of it, and the page has had a current video on it ever since.
+
+## Where it lives
+
+The web app is the main thing, but the drafts I most want to fix are the ones I'm already writing somewhere else, so it also ships as a Chrome extension that works inside Gmail and LinkedIn, an MCP server so Claude can check its own output before handing it to me, and a desktop build.
+
+The MCP server is the one I use most, and it's free and needs no account for the checking tools. My coding agent drafts something, checks itself, and fixes the tells before I ever read the draft. That loop is genuinely useful in a way I didn't predict when I built it.
+
+<TechStack
+  items={[
+    "Next.js",
+    "React",
+    "MongoDB Atlas",
+    "Claude API",
+    "Stripe",
+    "Auth.js",
+    "Chrome Extension (MV3)",
+    "MCP",
+    "Tauri"
+  ]}
+/>
+
+## What it won't do
+
+It won't beat a detector, and I'm not going to claim it does. That's an arms race with a moving target on the other end, and a product that promises it is lying to you on a schedule.
+
+It also won't write your vocabulary. A saved voice profile measures rhythm. Sentence length, how you join clauses, where you land the point. It doesn't learn your words. I say that on the one page where profiles come up, because it's the thing people assume and I'd rather disappoint them up front than after they've paid.
+
+And it's not going to make bad writing good. All it does is take the accent off. The judgment still has to be yours, which is the part you were being paid for anyway.
+
+Checking is free, unlimited, and never leaves your browser. It's at [rewr.it](https://rewr.it) if you want to paste something in and see what comes back.
