@@ -25,6 +25,38 @@ import CodeBlock from '../CodeBlock';
 import BlogCTA from './includes/BlogCTA';
 import BlogPdfDownload from './includes/BlogPdfDownload';
 
+// Use this in post bodies instead of a raw <img> tag.
+//
+// MDX routes markdown-generated elements through the components map below, so
+// `![alt](src)` picks up the `img` entry and its next/image treatment. A
+// literal <img> written in the source does not — MDX passes intrinsic JSX
+// straight through as HTML — so those images silently shipped at full size.
+// A capitalized component name is resolved by MDX, which closes that hole.
+//
+// width/height are the file's real pixel dimensions. next/image needs them to
+// reserve the right space before the image loads; `height: auto` in the style
+// keeps the rendered image fluid at the column width.
+function PostImage({ src, alt = '', width, height, rounded = true, ...props }) {
+  return (
+    <Box component="figure" sx={{ my: 4, mx: 0, p: 0 }}>
+      <Image
+        src={src}
+        alt={alt}
+        width={Number(width)}
+        height={Number(height)}
+        // The post column is capped at 800px; 860 covers it plus padding.
+        sizes="(max-width: 900px) 100vw, 860px"
+        style={{
+          width: '100%',
+          height: 'auto',
+          display: 'block',
+          borderRadius: rounded ? 8 : 0,
+        }}
+        {...props}
+      />
+    </Box>
+  );
+}
 
 export const mdxComponents = {
   h1: (props) => (
@@ -193,6 +225,7 @@ export const mdxComponents = {
       </Typography>
     );
   },
+  PostImage,
   TechStack,
   DemoVideo,
   AsciiDiagram,
