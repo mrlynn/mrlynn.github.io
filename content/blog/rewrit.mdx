@@ -1,10 +1,10 @@
 ---
 title: "Your Client Can Tell"
-description: "I built a tool that marks every phrase in a draft that gives it away as machine-written, and rewrites around them without moving a date, a number, or a caveat you wrote."
+description: "I built a tool that marks every phrase in a draft that gives it away as machine-written, rewrites around them without moving a date or a caveat you wrote, and can learn your voice from a ten-minute spoken interview."
 date: "2026-09-07"
 author: "Michael Lynn"
 image: "/images/projects/rewrit/manuscript.png"
-tags: ["AI", "Writing", "Next.js", "MongoDB", "Claude", "Chrome Extension", "MCP"]
+tags: ["AI", "Writing", "Voice", "Speech", "Next.js", "MongoDB", "Claude", "Chrome Extension", "MCP"]
 color: "#2f5d50"
 category: "project"
 private: false
@@ -114,13 +114,103 @@ flowchart TB
   `}
 />
 
-Where the writing is going changes the shape it comes back in. There are nine registers to pick from, because a Slack message is not a skip-level, and you can point it at your own writing instead, which measures your rhythm rather than guessing at it.
+Where the writing is going changes the shape it comes back in. There are nine registers to pick from, because a Slack message is not a skip-level. And you can point it at yourself instead of at a register, which is the part of this I think is actually worth ten minutes of your time. More on that below.
 
 <img
   src="/images/projects/rewrit/write.png"
   alt="The rewr.it rewrite surface, showing the draft pane on the left and the result pane on the right."
   style={{ width: '100%', borderRadius: '8px' }}
 />
+
+## You can teach it your voice, and it is worth the ten minutes
+
+Everything above works on a draft you paste, with no account and no setup. That
+version shapes your writing toward one considered voice, which is better than
+the model's default and is still not you.
+
+The other half of the product fixes that. There's an interview at
+[rewr.it/voice/interview](https://rewr.it/voice/interview) and you can talk your
+way through it. Eight questions, about ninety seconds each. Answer six and you
+have enough. Answer all eight and you have plenty. You can type instead if you'd
+rather, and you can walk the whole thing without an account, because signing in
+is only what lets you save at the end.
+
+<img
+  src="/images/projects/rewrit/interview.png"
+  alt="The rewr.it voice interview consent screen, headed Build your voice by talking, listing what happens to the recording and the text before anything is saved."
+  style={{ width: '100%', borderRadius: '8px' }}
+/>
+
+The recording goes to a transcription service and comes back as text, and the
+audio is thrown away the moment it does. Nobody stores it, us included. The text
+is what's kept, as writing samples behind your profile, for 365 days from the
+last time you actually use it. You read every transcript before any of it is
+saved, and you can edit them, which is not there for polish. A transcription
+error that survives into your profile is a measurement of the transcriber rather
+than of you.
+
+Then a model reads the whole set once and works out how you argue and which of
+your sentences are most characteristic. After that, every rewrite you run
+against that profile is shaped by it.
+
+### What it actually measures
+
+More than I said when I first wrote this post, and worth being precise about
+because "learns your voice" is a claim that usually means nothing.
+
+It measures how long your sentences run and how much that varies, how often you
+drop a fragment, which of nine ways you tend to open a sentence, how much you
+subordinate versus just adding another clause with "and", how often you
+contract, how much Latinate vocabulary you reach for, your hedges and your
+boosters, and your punctuation down to how often you use a semicolon. Then it
+picks a few of your own sentences to show the model as demonstrations.
+
+What it does not do is build a dictionary of your words. The word-frequency
+half runs against a fixed list of 150 function words, the structural ones, so
+the profile knows you say "so" where somebody else says "therefore" and knows
+nothing about the nouns you like. Out of the box it sounds like you in shape and
+like one considered voice in word choice.
+
+One detail I like more than I should. A spoken sample carries no punctuation at
+all, because a transcriber decides where the commas go. So the profile averages
+each feature only over the samples that actually reported it. Counting a
+transcript's silence as zero em dashes would teach it you never use one, which
+is a fact about a decoder setting and not about you.
+
+### Effort buys fidelity, and here is the exchange rate
+
+This is the part I'd underline. The measurements get better the more you give
+them, and the numbers are not vague.
+
+<MermaidDiagram
+  title="What more evidence buys you"
+  caption="The thresholds are real constants in the codebase, not a marketing ladder. Below 300 words it declines to measure rather than guessing."
+  chart={`
+flowchart LR
+    A["Under 300 words<br/>not enough to measure"] --> B["300 words<br/>a profile exists"]
+    B --> C["1,500 words<br/>the figures stop moving"]
+    C --> D["12,000 words<br/>full evidence target"]
+
+    classDef thin fill:#a33,stroke:#822,color:white;
+    classDef ok fill:#8a7b3d,stroke:#6d6130,color:white;
+    classDef good fill:#2f5d50,stroke:#24473d,color:white;
+    class A thin;
+    class B,C ok;
+    class D good;
+  `}
+/>
+
+Under 300 words it won't measure you at all, which is a refusal rather than a
+guess. At 300 you have a profile. Around 1,500 the figures settle, and the
+interview tells you so on the way out if you stopped short. The full evidence
+target is 12,000 words, which sounds like a lot until you notice you can top the
+same profile up later from anything you've already written.
+
+And that's the thing I'd want somebody to take away. The model is still the one
+organizing the sentences. What the profile changes is how much of the organizing
+is done to your measurements instead of to a default. The thoughts were always
+yours. Ten minutes of talking is what keeps them recognizable as yours after
+something else has arranged them.
 
 ## Watch it run
 
@@ -162,7 +252,7 @@ The MCP server is the one I use most, and it's free and needs no account for the
 
 It won't beat a detector, and I'm not going to claim it does. That's an arms race with a moving target on the other end, and a product that promises it is lying to you on a schedule.
 
-It also won't write your vocabulary. A saved voice profile measures rhythm. Sentence length, how you join clauses, where you land the point. It doesn't learn your words. I say that on the one page where profiles come up, because it's the thing people assume and I'd rather disappoint them up front than after they've paid.
+It also won't write your vocabulary, which is the limit I most often have to explain. A profile measures the structure of how you write and shows the model a few of your own sentences, and the word-frequency part of it runs against a fixed list of function words. So it knows your scaffolding and not your nouns. Out of the box it sounds like you in shape and like one considered voice in word choice. I say that on the page where profiles come up too, because it's the thing people assume and I'd rather disappoint them before they've paid than after.
 
 And it's not going to make bad writing good. All it does is take the accent off. The judgment still has to be yours, which is the part you were being paid for anyway.
 
