@@ -1,9 +1,10 @@
 'use client';
 
-import { Box, Container, Grid, Typography, Card, CardMedia, CardContent, CardActions, Button, useTheme, Tooltip, Chip, Stack, useMediaQuery } from '@mui/material';
+import { Box, Container, Grid, Typography, Card, CardContent, CardActions, Button, useTheme, Tooltip, Chip, Stack, useMediaQuery } from '@mui/material';
 import { motion } from 'framer-motion';
 import { GitHub as GitHubIcon, Launch as LaunchIcon, Lock as LockIcon, ArrowForward as ArrowForwardIcon } from '@mui/icons-material';
 import { projects } from '../data/projects';
+import Image from 'next/image';
 import Link from 'next/link';
 
 const MotionCard = motion.create(Card);
@@ -66,17 +67,30 @@ export default function ProjectsSection() {
                 }}
               >
                 <Box sx={{ position: 'relative' }}>
-                  <CardMedia
-                    component="img"
-                    height="200"
-                    image={project.image}
-                    alt={project.title}
+                  {/* height="200" never applied — MUI does not turn it into CSS
+                      for component="img" — so these rendered at their own aspect
+                      ratios. Fixed ratio plus next/image, matching the cards on
+                      /projects. Grid here is xs=12 md=6 lg=4. */}
+                  <Box
                     sx={{
-                      objectFit: 'cover',
+                      position: 'relative',
+                      width: '100%',
+                      aspectRatio: '16 / 9',
+                      overflow: 'hidden',
                       borderBottom: `1px solid ${isDark ? 'rgba(217, 98, 43, 0.1)' : 'rgba(217, 98, 43, 0.06)'}`,
-                      filter: project.private ? 'brightness(0.7)' : 'none',
                     }}
-                  />
+                  >
+                    <Image
+                      src={project.image}
+                      alt=""
+                      fill
+                      sizes="(max-width: 900px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      style={{
+                        objectFit: 'cover',
+                        filter: project.private ? 'brightness(0.7)' : 'none',
+                      }}
+                    />
+                  </Box>
                   {project.private && (
                     <Box
                       sx={{

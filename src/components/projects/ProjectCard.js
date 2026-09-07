@@ -3,15 +3,17 @@
 import { Box, Card, CardContent, Chip, Stack, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { GitHub as GitHubIcon, Launch as LaunchIcon, Lock as LockIcon } from '@mui/icons-material';
+import Image from 'next/image';
 import Link from 'next/link';
+import { CARD_IMAGE_SIZES } from '../blog/BlogCard';
 
 // Kept in step with BlogCard's thumbnail: a fixed ratio so titles share a
-// baseline across a row.
-const Thumb = styled('img')({
+// baseline across a row, and the same grid, so the same `sizes`.
+const ThumbFrame = styled(Box)({
+  position: 'relative',
   width: '100%',
   aspectRatio: '16 / 9',
-  objectFit: 'cover',
-  display: 'block',
+  overflow: 'hidden',
 });
 
 const StyledCard = styled(Card)({
@@ -55,7 +57,17 @@ export default function ProjectCard({ project }) {
     >
       <StyledCard>
         <Box sx={{ position: 'relative' }}>
-          {image && <Thumb src={image} alt="" loading="lazy" />}
+          {image && (
+            <ThumbFrame>
+              <Image
+                src={image}
+                alt=""
+                fill
+                sizes={CARD_IMAGE_SIZES}
+                style={{ objectFit: 'cover' }}
+              />
+            </ThumbFrame>
+          )}
           {isPrivate && (
             <Chip
               icon={<LockIcon sx={{ fontSize: '0.8rem' }} />}

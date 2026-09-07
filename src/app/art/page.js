@@ -22,6 +22,7 @@ import {
   Fade,
   useMediaQuery
 } from '@mui/material';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Close as CloseIcon,
@@ -358,17 +359,16 @@ export default function ArtGallery() {
                     },
                   }}
                 >
-                  <Box
-                    component="img"
-                    src={piece.image}
-                    alt={piece.title}
-                    sx={{
-                      width: '100%',
-                      height: '300px',
-                      objectFit: 'cover',
-                      display: 'block',
-                    }}
-                  />
+                  {/* These are 550KB-1.3MB PNGs. Grid is xs=12 sm=6 md=4. */}
+                  <Box sx={{ position: 'relative', width: '100%', height: '300px' }}>
+                    <Image
+                      src={piece.image}
+                      alt={piece.title}
+                      fill
+                      sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw"
+                      style={{ objectFit: 'cover' }}
+                    />
+                  </Box>
                   <Box sx={{ p: 2 }}>
                     <Typography
                       variant="h6"
@@ -439,7 +439,11 @@ export default function ArtGallery() {
             <Box
               sx={{
                 position: 'relative',
-                maxWidth: '90vw',
+                // Needs an explicit width, not just maxWidth: the image frame
+                // below is sized in percent, and a shrink-to-fit parent gives
+                // it nothing to resolve against.
+                width: { xs: '92vw', md: '80vw' },
+                maxWidth: 1200,
                 maxHeight: '90vh',
                 outline: 'none',
                 bgcolor: theme.palette.background.paper,
@@ -448,6 +452,7 @@ export default function ArtGallery() {
                 display: 'flex',
                 flexDirection: { xs: 'column', md: 'row' },
                 gap: 4,
+                overflowY: 'auto',
               }}
             >
               <IconButton
@@ -466,17 +471,25 @@ export default function ArtGallery() {
               </IconButton>
               {selectedArtwork && (
                 <>
+                  {/* Lightbox. objectFit contain inside a sized frame so the
+                      artwork keeps its own proportions while next/image still
+                      gets a box to work from. */}
                   <Box
-                    component="img"
-                    src={selectedArtwork.image}
-                    alt={selectedArtwork.title}
                     sx={{
-                      maxWidth: { xs: '100%', md: '70%' },
-                      maxHeight: '80vh',
-                      objectFit: 'contain',
-                      borderRadius: 1,
+                      position: 'relative',
+                      width: { xs: '100%', md: '65%' },
+                      height: { xs: '45vh', md: '70vh' },
+                      flexShrink: 0,
                     }}
-                  />
+                  >
+                    <Image
+                      src={selectedArtwork.image}
+                      alt={selectedArtwork.title}
+                      fill
+                      sizes="(max-width: 900px) 100vw, 70vw"
+                      style={{ objectFit: 'contain', borderRadius: 4 }}
+                    />
+                  </Box>
                   <Box sx={{ flex: 1 }}>
                     <Typography variant="h4" gutterBottom>
                       {selectedArtwork.title}
