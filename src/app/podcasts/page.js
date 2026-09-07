@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import AppleIcon from '@mui/icons-material/Apple';
 import GoogleIcon from '@mui/icons-material/Google';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { podcasts } from '../../data/podcasts';
 import PodcastEpisodes from '../../components/podcasts/PodcastEpisodes';
@@ -153,17 +154,28 @@ export default function PodcastsPage() {
                       spacing={3}
                       alignItems="center"
                     >
+                      {/* Podcast art is square. One of these is a remote
+                          CloudFront URL pulled from the feed, which is why
+                          next.config.js keeps a wildcard remotePattern. */}
                       <Box
-                        component="img"
-                        src={metadata.imageUrl || podcast.coverImage}
-                        alt={metadata.title || podcast.title}
                         sx={{
+                          position: 'relative',
                           width: { xs: '100%', sm: 200 },
-                          height: 'auto',
+                          aspectRatio: '1 / 1',
+                          flexShrink: 0,
                           borderRadius: 2,
+                          overflow: 'hidden',
                           boxShadow: 3,
                         }}
-                      />
+                      >
+                        <Image
+                          src={metadata.imageUrl || podcast.coverImage}
+                          alt={metadata.title || podcast.title}
+                          fill
+                          sizes="(max-width: 600px) 100vw, 200px"
+                          style={{ objectFit: 'cover' }}
+                        />
+                      </Box>
                       <Stack spacing={2} flex={1}>
                         <Typography variant="h4" component="h2">
                           {metadata.title || podcast.title}

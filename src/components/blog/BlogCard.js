@@ -2,6 +2,7 @@
 
 import { Box, Card, CardContent, Chip, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import Image from 'next/image';
 import Link from 'next/link';
 import { format } from 'date-fns';
 
@@ -9,12 +10,18 @@ import { format } from 'date-fns';
 // which MUI does not turn into CSS for component="img", so every thumbnail
 // rendered at its own aspect ratio (measured: 189-272px) and titles started at
 // a different height in each column. A fixed ratio fixes the baseline.
-const Thumb = styled('img')({
+const ThumbFrame = styled(Box)({
+  position: 'relative',
   width: '100%',
   aspectRatio: '16 / 9',
-  objectFit: 'cover',
-  display: 'block',
+  overflow: 'hidden',
 });
+
+// Grid is xs=12 sm=6 md=4 inside a maxWidth="lg" container, so a card is the
+// full viewport on phones, half on tablets, a third on desktop. Without this
+// next/image would assume 100vw everywhere and serve a needlessly large file
+// to the two-and three-up layouts.
+export const CARD_IMAGE_SIZES = '(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw';
 
 const StyledCard = styled(Card)({
   height: '100%',
@@ -36,7 +43,17 @@ export default function BlogCard({ post }) {
   return (
     <Link href={`/blog/${slug}`} style={{ textDecoration: 'none', display: 'block', height: '100%' }}>
       <StyledCard>
-        {image && <Thumb src={image} alt="" loading="lazy" />}
+        {image && (
+          <ThumbFrame>
+            <Image
+              src={image}
+              alt=""
+              fill
+              sizes={CARD_IMAGE_SIZES}
+              style={{ objectFit: 'cover' }}
+            />
+          </ThumbFrame>
+        )}
 
         <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
           <Typography
