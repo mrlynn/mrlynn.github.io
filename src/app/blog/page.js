@@ -1,6 +1,7 @@
 import { getAllPosts } from '../../lib/blog';
-import BlogList from '../../components/blog/BlogList';
+import CollectionBrowser from '../../components/common/CollectionBrowser';
 import PageHeader from '../../components/PageHeader';
+import { collectFilterTags, toCardPost } from '../../lib/collection';
 
 export const metadata = {
   title: 'Blog | Michael Lynn',
@@ -8,8 +9,9 @@ export const metadata = {
 };
 
 export default async function BlogPage() {
-  // Get all posts except projects
-  const posts = await getAllPosts(null, 'project');
+  // Projects render at /projects; they'd otherwise appear in both indexes.
+  const posts = (await getAllPosts(null, 'project')).map(toCardPost);
+  const filterTags = collectFilterTags(posts);
 
   return (
     <>
@@ -17,9 +19,12 @@ export default async function BlogPage() {
         title="Blog Articles"
         subtitle="A collection of blog articles and thoughts on software development, technology, and other topics."
       />
-      <BlogList posts={posts} />
+      <CollectionBrowser
+        posts={posts}
+        filterTags={filterTags}
+        kind="blog"
+        searchLabel="Search posts by title, description, or tag"
+      />
     </>
   );
-} 
-
-
+}
