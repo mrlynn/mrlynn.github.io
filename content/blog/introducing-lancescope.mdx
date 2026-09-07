@@ -39,7 +39,12 @@ millisecond and stop there.
 So I put a byte meter along the bottom of the demo, and building the meter turned out
 to be more interesting than the demo. That's LanceScope.
 
-<img src="/images/blog/lancescope/console-blob-ratio.png" alt="The LanceScope console showing the segments table with a video_blob column marked BLOB — SIDE FILE, 2.65 GB in blob side files against 69.8 KB of ordinary Lance files" />
+<PostImage
+  src="/images/blog/lancescope/console-blob-ratio.png"
+  alt="The LanceScope console showing the segments table with a video_blob column marked BLOB — SIDE FILE, 2.65 GB in blob side files against 69.8 KB of ordinary Lance files"
+  width={1600}
+  height={1013}
+/>
 
 ## The number that surprised me
 
@@ -92,7 +97,12 @@ a Hugging Face URI and read someone else's dataset over the network — I opened
 937,957-row dataset I'd never touched in about a third of a second for 24,568 bytes
 and two IO operations, and nothing downloaded.
 
-<img src="/images/blog/lancescope/console-rows.png" alt="The rows tab on the segments table, showing a plain-English question box above an SQL predicate box, with rows listed below and a read cost of 8.2 KB across 3 IOs" />
+<PostImage
+  src="/images/blog/lancescope/console-rows.png"
+  alt="The rows tab on the segments table, showing a plain-English question box above an SQL predicate box, with rows listed below and a read cost of 8.2 KB across 3 IOs"
+  width={1600}
+  height={864}
+/>
 
 There's a CLI for ingestion and scanning, which is what I use to build corpora. There's
 an MCP server exposing seven read-only tools, so Claude Code can go look at a database
@@ -111,7 +121,12 @@ The console also works a few things out on its own. A set of rules runs over the
 manifests the other tabs are reading — seven when I wrote the guide page, ten by the
 time the README caught up with me.
 
-<img src="/images/blog/lancescope/console-findings.png" alt="The insights tab listing findings for the moments table: one fragment so one worker, and vector has no vector index, each with the metadata numbers it was computed from" />
+<PostImage
+  src="/images/blog/lancescope/console-findings.png"
+  alt="The insights tab listing findings for the moments table: one fragment so one worker, and vector has no vector index, each with the metadata numbers it was computed from"
+  width={1600}
+  height={795}
+/>
 
 One tells me the `vector` column has no index, so every similarity search scans all
 1,114 rows and reads each 768-dimension vector to do it. That's fine at 1,114 rows. It
