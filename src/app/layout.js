@@ -85,7 +85,14 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
+    // suppressHydrationWarning: the script below stamps data-theme and
+    // color-scheme on <html> before React hydrates, which React otherwise
+    // reports as extra server attributes on every page.
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${fraunces.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+    >
       <head>
         {/*
           Resolve the theme before first paint. Without this the app rendered
