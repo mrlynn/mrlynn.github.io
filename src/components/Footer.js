@@ -24,7 +24,9 @@ export default function Footer() {
     <Box
       component="footer"
       sx={{
-        mt: { xs: 10, md: 16 },
+        // No top margin: every page's last section already carries its own
+        // bottom padding, and adding margin here stacked the two into a ~250px
+        // dead band above the footer.
         borderTop: `1px solid ${theme.palette.border.subtle}`,
         background: theme.palette.background.paper,
       }}
@@ -90,8 +92,10 @@ export default function Footer() {
           {/* Link columns */}
           {FOOTER_COLUMNS.map((column) => (
             <Box key={column.title} component="nav" aria-label={column.title}>
+              {/* A label for the nav landmark, not a document heading — the
+                  <nav> above carries the accessible name via aria-label. */}
               <Typography
-                component="h2"
+                component="p"
                 sx={{
                   fontFamily: 'var(--font-mono), monospace',
                   fontSize: '0.7rem',

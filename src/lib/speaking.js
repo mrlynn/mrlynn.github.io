@@ -68,4 +68,45 @@ export async function getSpeakingEngagementBySlug(slug) {
     content,
     ...data
   };
-} 
+}
+
+/**
+ * Frontmatter-only view of the speaking engagements.
+ *
+ * getAllSpeakingEngagements serializes every talk's MDX body, which is a lot of
+ * work — and a lot of RSC payload — for a homepage strip that draws four lines
+ * of metadata. This reads the front matter and stops there.
+ */
+export async function getSpeakingSummaries() {
+  const fileNames = await fs.readdir(speakingDirectory);
+  const now = new Date();
+
+  const summaries = await Promise.all(
+    fileNames
+      .filter((fileName) => fileName.endsWith('.mdx') && fileName !== 'index.mdx')
+      .map(async (fileName) => {
+        const fullPath = path.join(speakingDirectory, fileName);
+        const { data } = matter(await fs.readFile(fullPath, 'utf8'));
+        const date = new Date(data.date);
+
+        return {
+          slug: fileName.replace(/\.mdx$/, ''),
+          title: data.title || data.eventName || '',
+          eventName: data.eventName || '',
+          eventType: data.eventType || '',
+          location: data.location || '',
+          venue: data.venue || '',
+          date: Number.isNaN(date.getTime()) ? null : date.toISOString(),
+          isUpcoming: date >= now,
+        };
+      })
+  );
+
+  // Upcoming first, soonest to furthest; then past, most recent first.
+  return summaries.sort((a, b) => {
+    if (a.isUpcoming !== b.isUpcoming) return a.isUpcoming ? -1 : 1;
+    const da = new Date(a.date);
+    const db = new Date(b.date);
+    return a.isUpcoming ? da - db : db - da;
+  });
+}
