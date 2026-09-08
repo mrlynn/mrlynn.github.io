@@ -229,9 +229,10 @@ export default function ArtGallery() {
       minHeight: '100vh',
       pt: 12,
       pb: 8,
-      background: theme.palette.mode === 'dark'
-        ? 'linear-gradient(135deg, rgba(5, 102, 141, 0.1) 0%, rgba(165, 190, 0, 0.1) 100%)'
-        : 'linear-gradient(135deg, rgba(5, 102, 141, 0.05) 0%, rgba(165, 190, 0, 0.05) 100%)',
+      // Was a blue-to-lime wash left over from the old MongoDB identity, which
+      // fought the warm palette everywhere else and showed as a green cast in
+      // dark mode. The mesh already resolves per theme.
+      background: theme.palette.background.mesh,
     }}>
       <Container maxWidth="lg">
         <motion.div
@@ -345,13 +346,8 @@ export default function ArtGallery() {
                   onClick={() => handleOpen(piece)}
                   sx={{
                     cursor: 'pointer',
-                    background: theme.palette.mode === 'dark'
-                      ? 'rgba(6, 39, 54, 0.9)'
-                      : '#ffffff',
-                    backdropFilter: 'blur(10px)',
-                    border: `1px solid ${theme.palette.mode === 'dark'
-                      ? 'rgba(255,255,255,0.1)'
-                      : 'rgba(0,0,0,0.1)'}`,
+                    background: theme.palette.background.paper,
+                    border: `1px solid ${theme.palette.border.subtle}`,
                     overflow: 'hidden',
                     '&:hover': {
                       transform: 'scale(1.02)',
@@ -373,7 +369,7 @@ export default function ArtGallery() {
                     <Typography
                       variant="h6"
                       sx={{
-                        color: theme.palette.mode === 'dark' ? '#ffffff' : '#000000',
+                        color: theme.palette.text.primary,
                         fontWeight: 500,
                         mb: 1,
                       }}

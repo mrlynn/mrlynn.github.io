@@ -152,14 +152,21 @@ const speakingItems = [
 export default function Resume() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const isDark = theme.palette.mode === 'dark';
 
+  // Sections, not cards. This page shipped 22 bordered Paper boxes nested in a
+  // two-column grid, which read as boxes inside boxes and matched nothing else
+  // on the site. A hairline rule does the same separating work.
   const paperStyle = {
-    p: { xs: 2, sm: 3 },
-    mb: { xs: 2, sm: 3 },
-    background: theme.palette.background.paper,
+    p: 0,
+    pt: { xs: 3, sm: 4 },
+    mt: { xs: 3, sm: 4 },
+    mb: 0,
+    background: 'transparent',
     backgroundImage: 'none',
-    border: `1px solid ${theme.palette.border.subtle}`,
+    border: 'none',
+    borderTop: `1px solid ${theme.palette.border.subtle}`,
+    borderRadius: 0,
+    boxShadow: 'none',
     color: theme.palette.text.primary,
   };
 
@@ -170,7 +177,7 @@ export default function Resume() {
       fontFamily: 'var(--font-fraunces), Georgia, serif',
       fontWeight: 600,
       letterSpacing: '-0.01em',
-      fontSize: { xs: '1.5rem', sm: '1.75rem' },
+      fontSize: { xs: '1.35rem', sm: '1.5rem' },
       color: theme.palette.text.primary,
     },
   };
@@ -239,13 +246,18 @@ export default function Resume() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          sx={{
-            ...paperStyle,
-            mb: { xs: 4, md: 6 },
-            p: { xs: 3, sm: 4 },
-          }}
+          sx={{ ...paperStyle, borderTop: 'none', mt: 0, pt: 0, maxWidth: 820 }}
         >
-          <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 600, color: theme.palette.text.primary }}>
+          <Typography
+            variant="h4"
+            component="h2"
+            gutterBottom
+            sx={{
+              fontFamily: 'var(--font-fraunces), Georgia, serif',
+              fontWeight: 600,
+              color: theme.palette.text.primary,
+            }}
+          >
             Michael Lynn
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
@@ -298,9 +310,14 @@ export default function Resume() {
                     key={index}
                     label={strength}
                     size="small"
+                    variant="outlined"
                     sx={{
-                      fontSize: { xs: '0.7rem', sm: '0.8rem' },
-                      height: { xs: 24, sm: 28 },
+                      fontSize: { xs: '0.7rem', sm: '0.75rem' },
+                      height: { xs: 24, sm: 26 },
+                      fontFamily: 'var(--font-mono), monospace',
+                      backgroundColor: 'transparent',
+                      borderColor: theme.palette.border.default,
+                      color: theme.palette.text.secondary,
                       '& .MuiChip-label': { px: 1 },
                     }}
                   />
@@ -446,12 +463,15 @@ export default function Resume() {
                           key={i}
                           label={skill}
                           size="small"
+                          variant="outlined"
                           sx={{
-                            fontSize: '0.7rem',
+                            fontSize: '0.68rem',
                             height: 22,
                             m: 0.25,
-                            background: theme.palette.background.gradient,
-                            color: isDark ? 'white' : 'black',
+                            fontFamily: 'var(--font-mono), monospace',
+                            backgroundColor: 'transparent',
+                            borderColor: theme.palette.border.default,
+                            color: theme.palette.text.secondary,
                           }}
                         />
                       ))}
