@@ -1,74 +1,84 @@
 'use client';
 
-import { Box, Paper, Typography, useTheme, Button } from '@mui/material';
+import { Box, Button, Paper, useTheme } from '@mui/material';
 import GitHubCalendar from 'react-github-calendar';
-import { motion } from 'framer-motion';
-import Section from './Section';
 import Link from 'next/link';
-import { GitHub as GitHubIcon, Launch as LaunchIcon, Lock as LockIcon, ArrowForward as ArrowForwardIcon } from '@mui/icons-material';
+import { ArrowForward as ArrowForwardIcon } from '@mui/icons-material';
+import SectionHeading from './common/SectionHeading';
+import { MotionBox, EASE } from './common/motion';
+import { SOCIAL_LINKS } from '../lib/navigation';
 
+/**
+ * Contribution ramps for both themes. Only the dark ramp used to be defined, so
+ * in light mode the calendar fell back to the library's default grey and read
+ * as broken rather than quiet. Both ramps are the persimmon scale from
+ * src/theme/designSystem.js.
+ */
+const CALENDAR_THEME = {
+  light: ['#f3efe7', '#fbe2d5', '#ef9d76', '#d9622b', '#9c3e15'],
+  dark: ['#211d16', '#652c15', '#9c3e15', '#be4e1c', '#e8794a'],
+};
 
-const MotionPaper = motion(Paper);
-
-export default function GitHubActivity() {
+export default function GitHubActivity({ eyebrow = 'Open source' }) {
   const theme = useTheme();
 
-  // Theme with exactly 5 colors for dark mode
-  const colorTheme = {
-    dark: [
-      '#211d16', // No contributions
-      '#652c15', // Level 1
-      '#9c3e15', // Level 2
-      '#be4e1c', // Level 3
-      '#e8794a', // Level 4
-    ]
-  };
-
   return (
-    <Section title="GitHub Activity" subtitle="My open source contributions">
-      <MotionPaper
+    <Box>
+      <SectionHeading
+        eyebrow={eyebrow}
+        title="What I've been building"
+        intro="Public contributions across my repositories over the last year."
+      />
+
+      <MotionBox
         initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        elevation={0}
-        sx={{
-          p: 3,
-          bgcolor: 'background.paper',
-          borderRadius: 2,
-          overflow: 'hidden',
-        }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.5, ease: EASE }}
       >
-        <GitHubCalendar 
-          username="mrlynn"
-          theme={colorTheme}
-          fontSize={12}
-          blockSize={10}
-          blockMargin={4}
-          style={{
-            color: theme.palette.text.secondary,
-            padding: '1rem 0',
+        <Paper
+          elevation={0}
+          sx={{
+            p: 3,
+            bgcolor: 'background.paper',
+            border: `1px solid ${theme.palette.border.subtle}`,
+            borderRadius: '10px',
+            overflowX: 'auto',
           }}
-        />
-      </MotionPaper>
-      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 6 }}>
-          <Button
-            component={Link}
-            href="https://github.com/mrlynn"
-            variant="outlined"
-            size="large"
-            endIcon={<ArrowForwardIcon />}
-            sx={{
-              borderColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)',
-              color: theme.palette.mode === 'dark' ? '#ffffff' : '#000000',
-              '&:hover': {
-                borderColor: theme.palette.mode === 'dark' ? '#ffffff' : '#000000',
-                backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
-              },
-            }}
-          >
-            View More
-          </Button>
-        </Box>
-    </Section>
+        >
+          <GitHubCalendar
+            username="mrlynn"
+            theme={CALENDAR_THEME}
+            colorScheme={theme.palette.mode}
+            fontSize={12}
+            blockSize={10}
+            blockMargin={4}
+            style={{ color: theme.palette.text.secondary, padding: '0.5rem 0' }}
+          />
+        </Paper>
+      </MotionBox>
+
+      <Box sx={{ mt: 3 }}>
+        <Button
+          component={Link}
+          href={SOCIAL_LINKS.github}
+          target="_blank"
+          rel="noopener noreferrer"
+          variant="outlined"
+          endIcon={<ArrowForwardIcon />}
+          sx={{
+            borderColor: theme.palette.border.default,
+            color: theme.palette.text.primary,
+            borderRadius: '8px',
+            '&:hover': {
+              borderColor: theme.palette.primary.main,
+              backgroundColor: 'transparent',
+            },
+          }}
+        >
+          View on GitHub
+        </Button>
+      </Box>
+    </Box>
   );
-} 
+}

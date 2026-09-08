@@ -2,91 +2,12 @@
 
 import { Box, Container, Typography, Button, Grid, Stack, useTheme, Chip } from '@mui/material';
 import { ArrowForward as ArrowForwardIcon } from '@mui/icons-material';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
 import CalendarBooking from '../../components/CalendarBooking';
 import { consulting } from '../../data/consulting';
-
-const MotionBox = motion.create(Box);
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  show: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] },
-  }),
-};
-
-function Eyebrow({ children, sx }) {
-  const theme = useTheme();
-  return (
-    <Typography
-      component="span"
-      sx={{
-        fontFamily: 'var(--font-mono), monospace',
-        fontSize: '0.72rem',
-        letterSpacing: '0.22em',
-        textTransform: 'uppercase',
-        color: theme.palette.primary.main,
-        fontWeight: 500,
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: 1.5,
-        '&::before': {
-          content: '""',
-          width: 28,
-          height: '1px',
-          backgroundColor: theme.palette.primary.main,
-          opacity: 0.6,
-        },
-        ...sx,
-      }}
-    >
-      {children}
-    </Typography>
-  );
-}
-
-function SectionHeading({ eyebrow, title, intro, align = 'left' }) {
-  const theme = useTheme();
-  return (
-    <Box sx={{ maxWidth: 720, mb: { xs: 5, md: 7 }, mx: align === 'center' ? 'auto' : 0, textAlign: align }}>
-      {eyebrow && (
-        <Box sx={{ mb: 2.5, ...(align === 'center' && { display: 'flex', justifyContent: 'center' }) }}>
-          <Eyebrow>{eyebrow}</Eyebrow>
-        </Box>
-      )}
-      <Typography
-        variant="h2"
-        sx={{
-          fontFamily: 'var(--font-fraunces), Georgia, serif',
-          fontWeight: 600,
-          fontSize: { xs: '2rem', md: '2.75rem' },
-          lineHeight: 1.15,
-          color: theme.palette.text.primary,
-          mb: intro ? 2 : 0,
-          letterSpacing: '-0.015em',
-        }}
-      >
-        {title}
-      </Typography>
-      {intro && (
-        <Typography
-          sx={{
-            fontSize: { xs: '1.05rem', md: '1.15rem' },
-            lineHeight: 1.7,
-            color: theme.palette.text.secondary,
-            maxWidth: 640,
-            mx: align === 'center' ? 'auto' : 0,
-          }}
-        >
-          {intro}
-        </Typography>
-      )}
-    </Box>
-  );
-}
+import Eyebrow from '../../components/common/Eyebrow';
+import SectionHeading from '../../components/common/SectionHeading';
+import { MotionBox, fadeUp } from '../../components/common/motion';
 
 export default function ConsultingPage() {
   const theme = useTheme();
