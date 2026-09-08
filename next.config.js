@@ -24,6 +24,9 @@ const nextConfig = {
     return [
       { source: '/videos', destination: '/', permanent: true },
       { source: '/videos/:path*', destination: '/', permanent: true },
+      // /meet and /contact were two separate "get in touch" surfaces.
+      // /contact is now the single one and carries the booking widget.
+      { source: '/meet', destination: '/contact', permanent: true },
     ];
   },
   images: {

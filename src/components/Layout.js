@@ -1,30 +1,33 @@
 'use client';
 
 import { Box } from '@mui/material';
-import { motion } from 'framer-motion';
 import NavigationImproved from './NavigationImproved';
-
-const MotionBox = motion(Box);
+import Footer from './Footer';
 
 export default function Layout({ children }) {
   return (
-    <Box sx={{ minHeight: '100vh', position: 'relative' }}>
-      {/* Navigation */}
+    <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <NavigationImproved />
 
-      {/* Main content */}
+      {/*
+        No horizontal padding here on purpose. Every page nests its own MUI
+        Container, which supplies gutters; adding px to <main> as well doubled
+        them site-wide and stopped full-bleed section bands short of the
+        viewport edge.
+      */}
       <Box
         component="main"
         sx={{
-          pt: 8, // Add padding top to account for fixed AppBar
-          minHeight: '100vh',
+          pt: { xs: 8, md: 9 },
+          flex: 1,
           display: 'flex',
           flexDirection: 'column',
-          px: { xs: 2, sm: 3, md: 4 }, // Responsive padding
         }}
       >
         {children}
       </Box>
+
+      <Footer />
     </Box>
   );
-} 
+}
