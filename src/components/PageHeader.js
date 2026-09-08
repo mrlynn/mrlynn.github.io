@@ -1,23 +1,25 @@
 'use client';
 
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import { motion } from 'framer-motion';
-import { getVideoUrl, getVideoEmbedUrl } from '../utils/videoUtils'; 
+import { Box, Container, Typography } from '@mui/material';
+import { MotionTypography, EASE } from './common/motion';
 
-const MotionTypography = motion(Typography);
+/**
+ * The one page title treatment.
+ *
+ * Six different h1 sizes used to ship across the site (PageHeader, consulting,
+ * art, Resume, the homepage hero and the theme's own h1). This is the size every
+ * page-level title uses now; the homepage hero is the single deliberate exception.
+ */
+export const PAGE_TITLE_SIZE = { xs: '2.5rem', sm: '3rem', md: '3.5rem' };
 
-export default function PageHeader({ title, subtitle, align = 'center', maxWidth = 'lg' }) {
+export default function PageHeader({
+  title,
+  subtitle,
+  align = 'center',
+  maxWidth = 'lg',
+}) {
   return (
-    <Box 
-      sx={{ 
-        py: { xs: 4, md: 8 },
-        background: (theme) => theme.palette.mode === 'dark' 
-          ? 'linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%)'
-          : 'linear-gradient(180deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 100%)',
-      }}
-    >
+    <Box sx={{ pt: { xs: 6, md: 9 }, pb: { xs: 4, md: 6 } }}>
       <Container maxWidth={maxWidth}>
         <MotionTypography
           variant="h1"
@@ -25,31 +27,32 @@ export default function PageHeader({ title, subtitle, align = 'center', maxWidth
           align={align}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.5, ease: EASE }}
           sx={{
             fontFamily: 'var(--font-fraunces), Georgia, serif',
-            fontSize: { xs: '2.5rem', sm: '3rem', md: '3.75rem' },
+            fontSize: PAGE_TITLE_SIZE,
             fontWeight: 600,
             letterSpacing: '-0.02em',
+            lineHeight: 1.1,
             mb: 2,
-            color: (theme) => theme.palette.text.primary,
+            color: 'text.primary',
           }}
         >
           {title}
         </MotionTypography>
         {subtitle && (
           <MotionTypography
-            variant="h5"
-            color="text.secondary"
+            component="p"
             align={align}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+            transition={{ duration: 0.5, delay: 0.1, ease: EASE }}
             sx={{
-              fontSize: { xs: '1rem', sm: '1.25rem' },
-              maxWidth: '800px',
+              fontSize: { xs: '1.05rem', md: '1.15rem' },
+              lineHeight: 1.7,
+              color: 'text.secondary',
+              maxWidth: 680,
               mx: align === 'center' ? 'auto' : 0,
-              mb: { xs: 3, md: 6 },
             }}
           >
             {subtitle}
@@ -58,4 +61,4 @@ export default function PageHeader({ title, subtitle, align = 'center', maxWidth
       </Container>
     </Box>
   );
-} 
+}

@@ -4,7 +4,7 @@ import { Container, Typography, Grid, Card, CardContent, Box, Chip, Stack } from
 import { mongodbTalks } from '../../../data/mongodb-talks';
 import { mongodbProjects } from '../../../data/mongodb-projects';
 import { format } from 'date-fns';
-import CredlyBadge from '../../../components/CredlyBadge';
+import Certifications from '../../../components/Certifications';
 
 export default function MongoDBExpertise() {
   return (
@@ -19,24 +19,7 @@ export default function MongoDBExpertise() {
 
         {/* Certifications */}
         <Box sx={{ mt: 8 }}>
-          <Typography variant="h4" component="h2" gutterBottom>
-            Certifications
-          </Typography>
-          <Grid container spacing={4} alignItems="center">
-            <Grid item xs={12} md={6}>
-              <Card>
-                <CardContent>
-                  <Typography variant="h5" component="h3" gutterBottom>
-                    MongoDB Certifications
-                  </Typography>
-                  <Box sx={{ display: 'flex', gap: 4, flexWrap: 'wrap', justifyContent: 'center' }}>
-                    <CredlyBadge badgeId="4e0273eb-a641-4a76-80b0-f5e0db12b4ab" />
-                    <CredlyBadge badgeId="833ef744-f741-45bd-857a-4023517b16bf" />
-                  </Box>
-                </CardContent>
-              </Card>
-            </Grid>
-          </Grid>
+          <Certifications eyebrow="Credentials" intro="MongoDB skill badges, each linking to the verifiable credential." />
         </Box>
 
         {/* Featured Projects */}

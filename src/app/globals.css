@@ -57,3 +57,23 @@ a {
     linear-gradient(90deg, rgba(217, 98, 43, 0.03) 1px, transparent 1px);
   background-size: 56px 56px;
 }
+
+/*
+ * First-paint theme canvas.
+ *
+ * The inline script in app/layout.js resolves the theme (localStorage, then
+ * prefers-color-scheme) and stamps data-theme on <html> before anything paints.
+ * These two rules give the page its correct background immediately, so light-mode
+ * visitors no longer get a dark flash while React hydrates and MUI injects its
+ * styles. Values mirror colors.light.bg.primary / colors.dark.bg.primary in
+ * src/theme/designSystem.js — keep them in sync.
+ */
+html[data-theme='light'],
+html[data-theme='light'] body {
+  background-color: #faf8f3;
+}
+
+html[data-theme='dark'],
+html[data-theme='dark'] body {
+  background-color: #14120e;
+}

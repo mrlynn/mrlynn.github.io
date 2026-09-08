@@ -59,8 +59,11 @@ function PostImage({ src, alt = '', width, height, rounded = true, ...props }) {
 }
 
 export const mdxComponents = {
+  // The page template already renders the post title as the document's h1, and
+  // most MDX bodies open with "# Title" as well — which shipped two h1s on every
+  // article. An h1 written in the body renders as the next level down.
   h1: (props) => (
-    <Typography variant="h1" component="h1" gutterBottom {...props} />
+    <Typography variant="h2" component="h2" gutterBottom {...props} />
   ),
   h2: (props) => (
     <Typography variant="h2" component="h2" gutterBottom {...props} />

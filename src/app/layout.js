@@ -85,12 +85,35 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
+    // suppressHydrationWarning: the script below stamps data-theme and
+    // color-scheme on <html> before React hydrates, which React otherwise
+    // reports as extra server attributes on every page.
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${fraunces.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+    >
       <head>
+        {/*
+          Resolve the theme before first paint. Without this the app rendered
+          dark by default and corrected itself after hydration, so every
+          light-mode visitor saw a dark flash on hard load.
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var t='dark';try{t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark'){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}var d=document.documentElement;d.dataset.theme=t;d.style.colorScheme=t;}catch(e){}window.__INITIAL_THEME__=t;})();`,
+          }}
+        />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/letter-m.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/site.webmanifest" />
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title="Michael Lynn — Writing"
+          href="/feed.xml"
+        />
         {/* Google Analytics */}
         <Script
           strategy="afterInteractive"

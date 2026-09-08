@@ -1,48 +1,89 @@
 'use client';
 
-import { Box, Container, Typography, Grid, Card, CardContent } from '@mui/material';
-import CredlyBadge from './CredlyBadge';
+import { Box, Link as MuiLink, Typography, useTheme } from '@mui/material';
+import Image from 'next/image';
+import SectionHeading from './common/SectionHeading';
+import { certifications } from '../data/certifications';
 
-export default function Certifications() {
+export default function Certifications({
+  eyebrow = 'Credentials',
+  title = 'Certifications',
+  intro = 'MongoDB skill badges. Each one links to the verifiable credential.',
+}) {
+  const theme = useTheme();
+
   return (
-    <Box sx={{ py: 8, bgcolor: 'background.default' }}>
-      <Container maxWidth="lg">
-        <Typography variant="h3" component="h2" gutterBottom align="center">
-          Certifications
-        </Typography>
-        <Typography variant="h6" color="text.secondary" paragraph align="center" sx={{ mb: 6 }}>
-          Professional certifications and achievements
-        </Typography>
-        
-        <Grid container spacing={4} justifyContent="center">
-          <Grid item xs={12} md={6}>
-            <Card>
-              <CardContent>
-                <Typography variant="h5" component="h3" gutterBottom align="center">
-                  MongoDB Certifications
-                </Typography>
-                <Box sx={{ 
-                  display: 'flex', 
-                  gap: 4, 
-                  flexWrap: 'wrap', 
-                  justifyContent: 'center',
-                  mt: 2
-                }}>
-                  <CredlyBadge badgeId="4e0273eb-a641-4a76-80b0-f5e0db12b4ab" />
-                  <CredlyBadge badgeId="833ef744-f741-45bd-857a-4023517b16bf" />
-                  <CredlyBadge badgeId="0a059146-6f29-42ba-b438-9bc1bfe7d0cb" />
-                  <CredlyBadge badgeId="a5c70efa-5e60-4430-b19c-0674fa71041c" />
-                  <CredlyBadge badgeId="eae0010a-b157-4f78-aa07-29ff0647c2c0" />
-                  <CredlyBadge badgeId="7b8c4dd2-68e2-4ce3-81c1-6aac27870d65" />
-                  <CredlyBadge badgeId="dfbff6c9-ff28-4621-959b-d1906cb96698" />
-                  <CredlyBadge badgeId="356fc291-29d7-46e8-b3ec-f519e0908edc" />
-                </Box>
-              </CardContent>
-            </Card>
-          </Grid>
-        </Grid>
-      </Container>
+    <Box>
+      <SectionHeading eyebrow={eyebrow} title={title} intro={intro} />
+
+      <Box
+        sx={{
+          display: 'grid',
+          gap: { xs: 2.5, md: 3 },
+          gridTemplateColumns: {
+            xs: 'repeat(2, 1fr)',
+            sm: 'repeat(3, 1fr)',
+            md: 'repeat(4, 1fr)',
+          },
+        }}
+      >
+        {certifications.map((cert) => (
+          <MuiLink
+            key={cert.id}
+            href={`https://www.credly.com/badges/${cert.id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              textAlign: 'center',
+              gap: 1.5,
+              p: 2,
+              borderRadius: '10px',
+              border: `1px solid ${theme.palette.border.subtle}`,
+              textDecoration: 'none',
+              transition: 'border-color 0.2s, transform 0.2s',
+              '&:hover': {
+                borderColor: theme.palette.border.strong,
+                transform: 'translateY(-3px)',
+              },
+            }}
+          >
+            <Box sx={{ position: 'relative', width: 88, height: 88, flexShrink: 0 }}>
+              <Image
+                src={cert.image}
+                alt=""
+                fill
+                sizes="88px"
+                style={{ objectFit: 'contain' }}
+              />
+            </Box>
+            <Typography
+              sx={{
+                fontSize: '0.82rem',
+                lineHeight: 1.4,
+                color: theme.palette.text.primary,
+                fontWeight: 500,
+              }}
+            >
+              {cert.title}
+            </Typography>
+            <Typography
+              sx={{
+                fontFamily: 'var(--font-mono), monospace',
+                fontSize: '0.62rem',
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                color: theme.palette.text.secondary,
+                mt: 'auto',
+              }}
+            >
+              MongoDB
+            </Typography>
+          </MuiLink>
+        ))}
+      </Box>
     </Box>
   );
-} 
-
+}

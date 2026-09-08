@@ -22,6 +22,7 @@ export default async function sitemap() {
     { url: `${SITE_URL}/blog`, changeFrequency: 'daily', priority: 0.9 },
     { url: `${SITE_URL}/projects`, changeFrequency: 'weekly', priority: 0.8 },
     { url: `${SITE_URL}/consulting`, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${SITE_URL}/about`, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${SITE_URL}/resume`, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${SITE_URL}/speaking`, changeFrequency: 'weekly', priority: 0.7 },
     { url: `${SITE_URL}/podcasts`, changeFrequency: 'weekly', priority: 0.7 },

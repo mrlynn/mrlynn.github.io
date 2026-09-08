@@ -1,28 +1,72 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useLayoutEffect } from 'react';
 import { ThemeProvider as MuiThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { colors, typography, shadows, gradients, borderRadius, transitions } from './designSystem';
 
 const ThemeContext = createContext();
 
-export function ThemeProvider({ children }) {
-  const [isDarkMode, setIsDarkMode] = useState(true);
+/**
+ * Theme resolution, in two steps.
+ *
+ * 1. The blocking script in app/layout.js resolves the preference (localStorage,
+ *    then prefers-color-scheme) and stamps it on <html data-theme> before the
+ *    first paint. The rules in globals.css give the page its correct canvas
+ *    immediately, so nobody sees a full-viewport dark flash any more.
+ *
+ * 2. React still renders dark on the server, because the server cannot know the
+ *    preference without a cookie (and reading one would make every page dynamic).
+ *    We correct it in a layout effect rather than a passive one: MUI's styles are
+ *    injected client-side here, so the correction has to happen before paint or
+ *    the browser shows a frame of dark chrome. It also has to be a real state
+ *    update — without one React keeps the server's class names and the theme
+ *    silently sticks dark.
+ */
+const SERVER_DEFAULT_DARK = true;
 
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      setIsDarkMode(savedTheme === 'dark');
-    } else {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      setIsDarkMode(prefersDark);
-    }
+const useIsomorphicLayoutEffect =
+  typeof window === 'undefined' ? useEffect : useLayoutEffect;
+
+/**
+ * Read window.__INITIAL_THEME__, not <html data-theme>. The effect below writes
+ * that attribute back, so reading it here would make the two race — and every
+ * double-invocation (Strict Mode, remount) would resolve to dark.
+ */
+function readResolvedTheme() {
+  if (typeof window === 'undefined') return SERVER_DEFAULT_DARK;
+  return window.__INITIAL_THEME__ !== 'light';
+}
+
+export function ThemeProvider({ children }) {
+  const [isDarkMode, setIsDarkMode] = useState(SERVER_DEFAULT_DARK);
+
+  useIsomorphicLayoutEffect(() => {
+    setIsDarkMode(readResolvedTheme());
   }, []);
 
+  // Follow the OS if the visitor has never made an explicit choice here.
+  useEffect(() => {
+    if (localStorage.getItem('theme')) return;
+    const query = window.matchMedia('(prefers-color-scheme: dark)');
+    const onChange = (event) => setIsDarkMode(event.matches);
+    query.addEventListener('change', onChange);
+    return () => query.removeEventListener('change', onChange);
+  }, []);
+
+  // Keep <html> in step so the first-paint CSS stays correct across toggles.
+  useEffect(() => {
+    const mode = isDarkMode ? 'dark' : 'light';
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.style.colorScheme = mode;
+  }, [isDarkMode]);
+
   const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-    localStorage.setItem('theme', !isDarkMode ? 'dark' : 'light');
+    setIsDarkMode((previous) => {
+      const next = !previous;
+      localStorage.setItem('theme', next ? 'dark' : 'light');
+      return next;
+    });
   };
 
   const theme = createTheme({

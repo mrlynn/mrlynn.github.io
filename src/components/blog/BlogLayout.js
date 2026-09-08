@@ -1,42 +1,32 @@
 'use client';
 
-import { Box, Container, Typography, Button, Link } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { Box, Button, Container, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { GitHub as GitHubIcon, Launch as LaunchIcon } from '@mui/icons-material';
 import ShareButton from '../ShareButton';
 import AskArticleDock from './AskArticleDock';
 import { SITE_URL } from '../../lib/siteUrl';
 
-const HeroSection = styled(Box)(({ theme }) => ({
-  position: 'relative',
-  height: '60vh',
-  minHeight: '400px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  color: theme.palette.common.white,
-  textAlign: 'center',
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    background: 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7))',
-    zIndex: 1,
-  },
-}));
+/**
+ * The article template.
+ *
+ * The title used to sit in white type over a 60vh cover image behind a fixed
+ * rgba(0,0,0,0.5)->0.7 scrim. That works for a dark photograph and fails for
+ * the light UI screenshots most posts here use — /blog/introducing-lancescope
+ * rendered a title and standfirst you had to squint at. Rather than tune the
+ * scrim per image, the title sits on the page where every other title on the
+ * site does, and the cover image follows it.
+ *
+ * Body copy is held to about 70 rendered characters a line. It was running
+ * ~106 inside the old maxWidth="md" container. The value is in ch so it tracks
+ * the font size, but note Inter's "0" is wider than its average glyph, so 58ch
+ * measures out at roughly 70 real characters, not 58.
+ */
+const MEASURE = '58ch';
+const HEADER_MEASURE = 860;
+const BODY_SIZE = '1.0625rem';
 
-const HeroContent = styled(Box)(({ theme }) => ({
-  position: 'relative',
-  zIndex: 2,
-  maxWidth: '800px',
-  padding: theme.spacing(4),
-}));
-
-const BlogLayout = ({
+export function BlogLayout({
   children,
   title,
   description,
@@ -48,124 +38,189 @@ const BlogLayout = ({
   slug,
   enableAskArticle = false,
   askSuggestedQuestions,
-}) => {
-  // Add JSON-LD schema
+}) {
+  const theme = useTheme();
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: title,
-    description: description,
-    image: image,
+    description,
+    image,
     datePublished: date,
-    author: {
-      '@type': 'Person',
-      name: author,
-    },
+    author: { '@type': 'Person', name: author },
     publisher: {
       '@type': 'Organization',
       name: 'Michael Lynn',
-      logo: {
-        '@type': 'ImageObject',
-        url: `${SITE_URL}/images/logo.png`,
-      },
+      logo: { '@type': 'ImageObject', url: `${SITE_URL}/images/logo.png` },
     },
   };
 
+  const formattedDate = date
+    ? new Date(date).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })
+    : '';
+
   return (
-    <Container maxWidth="lg">
+    <Box component="article">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Box>
-        <HeroSection>
-          {image && (
-            <Image
-              src={image}
-              alt={title}
-              fill
-              style={{
-                objectFit: 'cover',
-                objectPosition: 'center',
+
+      <Container maxWidth="lg" sx={{ pt: { xs: 5, md: 8 } }}>
+        <Box sx={{ maxWidth: HEADER_MEASURE, mx: 'auto' }}>
+          <Typography
+            component="p"
+            sx={{
+              fontFamily: 'var(--font-mono), monospace',
+              fontSize: '0.72rem',
+              letterSpacing: '0.16em',
+              textTransform: 'uppercase',
+              color: theme.palette.primary.main,
+              mb: 2.5,
+            }}
+          >
+            {[formattedDate, author].filter(Boolean).join(' · ')}
+          </Typography>
+
+          <Typography
+            variant="h1"
+            component="h1"
+            sx={{
+              fontFamily: 'var(--font-fraunces), Georgia, serif',
+              fontWeight: 600,
+              fontSize: { xs: '2.1rem', sm: '2.6rem', md: '3.25rem' },
+              lineHeight: 1.12,
+              letterSpacing: '-0.02em',
+              color: theme.palette.text.primary,
+              mb: description ? 2.5 : 0,
+            }}
+          >
+            {title}
+          </Typography>
+
+          {description && (
+            <Typography
+              component="p"
+              sx={{
+                fontSize: { xs: '1.1rem', md: '1.25rem' },
+                lineHeight: 1.6,
+                color: theme.palette.text.secondary,
+                maxWidth: MEASURE,
               }}
-              priority
-            />
-          )}
-          <HeroContent>
-            <Typography variant="h1" component="h1" gutterBottom>
-              {title}
-            </Typography>
-            <Typography variant="h5" component="h2" gutterBottom>
+            >
               {description}
             </Typography>
-            <Typography variant="subtitle1">
-              By {author} • {new Date(date).toLocaleDateString()}
-            </Typography>
-          </HeroContent>
-        </HeroSection>
+          )}
 
-        {/* Actions Section: Demo, GitHub, Share */}
-        <Box sx={{ 
-          py: 3,
-          display: 'flex',
-          flexWrap: 'wrap',
-          justifyContent: 'center',
-          alignItems: 'center',
-          gap: 2,
-          bgcolor: 'background.paper',
-          borderBottom: 1,
-          borderColor: 'divider'
-        }}>
-          {demoUrl && (
-            <Button
-              component={Link}
-              href={demoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              startIcon={<LaunchIcon />}
-              variant="contained"
-              color="primary"
+          {/* Actions */}
+          <Box
+            sx={{
+              mt: 4,
+              pt: 3,
+              borderTop: `1px solid ${theme.palette.border.subtle}`,
+              display: 'flex',
+              flexWrap: 'wrap',
+              alignItems: 'center',
+              gap: 1.5,
+            }}
+          >
+            {demoUrl && (
+              <Button
+                href={demoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                startIcon={<LaunchIcon />}
+                variant="contained"
+                disableElevation
+                size="small"
+                sx={{ borderRadius: '8px', fontWeight: 600 }}
+              >
+                Live demo
+              </Button>
+            )}
+            {githubUrl && (
+              <Button
+                href={githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                startIcon={<GitHubIcon />}
+                variant="outlined"
+                size="small"
+                sx={{
+                  borderRadius: '8px',
+                  fontWeight: 600,
+                  borderColor: theme.palette.border.default,
+                  color: theme.palette.text.primary,
+                  '&:hover': { borderColor: theme.palette.primary.main, backgroundColor: 'transparent' },
+                }}
+              >
+                View source
+              </Button>
+            )}
+            <Box sx={{ ml: 'auto' }}>
+              <ShareButton
+                title={title}
+                url={typeof window !== 'undefined' ? window.location.href : ''}
+                description={description}
+              />
+            </Box>
+          </Box>
+
+          {image && (
+            <Box
+              sx={{
+                mt: { xs: 4, md: 5 },
+                position: 'relative',
+                aspectRatio: '16 / 9',
+                borderRadius: '10px',
+                overflow: 'hidden',
+                border: `1px solid ${theme.palette.border.subtle}`,
+                backgroundColor: theme.palette.background.paper,
+              }}
             >
-              Live Demo
-            </Button>
+              <Image
+                src={image}
+                alt=""
+                fill
+                sizes="(max-width: 900px) 100vw, 860px"
+                style={{ objectFit: 'cover', objectPosition: 'center' }}
+                priority
+              />
+            </Box>
           )}
-          {githubUrl && (
-            <Button
-              component={Link}
-              href={githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              startIcon={<GitHubIcon />}
-              variant="outlined"
-            >
-              View on GitHub
-            </Button>
-          )}
-          <Typography variant="subtitle1" color="text.secondary" sx={{ mx: 1 }}>
-            Share:
-          </Typography>
-          <ShareButton 
-            title={title}
-            url={typeof window !== 'undefined' ? window.location.href : ''}
-            description={description}
-          />
         </Box>
+      </Container>
 
-        {/* Content — extra bottom padding when ask dock is present */}
-        <Container maxWidth="md" sx={{ py: 8, pb: enableAskArticle ? 16 : 8 }}>
+      <Container maxWidth="lg">
+        <Box
+          sx={{
+            maxWidth: MEASURE,
+            mx: 'auto',
+            // ch resolves against this element's own font size, so the measure
+            // stays right if the body size changes.
+            fontSize: BODY_SIZE,
+            py: { xs: 6, md: 8 },
+            pb: enableAskArticle ? { xs: 14, md: 16 } : { xs: 6, md: 8 },
+            '& .MuiTypography-body1': { fontSize: BODY_SIZE, lineHeight: 1.75 },
+            // Wide content has to scroll inside itself rather than push the
+            // column out of shape.
+            '& pre, & table': { maxWidth: '100%', overflowX: 'auto' },
+          }}
+        >
           {children}
-        </Container>
-      </Box>
+        </Box>
+      </Container>
 
       {enableAskArticle && slug && (
-        <AskArticleDock
-          slug={slug}
-          title={title}
-          suggestedQuestions={askSuggestedQuestions}
-        />
+        <AskArticleDock slug={slug} title={title} suggestedQuestions={askSuggestedQuestions} />
       )}
-    </Container>
+    </Box>
   );
-};
+}
 
-export { BlogLayout };
+export default BlogLayout;
