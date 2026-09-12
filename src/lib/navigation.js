@@ -29,6 +29,10 @@ export const SOCIAL_LINKS = {
   github: 'https://github.com/mrlynn',
   linkedin: 'https://linkedin.com/in/mlynn',
   instagram: 'https://instagram.com/mlynn',
+  // Not rendered anywhere — the footer and /contact link GitHub and LinkedIn
+  // only. It lives here so the Person node's sameAs in lib/structuredData.js
+  // has one place to read every profile from.
+  twitter: 'https://twitter.com/mlynn',
 };
 
 // Set this to the address you want published, e.g. 'michael@mlynn.org'.

@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { GitHub as GitHubIcon, Launch as LaunchIcon } from '@mui/icons-material';
 import ShareButton from '../ShareButton';
 import AskArticleDock from './AskArticleDock';
-import { SITE_URL } from '../../lib/siteUrl';
 
 /**
  * The article template.
@@ -41,21 +40,6 @@ export function BlogLayout({
 }) {
   const theme = useTheme();
 
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
-    headline: title,
-    description,
-    image,
-    datePublished: date,
-    author: { '@type': 'Person', name: author },
-    publisher: {
-      '@type': 'Organization',
-      name: 'Michael Lynn',
-      logo: { '@type': 'ImageObject', url: `${SITE_URL}/images/logo.png` },
-    },
-  };
-
   const formattedDate = date
     ? new Date(date).toLocaleDateString('en-US', {
         year: 'numeric',
@@ -66,11 +50,6 @@ export function BlogLayout({
 
   return (
     <Box component="article">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-
       <Container maxWidth="lg" sx={{ pt: { xs: 5, md: 8 } }}>
         <Box sx={{ maxWidth: HEADER_MEASURE, mx: 'auto' }}>
           <Typography

@@ -1,4 +1,6 @@
 import { pageMetadata } from '../lib/pageMetadata';
+import JsonLd from '../components/JsonLd';
+import { graph } from '../lib/structuredData';
 import { getAllPosts } from '../lib/blog';
 import { getSpeakingSummaries } from '../lib/speaking';
 import { toCardPost } from '../lib/collection';
@@ -37,10 +39,18 @@ export default async function Home() {
     .map(toCardPost);
 
   return (
-    <HomeClient
-      posts={articles.slice(0, 3).map(toCardPost)}
-      projects={featuredProjects}
-      talks={talks.slice(0, 4)}
-    />
+    <>
+      {/*
+        The site's identity anchor. Every other page's JSON-LD references this
+        Person by @id rather than repeating the name, so a crawler resolves one
+        entity across the whole site.
+      */}
+      <JsonLd data={graph()} />
+      <HomeClient
+        posts={articles.slice(0, 3).map(toCardPost)}
+        projects={featuredProjects}
+        talks={talks.slice(0, 4)}
+      />
+    </>
   );
 }

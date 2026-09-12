@@ -1,3 +1,5 @@
+import JsonLd from '../../../components/JsonLd';
+import { articleNode, breadcrumbNode, graph } from '../../../lib/structuredData';
 import { getPostBySlug, getAllPosts } from '../../../lib/blog';
 import { BlogLayout } from '../../../components/blog/BlogLayout';
 import BlogPostContent from '../../../components/blog/BlogPostContent';
@@ -69,17 +71,38 @@ export default async function Project({ params }) {
     notFound();
   }
 
+  // Emitted here rather than inside BlogLayout, which is a client
+  // component — structured data has to be in the server-rendered HTML.
+  const articleGraph = graph(
+    articleNode({
+      title: project.title,
+      description: project.description,
+      image: project.image,
+      date: project.date,
+      updated: project.updated,
+      path: `/projects/${params.slug}`,
+      tags: project.tags,
+    }),
+    breadcrumbNode([
+      { name: 'Projects', path: '/projects' },
+      { name: project.title, path: `/projects/${params.slug}` },
+    ])
+  );
+
   return (
-    <BlogLayout
-      title={project.title}
-      description={project.description}
-      image={project.image}
-      date={project.date}
-      author={project.author}
-      demoUrl={project.demoUrl}
-      githubUrl={project.githubUrl}
-    >
-      <BlogPostContent post={project} slug={params.slug} />
-    </BlogLayout>
+    <>
+      <JsonLd data={articleGraph} />
+      <BlogLayout
+        title={project.title}
+        description={project.description}
+        image={project.image}
+        date={project.date}
+        author={project.author}
+        demoUrl={project.demoUrl}
+        githubUrl={project.githubUrl}
+      >
+        <BlogPostContent post={project} slug={params.slug} />
+      </BlogLayout>
+    </>
   );
 }
