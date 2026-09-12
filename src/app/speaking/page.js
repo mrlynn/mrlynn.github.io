@@ -30,6 +30,8 @@ export default async function SpeakingPage() {
               title: engagement.eventName || engagement.title,
               description: engagement.description,
               date: engagement.date,
+              time: engagement.time,
+              timezone: engagement.timezone,
               venue: engagement.venue,
               location: engagement.location,
               anchor: `event-${engagement.slug}`,

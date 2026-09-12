@@ -1,3 +1,4 @@
+import { OG_IMAGE } from '../../../lib/pageMetadata';
 import JsonLd from '../../../components/JsonLd';
 import { articleNode, breadcrumbNode, graph } from '../../../lib/structuredData';
 import { getPostBySlug, getAllPosts } from '../../../lib/blog';
@@ -31,7 +32,14 @@ export async function generateMetadata({ params }) {
         },
         twitter: { images: [`${SITE_URL}${project.image}`] },
       }
-    : { openGraph: {}, twitter: {} };
+    : // Not `{}`: a page that declares any openGraph object REPLACES its parent's
+      // rather than merging, which drops the card app/opengraph-image.js
+      // contributes — the exact failure pageMetadata() exists to prevent. Name
+      // the fallback explicitly so a coverless post still ships an image.
+      {
+        openGraph: { images: [OG_IMAGE] },
+        twitter: { images: [OG_IMAGE.url] },
+      };
 
   return {
     title: project.title,
