@@ -1,3 +1,25 @@
+/**
+ * Posts and projects, read from content/blog.
+ *
+ * This was two modules — lib/blog.js and utils/blog.js — reading the same
+ * directory and exporting the same three function names, with the pages on one
+ * and the sitemap, feed and admin API on the other.
+ *
+ * They had drifted, and both differences turned out to be dead weight that had
+ * never been exercised:
+ *
+ *   utils/blog ran a processComponentImports step that rewrote
+ *   `@/components/mdx/includes/...` imports. No post has ever used that form.
+ *
+ *   utils/blog also passed `scope: frontmatter` to serialize, which puts every
+ *   frontmatter key in scope as a variable. 23 project posts declare `private:`,
+ *   a reserved word in strict mode — which is how MDX compiles — so serializing
+ *   any of them that way throws "Unexpected strict mode reserved word". It never
+ *   surfaced because the sitemap and feed read frontmatter and never render the
+ *   body.
+ *
+ * Neither was carried over. This module is what the site already rendered with.
+ */
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
