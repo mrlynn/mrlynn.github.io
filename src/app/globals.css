@@ -69,6 +69,23 @@ html[data-theme='dark'] body {
   outline-offset: 2px;
 }
 
+/*
+ * The label colour has to be restated for :hover.
+ *
+ * MUI's baseline ships a global `a:hover { color: #9c3e15 }`, and `a:hover`
+ * (0,1,1) outranks the plain `.skip-link` (0,1,0) that sets the white. The
+ * :focus rule above is specific enough to win but only sets position and
+ * outline, so a focused skip link under the pointer rendered #9c3e15 on the
+ * #be4e1c fill — 1.38:1, effectively invisible. Keyboard users whose pointer
+ * happens to rest at the top-left hit this the moment the link appears.
+ * `.skip-link:hover` is (0,2,0) and outranks it.
+ */
+.skip-link:hover,
+.skip-link:focus,
+.skip-link:focus:hover {
+  color: #ffffff;
+}
+
 html[data-theme='dark'] .skip-link:focus {
   outline-color: #f0ebe0;
 }

@@ -148,6 +148,62 @@ export function articleNode({
 }
 
 /**
+ * Offset of `timeZone` at a given instant, in minutes.
+ */
+function zoneOffsetMinutes(instant, timeZone) {
+  const dtf = new Intl.DateTimeFormat('en-US', {
+    timeZone,
+    hour12: false,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  });
+  const p = Object.fromEntries(
+    dtf
+      .formatToParts(instant)
+      .filter((x) => x.type !== 'literal')
+      .map((x) => [x.type, x.value])
+  );
+  const asIfUtc = Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour % 24, +p.minute, +p.second);
+  return Math.round((asIfUtc - instant.getTime()) / 60000);
+}
+
+/**
+ * A talk's start as a local time with a real UTC offset.
+ *
+ * getSpeakingEngagements normalises `date` through `new Date(...).toISOString()`,
+ * which turns a bare "2025-04-16" into midnight UTC. Emitting that as startDate
+ * put every US talk on the previous evening in its own timezone — the Atlanta
+ * Developer Day read as April 15th, 8pm. The frontmatter carries `time` and
+ * `timezone`; this uses them.
+ *
+ * Degrades rather than guesses: no time gives a date-only startDate, which
+ * schema.org accepts, and no timezone gives a floating local time. Neither
+ * asserts an instant we do not actually know.
+ */
+export function localIsoDate(dateInput, time, timeZone) {
+  const day = String(dateInput || '').slice(0, 10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(day)) return undefined;
+
+  const hhmm = /^\d{1,2}:\d{2}$/.test(time || '') ? String(time).padStart(5, '0') : null;
+  if (!hhmm) return day;
+  if (!timeZone) return `${day}T${hhmm}:00`;
+
+  const wall = Date.parse(`${day}T${hhmm}:00Z`);
+  let offset = zoneOffsetMinutes(new Date(wall), timeZone);
+  // Re-resolve at the corrected instant so DST boundaries land on the right side.
+  offset = zoneOffsetMinutes(new Date(wall - offset * 60000), timeZone);
+
+  const sign = offset >= 0 ? '+' : '-';
+  const abs = Math.abs(offset);
+  const pad = (n) => String(n).padStart(2, '0');
+  return `${day}T${hhmm}:00${sign}${pad(Math.floor(abs / 60))}:${pad(abs % 60)}`;
+}
+
+/**
  * A talk or workshop.
  *
  * Talks have no page of their own — they are all described on /speaking — so
@@ -159,6 +215,8 @@ export function eventNode({
   title,
   description,
   date,
+  time,
+  timezone,
   venue,
   location,
   anchor,
@@ -173,7 +231,7 @@ export function eventNode({
     // Several talks carry a description identical to the event name; emitting
     // both just repeats the string.
     description: description && description !== title ? description : undefined,
-    startDate: date,
+    startDate: localIsoDate(date, time, timezone),
     url: page,
     eventStatus: 'https://schema.org/EventScheduled',
     eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
