@@ -1,4 +1,4 @@
-import { getAllPosts } from '../../utils/blog';
+import { getAllPosts } from '../../lib/blog';
 import { SITE_URL } from '../../lib/siteUrl';
 import RSS from 'rss';
 

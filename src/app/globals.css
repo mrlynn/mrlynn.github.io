@@ -21,43 +21,6 @@ a {
   text-decoration: none;
 }
 
-/* Soft warm glow utility for accent elements */
-.glow-green {
-  box-shadow: 0 4px 16px rgba(217, 98, 43, 0.18),
-              0 8px 32px rgba(217, 98, 43, 0.10);
-}
-
-.glow-text {
-  text-shadow: 0 1px 24px rgba(217, 98, 43, 0.28);
-}
-
-/* Text cursor blink animation */
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-.cursor-blink::after {
-  content: '|';
-  animation: blink 1s infinite;
-  color: #d9622b;
-  margin-left: 2px;
-}
-
-/* Scanline overlay effect for hero */
-@keyframes scanline {
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(100%); }
-}
-
-/* Grid pattern for backgrounds */
-.grid-pattern {
-  background-image:
-    linear-gradient(rgba(217, 98, 43, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(217, 98, 43, 0.03) 1px, transparent 1px);
-  background-size: 56px 56px;
-}
-
 /*
  * First-paint theme canvas.
  *
