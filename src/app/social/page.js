@@ -1,10 +1,13 @@
+import { pageMetadata } from '../../lib/pageMetadata';
 import { Container, Typography, Box } from '@mui/material';
 import InstagramFeed from '../../components/InstagramFeed';
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: 'Social Media | Michael Lynn',
-  description: 'Follow my journey through social media posts and updates',
-};
+  description:
+    'Follow my journey through social media posts and updates',
+  path: '/social',
+});
 
 export default function SocialPage() {
   return (

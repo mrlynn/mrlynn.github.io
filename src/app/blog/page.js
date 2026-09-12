@@ -1,3 +1,4 @@
+import { pageMetadata } from '../../lib/pageMetadata';
 import JsonLd from '../../components/JsonLd';
 import { breadcrumbNode, graph, itemListNode } from '../../lib/structuredData';
 import { SITE_URL } from '../../lib/siteUrl';
@@ -6,10 +7,12 @@ import CollectionBrowser from '../../components/common/CollectionBrowser';
 import PageHeader from '../../components/PageHeader';
 import { collectFilterTags, toCardPost } from '../../lib/collection';
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: 'Blog | Michael Lynn',
-  description: 'Technical articles, tutorials, and insights from Michael Lynn',
-};
+  description:
+    'Technical articles, tutorials, and insights from Michael Lynn',
+  path: '/blog',
+});
 
 export default async function BlogPage() {
   // Projects render at /projects; they'd otherwise appear in both indexes.
