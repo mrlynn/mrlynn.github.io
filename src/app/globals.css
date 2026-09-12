@@ -77,3 +77,65 @@ html[data-theme='dark'],
 html[data-theme='dark'] body {
   background-color: #14120e;
 }
+
+/*
+ * Skip link.
+ *
+ * First focusable thing on the page, and the only way to get past four nav
+ * landmarks with a keyboard. Off-screen rather than display:none so screen
+ * readers still announce it; it comes back on :focus.
+ */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 2000;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0 0 8px 0;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  background-color: #be4e1c;
+  color: #ffffff;
+}
+
+.skip-link:focus {
+  left: 0;
+  outline: 3px solid #1f1b16;
+  outline-offset: 2px;
+}
+
+html[data-theme='dark'] .skip-link:focus {
+  outline-color: #f0ebe0;
+}
+
+/* <main> takes focus programmatically when the skip link is used; it should not
+   draw a focus ring the way a real control would. */
+main:focus {
+  outline: none;
+}
+
+/*
+ * Reduced motion.
+ *
+ * framer-motion is handled separately by <MotionConfig reducedMotion="user"> in
+ * src/components/Layout.js — that covers the entrance and reveal animations.
+ * This covers everything CSS drives: keyframes, transitions, and smooth
+ * scrolling. Near-zero durations rather than `none`, so animations that rely on
+ * a completion event still fire it.
+ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

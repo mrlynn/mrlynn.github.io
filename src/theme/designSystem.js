@@ -112,6 +112,24 @@ export const colors = {
 };
 
 // Professional Spacing System (8px base)
+/**
+ * Accent for TEXT and icons, by theme.
+ *
+ * The signature persimmon (#d9622b, primary.500) is a display colour. On the
+ * light canvas it measures 3.45:1, which fails WCAG AA for body text — and it
+ * was carrying the hero eyebrow, the tagline, the section numerals and the nav
+ * links. Light mode steps one stop darker to primary.600 (4.61:1 on the cream
+ * canvas, 4.89:1 on white, which also fixes white-on-accent buttons). Dark mode
+ * keeps the ember, which already measures 6.47:1 on the dark canvas.
+ *
+ * Use this anywhere the accent is being read, not just seen. Fills, borders,
+ * gradients and glows should keep using colors.primary[500].
+ */
+export const accentText = {
+  light: '#be4e1c',
+  dark: '#e8794a',
+};
+
 export const spacing = {
   xs: '4px',
   sm: '8px',
@@ -260,6 +278,7 @@ export const zIndex = {
 };
 
 export default {
+  accentText,
   colors,
   spacing,
   typography,
