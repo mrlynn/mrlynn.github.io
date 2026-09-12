@@ -1,7 +1,7 @@
 import { getPostBySlug, getAllPosts } from '../../../lib/blog';
 import { BlogLayout } from '../../../components/blog/BlogLayout';
 import BlogPostContent from '../../../components/blog/BlogPostContent';
-import { Typography, Container } from '@mui/material';
+import { notFound } from 'next/navigation';
 import { SITE_URL } from '../../../lib/siteUrl';
 
 export async function generateStaticParams() {
@@ -21,7 +21,20 @@ export async function generateMetadata({ params }) {
   const canonicalPath =
     post.category === 'project' ? `/projects/${params.slug}` : `/blog/${params.slug}`;
   const fullUrl = `${SITE_URL}${canonicalPath}`;
-  const imageUrl = post.image ? `${SITE_URL}${post.image}` : `${SITE_URL}/images/og-image.jpg`;
+  // When a post has no cover, omit the image keys entirely rather than
+  // naming a default file. Next then falls back to app/opengraph-image.js,
+  // which is generated and therefore cannot 404 the way the old hardcoded
+  // /images/og-image.jpg did.
+  const cover = post.image
+    ? {
+        openGraph: {
+          images: [
+            { url: `${SITE_URL}${post.image}`, width: 1200, height: 630, alt: post.title },
+          ],
+        },
+        twitter: { images: [`${SITE_URL}${post.image}`] },
+      }
+    : { openGraph: {}, twitter: {} };
 
   return {
     title: post.title,
@@ -39,20 +52,13 @@ export async function generateMetadata({ params }) {
       publishedTime: post.date,
       modifiedTime: post.updated || post.date,
       authors: [post.author],
-      images: [
-        {
-          url: imageUrl,
-          width: 1200,
-          height: 630,
-          alt: post.title,
-        },
-      ],
+      ...cover.openGraph,
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
       description: post.description,
-      images: [imageUrl],
+      ...cover.twitter,
       creator: '@mlynn',
     },
   };
@@ -61,12 +67,11 @@ export async function generateMetadata({ params }) {
 export default async function BlogPost({ params }) {
   const post = await getPostBySlug(params.slug);
   
+  // Unknown slugs used to render this message with a 200, so retired and
+  // mistyped URLs looked like real, thin pages to crawlers. notFound()
+  // sends a real 404 and renders app/not-found.js.
   if (!post) {
-    return (
-      <Container>
-        <Typography variant="h1">Blog Post Not Found</Typography>
-      </Container>
-    );
+    notFound();
   }
 
   return (

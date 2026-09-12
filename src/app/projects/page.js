@@ -1,12 +1,15 @@
+import { pageMetadata } from '../../lib/pageMetadata';
 import { getAllPosts } from '../../lib/blog';
 import CollectionBrowser from '../../components/common/CollectionBrowser';
 import PageHeader from '../../components/PageHeader';
 import { collectFilterTags, toCardPost } from '../../lib/collection';
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: 'Projects | Michael Lynn',
-  description: 'Software development projects and experiments by Michael Lynn',
-};
+  description:
+    'Software development projects and experiments by Michael Lynn',
+  path: '/projects',
+});
 
 export default async function ProjectsPage() {
   const projects = (await getAllPosts('project')).map(toCardPost);
