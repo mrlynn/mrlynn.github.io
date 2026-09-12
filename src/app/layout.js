@@ -31,9 +31,11 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),
-  alternates: {
-    canonical: '/',
-  },
+  // Deliberately NO `alternates.canonical` here. Next merges page metadata over
+  // layout metadata, so a canonical set on the root layout silently propagates
+  // to every page that does not override it — /blog, /projects and /social all
+  // shipped declaring themselves duplicates of the homepage. Each route owns its
+  // own canonical instead; the homepage sets its own in app/page.js.
   title: 'Michael Lynn — AI Adoption Engineer, Developer Advocate & Advisor',
   description: 'AI Adoption Engineer at Cursor. I help developers and teams build with AI and modern data platforms — talks, open-source projects, writing, and hands-on workshops from 15+ years in tech.',
   authors: [{ name: 'Michael Lynn' }],
@@ -51,20 +53,16 @@ export const metadata = {
     siteName: 'Michael Lynn',
     title: 'Michael Lynn — AI Adoption Engineer, Developer Advocate & Advisor',
     description: 'Writing, open-source projects, talks, and hands-on workshops about building useful AI systems.',
-    images: [
-      {
-        url: '/images/og-image.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Michael Lynn - Creative Developer',
-      },
-    ],
+    // No `images` key: app/opengraph-image.js generates the card and Next wires
+    // it into og:image and twitter:image for every page that doesn't set its own.
+    // Listing images here would take precedence and suppress it — which is how
+    // the site ended up pointing at /images/og-image.jpg, a file that never
+    // existed, leaving every share with a blank preview.
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Michael Lynn — AI Adoption Engineer, Developer Advocate & Advisor',
     description: 'Writing, open-source projects, talks, and hands-on workshops about building useful AI systems.',
-    images: ['/images/og-image.jpg'],
     creator: '@mlynn',
   },
   robots: {
