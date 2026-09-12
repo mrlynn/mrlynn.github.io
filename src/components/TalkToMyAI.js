@@ -115,7 +115,7 @@ function MarkdownMessage({ content, isDark, theme }) {
           background: isDark ? 'rgba(232, 121, 74, 0.1)' : 'rgba(217, 98, 43, 0.08)',
         },
         '& a': {
-          color: isDark ? '#e8794a' : '#d9622b',
+          color: isDark ? '#e8794a' : '#be4e1c',
           textDecoration: 'none',
           '&:hover': { textDecoration: 'underline' },
         },
@@ -192,7 +192,7 @@ function QuickLaunchTab({ isDark, theme }) {
             startIcon={copied ? <CheckIcon /> : <ContentCopyIcon />}
             onClick={handleCopy}
             sx={{
-              color: copied ? '#d9622b' : theme.palette.text.secondary,
+              color: copied ? theme.palette.accent.text : theme.palette.text.secondary,
               textTransform: 'none',
               fontSize: '0.8rem',
             }}
@@ -268,7 +268,7 @@ function QuickLaunchTab({ isDark, theme }) {
             border: `1px solid ${isDark ? 'rgba(232, 121, 74, 0.2)' : 'rgba(217, 98, 43, 0.15)'}`,
           }}
         >
-          <CheckIcon sx={{ fontSize: 14, color: isDark ? '#e8794a' : '#d9622b' }} />
+          <CheckIcon sx={{ fontSize: 14, color: isDark ? '#e8794a' : '#be4e1c' }} />
           <Typography sx={{ fontSize: '0.75rem', color: theme.palette.text.primary, fontWeight: 500 }}>
             Prompt copied!
           </Typography>
@@ -728,11 +728,11 @@ export default function TalkToMyAI({ variant = 'full' }) {
           }}
         >
           <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 1, mb: 2 }}>
-            <AutoAwesomeIcon sx={{ fontSize: 16, color: isDark ? '#e8794a' : '#d9622b' }} />
+            <AutoAwesomeIcon sx={{ fontSize: 16, color: isDark ? '#e8794a' : '#be4e1c' }} />
             <Typography
               sx={{
                 fontSize: '0.7rem',
-                color: isDark ? 'rgba(232, 121, 74, 0.8)' : '#d9622b',
+                color: isDark ? 'rgba(232, 121, 74, 0.8)' : '#be4e1c',
                 letterSpacing: 1.5,
                 textTransform: 'uppercase',
                 fontFamily: 'var(--font-mono), monospace',

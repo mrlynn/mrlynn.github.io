@@ -3,7 +3,7 @@
 import { createContext, useContext, useState, useEffect, useLayoutEffect } from 'react';
 import { ThemeProvider as MuiThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { colors, typography, shadows, gradients, borderRadius, transitions } from './designSystem';
+import { accentText, colors, typography, shadows, gradients, borderRadius, transitions } from './designSystem';
 
 const ThemeContext = createContext();
 
@@ -73,7 +73,11 @@ export function ThemeProvider({ children }) {
     palette: {
       mode: isDarkMode ? 'dark' : 'light',
       primary: {
-        main: colors.primary[500],
+        // Mode-aware: primary.500 is the display persimmon and only reaches
+        // 3.45:1 on the light canvas, so light mode uses the AA-safe step. See
+        // accentText in designSystem.js. This also lifts white-on-primary
+        // buttons from 3.66:1 to 4.89:1.
+        main: isDarkMode ? colors.primary[500] : colors.primary[600],
         light: colors.primary[400],
         dark: colors.primary[700],
       },
@@ -87,6 +91,10 @@ export function ThemeProvider({ children }) {
         light: colors.accent.light,
         dark: colors.accent.dark,
         neon: colors.accent.neon,
+        // Readable accent for text and icons. Reach for this instead of the
+        // literal isDark ? '#e8794a' : '#d9622b' that was copied into a dozen
+        // components, half of which were below AA in light mode.
+        text: isDarkMode ? accentText.dark : accentText.light,
       },
       background: {
         default: isDarkMode ? colors.dark.bg.primary : colors.light.bg.primary,

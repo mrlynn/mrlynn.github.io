@@ -48,12 +48,12 @@ export default function AskAIPage() {
               border: `1px solid ${isDark ? 'rgba(232, 121, 74, 0.2)' : 'rgba(217, 98, 43, 0.15)'}`,
             }}
           >
-            <AutoAwesomeIcon sx={{ fontSize: 14, color: isDark ? '#e8794a' : '#d9622b' }} />
+            <AutoAwesomeIcon sx={{ fontSize: 14, color: isDark ? '#e8794a' : '#be4e1c' }} />
             <Typography
               sx={{
                 fontSize: '0.72rem',
                 fontWeight: 600,
-                color: isDark ? '#e8794a' : '#d9622b',
+                color: isDark ? '#e8794a' : '#be4e1c',
                 letterSpacing: 1,
                 textTransform: 'uppercase',
                 fontFamily: 'var(--font-mono), monospace',
@@ -115,7 +115,7 @@ export default function AskAIPage() {
                     fontFamily: 'var(--font-fraunces), Georgia, serif',
                     fontWeight: 700,
                     fontSize: '1.3rem',
-                    color: isDark ? '#e8794a' : '#d9622b',
+                    color: isDark ? '#e8794a' : '#be4e1c',
                   }}
                 >
                   {label}
@@ -147,7 +147,7 @@ export default function AskAIPage() {
                 key={topic}
                 label={topic}
                 size="small"
-                icon={<VerifiedIcon sx={{ fontSize: '13px !important', color: `${isDark ? '#e8794a' : '#d9622b'} !important` }} />}
+                icon={<VerifiedIcon sx={{ fontSize: '13px !important', color: `${isDark ? '#e8794a' : '#be4e1c'} !important` }} />}
                 sx={{
                   height: 26,
                   fontSize: '0.7rem',
