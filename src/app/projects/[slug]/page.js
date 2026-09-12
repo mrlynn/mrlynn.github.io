@@ -1,3 +1,5 @@
+import { absoluteUrl } from '../../../lib/structuredData';
+import { coverImageSize } from '../../../lib/imageSize';
 import { OG_IMAGE } from '../../../lib/pageMetadata';
 import JsonLd from '../../../components/JsonLd';
 import { articleNode, breadcrumbNode, graph } from '../../../lib/structuredData';
@@ -23,14 +25,21 @@ export async function generateMetadata({ params }) {
   // naming a default file. Next then falls back to app/opengraph-image.js,
   // which is generated and therefore cannot 404 the way the old hardcoded
   // /images/og-image.jpg did.
-  const cover = project.image
+  // Absolute-aware: three posts store their cover on Vercel Blob as a full URL,
+  // and concatenating SITE_URL in front of those produced
+  // "https://mlynn.orghttps//g1iq…" — a dead image on every share of them.
+  const coverUrl = project.image ? absoluteUrl(project.image) : null;
+  // Real pixel dimensions, not an assumption. 29 of 34 covers are not 1200x630,
+  // and a scraper lays the card out from these numbers before it fetches the
+  // file. Unknown (remote) covers omit them rather than assert a wrong hint.
+  const coverSize = coverImageSize(project.image);
+
+  const cover = coverUrl
     ? {
         openGraph: {
-          images: [
-            { url: `${SITE_URL}${project.image}`, width: 1200, height: 630, alt: project.title },
-          ],
+          images: [{ url: coverUrl, ...(coverSize || {}), alt: project.title }],
         },
-        twitter: { images: [`${SITE_URL}${project.image}`] },
+        twitter: { images: [coverUrl] },
       }
     : // Not `{}`: a page that declares any openGraph object REPLACES its parent's
       // rather than merging, which drops the card app/opengraph-image.js
