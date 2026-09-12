@@ -1,3 +1,7 @@
+import JsonLd from '../../components/JsonLd';
+import { breadcrumbNode, graph, PERSON_ID } from '../../lib/structuredData';
+import { SITE_URL } from '../../lib/siteUrl';
+
 export const metadata = {
   title: 'About — Michael Lynn',
   description:
@@ -12,5 +16,26 @@ export const metadata = {
 };
 
 export default function AboutLayout({ children }) {
-  return children;
+  return (
+    <>
+      {/*
+        ProfilePage is the type Google documents for "this page is about one
+        person". mainEntity points at the same Person the homepage declares
+        rather than defining a second one, so both pages describe one entity.
+      */}
+      <JsonLd
+        data={graph(
+          {
+            '@type': 'ProfilePage',
+            '@id': `${SITE_URL}/about#profile`,
+            url: `${SITE_URL}/about`,
+            name: 'About Michael Lynn',
+            mainEntity: { '@id': PERSON_ID },
+          },
+          breadcrumbNode([{ name: 'About', path: '/about' }])
+        )}
+      />
+      {children}
+    </>
+  );
 }

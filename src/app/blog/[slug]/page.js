@@ -1,3 +1,5 @@
+import JsonLd from '../../../components/JsonLd';
+import { articleNode, breadcrumbNode, graph } from '../../../lib/structuredData';
 import { getPostBySlug, getAllPosts } from '../../../lib/blog';
 import { BlogLayout } from '../../../components/blog/BlogLayout';
 import BlogPostContent from '../../../components/blog/BlogPostContent';
@@ -69,19 +71,51 @@ export default async function BlogPost({ params }) {
     );
   }
 
+  // Emitted here rather than inside BlogLayout, which is a client
+  // component — structured data has to be in the server-rendered HTML.
+  // Project posts render here too but canonicalise to /projects/<slug>, the
+  // same split generateMetadata above makes. The structured data has to follow
+  // the canonical, or @id and mainEntityOfPage name a URL that the page itself
+  // says is not the real one.
+  const isProject = post.category === 'project';
+  const articlePath = isProject
+    ? `/projects/${params.slug}`
+    : `/blog/${params.slug}`;
+
+  const articleGraph = graph(
+    articleNode({
+      title: post.title,
+      description: post.description,
+      image: post.image,
+      date: post.date,
+      updated: post.updated,
+      path: articlePath,
+      tags: post.tags,
+    }),
+    breadcrumbNode([
+      isProject
+        ? { name: 'Projects', path: '/projects' }
+        : { name: 'Writing', path: '/blog' },
+      { name: post.title, path: articlePath },
+    ])
+  );
+
   return (
-    <BlogLayout
-      title={post.title}
-      description={post.description}
-      image={post.image}
-      date={post.date}
-      author={post.author}
-      demoUrl={post.demoUrl}
-      githubUrl={post.githubUrl}
-      slug={params.slug}
-      enableAskArticle
-    >
-      <BlogPostContent post={post} slug={params.slug} />
-    </BlogLayout>
+    <>
+      <JsonLd data={articleGraph} />
+      <BlogLayout
+        title={post.title}
+        description={post.description}
+        image={post.image}
+        date={post.date}
+        author={post.author}
+        demoUrl={post.demoUrl}
+        githubUrl={post.githubUrl}
+        slug={params.slug}
+        enableAskArticle
+      >
+        <BlogPostContent post={post} slug={params.slug} />
+      </BlogLayout>
+    </>
   );
 }
