@@ -1,6 +1,6 @@
 import { pageMetadata } from '../lib/pageMetadata';
 import JsonLd from '../components/JsonLd';
-import { graph } from '../lib/structuredData';
+import { graph, webPageNode } from '../lib/structuredData';
 import { getAllPosts } from '../lib/blog';
 import { getSpeakingSummaries } from '../lib/speaking';
 import { toCardPost } from '../lib/collection';
@@ -45,7 +45,16 @@ export default async function Home() {
         Person by @id rather than repeating the name, so a crawler resolves one
         entity across the whole site.
       */}
-      <JsonLd data={graph()} />
+      <JsonLd
+        data={graph(
+          webPageNode({
+            path: '/',
+            name: 'Michael Lynn — AI Adoption Engineer, Developer Advocate & Advisor',
+            description:
+              'AI Adoption Engineer at Cursor. I help developers and teams build with AI and modern data platforms — talks, open-source projects, writing, and hands-on workshops from 15+ years in tech.',
+          })
+        )}
+      />
       <HomeClient
         posts={articles.slice(0, 3).map(toCardPost)}
         projects={featuredProjects}

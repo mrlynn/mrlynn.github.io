@@ -79,6 +79,34 @@ export function websiteNode() {
 }
 
 /**
+ * The page itself, as an entity, declaring what it is about.
+ *
+ * WebSite says who publishes the site; it does not say what any given page is
+ * about. The homepage carried only Person and WebSite, so it asserted "this site
+ * is published by Michael Lynn" and never "this page is about Michael Lynn" —
+ * and that second claim is the one that associates a page with a person.
+ *
+ * WebPage rather than ProfilePage: /about is the actual profile and already
+ * declares ProfilePage. The homepage is a landing page that happens to be about
+ * him, so `about` and `mainEntity` carry the claim without asserting a second
+ * profile page for the same person.
+ */
+export function webPageNode({ path, name, description, aboutPersonId = PERSON_ID }) {
+  const url = absoluteUrl(path);
+  return {
+    '@type': 'WebPage',
+    '@id': `${url}#webpage`,
+    url,
+    name,
+    description,
+    inLanguage: 'en-US',
+    isPartOf: { '@id': WEBSITE_ID },
+    about: { '@id': aboutPersonId },
+    mainEntity: { '@id': aboutPersonId },
+  };
+}
+
+/**
  * @param {{name: string, path: string}[]} trail Home is prepended for you.
  */
 export function breadcrumbNode(trail) {
