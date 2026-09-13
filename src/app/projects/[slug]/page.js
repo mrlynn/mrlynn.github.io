@@ -27,8 +27,8 @@ export async function generateStaticParams() {
  * stack does not. The generated card is a fallback, never a replacement for
  * artwork that is already big enough.
  *
- * absoluteUrl, not string concatenation: some covers are stored as full URLs on
- * Vercel Blob, and prefixing SITE_URL to those produced a dead image.
+ * absoluteUrl, not string concatenation: frontmatter may give a cover as a full
+ * URL, and prefixing SITE_URL to one produces a dead image.
  */
 function projectCardImage(project, slug) {
   const coverSize = coverImageSize(project.image);
