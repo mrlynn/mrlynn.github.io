@@ -6,9 +6,8 @@ import { getAllPosts, getPostBySlug } from '../../../lib/blog';
 /**
  * Per-post social card, for posts whose own cover is too small.
  *
- * Four posts carry 640px stock photos — well under LinkedIn's 1200x627
- * threshold for the large image card — so those pages rendered a thumbnail no
- * matter how correct the markup was.
+ * Below LinkedIn's 1200x627 threshold a page gets a thumbnail instead of the
+ * large image card, no matter how correct the markup is.
  *
  * A post is not a project, so this is not the project card with different words:
  * no technology chips, and the date carries the weight instead. Post titles also

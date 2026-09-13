@@ -64,7 +64,7 @@ function jpegSize(buf) {
 
 /**
  * @param {string} imagePath Site-relative path, e.g. "/images/blog/x/cover.png".
- *   Absolute URLs return undefined: they live off-disk (Vercel Blob), and
+ *   Absolute URLs return undefined: they live off-disk, and
  *   fetching them would put the network on the build's critical path.
  * @returns {{width: number, height: number} | undefined}
  */
