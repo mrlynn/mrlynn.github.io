@@ -69,7 +69,7 @@ export default function BlogCTA({
           p: { xs: 3, md: 4 },
           bgcolor: 'primary.main',
           color: 'primary.contrastText',
-          borderRadius: 2,
+          borderRadius: '6px',
         };
 
   const textColor = variant === 'subtle' ? 'text.primary' : 'inherit';

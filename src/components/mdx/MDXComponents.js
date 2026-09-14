@@ -50,7 +50,7 @@ function PostImage({ src, alt = '', width, height, rounded = true, ...props }) {
           width: '100%',
           height: 'auto',
           display: 'block',
-          borderRadius: rounded ? 8 : 0,
+          borderRadius: rounded ? 6 : 0,
         }}
         {...props}
       />

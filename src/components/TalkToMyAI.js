@@ -87,7 +87,7 @@ function TypingIndicator({ isDark }) {
             width: 8,
             height: 8,
             borderRadius: '50%',
-            backgroundColor: isDark ? 'rgba(232, 121, 74, 0.6)' : '#d9622b',
+            backgroundColor: isDark ? 'rgba(232, 197, 71, 0.6)' : '#c9a52b',
           }}
         />
       ))}
@@ -112,10 +112,10 @@ function MarkdownMessage({ content, isDark, theme }) {
           px: 0.7,
           py: 0.2,
           borderRadius: 0.5,
-          background: isDark ? 'rgba(232, 121, 74, 0.1)' : 'rgba(217, 98, 43, 0.08)',
+          background: isDark ? 'rgba(232, 197, 71, 0.1)' : 'rgba(201, 165, 43, 0.08)',
         },
         '& a': {
-          color: isDark ? '#e8794a' : '#be4e1c',
+          color: isDark ? '#e8c547' : '#7d6200',
           textDecoration: 'none',
           '&:hover': { textDecoration: 'underline' },
         },
@@ -141,7 +141,7 @@ function MarkdownMessage({ content, isDark, theme }) {
           background: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)',
         },
         '& pre': {
-          background: isDark ? 'rgba(0, 0, 0, 0.4)' : 'rgba(217, 98, 43, 0.04)',
+          background: isDark ? 'rgba(0, 0, 0, 0.4)' : 'rgba(201, 165, 43, 0.04)',
           borderRadius: 1,
           p: 1.5,
           overflow: 'auto',
@@ -205,9 +205,9 @@ function QuickLaunchTab({ isDark, theme }) {
       <Box
         sx={{
           p: 2,
-          borderRadius: 2,
-          background: isDark ? 'rgba(0, 0, 0, 0.4)' : 'rgba(217, 98, 43, 0.03)',
-          border: `1px solid ${isDark ? 'rgba(217, 98, 43, 0.1)' : 'rgba(217, 98, 43, 0.08)'}`,
+          borderRadius: '6px',
+          background: isDark ? 'rgba(0, 0, 0, 0.4)' : 'rgba(201, 165, 43, 0.03)',
+          border: `1px solid ${isDark ? 'rgba(201, 165, 43, 0.1)' : 'rgba(201, 165, 43, 0.08)'}`,
           fontFamily: 'var(--font-mono), monospace',
           fontSize: '0.75rem',
           color: theme.palette.text.secondary,
@@ -217,7 +217,7 @@ function QuickLaunchTab({ isDark, theme }) {
           overflowY: 'auto',
           '&::-webkit-scrollbar': { width: 4 },
           '&::-webkit-scrollbar-thumb': {
-            background: isDark ? 'rgba(217, 98, 43, 0.3)' : 'rgba(217, 98, 43, 0.2)',
+            background: isDark ? 'rgba(201, 165, 43, 0.3)' : 'rgba(201, 165, 43, 0.2)',
             borderRadius: 4,
           },
         }}
@@ -237,9 +237,9 @@ function QuickLaunchTab({ isDark, theme }) {
               label={q}
               size="small"
               sx={{
-                background: isDark ? 'rgba(217, 98, 43, 0.08)' : 'rgba(217, 98, 43, 0.06)',
+                background: isDark ? 'rgba(201, 165, 43, 0.08)' : 'rgba(201, 165, 43, 0.06)',
                 color: theme.palette.text.secondary,
-                border: `1px solid ${isDark ? 'rgba(217, 98, 43, 0.15)' : 'rgba(217, 98, 43, 0.1)'}`,
+                border: `1px solid ${isDark ? 'rgba(201, 165, 43, 0.15)' : 'rgba(201, 165, 43, 0.1)'}`,
                 fontSize: '0.72rem',
                 cursor: 'default',
               }}
@@ -249,7 +249,7 @@ function QuickLaunchTab({ isDark, theme }) {
       </Box>
 
       {/* Compact LLM launch row */}
-      <Divider sx={{ borderColor: isDark ? 'rgba(217, 98, 43, 0.08)' : 'rgba(217, 98, 43, 0.05)', mb: 2 }} />
+      <Divider sx={{ borderColor: isDark ? 'rgba(201, 165, 43, 0.08)' : 'rgba(201, 165, 43, 0.05)', mb: 2 }} />
 
       {/* Copied confirmation */}
       {copied && (
@@ -264,11 +264,11 @@ function QuickLaunchTab({ isDark, theme }) {
             px: 1.5,
             py: 0.75,
             borderRadius: 1.5,
-            background: isDark ? 'rgba(232, 121, 74, 0.1)' : 'rgba(217, 98, 43, 0.07)',
-            border: `1px solid ${isDark ? 'rgba(232, 121, 74, 0.2)' : 'rgba(217, 98, 43, 0.15)'}`,
+            background: isDark ? 'rgba(232, 197, 71, 0.1)' : 'rgba(201, 165, 43, 0.07)',
+            border: `1px solid ${isDark ? 'rgba(232, 197, 71, 0.2)' : 'rgba(201, 165, 43, 0.15)'}`,
           }}
         >
-          <CheckIcon sx={{ fontSize: 14, color: isDark ? '#e8794a' : '#be4e1c' }} />
+          <CheckIcon sx={{ fontSize: 14, color: isDark ? '#e8c547' : '#7d6200' }} />
           <Typography sx={{ fontSize: '0.75rem', color: theme.palette.text.primary, fontWeight: 500 }}>
             Prompt copied!
           </Typography>
@@ -506,7 +506,7 @@ function ChatTab({ isDark, theme }) {
           pr: 1,
           '&::-webkit-scrollbar': { width: 4 },
           '&::-webkit-scrollbar-thumb': {
-            background: isDark ? 'rgba(217, 98, 43, 0.3)' : 'rgba(217, 98, 43, 0.2)',
+            background: isDark ? 'rgba(201, 165, 43, 0.3)' : 'rgba(201, 165, 43, 0.2)',
             borderRadius: 4,
           },
         }}
@@ -525,20 +525,20 @@ function ChatTab({ isDark, theme }) {
               sx={{
                 p: 1.5,
                 maxWidth: '80%',
-                borderRadius: 2,
+                borderRadius: '6px',
                 backgroundImage: 'none',
                 ...(msg.role === 'user'
                   ? {
                       background: isDark
-                        ? 'linear-gradient(135deg, rgba(217, 98, 43, 0.2), rgba(232, 121, 74, 0.15))'
-                        : 'linear-gradient(135deg, rgba(217, 98, 43, 0.12), rgba(232, 121, 74, 0.08))',
-                      border: `1px solid ${isDark ? 'rgba(232, 121, 74, 0.2)' : 'rgba(217, 98, 43, 0.15)'}`,
+                        ? 'linear-gradient(135deg, rgba(201, 165, 43, 0.2), rgba(232, 197, 71, 0.15))'
+                        : 'linear-gradient(135deg, rgba(201, 165, 43, 0.12), rgba(232, 197, 71, 0.08))',
+                      border: `1px solid ${isDark ? 'rgba(232, 197, 71, 0.2)' : 'rgba(201, 165, 43, 0.15)'}`,
                     }
                   : {
                       background: isDark
                         ? 'rgba(255, 255, 255, 0.04)'
-                        : 'rgba(217, 98, 43, 0.03)',
-                      border: `1px solid ${isDark ? 'rgba(217, 98, 43, 0.1)' : 'rgba(217, 98, 43, 0.08)'}`,
+                        : 'rgba(201, 165, 43, 0.03)',
+                      border: `1px solid ${isDark ? 'rgba(201, 165, 43, 0.1)' : 'rgba(201, 165, 43, 0.08)'}`,
                     }),
               }}
             >
@@ -570,14 +570,14 @@ function ChatTab({ isDark, theme }) {
                 size="small"
                 onClick={() => handleSuggestionClick(q)}
                 sx={{
-                  background: isDark ? 'rgba(217, 98, 43, 0.08)' : 'rgba(217, 98, 43, 0.06)',
+                  background: isDark ? 'rgba(201, 165, 43, 0.08)' : 'rgba(201, 165, 43, 0.06)',
                   color: theme.palette.text.secondary,
-                  border: `1px solid ${isDark ? 'rgba(217, 98, 43, 0.15)' : 'rgba(217, 98, 43, 0.1)'}`,
+                  border: `1px solid ${isDark ? 'rgba(201, 165, 43, 0.15)' : 'rgba(201, 165, 43, 0.1)'}`,
                   fontSize: '0.72rem',
                   cursor: 'pointer',
                   transition: 'all 0.15s',
                   '&:hover': {
-                    background: isDark ? 'rgba(217, 98, 43, 0.15)' : 'rgba(217, 98, 43, 0.1)',
+                    background: isDark ? 'rgba(201, 165, 43, 0.15)' : 'rgba(201, 165, 43, 0.1)',
                     transform: 'translateY(-1px)',
                   },
                 }}
@@ -592,10 +592,10 @@ function ChatTab({ isDark, theme }) {
               elevation={0}
               sx={{
                 p: 1.5,
-                borderRadius: 2,
+                borderRadius: '6px',
                 backgroundImage: 'none',
-                background: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(217, 98, 43, 0.03)',
-                border: `1px solid ${isDark ? 'rgba(217, 98, 43, 0.1)' : 'rgba(217, 98, 43, 0.08)'}`,
+                background: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(201, 165, 43, 0.03)',
+                border: `1px solid ${isDark ? 'rgba(201, 165, 43, 0.1)' : 'rgba(201, 165, 43, 0.08)'}`,
               }}
             >
               <TypingIndicator isDark={isDark} />
@@ -633,17 +633,17 @@ function ChatTab({ isDark, theme }) {
           sx={{
             '& .MuiOutlinedInput-root': {
               fontSize: '0.85rem',
-              borderRadius: 2,
+              borderRadius: '4px',
               height: 40,
-              backgroundColor: isDark ? 'rgba(0, 0, 0, 0.3)' : 'rgba(217, 98, 43, 0.02)',
+              backgroundColor: isDark ? 'rgba(0, 0, 0, 0.3)' : 'rgba(201, 165, 43, 0.02)',
               '& fieldset': {
-                borderColor: isDark ? 'rgba(217, 98, 43, 0.15)' : 'rgba(217, 98, 43, 0.12)',
+                borderColor: isDark ? 'rgba(201, 165, 43, 0.15)' : 'rgba(201, 165, 43, 0.12)',
               },
               '&:hover fieldset': {
-                borderColor: isDark ? 'rgba(232, 121, 74, 0.3)' : 'rgba(217, 98, 43, 0.25)',
+                borderColor: isDark ? 'rgba(232, 197, 71, 0.3)' : 'rgba(201, 165, 43, 0.25)',
               },
               '&.Mui-focused fieldset': {
-                borderColor: '#d9622b',
+                borderColor: '#c9a52b',
               },
             },
           }}
@@ -655,17 +655,18 @@ function ChatTab({ isDark, theme }) {
           sx={{
             minWidth: 44,
             height: 40,
-            borderRadius: 2,
-            background: 'linear-gradient(135deg, #d9622b, #be4e1c)',
+            borderRadius: '4px',
+            background: '#e8c547',
+            color: '#131512',
             '&:hover': {
-              background: 'linear-gradient(135deg, #be4e1c, #9c3e15)',
+              background: '#ebcb56',
             },
             '&.Mui-disabled': {
-              background: isDark ? 'rgba(217, 98, 43, 0.1)' : 'rgba(217, 98, 43, 0.08)',
+              background: isDark ? 'rgba(201, 165, 43, 0.1)' : 'rgba(201, 165, 43, 0.08)',
             },
           }}
         >
-          {loading ? <CircularProgress size={18} sx={{ color: 'white' }} /> : <SendIcon sx={{ fontSize: 18 }} />}
+          {loading ? <CircularProgress size={18} sx={{ color: '#131512' }} /> : <SendIcon sx={{ fontSize: 18 }} />}
         </Button>
       </Box>
 
@@ -713,26 +714,26 @@ export default function TalkToMyAI({ variant = 'full' }) {
           elevation={0}
           sx={{
             p: { xs: 3, md: 4 },
-            borderRadius: 3,
+            borderRadius: '8px',
             backgroundImage: 'none',
             background: isDark
-              ? 'rgba(217, 98, 43, 0.04)'
-              : 'rgba(217, 98, 43, 0.03)',
-            border: `1px solid ${isDark ? 'rgba(217, 98, 43, 0.12)' : 'rgba(217, 98, 43, 0.08)'}`,
+              ? 'rgba(201, 165, 43, 0.04)'
+              : 'rgba(201, 165, 43, 0.03)',
+            border: `1px solid ${isDark ? 'rgba(201, 165, 43, 0.12)' : 'rgba(201, 165, 43, 0.08)'}`,
             textAlign: 'center',
             transition: 'all 0.3s ease',
             '&:hover': {
-              borderColor: isDark ? 'rgba(232, 121, 74, 0.25)' : 'rgba(217, 98, 43, 0.2)',
-              boxShadow: isDark ? '0 0 20px rgba(232, 121, 74, 0.08)' : '0 4px 20px rgba(217, 98, 43, 0.08)',
+              borderColor: isDark ? 'rgba(232, 197, 71, 0.25)' : 'rgba(201, 165, 43, 0.2)',
+              boxShadow: isDark ? '0 0 20px rgba(232, 197, 71, 0.08)' : '0 4px 20px rgba(201, 165, 43, 0.08)',
             },
           }}
         >
           <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 1, mb: 2 }}>
-            <AutoAwesomeIcon sx={{ fontSize: 16, color: isDark ? '#e8794a' : '#be4e1c' }} />
+            <AutoAwesomeIcon sx={{ fontSize: 16, color: isDark ? '#e8c547' : '#7d6200' }} />
             <Typography
               sx={{
                 fontSize: '0.7rem',
-                color: isDark ? 'rgba(232, 121, 74, 0.8)' : '#be4e1c',
+                color: isDark ? 'rgba(232, 197, 71, 0.8)' : '#7d6200',
                 letterSpacing: 1.5,
                 textTransform: 'uppercase',
                 fontFamily: 'var(--font-mono), monospace',
@@ -746,7 +747,7 @@ export default function TalkToMyAI({ variant = 'full' }) {
           <Typography
             variant="h5"
             sx={{
-              fontFamily: 'var(--font-fraunces), Georgia, serif',
+              fontFamily: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
               fontWeight: 600,
               color: theme.palette.text.primary,
               mb: 1.5,
@@ -775,9 +776,9 @@ export default function TalkToMyAI({ variant = 'full' }) {
                 label={q}
                 size="small"
                 sx={{
-                  background: isDark ? 'rgba(217, 98, 43, 0.08)' : 'rgba(217, 98, 43, 0.06)',
+                  background: isDark ? 'rgba(201, 165, 43, 0.08)' : 'rgba(201, 165, 43, 0.06)',
                   color: theme.palette.text.secondary,
-                  border: `1px solid ${isDark ? 'rgba(217, 98, 43, 0.15)' : 'rgba(217, 98, 43, 0.1)'}`,
+                  border: `1px solid ${isDark ? 'rgba(201, 165, 43, 0.15)' : 'rgba(201, 165, 43, 0.1)'}`,
                   fontSize: '0.72rem',
                 }}
               />
@@ -790,17 +791,16 @@ export default function TalkToMyAI({ variant = 'full' }) {
             variant="contained"
             endIcon={<AutoAwesomeIcon />}
             sx={{
-              background: 'linear-gradient(135deg, #d9622b, #be4e1c)',
+              background: '#e8c547',
+              color: '#131512',
               textTransform: 'none',
-              fontFamily: 'var(--font-fraunces), Georgia, serif',
+              fontFamily: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
               fontWeight: 600,
               px: 4,
               py: 1.2,
-              borderRadius: 2,
+              borderRadius: '4px',
               '&:hover': {
-                background: 'linear-gradient(135deg, #be4e1c, #9c3e15)',
-                transform: 'translateY(-2px)',
-                boxShadow: isDark ? '0 0 20px rgba(232, 121, 74, 0.2)' : '0 4px 12px rgba(217, 98, 43, 0.3)',
+                background: '#ebcb56',
               },
             }}
           >
@@ -821,12 +821,12 @@ export default function TalkToMyAI({ variant = 'full' }) {
       <Paper
         elevation={0}
         sx={{
-          borderRadius: 3,
+          borderRadius: '8px',
           backgroundImage: 'none',
           background: isDark
-            ? 'rgba(217, 98, 43, 0.04)'
-            : 'rgba(217, 98, 43, 0.02)',
-          border: `1px solid ${isDark ? 'rgba(217, 98, 43, 0.12)' : 'rgba(217, 98, 43, 0.08)'}`,
+            ? 'rgba(201, 165, 43, 0.04)'
+            : 'rgba(201, 165, 43, 0.02)',
+          border: `1px solid ${isDark ? 'rgba(201, 165, 43, 0.12)' : 'rgba(201, 165, 43, 0.08)'}`,
           overflow: 'hidden',
         }}
       >
@@ -841,12 +841,12 @@ export default function TalkToMyAI({ variant = 'full' }) {
               color: theme.palette.text.secondary,
               textTransform: 'none',
               fontSize: '0.875rem',
-              fontFamily: 'var(--font-fraunces), Georgia, serif',
+              fontFamily: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
               fontWeight: 500,
               '&.Mui-selected': { color: theme.palette.text.primary },
             },
             '& .MuiTabs-indicator': {
-              backgroundColor: isDark ? '#e8794a' : '#d9622b',
+              backgroundColor: isDark ? '#e8c547' : '#c9a52b',
             },
           }}
         >
@@ -854,7 +854,7 @@ export default function TalkToMyAI({ variant = 'full' }) {
           <Tab label="Chat" icon={<SmartToyIcon sx={{ fontSize: 16 }} />} iconPosition="start" />
         </Tabs>
 
-        <Divider sx={{ borderColor: isDark ? 'rgba(217, 98, 43, 0.08)' : 'rgba(217, 98, 43, 0.06)' }} />
+        <Divider sx={{ borderColor: isDark ? 'rgba(201, 165, 43, 0.08)' : 'rgba(201, 165, 43, 0.06)' }} />
 
         {activeTab === 0 && <QuickLaunchTab isDark={isDark} theme={theme} />}
         {activeTab === 1 && <ChatTab isDark={isDark} theme={theme} />}

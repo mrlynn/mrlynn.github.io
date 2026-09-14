@@ -47,7 +47,7 @@ export default function Footer() {
             <Typography
               component="p"
               sx={{
-                fontFamily: 'var(--font-fraunces), Georgia, serif',
+                fontFamily: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
                 fontSize: '1.25rem',
                 fontWeight: 600,
                 letterSpacing: '-0.01em',

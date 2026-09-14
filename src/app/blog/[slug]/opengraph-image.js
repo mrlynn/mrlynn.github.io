@@ -31,11 +31,11 @@ const fontDir = path.join(process.cwd(), 'src/app/_og-fonts');
 const loadFont = (file) => readFile(path.join(fontDir, file));
 
 // Same palette as app/opengraph-image.js.
-const CANVAS = '#faf8f3';
-const INK = '#1f1b16';
-const MUTED = '#635c51';
-const ACCENT = '#be4e1c';
-const RULE = '#e7e1d5';
+const CANVAS = '#131512';
+const INK = '#e8e6dc';
+const MUTED = '#a9a79d';
+const ACCENT = '#e8c547';
+const RULE = '#2d2f2a';
 
 /** Four steps, because blog titles range from 11 to 84 characters. */
 function titleSizeFor(title) {
@@ -47,11 +47,11 @@ function titleSizeFor(title) {
 }
 
 export default async function PostOpengraphImage({ params }) {
-  const [post, fraunces, interRegular, interSemiBold] = await Promise.all([
+  const [post, groteskRegular, groteskSemiBold, mono] = await Promise.all([
     getPostBySlug(params.slug),
-    loadFont('Fraunces.ttf'),
-    loadFont('Inter-Regular.ttf'),
-    loadFont('Inter-SemiBold.ttf'),
+    loadFont('FamiljenGrotesk-Regular.ttf'),
+    loadFont('FamiljenGrotesk-SemiBold.ttf'),
+    loadFont('FragmentMono-Regular.ttf'),
   ]);
 
   const title = post?.title || 'Writing';
@@ -80,10 +80,9 @@ export default async function PostOpengraphImage({ params }) {
         <div
           style={{
             display: 'flex',
-            fontFamily: 'Inter',
-            fontWeight: 600,
+            fontFamily: 'Fragment Mono',
             fontSize: 22,
-            letterSpacing: 3,
+            letterSpacing: 2,
             textTransform: 'uppercase',
             color: ACCENT,
           }}
@@ -95,7 +94,9 @@ export default async function PostOpengraphImage({ params }) {
           <div
             style={{
               display: 'flex',
-              fontFamily: 'Fraunces',
+              fontFamily: 'Familjen Grotesk',
+              fontWeight: 600,
+              letterSpacing: -2,
               fontSize: titleSizeFor(title),
               lineHeight: 1.08,
               color: INK,
@@ -108,7 +109,7 @@ export default async function PostOpengraphImage({ params }) {
               style={{
                 display: 'flex',
                 marginTop: 28,
-                fontFamily: 'Inter',
+                fontFamily: 'Familjen Grotesk',
                 fontSize: 28,
                 color: MUTED,
               }}
@@ -124,7 +125,7 @@ export default async function PostOpengraphImage({ params }) {
             style={{
               display: 'flex',
               justifyContent: 'space-between',
-              fontFamily: 'Inter',
+              fontFamily: 'Familjen Grotesk',
               fontSize: 26,
               color: MUTED,
             }}
@@ -138,9 +139,9 @@ export default async function PostOpengraphImage({ params }) {
     {
       ...size,
       fonts: [
-        { name: 'Fraunces', data: fraunces, style: 'normal' },
-        { name: 'Inter', data: interRegular, weight: 400, style: 'normal' },
-        { name: 'Inter', data: interSemiBold, weight: 600, style: 'normal' },
+        { name: 'Familjen Grotesk', data: groteskRegular, weight: 400, style: 'normal' },
+        { name: 'Familjen Grotesk', data: groteskSemiBold, weight: 600, style: 'normal' },
+        { name: 'Fragment Mono', data: mono, weight: 400, style: 'normal' },
       ],
     }
   );

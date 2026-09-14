@@ -40,7 +40,7 @@ export default function Certifications({
               textAlign: 'center',
               gap: 1.5,
               p: 2,
-              borderRadius: '10px',
+              borderRadius: '6px',
               border: `1px solid ${theme.palette.border.subtle}`,
               textDecoration: 'none',
               transition: 'border-color 0.2s, transform 0.2s',

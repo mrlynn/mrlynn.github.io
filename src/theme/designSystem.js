@@ -1,111 +1,112 @@
 /**
- * Editorial Design System
- * Typography-led personal brand — warm neutral canvas, a single confident
- * persimmon/clay signature accent, and a muted gold support tone.
- * Serif display (Fraunces) + clean sans (Inter) + mono (JetBrains Mono).
+ * Design System
+ * Near-black "night" canvas with a single sodium-yellow accent, and a matching
+ * light mode on a cool off-white. One grotesk (Familjen Grotesk) for headings
+ * and body, one mono (Fragment Mono) for labels and code. No gradients or glows.
  */
 
 export const colors = {
-  // Primary Brand Colors — Persimmon / Clay (the signature accent)
+  // Primary — sodium yellow. 500 is the fill colour; on the light canvas it is
+  // far too pale for text, so text uses 800 there (see accentText below).
   primary: {
-    50: '#fdf3ee',
-    100: '#fbe2d5',
-    200: '#f6c3a9',
-    300: '#ef9d76',
-    400: '#e8794a',
-    500: '#d9622b', // Main primary
-    600: '#be4e1c',
-    700: '#9c3e15',
-    800: '#7c3315',
-    900: '#652c15',
+    50: '#fdf8e4',
+    100: '#faefc2',
+    200: '#f4e08e',
+    300: '#eed267',
+    400: '#ebcb56',
+    500: '#e8c547', // Main primary
+    600: '#c9a52b',
+    700: '#9c7e12',
+    800: '#7d6200',
+    900: '#5c4800',
   },
 
-  // Secondary Brand Colors — Muted Gold / Ochre (warm support tone)
+  // Secondary — olive-tinted stone, for quiet support tones
   secondary: {
-    50: '#fbf6ea',
-    100: '#f5e9c9',
-    200: '#ebd08f',
-    300: '#dfb457',
-    400: '#cf9d3c',
-    500: '#c79a3a', // Main secondary
-    600: '#a67c2b',
-    700: '#835f24',
-    800: '#674b22',
-    900: '#573f20',
+    50: '#f5f5f0',
+    100: '#e8e7df',
+    200: '#d3d1c6',
+    300: '#b8b6aa',
+    400: '#9d9b8f',
+    500: '#85837a',
+    600: '#6b6a62',
+    700: '#52514b',
+    800: '#3a3a35',
+    900: '#262723',
   },
 
-  // Accent Colors — a warm ember highlight (used sparingly)
+  // Accent — the same yellow; kept as its own key because components read it
   accent: {
-    light: '#f6c3a9',
-    main: '#e8794a',
-    dark: '#9c3e15',
-    mongodb: '#d9622b', // legacy key retained; now the signature persimmon
-    neon: '#f0955c',
-    glow: 'rgba(217, 98, 43, 0.5)',
+    light: '#f4e08e',
+    main: '#e8c547',
+    dark: '#9c7e12',
+    mongodb: '#e8c547', // legacy key retained; now the signature yellow
+    neon: '#eed267',
+    glow: 'rgba(232, 197, 71, 0.4)',
   },
 
-  // Neutral Grays — WARM-tinted (taupe/stone) for an editorial feel
+  // Neutral grays — tinted slightly toward olive to sit with the night canvas
   gray: {
-    50: '#faf8f3',
-    100: '#f3efe7',
-    200: '#e7e1d5',
-    300: '#d4ccbc',
-    400: '#a69e90',
-    500: '#7f776a',
-    600: '#635c51',
-    700: '#4a453c',
-    800: '#302c26',
-    900: '#1f1b16',
-    950: '#14120e',
+    50: '#f5f5f0',
+    100: '#efeee8',
+    200: '#e1e0d8',
+    300: '#c9c7bd',
+    400: '#a9a79d',
+    500: '#85837a',
+    600: '#65645c',
+    700: '#4a4b44',
+    800: '#2d2f2a',
+    900: '#1c1e1a',
+    950: '#131512',
   },
 
-  // Dark mode — warm near-black "ink" canvas (not cold blue-black)
+  // Dark mode — near-black night canvas
   dark: {
     bg: {
-      primary: '#14120e',    // warm ink
-      secondary: '#1a1712',  // slightly lifted
-      tertiary: '#211d16',   // card backgrounds
-      paper: '#1a1712',      // paper surface
-      elevated: '#252118',   // elevated surfaces
+      primary: '#131512',
+      secondary: '#181a17',
+      tertiary: '#1e201c',   // card backgrounds
+      paper: '#181a17',
+      elevated: '#232520',
     },
     surface: {
-      primary: 'rgba(232, 121, 74, 0.05)',
-      secondary: 'rgba(232, 121, 74, 0.08)',
-      tertiary: 'rgba(232, 121, 74, 0.12)',
+      primary: 'rgba(232, 197, 71, 0.05)',
+      secondary: 'rgba(232, 197, 71, 0.08)',
+      tertiary: 'rgba(232, 197, 71, 0.12)',
     },
     border: {
-      subtle: 'rgba(240, 235, 224, 0.08)',
-      default: 'rgba(240, 235, 224, 0.14)',
-      strong: 'rgba(232, 121, 74, 0.35)',
-      glow: 'rgba(232, 121, 74, 0.3)',
+      subtle: 'rgba(232, 230, 220, 0.09)',
+      default: 'rgba(232, 230, 220, 0.16)',
+      strong: 'rgba(232, 197, 71, 0.4)',
+      glow: 'rgba(232, 197, 71, 0.4)',
     },
   },
 
-  // Light mode — warm ivory paper with warm ink
+  // Light mode — cool off-white with night ink
   light: {
     bg: {
-      primary: '#faf8f3',    // warm ivory paper
-      secondary: '#f3efe7',
-      tertiary: '#ede7db',
-      paper: '#ffffff',
-      elevated: '#ffffff',
+      primary: '#efeee8',
+      secondary: '#e7e6df',
+      tertiary: '#dfded6',
+      paper: '#f7f6f1',
+      elevated: '#fbfbf8',
     },
     surface: {
-      primary: 'rgba(217, 98, 43, 0.04)',
-      secondary: 'rgba(217, 98, 43, 0.06)',
-      tertiary: 'rgba(217, 98, 43, 0.10)',
+      primary: 'rgba(125, 98, 0, 0.04)',
+      secondary: 'rgba(125, 98, 0, 0.07)',
+      tertiary: 'rgba(125, 98, 0, 0.11)',
     },
     border: {
-      subtle: 'rgba(31, 27, 22, 0.10)',
-      default: 'rgba(31, 27, 22, 0.16)',
-      strong: 'rgba(217, 98, 43, 0.30)',
+      subtle: 'rgba(19, 21, 18, 0.12)',
+      default: 'rgba(19, 21, 18, 0.2)',
+      strong: 'rgba(125, 98, 0, 0.35)',
     },
   },
 
   // Status colors
   status: {
     success: '#4f9d69',
-    warning: '#c79a3a',
+    warning: '#c9a52b',
     error: '#c2461f',
     info: '#4a6d8c',
   },
@@ -115,19 +116,16 @@ export const colors = {
 /**
  * Accent for TEXT and icons, by theme.
  *
- * The signature persimmon (#d9622b, primary.500) is a display colour. On the
- * light canvas it measures 3.45:1, which fails WCAG AA for body text — and it
- * was carrying the hero eyebrow, the tagline, the section numerals and the nav
- * links. Light mode steps one stop darker to primary.600 (4.61:1 on the cream
- * canvas, 4.89:1 on white, which also fixes white-on-accent buttons). Dark mode
- * keeps the ember, which already measures 6.47:1 on the dark canvas.
+ * The sodium yellow (#e8c547, primary.500) measures about 10.9:1 on the night
+ * canvas, so dark mode reads it directly. On the light canvas it is ~1.5:1 and
+ * unreadable, so light mode uses primary.800 (#7d6200, ~5.0:1 on #efeee8).
  *
- * Use this anywhere the accent is being read, not just seen. Fills, borders,
- * gradients and glows should keep using colors.primary[500].
+ * Use this anywhere the accent is being read, not just seen. Fills and borders
+ * can keep using colors.primary[500] in both modes.
  */
 export const accentText = {
-  light: '#be4e1c',
-  dark: '#e8794a',
+  light: '#7d6200',
+  dark: '#e8c547',
 };
 
 export const spacing = {
@@ -145,9 +143,9 @@ export const spacing = {
 // Typography Scale
 export const typography = {
   fontFamily: {
-    primary: 'var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-    display: 'var(--font-fraunces), Georgia, "Times New Roman", serif',
-    mono: 'var(--font-mono), "JetBrains Mono", "Fira Code", "Courier New", monospace',
+    primary: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
+    display: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
+    mono: 'var(--font-mono), ui-monospace, Menlo, "Courier New", monospace',
   },
   fontSize: {
     xs: '0.75rem',     // 12px
@@ -179,28 +177,28 @@ export const typography = {
   },
 };
 
-// Border Radius System — crisper, more editorial
+// Border Radius System — tight corners
 export const borderRadius = {
   none: '0',
-  sm: '3px',
-  md: '6px',
-  lg: '10px',
-  xl: '14px',
-  '2xl': '20px',
-  '3xl': '28px',
+  sm: '2px',
+  md: '4px',
+  lg: '6px',
+  xl: '8px',
+  '2xl': '10px',
+  '3xl': '12px',
   full: '9999px',
 };
 
-// Shadow System — soft, warm, understated (no neon)
+// Shadow System — understated; no coloured glows
 export const shadows = {
   light: {
-    xs: '0 1px 2px 0 rgba(31, 27, 22, 0.04)',
-    sm: '0 1px 3px 0 rgba(31, 27, 22, 0.06), 0 1px 2px 0 rgba(31, 27, 22, 0.04)',
-    md: '0 4px 12px -2px rgba(31, 27, 22, 0.08), 0 2px 6px -2px rgba(31, 27, 22, 0.05)',
-    lg: '0 12px 28px -6px rgba(31, 27, 22, 0.10), 0 6px 12px -6px rgba(31, 27, 22, 0.06)',
-    xl: '0 24px 48px -12px rgba(31, 27, 22, 0.14), 0 12px 20px -10px rgba(31, 27, 22, 0.08)',
-    '2xl': '0 40px 72px -20px rgba(31, 27, 22, 0.18)',
-    inner: 'inset 0 2px 4px 0 rgba(31, 27, 22, 0.05)',
+    xs: '0 1px 2px 0 rgba(19, 21, 18, 0.04)',
+    sm: '0 1px 3px 0 rgba(19, 21, 18, 0.06), 0 1px 2px 0 rgba(19, 21, 18, 0.04)',
+    md: '0 4px 12px -2px rgba(19, 21, 18, 0.08), 0 2px 6px -2px rgba(19, 21, 18, 0.05)',
+    lg: '0 12px 28px -6px rgba(19, 21, 18, 0.10), 0 6px 12px -6px rgba(19, 21, 18, 0.06)',
+    xl: '0 24px 48px -12px rgba(19, 21, 18, 0.14), 0 12px 20px -10px rgba(19, 21, 18, 0.08)',
+    '2xl': '0 40px 72px -20px rgba(19, 21, 18, 0.18)',
+    inner: 'inset 0 2px 4px 0 rgba(19, 21, 18, 0.05)',
   },
   dark: {
     xs: '0 1px 2px 0 rgba(0, 0, 0, 0.4)',
@@ -211,39 +209,40 @@ export const shadows = {
     '2xl': '0 40px 72px -18px rgba(0, 0, 0, 0.8)',
     inner: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.5)',
   },
+  // Glows are retired. The keys stay so existing references resolve to nothing.
   glow: {
-    primary: '0 8px 24px rgba(217, 98, 43, 0.28)',
-    secondary: '0 8px 24px rgba(199, 154, 58, 0.24)',
-    accent: '0 8px 28px rgba(232, 121, 74, 0.30)',
-    neon: '0 6px 20px rgba(232, 121, 74, 0.22)',
-    subtle: '0 4px 16px rgba(217, 98, 43, 0.12)',
+    primary: 'none',
+    secondary: 'none',
+    accent: 'none',
+    neon: 'none',
+    subtle: 'none',
   },
 };
 
-// Gradients — warm, restrained (persimmon → gold family)
+// Gradients — retired in favour of flat fills. Every key still exists because
+// components read them as `background` values; each now resolves to a solid
+// colour (or `none`), which also works under background-clip: text.
 export const gradients = {
-  primary: 'linear-gradient(135deg, #e8794a 0%, #d9622b 55%, #be4e1c 100%)',
-  secondary: 'linear-gradient(135deg, #cf9d3c 0%, #a67c2b 100%)',
-  accent: 'linear-gradient(135deg, #f0955c 0%, #d9622b 100%)',
-  neon: 'linear-gradient(135deg, #e8794a 0%, #c79a3a 100%)',
+  primary: '#e8c547',
+  secondary: '#85837a',
+  accent: '#e8c547',
+  neon: '#e8c547',
   hero: {
-    light: 'linear-gradient(135deg, #faf8f3 0%, #f3efe7 50%, #f6e9dd 100%)',
-    dark: 'linear-gradient(135deg, #14120e 0%, #1a1712 50%, #14120e 100%)',
+    light: '#efeee8',
+    dark: '#131512',
   },
   mesh: {
-    light: 'radial-gradient(at 18% 18%, rgba(217, 98, 43, 0.07) 0px, transparent 55%), radial-gradient(at 82% 12%, rgba(199, 154, 58, 0.06) 0px, transparent 50%), radial-gradient(at 55% 85%, rgba(232, 121, 74, 0.05) 0px, transparent 55%)',
-    dark: 'radial-gradient(at 18% 18%, rgba(217, 98, 43, 0.14) 0px, transparent 55%), radial-gradient(at 82% 12%, rgba(199, 154, 58, 0.10) 0px, transparent 50%), radial-gradient(at 55% 85%, rgba(232, 121, 74, 0.08) 0px, transparent 55%)',
+    light: 'none',
+    dark: 'none',
   },
-  // Text gradient for the occasional highlighted word
   text: {
-    primary: 'linear-gradient(135deg, #d9622b, #e8794a)',
-    hero: 'linear-gradient(135deg, #e8794a, #d9622b, #c79a3a)',
-    accent: 'linear-gradient(135deg, #e8794a, #f0955c)',
+    primary: '#e8c547',
+    hero: '#e8c547',
+    accent: '#e8c547',
   },
-  // Card/surface gradients
   card: {
-    dark: 'linear-gradient(145deg, rgba(232, 121, 74, 0.05) 0%, rgba(199, 154, 58, 0.03) 100%)',
-    hover: 'linear-gradient(145deg, rgba(232, 121, 74, 0.10) 0%, rgba(199, 154, 58, 0.05) 100%)',
+    dark: 'none',
+    hover: 'none',
   },
 };
 

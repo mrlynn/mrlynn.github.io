@@ -33,7 +33,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
   height: '100%',
   display: 'flex',
   flexDirection: 'column',
-  borderRadius: '10px',
+  borderRadius: '6px',
   border: `1px solid ${theme.palette.border.subtle}`,
   transition: 'transform 0.2s ease-in-out, border-color 0.2s ease-in-out',
   '&:hover': {
@@ -102,7 +102,7 @@ export default function ContentCard({
             variant="h6"
             component="h3"
             sx={{
-              fontFamily: 'var(--font-fraunces), Georgia, serif',
+              fontFamily: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
               fontWeight: 600,
               fontSize: '1.25rem',
               lineHeight: 1.25,

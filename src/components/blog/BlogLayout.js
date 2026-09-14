@@ -70,7 +70,7 @@ export function BlogLayout({
             variant="h1"
             component="h1"
             sx={{
-              fontFamily: 'var(--font-fraunces), Georgia, serif',
+              fontFamily: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
               fontWeight: 600,
               fontSize: { xs: '2.1rem', sm: '2.6rem', md: '3.25rem' },
               lineHeight: 1.12,
@@ -117,7 +117,7 @@ export function BlogLayout({
                 variant="contained"
                 disableElevation
                 size="small"
-                sx={{ borderRadius: '8px', fontWeight: 600 }}
+                sx={{ borderRadius: '4px', fontWeight: 600 }}
               >
                 Live demo
               </Button>
@@ -131,7 +131,7 @@ export function BlogLayout({
                 variant="outlined"
                 size="small"
                 sx={{
-                  borderRadius: '8px',
+                  borderRadius: '4px',
                   fontWeight: 600,
                   borderColor: theme.palette.border.default,
                   color: theme.palette.text.primary,
@@ -156,7 +156,7 @@ export function BlogLayout({
                 mt: { xs: 4, md: 5 },
                 position: 'relative',
                 aspectRatio: '16 / 9',
-                borderRadius: '10px',
+                borderRadius: '6px',
                 overflow: 'hidden',
                 border: `1px solid ${theme.palette.border.subtle}`,
                 backgroundColor: theme.palette.background.paper,

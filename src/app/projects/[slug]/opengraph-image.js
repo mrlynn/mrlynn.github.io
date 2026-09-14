@@ -30,18 +30,18 @@ const fontDir = path.join(process.cwd(), 'src/app/_og-fonts');
 const loadFont = (file) => readFile(path.join(fontDir, file));
 
 // Same palette as app/opengraph-image.js.
-const CANVAS = '#faf8f3';
-const INK = '#1f1b16';
-const MUTED = '#635c51';
-const ACCENT = '#be4e1c';
-const RULE = '#e7e1d5';
+const CANVAS = '#131512';
+const INK = '#e8e6dc';
+const MUTED = '#a9a79d';
+const ACCENT = '#e8c547';
+const RULE = '#2d2f2a';
 
 export default async function ProjectOpengraphImage({ params }) {
-  const [project, fraunces, interRegular, interSemiBold] = await Promise.all([
+  const [project, groteskRegular, groteskSemiBold, mono] = await Promise.all([
     getPostBySlug(params.slug),
-    loadFont('Fraunces.ttf'),
-    loadFont('Inter-Regular.ttf'),
-    loadFont('Inter-SemiBold.ttf'),
+    loadFont('FamiljenGrotesk-Regular.ttf'),
+    loadFont('FamiljenGrotesk-SemiBold.ttf'),
+    loadFont('FragmentMono-Regular.ttf'),
   ]);
 
   const title = project?.title || 'Project';
@@ -66,10 +66,9 @@ export default async function ProjectOpengraphImage({ params }) {
         <div
           style={{
             display: 'flex',
-            fontFamily: 'Inter',
-            fontWeight: 600,
+            fontFamily: 'Fragment Mono',
             fontSize: 22,
-            letterSpacing: 3,
+            letterSpacing: 2,
             textTransform: 'uppercase',
             color: ACCENT,
           }}
@@ -81,7 +80,9 @@ export default async function ProjectOpengraphImage({ params }) {
           <div
             style={{
               display: 'flex',
-              fontFamily: 'Fraunces',
+              fontFamily: 'Familjen Grotesk',
+              fontWeight: 600,
+              letterSpacing: -2,
               fontSize: titleSize,
               lineHeight: 1.04,
               color: INK,
@@ -96,11 +97,11 @@ export default async function ProjectOpengraphImage({ params }) {
                   key={tech}
                   style={{
                     display: 'flex',
-                    fontFamily: 'Inter',
-                    fontSize: 24,
+                    fontFamily: 'Fragment Mono',
+                    fontSize: 22,
                     color: MUTED,
                     border: `2px solid ${RULE}`,
-                    borderRadius: 999,
+                    borderRadius: 4,
                     padding: '8px 20px',
                   }}
                 >
@@ -117,7 +118,7 @@ export default async function ProjectOpengraphImage({ params }) {
             style={{
               display: 'flex',
               justifyContent: 'space-between',
-              fontFamily: 'Inter',
+              fontFamily: 'Familjen Grotesk',
               fontSize: 26,
               color: MUTED,
             }}
@@ -131,9 +132,9 @@ export default async function ProjectOpengraphImage({ params }) {
     {
       ...size,
       fonts: [
-        { name: 'Fraunces', data: fraunces, style: 'normal' },
-        { name: 'Inter', data: interRegular, weight: 400, style: 'normal' },
-        { name: 'Inter', data: interSemiBold, weight: 600, style: 'normal' },
+        { name: 'Familjen Grotesk', data: groteskRegular, weight: 400, style: 'normal' },
+        { name: 'Familjen Grotesk', data: groteskSemiBold, weight: 600, style: 'normal' },
+        { name: 'Fragment Mono', data: mono, weight: 400, style: 'normal' },
       ],
     }
   );

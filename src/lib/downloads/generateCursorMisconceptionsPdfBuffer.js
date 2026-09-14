@@ -1,16 +1,19 @@
 import PDFDocument from 'pdfkit';
 import { CURSOR_MISCONCEPTIONS_PDF } from './cursorMisconceptionsData';
 
+// Night palette, matching the dark theme in src/theme/designSystem.js.
 const colors = {
-  bg: '#14120e',
-  surface: '#1f1b16',
-  surfaceAlt: '#302c26',
-  primary: '#d9622b',
-  secondary: '#c79a3a',
-  text: '#f3efe7',
-  muted: '#a69e90',
-  line: '#4a453c',
-  white: '#faf8f3',
+  bg: '#131512',
+  surface: '#1e201c',
+  surfaceAlt: '#2d2f2a',
+  primary: '#e8c547',
+  secondary: '#c9a52b',
+  text: '#e8e6dc',
+  muted: '#a9a79d',
+  line: '#4a4b44',
+  white: '#f5f5f0',
+  // Text on a yellow fill. White on #e8c547 is about 1.6:1.
+  ink: '#131512',
 };
 
 function drawRoundedRect(doc, x, y, width, height, radius, fill) {
@@ -112,7 +115,7 @@ export function generateCursorMisconceptionsPdfBuffer() {
     const cardWidth = (contentWidth - 10) / 2;
     const cardHeight = 42;
 
-    drawRoundedRect(doc, 32, y, cardWidth, cardHeight, 6, colors.surface);
+    drawRoundedRect(doc, 32, y, cardWidth, cardHeight, 4, colors.surface);
     doc
       .rect(32, y, 3, cardHeight)
       .fill(colors.primary);
@@ -130,7 +133,7 @@ export function generateCursorMisconceptionsPdfBuffer() {
       { size: 7.5, color: colors.text }
     );
 
-    drawRoundedRect(doc, 32 + cardWidth + 10, y, cardWidth, cardHeight, 6, colors.surface);
+    drawRoundedRect(doc, 32 + cardWidth + 10, y, cardWidth, cardHeight, 4, colors.surface);
     doc
       .rect(32 + cardWidth + 10, y, 3, cardHeight)
       .fill(colors.primary);
@@ -146,7 +149,7 @@ export function generateCursorMisconceptionsPdfBuffer() {
 
     y += cardHeight + 10;
 
-    drawRoundedRect(doc, 32, y, contentWidth, 18, 4, colors.surfaceAlt);
+    drawRoundedRect(doc, 32, y, contentWidth, 18, 2, colors.surfaceAlt);
     const colX = {
       num: 38,
       myth: 68,
@@ -169,7 +172,7 @@ export function generateCursorMisconceptionsPdfBuffer() {
 
     data.myths.forEach((item) => {
       const rowHeight = 34;
-      drawRoundedRect(doc, 32, y, contentWidth, rowHeight, 4, colors.surface);
+      drawRoundedRect(doc, 32, y, contentWidth, rowHeight, 2, colors.surface);
 
       doc
         .font('Helvetica-Bold')
@@ -199,6 +202,11 @@ export function generateCursorMisconceptionsPdfBuffer() {
     });
 
     const footerY = pageHeight - 44;
+    // The footer's last lines sit inside the 24pt bottom margin, and pdfkit
+    // starts a new page for any text that crosses it. Without this the links
+    // and the badge each spilled onto their own page, turning the one-pager
+    // into four.
+    doc.page.margins.bottom = 0;
     doc.moveTo(32, footerY).lineTo(pageWidth - 32, footerY).strokeColor(colors.line).stroke();
 
     doc
@@ -218,11 +226,11 @@ export function generateCursorMisconceptionsPdfBuffer() {
 
     const badgeWidth = 220;
     const badgeX = pageWidth - 32 - badgeWidth;
-    drawRoundedRect(doc, badgeX, footerY + 8, badgeWidth, 22, 4, colors.primary);
+    drawRoundedRect(doc, badgeX, footerY + 8, badgeWidth, 22, 2, colors.primary);
     doc
       .font('Helvetica-Bold')
       .fontSize(7.5)
-      .fillColor(colors.white)
+      .fillColor(colors.ink)
       .text('mlynn.org/blog/cursor-misconceptions', badgeX, footerY + 14, {
         width: badgeWidth,
         align: 'center',

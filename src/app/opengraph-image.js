@@ -14,20 +14,19 @@ export const contentType = 'image/png';
 const fontDir = path.join(process.cwd(), 'src/app/_og-fonts');
 const loadFont = (file) => readFile(path.join(fontDir, file));
 
-// Editorial palette, matching src/theme/designSystem.js.
-const CANVAS = '#faf8f3';
-const INK = '#1f1b16';
-const MUTED = '#635c51';
-// The AA-compliant persimmon (4.55:1 on canvas) — same token the site uses for
-// accent text.
-const ACCENT = '#be5019';
-const RULE = '#e7e1d5';
+// Night palette, matching the dark theme in src/theme/designSystem.js. The
+// yellow reads at about 10.9:1 on this canvas, so it can carry text here.
+const CANVAS = '#131512';
+const INK = '#e8e6dc';
+const MUTED = '#a9a79d';
+const ACCENT = '#e8c547';
+const RULE = '#2d2f2a';
 
 export default async function OpengraphImage() {
-  const [fraunces, interRegular, interSemiBold] = await Promise.all([
-    loadFont('Fraunces.ttf'),
-    loadFont('Inter-Regular.ttf'),
-    loadFont('Inter-SemiBold.ttf'),
+  const [groteskRegular, groteskSemiBold, mono] = await Promise.all([
+    loadFont('FamiljenGrotesk-Regular.ttf'),
+    loadFont('FamiljenGrotesk-SemiBold.ttf'),
+    loadFont('FragmentMono-Regular.ttf'),
   ]);
 
   return new ImageResponse(
@@ -47,10 +46,9 @@ export default async function OpengraphImage() {
         <div
           style={{
             display: 'flex',
-            fontFamily: 'Inter',
-            fontWeight: 600,
+            fontFamily: 'Fragment Mono',
             fontSize: 22,
-            letterSpacing: 3,
+            letterSpacing: 2,
             textTransform: 'uppercase',
             color: ACCENT,
           }}
@@ -63,7 +61,9 @@ export default async function OpengraphImage() {
           <div
             style={{
               display: 'flex',
-              fontFamily: 'Fraunces',
+              fontFamily: 'Familjen Grotesk',
+              fontWeight: 600,
+              letterSpacing: -2,
               fontSize: 128,
               lineHeight: 1.02,
               color: INK,
@@ -75,7 +75,7 @@ export default async function OpengraphImage() {
             style={{
               display: 'flex',
               marginTop: 28,
-              fontFamily: 'Inter',
+              fontFamily: 'Familjen Grotesk',
               fontSize: 40,
               color: MUTED,
             }}
@@ -91,7 +91,7 @@ export default async function OpengraphImage() {
             style={{
               display: 'flex',
               justifyContent: 'space-between',
-              fontFamily: 'Inter',
+              fontFamily: 'Familjen Grotesk',
               fontSize: 26,
               color: MUTED,
             }}
@@ -105,9 +105,9 @@ export default async function OpengraphImage() {
     {
       ...size,
       fonts: [
-        { name: 'Fraunces', data: fraunces, style: 'normal' },
-        { name: 'Inter', data: interRegular, weight: 400, style: 'normal' },
-        { name: 'Inter', data: interSemiBold, weight: 600, style: 'normal' },
+        { name: 'Familjen Grotesk', data: groteskRegular, weight: 400, style: 'normal' },
+        { name: 'Familjen Grotesk', data: groteskSemiBold, weight: 600, style: 'normal' },
+        { name: 'Fragment Mono', data: mono, weight: 400, style: 'normal' },
       ],
     }
   );

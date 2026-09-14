@@ -443,7 +443,7 @@ export default function ArtGallery() {
                 maxHeight: '90vh',
                 outline: 'none',
                 bgcolor: theme.palette.background.paper,
-                borderRadius: 2,
+                borderRadius: '8px',
                 p: 4,
                 display: 'flex',
                 flexDirection: { xs: 'column', md: 'row' },

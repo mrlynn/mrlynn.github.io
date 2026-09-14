@@ -22,8 +22,8 @@ export default function AskAIPage() {
         pt: { xs: 10, md: 12 },
         pb: 8,
         background: isDark
-          ? 'linear-gradient(180deg, rgba(217, 98, 43, 0.04) 0%, rgba(199, 154, 58, 0.02) 40%, transparent 100%)'
-          : 'linear-gradient(180deg, rgba(217, 98, 43, 0.05) 0%, rgba(199, 154, 58, 0.03) 40%, transparent 100%)',
+          ? 'linear-gradient(180deg, rgba(201, 165, 43, 0.04) 0%, rgba(201, 165, 43, 0.02) 40%, transparent 100%)'
+          : 'linear-gradient(180deg, rgba(201, 165, 43, 0.05) 0%, rgba(201, 165, 43, 0.03) 40%, transparent 100%)',
       }}
     >
       {/* Hero Header */}
@@ -43,17 +43,17 @@ export default function AskAIPage() {
               px: 2,
               py: 0.75,
               mb: 3,
-              borderRadius: 5,
-              background: isDark ? 'rgba(232, 121, 74, 0.08)' : 'rgba(217, 98, 43, 0.06)',
-              border: `1px solid ${isDark ? 'rgba(232, 121, 74, 0.2)' : 'rgba(217, 98, 43, 0.15)'}`,
+              borderRadius: '4px',
+              background: isDark ? 'rgba(232, 197, 71, 0.08)' : 'rgba(201, 165, 43, 0.06)',
+              border: `1px solid ${isDark ? 'rgba(232, 197, 71, 0.2)' : 'rgba(201, 165, 43, 0.15)'}`,
             }}
           >
-            <AutoAwesomeIcon sx={{ fontSize: 14, color: isDark ? '#e8794a' : '#be4e1c' }} />
+            <AutoAwesomeIcon sx={{ fontSize: 14, color: isDark ? '#e8c547' : '#7d6200' }} />
             <Typography
               sx={{
                 fontSize: '0.72rem',
                 fontWeight: 600,
-                color: isDark ? '#e8794a' : '#be4e1c',
+                color: isDark ? '#e8c547' : '#7d6200',
                 letterSpacing: 1,
                 textTransform: 'uppercase',
                 fontFamily: 'var(--font-mono), monospace',
@@ -67,16 +67,11 @@ export default function AskAIPage() {
           <Typography
             variant="h3"
             sx={{
-              fontFamily: 'var(--font-fraunces), Georgia, serif',
+              fontFamily: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
               fontWeight: 700,
               fontSize: { xs: '1.8rem', md: '2.5rem' },
               mb: 2,
-              background: isDark
-                ? 'linear-gradient(135deg, #ffffff 0%, #e8794a 50%, #c79a3a 100%)'
-                : 'linear-gradient(135deg, #1a1a2e 0%, #d9622b 50%, #a67c2b 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
+              color: isDark ? '#e8e6dc' : '#131512',
             }}
           >
             Ask My AI Anything
@@ -112,10 +107,10 @@ export default function AskAIPage() {
               <Box key={sublabel} sx={{ textAlign: 'center' }}>
                 <Typography
                   sx={{
-                    fontFamily: 'var(--font-fraunces), Georgia, serif',
+                    fontFamily: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
                     fontWeight: 700,
                     fontSize: '1.3rem',
-                    color: isDark ? '#e8794a' : '#be4e1c',
+                    color: isDark ? '#e8c547' : '#7d6200',
                   }}
                 >
                   {label}
@@ -147,14 +142,14 @@ export default function AskAIPage() {
                 key={topic}
                 label={topic}
                 size="small"
-                icon={<VerifiedIcon sx={{ fontSize: '13px !important', color: `${isDark ? '#e8794a' : '#be4e1c'} !important` }} />}
+                icon={<VerifiedIcon sx={{ fontSize: '13px !important', color: `${isDark ? '#e8c547' : '#7d6200'} !important` }} />}
                 sx={{
                   height: 26,
                   fontSize: '0.7rem',
                   fontWeight: 500,
                   color: theme.palette.text.secondary,
-                  background: isDark ? 'rgba(217, 98, 43, 0.06)' : 'rgba(217, 98, 43, 0.04)',
-                  border: `1px solid ${isDark ? 'rgba(217, 98, 43, 0.12)' : 'rgba(217, 98, 43, 0.08)'}`,
+                  background: isDark ? 'rgba(201, 165, 43, 0.06)' : 'rgba(201, 165, 43, 0.04)',
+                  border: `1px solid ${isDark ? 'rgba(201, 165, 43, 0.12)' : 'rgba(201, 165, 43, 0.08)'}`,
                   '& .MuiChip-icon': { ml: 0.5 },
                 }}
               />

@@ -36,8 +36,8 @@ const CalendarBooking = ({ variant = 'button', buttonProps = {} }) => {
         sx={{
           width: '100%',
           p: isDark ? { xs: 1.5, md: 2 } : 0,
-          borderRadius: '12px',
-          backgroundColor: isDark ? 'rgba(250, 246, 240, 0.92)' : 'transparent',
+          borderRadius: '6px',
+          backgroundColor: isDark ? 'rgba(239, 238, 232, 0.92)' : 'transparent',
           border: isDark ? `1px solid ${theme.palette.border.strong}` : 'none',
           boxShadow: isDark ? theme.shadows[8] : theme.shadows[2],
         }}
@@ -49,7 +49,7 @@ const CalendarBooking = ({ variant = 'button', buttonProps = {} }) => {
             // is sized to fit the tallest state it renders; 600px clipped the
             // time-slot list mid-row.
             height: { xs: '760px', sm: '700px' },
-            borderRadius: '8px',
+            borderRadius: '4px',
             overflow: 'hidden',
             backgroundColor: '#fff',
           }}
@@ -80,7 +80,7 @@ const CalendarBooking = ({ variant = 'button', buttonProps = {} }) => {
         py: 1.4,
         fontWeight: 600,
         fontSize: '0.95rem',
-        borderRadius: '8px',
+        borderRadius: '4px',
       }}
       {...rest}
     >
