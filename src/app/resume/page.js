@@ -174,7 +174,7 @@ export default function Resume() {
     variant: 'h5',
     gutterBottom: true,
     sx: {
-      fontFamily: 'var(--font-fraunces), Georgia, serif',
+      fontFamily: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
       fontWeight: 600,
       letterSpacing: '-0.01em',
       fontSize: { xs: '1.35rem', sm: '1.5rem' },
@@ -253,7 +253,7 @@ export default function Resume() {
             component="h2"
             gutterBottom
             sx={{
-              fontFamily: 'var(--font-fraunces), Georgia, serif',
+              fontFamily: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
               fontWeight: 600,
               color: theme.palette.text.primary,
             }}

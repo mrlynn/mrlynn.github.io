@@ -15,8 +15,8 @@ import { SOCIAL_LINKS } from '../lib/navigation';
  * src/theme/designSystem.js.
  */
 const CALENDAR_THEME = {
-  light: ['#f3efe7', '#fbe2d5', '#ef9d76', '#d9622b', '#9c3e15'],
-  dark: ['#211d16', '#652c15', '#9c3e15', '#be4e1c', '#e8794a'],
+  light: ['#e1e0d8', '#faefc2', '#eed267', '#c9a52b', '#7d6200'],
+  dark: ['#1e201c', '#5c4800', '#7d6200', '#c9a52b', '#e8c547'],
 };
 
 export default function GitHubActivity({ eyebrow = 'Open source' }) {

@@ -108,7 +108,7 @@ export default function CareerTimeline() {
                 <Typography
                   component="h3"
                   sx={{
-                    fontFamily: 'var(--font-fraunces), Georgia, serif',
+                    fontFamily: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
                     fontWeight: 600,
                     fontSize: { xs: '1.25rem', md: '1.4rem' },
                     lineHeight: 1.25,

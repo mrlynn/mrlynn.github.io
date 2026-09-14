@@ -31,7 +31,7 @@ export default function AboutPage() {
                   variant="h1"
                   component="h1"
                   sx={{
-                    fontFamily: 'var(--font-fraunces), Georgia, serif',
+                    fontFamily: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
                     fontWeight: 600,
                     fontSize: { xs: '2.5rem', sm: '3rem', md: '3.5rem' },
                     lineHeight: 1.1,

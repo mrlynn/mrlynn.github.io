@@ -108,7 +108,7 @@ export default function HomeClient({ posts = [], projects = [], talks = [] }) {
                   custom={1}
                   sx={{
                     display: 'block',
-                    fontFamily: 'var(--font-fraunces), Georgia, serif',
+                    fontFamily: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
                     fontWeight: 600,
                     fontSize: { xs: '3.25rem', sm: '4.25rem', md: '5.5rem' },
                     lineHeight: 0.98,
@@ -128,7 +128,7 @@ export default function HomeClient({ posts = [], projects = [], talks = [] }) {
                   custom={2}
                   sx={{
                     display: 'block',
-                    fontFamily: 'var(--font-fraunces), Georgia, serif',
+                    fontFamily: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
                     fontStyle: 'italic',
                     fontWeight: 400,
                     fontSize: { xs: '1.4rem', md: '1.7rem' },
@@ -304,7 +304,7 @@ export default function HomeClient({ posts = [], projects = [], talks = [] }) {
               </Box>
               <Typography
                 sx={{
-                  fontFamily: 'var(--font-fraunces), Georgia, serif',
+                  fontFamily: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
                   fontWeight: 600,
                   fontSize: { xs: '1.35rem', md: '1.6rem' },
                   color: theme.palette.text.primary,
@@ -391,7 +391,7 @@ export default function HomeClient({ posts = [], projects = [], talks = [] }) {
             >
               <Typography
                 sx={{
-                  fontFamily: 'var(--font-fraunces), Georgia, serif',
+                  fontFamily: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
                   fontWeight: 600,
                   fontSize: { xs: '2rem', md: '2.75rem' },
                   lineHeight: 1,
@@ -443,7 +443,7 @@ export default function HomeClient({ posts = [], projects = [], talks = [] }) {
                   variant="h4"
                   component="h3"
                   sx={{
-                    fontFamily: 'var(--font-fraunces), Georgia, serif',
+                    fontFamily: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
                     fontWeight: 600,
                     fontSize: '1.5rem',
                     color: theme.palette.text.primary,
@@ -566,7 +566,7 @@ export default function HomeClient({ posts = [], projects = [], talks = [] }) {
                     <Typography
                       className="post-title"
                       sx={{
-                        fontFamily: 'var(--font-fraunces), Georgia, serif',
+                        fontFamily: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
                         fontWeight: 600,
                         fontSize: { xs: '1.35rem', md: '1.6rem' },
                         lineHeight: 1.2,
@@ -651,7 +651,7 @@ export default function HomeClient({ posts = [], projects = [], talks = [] }) {
                   </Typography>
                   <Typography
                     sx={{
-                      fontFamily: 'var(--font-fraunces), Georgia, serif',
+                      fontFamily: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
                       fontWeight: 600,
                       fontSize: { xs: '1.1rem', md: '1.25rem' },
                       lineHeight: 1.3,
@@ -706,7 +706,7 @@ export default function HomeClient({ posts = [], projects = [], talks = [] }) {
               <Typography
                 variant="h2"
                 sx={{
-                  fontFamily: 'var(--font-fraunces), Georgia, serif',
+                  fontFamily: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
                   fontWeight: 600,
                   fontSize: { xs: '2rem', md: '2.75rem' },
                   lineHeight: 1.1,

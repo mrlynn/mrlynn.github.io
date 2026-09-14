@@ -1,4 +1,4 @@
-import { Fraunces, Inter, JetBrains_Mono } from 'next/font/google';
+import { Familjen_Grotesk, Fragment_Mono } from 'next/font/google';
 import { ThemeProvider } from '../theme/ThemeContext';
 import Layout from '../components/Layout';
 import ErrorBoundary from '../components/ErrorBoundary';
@@ -8,23 +8,18 @@ import { Analytics } from '@vercel/analytics/next';
 import { GA_TRACKING_ID } from '../lib/analytics';
 import { SITE_URL } from '../lib/siteUrl';
 
-// Editorial display serif — characterful, optical-sized
-const fraunces = Fraunces({
+// One grotesk for headings and body. Familjen has enough character at display
+// sizes that the site doesn't need a second, decorative face.
+const familjenGrotesk = Familjen_Grotesk({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-fraunces',
+  variable: '--font-sans',
 });
 
-// Clean, neutral body & UI sans
-const inter = Inter({
+// Mono for labels, metadata, and code. Fragment Mono ships a single weight.
+const fragmentMono = Fragment_Mono({
   subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-inter',
-});
-
-// Mono for labels, metadata, and code
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
+  weight: '400',
   display: 'swap',
   variable: '--font-mono',
 });
@@ -89,7 +84,7 @@ export default function RootLayout({ children }) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${fraunces.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+      className={`${familjenGrotesk.variable} ${fragmentMono.variable}`}
     >
       <head>
         {/*

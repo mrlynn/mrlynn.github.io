@@ -29,7 +29,7 @@ export default function PageHeader({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: EASE }}
           sx={{
-            fontFamily: 'var(--font-fraunces), Georgia, serif',
+            fontFamily: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
             fontSize: PAGE_TITLE_SIZE,
             fontWeight: 600,
             letterSpacing: '-0.02em',

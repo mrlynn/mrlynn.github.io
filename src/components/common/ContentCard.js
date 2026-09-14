@@ -102,7 +102,7 @@ export default function ContentCard({
             variant="h6"
             component="h3"
             sx={{
-              fontFamily: 'var(--font-fraunces), Georgia, serif',
+              fontFamily: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
               fontWeight: 600,
               fontSize: '1.25rem',
               lineHeight: 1.25,

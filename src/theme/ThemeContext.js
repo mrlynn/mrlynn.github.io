@@ -73,11 +73,11 @@ export function ThemeProvider({ children }) {
     palette: {
       mode: isDarkMode ? 'dark' : 'light',
       primary: {
-        // Mode-aware: primary.500 is the display persimmon and only reaches
-        // 3.45:1 on the light canvas, so light mode uses the AA-safe step. See
-        // accentText in designSystem.js. This also lifts white-on-primary
-        // buttons from 3.66:1 to 4.89:1.
-        main: isDarkMode ? colors.primary[500] : colors.primary[600],
+        // Mode-aware: the sodium yellow (primary.500) is unreadable as text on
+        // the light canvas, so light mode uses the dark ochre step. See
+        // accentText in designSystem.js. Contained primary buttons override
+        // this and always fill with the yellow (see MuiButton below).
+        main: isDarkMode ? colors.primary[500] : colors.primary[800],
         light: colors.primary[400],
         dark: colors.primary[700],
       },
@@ -92,7 +92,7 @@ export function ThemeProvider({ children }) {
         dark: colors.accent.dark,
         neon: colors.accent.neon,
         // Readable accent for text and icons. Reach for this instead of the
-        // literal isDark ? '#e8794a' : '#d9622b' that was copied into a dozen
+        // literal isDark ? '#e8c547' : '#7d6200' pairs that were copied into a dozen
         // components, half of which were below AA in light mode.
         text: isDarkMode ? accentText.dark : accentText.light,
       },
@@ -121,7 +121,7 @@ export function ThemeProvider({ children }) {
         glow: isDarkMode ? colors.dark.border.glow : colors.light.border.strong,
       },
       text: {
-        primary: isDarkMode ? '#f0ebe0' : colors.gray[900],
+        primary: isDarkMode ? '#e8e6dc' : colors.gray[950],
         secondary: isDarkMode ? colors.gray[400] : colors.gray[600],
         disabled: isDarkMode ? colors.gray[600] : colors.gray[400],
       },
@@ -278,13 +278,13 @@ export function ThemeProvider({ children }) {
         styleOverrides: {
           ':root': {
             '--color-calendar-graph-day-bg': isDarkMode ? colors.dark.bg.secondary : colors.light.bg.secondary,
-            '--color-calendar-graph-day-L1-bg': isDarkMode ? '#652c15' : '#fbe2d5',
-            '--color-calendar-graph-day-L2-bg': isDarkMode ? '#9c3e15' : '#f6c3a9',
-            '--color-calendar-graph-day-L3-bg': isDarkMode ? '#be4e1c' : '#ef9d76',
-            '--color-calendar-graph-day-L4-bg': isDarkMode ? '#d9622b' : '#d9622b',
+            '--color-calendar-graph-day-L1-bg': isDarkMode ? '#5c4800' : '#faefc2',
+            '--color-calendar-graph-day-L2-bg': isDarkMode ? '#7d6200' : '#f4e08e',
+            '--color-calendar-graph-day-L3-bg': isDarkMode ? '#c9a52b' : '#eed267',
+            '--color-calendar-graph-day-L4-bg': isDarkMode ? '#e8c547' : '#c9a52b',
             // Accent glow custom property
             '--glow-color': colors.accent.main,
-            '--glow-color-rgb': '217, 98, 43',
+            '--glow-color-rgb': '232, 197, 71',
           },
           '*': {
             boxSizing: 'border-box',
@@ -296,7 +296,7 @@ export function ThemeProvider({ children }) {
           },
           body: {
             backgroundColor: isDarkMode ? colors.dark.bg.primary : colors.light.bg.primary,
-            color: isDarkMode ? '#f0ebe0' : colors.gray[900],
+            color: isDarkMode ? '#e8e6dc' : colors.gray[950],
             transition: `background-color ${transitions.base}, color ${transitions.base}`,
             scrollbarWidth: 'thin',
             scrollbarColor: isDarkMode
@@ -316,16 +316,16 @@ export function ThemeProvider({ children }) {
               borderRadius: borderRadius.full,
               border: `2px solid ${isDarkMode ? colors.dark.bg.primary : colors.gray[100]}`,
               '&:hover': {
-                backgroundColor: isDarkMode ? colors.primary[600] : colors.primary[500],
+                backgroundColor: isDarkMode ? colors.primary[700] : colors.primary[600],
               },
             },
           },
           'a': {
-            color: isDarkMode ? colors.primary[400] : colors.primary[600],
+            color: isDarkMode ? colors.primary[500] : colors.primary[800],
             textDecoration: 'none',
             transition: `color ${transitions.fast}`,
             '&:hover': {
-              color: isDarkMode ? colors.accent.main : colors.primary[700],
+              color: isDarkMode ? colors.primary[300] : colors.primary[900],
               textDecoration: 'none',
             },
           },
@@ -335,8 +335,8 @@ export function ThemeProvider({ children }) {
           },
           '::selection': {
             backgroundColor: isDarkMode
-              ? 'rgba(232, 121, 74, 0.25)'
-              : 'rgba(217, 98, 43, 0.25)',
+              ? 'rgba(232, 197, 71, 0.3)'
+              : 'rgba(201, 165, 43, 0.25)',
             color: isDarkMode ? '#ffffff' : colors.gray[900],
           },
           'code': {
@@ -345,10 +345,10 @@ export function ThemeProvider({ children }) {
             padding: '0.15em 0.4em',
             borderRadius: borderRadius.sm,
             backgroundColor: isDarkMode
-              ? 'rgba(217, 98, 43, 0.1)'
-              : 'rgba(217, 98, 43, 0.08)',
-            color: isDarkMode ? colors.primary[300] : colors.primary[700],
-            border: `1px solid ${isDarkMode ? 'rgba(217, 98, 43, 0.15)' : 'rgba(217, 98, 43, 0.12)'}`,
+              ? 'rgba(201, 165, 43, 0.1)'
+              : 'rgba(201, 165, 43, 0.08)',
+            color: isDarkMode ? colors.primary[300] : colors.primary[800],
+            border: `1px solid ${isDarkMode ? 'rgba(201, 165, 43, 0.15)' : 'rgba(201, 165, 43, 0.12)'}`,
           },
           'pre': {
             fontFamily: typography.fontFamily.mono,
@@ -357,7 +357,7 @@ export function ThemeProvider({ children }) {
             borderRadius: borderRadius.lg,
             overflow: 'auto',
             backgroundColor: isDarkMode
-              ? 'rgba(20, 18, 14, 0.8)'
+              ? 'rgba(19, 21, 18, 0.8)'
               : colors.gray[50],
             border: `1px solid ${isDarkMode ? colors.dark.border.subtle : colors.light.border.subtle}`,
             '& code': {
@@ -406,13 +406,13 @@ export function ThemeProvider({ children }) {
         styleOverrides: {
           root: {
             backgroundColor: isDarkMode
-              ? 'rgba(20, 18, 14, 0.85)'
-              : 'rgba(255, 255, 255, 0.85)',
+              ? 'rgba(19, 21, 18, 0.85)'
+              : 'rgba(239, 238, 232, 0.9)',
             backgroundImage: 'none',
             backdropFilter: 'blur(20px) saturate(180%)',
             borderBottom: `1px solid ${isDarkMode ? colors.dark.border.subtle : colors.light.border.subtle}`,
             boxShadow: isDarkMode
-              ? '0 1px 0 0 rgba(217, 98, 43, 0.05)'
+              ? '0 1px 0 0 rgba(201, 165, 43, 0.05)'
               : shadows.light.xs,
             transition: `all ${transitions.base}`,
           },
@@ -444,11 +444,15 @@ export function ThemeProvider({ children }) {
               boxShadow: isDarkMode ? shadows.glow.primary : shadows.light.md,
             },
           },
+          // The yellow fill in both modes, with night ink on top (~10:1). The
+          // palette's light-mode primary is the dark ochre used for text, which
+          // would otherwise make light-mode buttons brown.
           containedPrimary: {
-            background: gradients.primary,
+            background: colors.primary[500],
+            color: colors.gray[950],
             '&:hover': {
-              background: gradients.primary,
-              filter: 'brightness(1.1)',
+              background: colors.primary[400],
+              color: colors.gray[950],
             },
           },
           outlined: {
@@ -458,8 +462,8 @@ export function ThemeProvider({ children }) {
               borderWidth: '1.5px',
               borderColor: colors.primary[500],
               backgroundColor: isDarkMode
-                ? 'rgba(217, 98, 43, 0.08)'
-                : 'rgba(217, 98, 43, 0.04)',
+                ? 'rgba(201, 165, 43, 0.08)'
+                : 'rgba(201, 165, 43, 0.04)',
             },
           },
         },
@@ -468,18 +472,18 @@ export function ThemeProvider({ children }) {
         styleOverrides: {
           root: {
             backgroundColor: isDarkMode
-              ? 'rgba(217, 98, 43, 0.1)'
-              : 'rgba(217, 98, 43, 0.08)',
-            color: isDarkMode ? colors.primary[300] : colors.primary[700],
+              ? 'rgba(201, 165, 43, 0.1)'
+              : 'rgba(201, 165, 43, 0.08)',
+            color: isDarkMode ? colors.primary[300] : colors.primary[800],
             borderRadius: borderRadius.md,
             fontWeight: typography.fontWeight.medium,
             fontSize: typography.fontSize.xs,
-            border: `1px solid ${isDarkMode ? 'rgba(217, 98, 43, 0.2)' : 'rgba(217, 98, 43, 0.15)'}`,
+            border: `1px solid ${isDarkMode ? 'rgba(201, 165, 43, 0.2)' : 'rgba(201, 165, 43, 0.15)'}`,
             transition: `all ${transitions.fast}`,
             '&:hover': {
               backgroundColor: isDarkMode
-                ? 'rgba(217, 98, 43, 0.18)'
-                : 'rgba(217, 98, 43, 0.12)',
+                ? 'rgba(201, 165, 43, 0.18)'
+                : 'rgba(201, 165, 43, 0.12)',
               boxShadow: isDarkMode ? shadows.glow.subtle : 'none',
             },
           },
@@ -492,9 +496,9 @@ export function ThemeProvider({ children }) {
             transition: `all ${transitions.fast}`,
             '&:hover': {
               backgroundColor: isDarkMode
-                ? 'rgba(217, 98, 43, 0.1)'
-                : 'rgba(217, 98, 43, 0.06)',
-              color: colors.primary[isDarkMode ? 400 : 600],
+                ? 'rgba(201, 165, 43, 0.1)'
+                : 'rgba(201, 165, 43, 0.06)',
+              color: colors.primary[isDarkMode ? 500 : 800],
               transform: 'scale(1.05)',
             },
           },
@@ -503,10 +507,10 @@ export function ThemeProvider({ children }) {
       MuiLink: {
         styleOverrides: {
           root: {
-            color: isDarkMode ? colors.primary[400] : colors.primary[600],
+            color: isDarkMode ? colors.primary[500] : colors.primary[800],
             transition: `all ${transitions.fast}`,
             '&:hover': {
-              color: isDarkMode ? colors.accent.main : colors.primary[700],
+              color: isDarkMode ? colors.primary[300] : colors.primary[900],
             },
           },
         },
@@ -535,7 +539,7 @@ export function ThemeProvider({ children }) {
               },
               '&:hover': {
                 '& .MuiOutlinedInput-notchedOutline': {
-                  borderColor: isDarkMode ? colors.primary[600] : colors.primary[400],
+                  borderColor: isDarkMode ? colors.primary[600] : colors.primary[700],
                 },
               },
               '&.Mui-focused': {

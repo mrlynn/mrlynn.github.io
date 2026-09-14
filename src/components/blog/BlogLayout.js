@@ -70,7 +70,7 @@ export function BlogLayout({
             variant="h1"
             component="h1"
             sx={{
-              fontFamily: 'var(--font-fraunces), Georgia, serif',
+              fontFamily: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
               fontWeight: 600,
               fontSize: { xs: '2.1rem', sm: '2.6rem', md: '3.25rem' },
               lineHeight: 1.12,

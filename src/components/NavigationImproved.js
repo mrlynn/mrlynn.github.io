@@ -70,7 +70,7 @@ const NavigationImproved = () => {
         elevation={0}
         sx={{
           background: isDarkMode
-            ? 'rgba(20, 18, 14, 0.88)'
+            ? 'rgba(19, 21, 18, 0.88)'
             : 'rgba(255, 255, 255, 0.88)',
           backdropFilter: 'blur(20px) saturate(180%)',
           WebkitBackdropFilter: 'blur(20px) saturate(180%)',
@@ -109,7 +109,7 @@ const NavigationImproved = () => {
                 sx={{
                   width: 34,
                   height: 34,
-                  borderRadius: '10px',
+                  borderRadius: '4px',
                   background: theme.palette.background.gradientAccent,
                   display: 'flex',
                   alignItems: 'center',
@@ -122,14 +122,14 @@ const NavigationImproved = () => {
                   alt=""
                   width={20}
                   height={20}
-                  style={{ filter: 'brightness(0) invert(1)' }}
+                  style={{ filter: 'brightness(0)' }}
                 />
               </Box>
               <Typography
                 component="span"
                 sx={{
                   ml: 1.5,
-                  fontFamily: 'var(--font-fraunces), Georgia, serif',
+                  fontFamily: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
                   fontWeight: 600,
                   fontSize: '1.15rem',
                   letterSpacing: '-0.01em',
@@ -255,7 +255,7 @@ const NavigationImproved = () => {
           '& .MuiDrawer-paper': {
             width: 300,
             background: isDarkMode
-              ? 'rgba(20, 18, 14, 0.98)'
+              ? 'rgba(19, 21, 18, 0.98)'
               : theme.palette.background.paper,
             backdropFilter: 'blur(20px)',
             borderLeft: `1px solid ${theme.palette.border.subtle}`,

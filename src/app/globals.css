@@ -33,12 +33,12 @@ a {
  */
 html[data-theme='light'],
 html[data-theme='light'] body {
-  background-color: #faf8f3;
+  background-color: #efeee8;
 }
 
 html[data-theme='dark'],
 html[data-theme='dark'] body {
-  background-color: #14120e;
+  background-color: #131512;
 }
 
 /*
@@ -55,39 +55,39 @@ html[data-theme='dark'] body {
   z-index: 2000;
   padding: 0.75rem 1.25rem;
   border-radius: 0 0 8px 0;
-  font-family: var(--font-inter), system-ui, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
   font-size: 0.95rem;
   font-weight: 600;
   text-decoration: none;
-  background-color: #be4e1c;
-  color: #ffffff;
+  background-color: #e8c547;
+  color: #131512;
 }
 
 .skip-link:focus {
   left: 0;
-  outline: 3px solid #1f1b16;
+  outline: 3px solid #131512;
   outline-offset: 2px;
 }
 
 /*
  * The label colour has to be restated for :hover.
  *
- * MUI's baseline ships a global `a:hover { color: #9c3e15 }`, and `a:hover`
- * (0,1,1) outranks the plain `.skip-link` (0,1,0) that sets the white. The
+ * MUI's baseline ships a global `a:hover` colour, and `a:hover` (0,1,1)
+ * outranks the plain `.skip-link` (0,1,0) that sets the label colour. The
  * :focus rule above is specific enough to win but only sets position and
- * outline, so a focused skip link under the pointer rendered #9c3e15 on the
- * #be4e1c fill — 1.38:1, effectively invisible. Keyboard users whose pointer
+ * outline, so a focused skip link under the pointer rendered the hover colour
+ * on the accent fill, which was effectively invisible. Keyboard users whose pointer
  * happens to rest at the top-left hit this the moment the link appears.
  * `.skip-link:hover` is (0,2,0) and outranks it.
  */
 .skip-link:hover,
 .skip-link:focus,
 .skip-link:focus:hover {
-  color: #ffffff;
+  color: #131512;
 }
 
 html[data-theme='dark'] .skip-link:focus {
-  outline-color: #f0ebe0;
+  outline-color: #e8e6dc;
 }
 
 /* <main> takes focus programmatically when the skip link is used; it should not

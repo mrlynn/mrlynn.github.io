@@ -37,7 +37,7 @@ export default function ConsultingPage() {
                 <Typography
                   variant="h1"
                   sx={{
-                    fontFamily: 'var(--font-fraunces), Georgia, serif',
+                    fontFamily: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
                     fontWeight: 600,
                     fontSize: { xs: '2.5rem', sm: '3.25rem', md: '4rem' },
                     lineHeight: 1.08,
@@ -55,7 +55,7 @@ export default function ConsultingPage() {
               <MotionBox initial="hidden" animate="show" variants={fadeUp} custom={2}>
                 <Typography
                   sx={{
-                    fontFamily: 'var(--font-fraunces), Georgia, serif',
+                    fontFamily: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
                     fontStyle: 'italic',
                     fontWeight: 400,
                     fontSize: { xs: '1.2rem', md: '1.4rem' },
@@ -87,7 +87,21 @@ export default function ConsultingPage() {
                   <Box sx={{ '& > div': { display: 'inline-flex' } }}>
                     <CalendarBooking
                       variant="button"
-                      buttonProps={{ children: 'Book a discovery call' }}
+                      buttonProps={{
+                  children: 'Book a discovery call',
+                  // The band behind this is the accent yellow, so the default
+                  // yellow button would vanish into it.
+                  sx: {
+                    px: 3.5,
+                    py: 1.4,
+                    fontWeight: 600,
+                    fontSize: '0.95rem',
+                    borderRadius: '8px',
+                    background: '#131512',
+                    color: '#e8c547',
+                    '&:hover': { background: '#2d2f2a', color: '#e8c547' },
+                  },
+                }}
                     />
                   </Box>
                   <Button
@@ -124,7 +138,7 @@ export default function ConsultingPage() {
         <Container maxWidth="lg">
           <Typography
             sx={{
-              fontFamily: 'var(--font-fraunces), Georgia, serif',
+              fontFamily: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
               fontStyle: 'italic',
               fontWeight: 500,
               fontSize: { xs: '1.3rem', md: '1.75rem' },
@@ -205,7 +219,7 @@ export default function ConsultingPage() {
                   <Typography
                     variant="h5"
                     sx={{
-                      fontFamily: 'var(--font-fraunces), Georgia, serif',
+                      fontFamily: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
                       fontWeight: 600,
                       fontSize: '1.35rem',
                       color: theme.palette.text.primary,
@@ -322,23 +336,37 @@ export default function ConsultingPage() {
           <Typography
             variant="h3"
             sx={{
-              fontFamily: 'var(--font-fraunces), Georgia, serif',
+              fontFamily: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
               fontWeight: 600,
               fontSize: { xs: '1.9rem', md: '2.5rem' },
-              color: '#fff',
+              color: '#131512',
               mb: 2,
             }}
           >
             {consulting.cta.heading}
           </Typography>
-          <Typography sx={{ fontSize: '1.1rem', color: 'rgba(255,255,255,0.85)', maxWidth: 560, mx: 'auto', mb: 4, lineHeight: 1.7 }}>
+          <Typography sx={{ fontSize: '1.1rem', color: 'rgba(19, 21, 18, 0.8)', maxWidth: 560, mx: 'auto', mb: 4, lineHeight: 1.7 }}>
             {consulting.cta.body}
           </Typography>
           <Stack direction="row" spacing={2} justifyContent="center" flexWrap="wrap" useFlexGap>
             <Box sx={{ '& > div': { display: 'inline-flex' } }}>
               <CalendarBooking
                 variant="button"
-                buttonProps={{ children: 'Book a discovery call' }}
+                buttonProps={{
+                  children: 'Book a discovery call',
+                  // The band behind this is the accent yellow, so the default
+                  // yellow button would vanish into it.
+                  sx: {
+                    px: 3.5,
+                    py: 1.4,
+                    fontWeight: 600,
+                    fontSize: '0.95rem',
+                    borderRadius: '8px',
+                    background: '#131512',
+                    color: '#e8c547',
+                    '&:hover': { background: '#2d2f2a', color: '#e8c547' },
+                  },
+                }}
               />
             </Box>
           </Stack>

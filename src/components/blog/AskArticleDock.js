@@ -57,10 +57,10 @@ function MarkdownReply({ content, isDark }) {
           px: 0.6,
           py: 0.15,
           borderRadius: 0.5,
-          background: isDark ? 'rgba(232, 121, 74, 0.12)' : 'rgba(190, 78, 28, 0.08)',
+          background: isDark ? 'rgba(232, 197, 71, 0.12)' : 'rgba(190, 78, 28, 0.08)',
         },
         '& a': {
-          color: isDark ? '#e8794a' : '#be4e1c',
+          color: isDark ? '#e8c547' : '#7d6200',
           textDecoration: 'none',
           '&:hover': { textDecoration: 'underline' },
         },
@@ -107,7 +107,7 @@ function MarkdownReply({ content, isDark }) {
 export default function AskArticleDock({ slug, title, suggestedQuestions }) {
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
-  const accent = isDark ? '#e8794a' : '#be4e1c';
+  const accent = isDark ? '#e8c547' : '#7d6200';
 
   const questions =
     suggestedQuestions?.length > 0
@@ -303,7 +303,7 @@ export default function AskArticleDock({ slug, title, suggestedQuestions }) {
                 background: isDark
                   ? 'linear-gradient(165deg, rgba(28, 24, 20, 0.97) 0%, rgba(18, 16, 14, 0.98) 100%)'
                   : 'linear-gradient(165deg, rgba(255, 252, 248, 0.98) 0%, rgba(250, 246, 240, 0.99) 100%)',
-                border: `1px solid ${isDark ? 'rgba(232, 121, 74, 0.28)' : 'rgba(190, 78, 28, 0.22)'}`,
+                border: `1px solid ${isDark ? 'rgba(232, 197, 71, 0.28)' : 'rgba(190, 78, 28, 0.22)'}`,
                 boxShadow: isDark
                   ? '0 18px 48px rgba(0,0,0,0.55)'
                   : '0 18px 48px rgba(40, 20, 8, 0.16)',
@@ -404,16 +404,16 @@ export default function AskArticleDock({ slug, title, suggestedQuestions }) {
                             fontWeight: 500,
                             color: accent,
                             background: isDark
-                              ? 'rgba(232, 121, 74, 0.1)'
+                              ? 'rgba(232, 197, 71, 0.1)'
                               : 'rgba(190, 78, 28, 0.07)',
-                            border: `1px solid ${isDark ? 'rgba(232, 121, 74, 0.28)' : 'rgba(190, 78, 28, 0.2)'}`,
+                            border: `1px solid ${isDark ? 'rgba(232, 197, 71, 0.28)' : 'rgba(190, 78, 28, 0.2)'}`,
                             '& .MuiChip-label': {
                               whiteSpace: 'normal',
                               lineHeight: 1.35,
                             },
                             '&:hover': {
                               background: isDark
-                                ? 'rgba(232, 121, 74, 0.18)'
+                                ? 'rgba(232, 197, 71, 0.18)'
                                 : 'rgba(190, 78, 28, 0.12)',
                             },
                           }}
@@ -438,7 +438,7 @@ export default function AskArticleDock({ slug, title, suggestedQuestions }) {
                       background:
                         m.role === 'user'
                           ? isDark
-                            ? 'rgba(232, 121, 74, 0.22)'
+                            ? 'rgba(232, 197, 71, 0.22)'
                             : 'rgba(190, 78, 28, 0.12)'
                           : isDark
                             ? 'rgba(255,255,255,0.04)'
@@ -523,9 +523,9 @@ export default function AskArticleDock({ slug, title, suggestedQuestions }) {
               background: isDark
                 ? 'rgba(22, 20, 17, 0.94)'
                 : 'rgba(255, 252, 248, 0.96)',
-              border: `1px solid ${isDark ? 'rgba(232, 121, 74, 0.35)' : 'rgba(190, 78, 28, 0.28)'}`,
+              border: `1px solid ${isDark ? 'rgba(232, 197, 71, 0.35)' : 'rgba(190, 78, 28, 0.28)'}`,
               boxShadow: isDark
-                ? '0 10px 36px rgba(0,0,0,0.5), 0 0 0 1px rgba(232, 121, 74, 0.08)'
+                ? '0 10px 36px rgba(0,0,0,0.5), 0 0 0 1px rgba(232, 197, 71, 0.08)'
                 : '0 10px 36px rgba(40, 20, 8, 0.14), 0 0 0 1px rgba(190, 78, 28, 0.06)',
               backdropFilter: 'blur(12px)',
               cursor: expanded ? 'default' : 'text',
@@ -581,9 +581,9 @@ export default function AskArticleDock({ slug, title, suggestedQuestions }) {
                 height: 36,
                 flexShrink: 0,
                 background: accent,
-                color: '#fff',
+                color: isDark ? '#131512' : '#fff',
                 '&:hover': {
-                  background: isDark ? '#f08a58' : '#a84418',
+                  background: isDark ? '#ebcb56' : '#5c4800',
                 },
                 '&.Mui-disabled': {
                   background: isDark

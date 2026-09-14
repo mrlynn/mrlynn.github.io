@@ -38,7 +38,7 @@ export default function SectionHeading({
         variant="h2"
         component={component}
         sx={{
-          fontFamily: 'var(--font-fraunces), Georgia, serif',
+          fontFamily: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
           fontWeight: 600,
           fontSize: { xs: '2rem', md: '2.75rem' },
           lineHeight: 1.1,
