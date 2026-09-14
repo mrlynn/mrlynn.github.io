@@ -15,11 +15,15 @@ swap the card to a fallback face.
 
 | File | Face | Upstream |
 | --- | --- | --- |
-| `Fraunces.ttf` | Fraunces (display serif, matches the site's headings) | [Google Fonts](https://fonts.google.com/specimen/Fraunces) |
-| `Inter-Regular.ttf` | Inter 400 | [Google Fonts](https://fonts.google.com/specimen/Inter) |
-| `Inter-SemiBold.ttf` | Inter 600 | [Google Fonts](https://fonts.google.com/specimen/Inter) |
+| `FamiljenGrotesk-Regular.ttf` | Familjen Grotesk 400 (body, matches the site) | [Google Fonts](https://fonts.google.com/specimen/Familjen+Grotesk) |
+| `FamiljenGrotesk-SemiBold.ttf` | Familjen Grotesk 600 (titles) | [Google Fonts](https://fonts.google.com/specimen/Familjen+Grotesk) |
+| `FragmentMono-Regular.ttf` | Fragment Mono 400 (labels and tech chips) | [Google Fonts](https://fonts.google.com/specimen/Fragment+Mono) |
 
 Both families are licensed under the SIL Open Font License 1.1.
+
+Satori doesn't handle variable fonts, so these are the static single-weight
+instances Google Fonts serves as `.ttf` (request the `css2` API without a
+browser user agent and it links TTFs rather than WOFF2).
 
 ## These files are not the upstream downloads — do not replace them with one
 
@@ -28,9 +32,9 @@ components of composite glyphs**, so a composite renders as its pieces scattered
 across the line: the plus in "Voyage 4 + Claude" came out as a floating bar with
 a stray vertical stem beside the next letter.
 
-It is not a rare corner. 438 of Fraunces' 683 glyphs were composite, and 1840 of
-Inter's — including every accented letter, the ellipsis, the curly quotes, `%`
-and `=`. A title with `é` or `…` in it would have rendered visibly broken.
+It is not a rare corner. Before decomposition 403 of each Familjen Grotesk
+weight's glyphs were composite, and 198 of Fragment Mono's — including the
+accented letters. A title with `é` in it would have rendered visibly broken.
 
 Dropping a fresh download from Google Fonts in here reintroduces that silently,
 because nothing fails: the card still builds, still returns 200, still measures
@@ -45,7 +49,7 @@ from fontTools.ttLib import TTFont
 from fontTools.pens.recordingPen import DecomposingRecordingPen
 from fontTools.pens.ttGlyphPen import TTGlyphPen
 
-path = 'src/app/_og-fonts/Fraunces.ttf'
+path = 'src/app/_og-fonts/FamiljenGrotesk-SemiBold.ttf'
 font = TTFont(path)
 glyf, glyphs = font['glyf'], font.getGlyphSet()
 for name in font.getGlyphOrder():
