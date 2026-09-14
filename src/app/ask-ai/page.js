@@ -43,7 +43,7 @@ export default function AskAIPage() {
               px: 2,
               py: 0.75,
               mb: 3,
-              borderRadius: 5,
+              borderRadius: '4px',
               background: isDark ? 'rgba(232, 197, 71, 0.08)' : 'rgba(201, 165, 43, 0.06)',
               border: `1px solid ${isDark ? 'rgba(232, 197, 71, 0.2)' : 'rgba(201, 165, 43, 0.15)'}`,
             }}

@@ -47,7 +47,7 @@ const NavigationImproved = () => {
     <IconButton
       onClick={toggleTheme}
       sx={{
-        borderRadius: '10px',
+        borderRadius: '4px',
         transition: 'all 0.2s',
         border: `1px solid ${theme.palette.border.subtle}`,
         '&:hover': {
@@ -169,7 +169,7 @@ const NavigationImproved = () => {
                         position: 'relative',
                         fontWeight: isActive ? 600 : 500,
                         fontSize: '0.9375rem',
-                        borderRadius: '10px',
+                        borderRadius: '4px',
                         whiteSpace: 'nowrap',
                         '&::before': {
                           content: '""',
@@ -207,7 +207,7 @@ const NavigationImproved = () => {
                     ml: 1.5,
                     px: 2,
                     py: 0.9,
-                    borderRadius: '10px',
+                    borderRadius: '4px',
                     fontSize: '0.875rem',
                     fontWeight: 600,
                     whiteSpace: 'nowrap',
@@ -228,7 +228,7 @@ const NavigationImproved = () => {
                   onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                   sx={{
                     color: theme.palette.text.primary,
-                    borderRadius: '10px',
+                    borderRadius: '4px',
                     border: `1px solid ${theme.palette.border.subtle}`,
                     '&:hover': {
                       background: theme.palette.surface.primary,
@@ -288,7 +288,7 @@ const NavigationImproved = () => {
                   aria-current={isActive ? 'page' : undefined}
                   sx={{
                     mb: 0.5,
-                    borderRadius: '10px',
+                    borderRadius: '4px',
                     background: isActive ? theme.palette.surface.primary : 'transparent',
                     borderLeft: `2px solid ${isActive ? theme.palette.primary.main : 'transparent'}`,
                     '&:hover': { background: theme.palette.surface.primary },
@@ -314,7 +314,7 @@ const NavigationImproved = () => {
             variant="contained"
             disableElevation
             onClick={() => handleNavigation('/contact')}
-            sx={{ mt: 2, py: 1.25, borderRadius: '10px', fontWeight: 600 }}
+            sx={{ mt: 2, py: 1.25, borderRadius: '4px', fontWeight: 600 }}
           >
             Book a call
           </Button>

@@ -171,7 +171,7 @@ export default function HomeClient({ posts = [], projects = [], talks = [] }) {
                     endIcon={<ArrowForwardIcon />}
                     component={Link}
                     href="/blog"
-                    sx={{ px: 3.5, py: 1.4, fontWeight: 600, fontSize: '0.95rem', borderRadius: '8px' }}
+                    sx={{ px: 3.5, py: 1.4, fontWeight: 600, fontSize: '0.95rem', borderRadius: '4px' }}
                   >
                     Read the writing
                   </Button>
@@ -188,7 +188,7 @@ export default function HomeClient({ posts = [], projects = [], talks = [] }) {
                       py: 1.4,
                       fontWeight: 600,
                       fontSize: '0.95rem',
-                      borderRadius: '8px',
+                      borderRadius: '4px',
                       '&:hover': {
                         borderColor: theme.palette.primary.main,
                         backgroundColor: theme.palette.surface.primary,
@@ -327,7 +327,7 @@ export default function HomeClient({ posts = [], projects = [], talks = [] }) {
                 href="https://triage.mlynn.dev"
                 target="_blank"
                 rel="noopener noreferrer"
-                sx={{ px: 2.75, fontWeight: 600, fontSize: '0.88rem', borderRadius: '8px', whiteSpace: 'nowrap' }}
+                sx={{ px: 2.75, fontWeight: 600, fontSize: '0.88rem', borderRadius: '4px', whiteSpace: 'nowrap' }}
               >
                 Take the course
               </Button>
@@ -343,7 +343,7 @@ export default function HomeClient({ posts = [], projects = [], talks = [] }) {
                   px: 2.5,
                   fontWeight: 600,
                   fontSize: '0.88rem',
-                  borderRadius: '8px',
+                  borderRadius: '4px',
                   whiteSpace: 'nowrap',
                   '&:hover': { borderColor: theme.palette.primary.main, backgroundColor: theme.palette.surface.primary },
                 }}
@@ -358,7 +358,7 @@ export default function HomeClient({ posts = [], projects = [], talks = [] }) {
                 sx={{
                   color: theme.palette.text.secondary,
                   border: `1px solid ${theme.palette.border.default}`,
-                  borderRadius: '8px',
+                  borderRadius: '4px',
                   '&:hover': { color: theme.palette.primary.main, borderColor: theme.palette.primary.main },
                 }}
               >
@@ -729,7 +729,7 @@ export default function HomeClient({ posts = [], projects = [], talks = [] }) {
               size="large"
               disableElevation
               endIcon={<ArrowForwardIcon />}
-              sx={{ px: 4, py: 1.6, fontWeight: 600, fontSize: '1rem', borderRadius: '8px', flexShrink: 0 }}
+              sx={{ px: 4, py: 1.6, fontWeight: 600, fontSize: '1rem', borderRadius: '4px', flexShrink: 0 }}
             >
               Book a call
             </Button>

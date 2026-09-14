@@ -57,7 +57,7 @@ function MarkdownReply({ content, isDark }) {
           px: 0.6,
           py: 0.15,
           borderRadius: 0.5,
-          background: isDark ? 'rgba(232, 197, 71, 0.12)' : 'rgba(190, 78, 28, 0.08)',
+          background: isDark ? 'rgba(232, 197, 71, 0.12)' : 'rgba(125, 98, 0, 0.08)',
         },
         '& a': {
           color: isDark ? '#e8c547' : '#7d6200',
@@ -86,7 +86,7 @@ function MarkdownReply({ content, isDark }) {
           background: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)',
         },
         '& pre': {
-          background: isDark ? 'rgba(0,0,0,0.35)' : 'rgba(190, 78, 28, 0.05)',
+          background: isDark ? 'rgba(0,0,0,0.35)' : 'rgba(125, 98, 0, 0.05)',
           borderRadius: 1,
           p: 1.25,
           overflow: 'auto',
@@ -298,15 +298,15 @@ export default function AskArticleDock({ slug, title, suggestedQuestions }) {
             <Box
               sx={{
                 mb: 1,
-                borderRadius: '16px 16px 12px 12px',
+                borderRadius: '8px',
                 overflow: 'hidden',
                 background: isDark
-                  ? 'linear-gradient(165deg, rgba(28, 24, 20, 0.97) 0%, rgba(18, 16, 14, 0.98) 100%)'
-                  : 'linear-gradient(165deg, rgba(255, 252, 248, 0.98) 0%, rgba(250, 246, 240, 0.99) 100%)',
-                border: `1px solid ${isDark ? 'rgba(232, 197, 71, 0.28)' : 'rgba(190, 78, 28, 0.22)'}`,
+                  ? 'rgba(24, 26, 23, 0.98)'
+                  : 'rgba(247, 246, 241, 0.99)',
+                border: `1px solid ${isDark ? 'rgba(232, 197, 71, 0.28)' : 'rgba(125, 98, 0, 0.22)'}`,
                 boxShadow: isDark
                   ? '0 18px 48px rgba(0,0,0,0.55)'
-                  : '0 18px 48px rgba(40, 20, 8, 0.16)',
+                  : '0 18px 48px rgba(19, 21, 18, 0.16)',
                 backdropFilter: 'blur(14px)',
               }}
             >
@@ -405,8 +405,8 @@ export default function AskArticleDock({ slug, title, suggestedQuestions }) {
                             color: accent,
                             background: isDark
                               ? 'rgba(232, 197, 71, 0.1)'
-                              : 'rgba(190, 78, 28, 0.07)',
-                            border: `1px solid ${isDark ? 'rgba(232, 197, 71, 0.28)' : 'rgba(190, 78, 28, 0.2)'}`,
+                              : 'rgba(125, 98, 0, 0.07)',
+                            border: `1px solid ${isDark ? 'rgba(232, 197, 71, 0.28)' : 'rgba(125, 98, 0, 0.2)'}`,
                             '& .MuiChip-label': {
                               whiteSpace: 'normal',
                               lineHeight: 1.35,
@@ -414,7 +414,7 @@ export default function AskArticleDock({ slug, title, suggestedQuestions }) {
                             '&:hover': {
                               background: isDark
                                 ? 'rgba(232, 197, 71, 0.18)'
-                                : 'rgba(190, 78, 28, 0.12)',
+                                : 'rgba(125, 98, 0, 0.12)',
                             },
                           }}
                         />
@@ -433,13 +433,13 @@ export default function AskArticleDock({ slug, title, suggestedQuestions }) {
                       py: 1,
                       borderRadius:
                         m.role === 'user'
-                          ? '14px 14px 4px 14px'
-                          : '14px 14px 14px 4px',
+                          ? '6px 6px 2px 6px'
+                          : '6px 6px 6px 2px',
                       background:
                         m.role === 'user'
                           ? isDark
                             ? 'rgba(232, 197, 71, 0.22)'
-                            : 'rgba(190, 78, 28, 0.12)'
+                            : 'rgba(125, 98, 0, 0.12)'
                           : isDark
                             ? 'rgba(255,255,255,0.04)'
                             : 'rgba(0,0,0,0.03)',
@@ -519,14 +519,14 @@ export default function AskArticleDock({ slug, title, suggestedQuestions }) {
               gap: 1,
               px: 1.25,
               py: 0.85,
-              borderRadius: expanded ? '12px' : '999px',
+              borderRadius: expanded ? '6px' : '4px',
               background: isDark
-                ? 'rgba(22, 20, 17, 0.94)'
-                : 'rgba(255, 252, 248, 0.96)',
-              border: `1px solid ${isDark ? 'rgba(232, 197, 71, 0.35)' : 'rgba(190, 78, 28, 0.28)'}`,
+                ? 'rgba(19, 21, 18, 0.94)'
+                : 'rgba(247, 246, 241, 0.96)',
+              border: `1px solid ${isDark ? 'rgba(232, 197, 71, 0.35)' : 'rgba(125, 98, 0, 0.28)'}`,
               boxShadow: isDark
                 ? '0 10px 36px rgba(0,0,0,0.5), 0 0 0 1px rgba(232, 197, 71, 0.08)'
-                : '0 10px 36px rgba(40, 20, 8, 0.14), 0 0 0 1px rgba(190, 78, 28, 0.06)',
+                : '0 10px 36px rgba(19, 21, 18, 0.14), 0 0 0 1px rgba(125, 98, 0, 0.06)',
               backdropFilter: 'blur(12px)',
               cursor: expanded ? 'default' : 'text',
               transition: 'border-radius 0.2s ease',

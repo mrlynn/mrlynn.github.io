@@ -115,7 +115,7 @@ export function generateCursorMisconceptionsPdfBuffer() {
     const cardWidth = (contentWidth - 10) / 2;
     const cardHeight = 42;
 
-    drawRoundedRect(doc, 32, y, cardWidth, cardHeight, 6, colors.surface);
+    drawRoundedRect(doc, 32, y, cardWidth, cardHeight, 4, colors.surface);
     doc
       .rect(32, y, 3, cardHeight)
       .fill(colors.primary);
@@ -133,7 +133,7 @@ export function generateCursorMisconceptionsPdfBuffer() {
       { size: 7.5, color: colors.text }
     );
 
-    drawRoundedRect(doc, 32 + cardWidth + 10, y, cardWidth, cardHeight, 6, colors.surface);
+    drawRoundedRect(doc, 32 + cardWidth + 10, y, cardWidth, cardHeight, 4, colors.surface);
     doc
       .rect(32 + cardWidth + 10, y, 3, cardHeight)
       .fill(colors.primary);
@@ -149,7 +149,7 @@ export function generateCursorMisconceptionsPdfBuffer() {
 
     y += cardHeight + 10;
 
-    drawRoundedRect(doc, 32, y, contentWidth, 18, 4, colors.surfaceAlt);
+    drawRoundedRect(doc, 32, y, contentWidth, 18, 2, colors.surfaceAlt);
     const colX = {
       num: 38,
       myth: 68,
@@ -172,7 +172,7 @@ export function generateCursorMisconceptionsPdfBuffer() {
 
     data.myths.forEach((item) => {
       const rowHeight = 34;
-      drawRoundedRect(doc, 32, y, contentWidth, rowHeight, 4, colors.surface);
+      drawRoundedRect(doc, 32, y, contentWidth, rowHeight, 2, colors.surface);
 
       doc
         .font('Helvetica-Bold')
@@ -226,7 +226,7 @@ export function generateCursorMisconceptionsPdfBuffer() {
 
     const badgeWidth = 220;
     const badgeX = pageWidth - 32 - badgeWidth;
-    drawRoundedRect(doc, badgeX, footerY + 8, badgeWidth, 22, 4, colors.primary);
+    drawRoundedRect(doc, badgeX, footerY + 8, badgeWidth, 22, 2, colors.primary);
     doc
       .font('Helvetica-Bold')
       .fontSize(7.5)

@@ -171,7 +171,7 @@ const DiagramGenerator = ({ title, description }) => {
 
   return (
     <Box sx={{ width: '100%', mb: 4 }}>
-      <Paper elevation={2} sx={{ p: 3, mb: 4, borderRadius: 2 }}>
+      <Paper elevation={2} sx={{ p: 3, mb: 4, borderRadius: '6px' }}>
         <Typography variant="h5" component="h2" gutterBottom>
           AI Diagram Generator
         </Typography>

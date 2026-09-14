@@ -205,7 +205,7 @@ function QuickLaunchTab({ isDark, theme }) {
       <Box
         sx={{
           p: 2,
-          borderRadius: 2,
+          borderRadius: '6px',
           background: isDark ? 'rgba(0, 0, 0, 0.4)' : 'rgba(201, 165, 43, 0.03)',
           border: `1px solid ${isDark ? 'rgba(201, 165, 43, 0.1)' : 'rgba(201, 165, 43, 0.08)'}`,
           fontFamily: 'var(--font-mono), monospace',
@@ -525,7 +525,7 @@ function ChatTab({ isDark, theme }) {
               sx={{
                 p: 1.5,
                 maxWidth: '80%',
-                borderRadius: 2,
+                borderRadius: '6px',
                 backgroundImage: 'none',
                 ...(msg.role === 'user'
                   ? {
@@ -592,7 +592,7 @@ function ChatTab({ isDark, theme }) {
               elevation={0}
               sx={{
                 p: 1.5,
-                borderRadius: 2,
+                borderRadius: '6px',
                 backgroundImage: 'none',
                 background: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(201, 165, 43, 0.03)',
                 border: `1px solid ${isDark ? 'rgba(201, 165, 43, 0.1)' : 'rgba(201, 165, 43, 0.08)'}`,
@@ -633,7 +633,7 @@ function ChatTab({ isDark, theme }) {
           sx={{
             '& .MuiOutlinedInput-root': {
               fontSize: '0.85rem',
-              borderRadius: 2,
+              borderRadius: '4px',
               height: 40,
               backgroundColor: isDark ? 'rgba(0, 0, 0, 0.3)' : 'rgba(201, 165, 43, 0.02)',
               '& fieldset': {
@@ -655,7 +655,7 @@ function ChatTab({ isDark, theme }) {
           sx={{
             minWidth: 44,
             height: 40,
-            borderRadius: 2,
+            borderRadius: '4px',
             background: '#e8c547',
             color: '#131512',
             '&:hover': {
@@ -714,7 +714,7 @@ export default function TalkToMyAI({ variant = 'full' }) {
           elevation={0}
           sx={{
             p: { xs: 3, md: 4 },
-            borderRadius: 3,
+            borderRadius: '8px',
             backgroundImage: 'none',
             background: isDark
               ? 'rgba(201, 165, 43, 0.04)'
@@ -798,7 +798,7 @@ export default function TalkToMyAI({ variant = 'full' }) {
               fontWeight: 600,
               px: 4,
               py: 1.2,
-              borderRadius: 2,
+              borderRadius: '4px',
               '&:hover': {
                 background: '#ebcb56',
               },
@@ -821,7 +821,7 @@ export default function TalkToMyAI({ variant = 'full' }) {
       <Paper
         elevation={0}
         sx={{
-          borderRadius: 3,
+          borderRadius: '8px',
           backgroundImage: 'none',
           background: isDark
             ? 'rgba(201, 165, 43, 0.04)'

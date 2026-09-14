@@ -105,7 +105,7 @@ export default function AboutPage() {
                   variant="contained"
                   disableElevation
                   endIcon={<ArrowForwardIcon />}
-                  sx={{ px: 3.5, py: 1.3, fontWeight: 600, borderRadius: '8px' }}
+                  sx={{ px: 3.5, py: 1.3, fontWeight: 600, borderRadius: '4px' }}
                 >
                   Read the résumé
                 </Button>
@@ -118,7 +118,7 @@ export default function AboutPage() {
                     px: 3.5,
                     py: 1.3,
                     fontWeight: 600,
-                    borderRadius: '8px',
+                    borderRadius: '4px',
                     borderColor: theme.palette.border.default,
                     color: theme.palette.text.primary,
                     '&:hover': {

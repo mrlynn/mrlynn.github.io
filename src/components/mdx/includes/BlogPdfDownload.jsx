@@ -26,7 +26,7 @@ export default function BlogPdfDownload({
       sx={{
         my: 4,
         p: { xs: 2.5, md: 3 },
-        borderRadius: 2,
+        borderRadius: '6px',
         border: 1,
         borderColor: 'divider',
         background: (theme) =>

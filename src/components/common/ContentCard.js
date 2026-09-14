@@ -33,7 +33,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
   height: '100%',
   display: 'flex',
   flexDirection: 'column',
-  borderRadius: '10px',
+  borderRadius: '6px',
   border: `1px solid ${theme.palette.border.subtle}`,
   transition: 'transform 0.2s ease-in-out, border-color 0.2s ease-in-out',
   '&:hover': {

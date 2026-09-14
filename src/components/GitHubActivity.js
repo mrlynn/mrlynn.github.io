@@ -42,7 +42,7 @@ export default function GitHubActivity({ eyebrow = 'Open source' }) {
             p: 3,
             bgcolor: 'background.paper',
             border: `1px solid ${theme.palette.border.subtle}`,
-            borderRadius: '10px',
+            borderRadius: '6px',
             overflowX: 'auto',
           }}
         >
@@ -69,7 +69,7 @@ export default function GitHubActivity({ eyebrow = 'Open source' }) {
           sx={{
             borderColor: theme.palette.border.default,
             color: theme.palette.text.primary,
-            borderRadius: '8px',
+            borderRadius: '4px',
             '&:hover': {
               borderColor: theme.palette.primary.main,
               backgroundColor: 'transparent',

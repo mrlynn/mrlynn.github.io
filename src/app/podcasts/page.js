@@ -92,7 +92,7 @@ export default function PodcastsPage() {
         <Paper 
           elevation={0}
           sx={{ 
-            borderRadius: 2,
+            borderRadius: '8px',
             background: (theme) => theme.palette.mode === 'dark' 
               ? 'rgba(0,0,0,0.2)' 
               : 'rgba(255,255,255,0.8)',
@@ -142,7 +142,7 @@ export default function PodcastsPage() {
                     elevation={2}
                     sx={{
                       p: { xs: 2, sm: 3 },
-                      borderRadius: 2,
+                      borderRadius: '6px',
                       background: (theme) => theme.palette.mode === 'dark' 
                         ? 'rgba(0,0,0,0.2)' 
                         : 'rgba(255,255,255,0.8)',
@@ -163,7 +163,7 @@ export default function PodcastsPage() {
                           width: { xs: '100%', sm: 200 },
                           aspectRatio: '1 / 1',
                           flexShrink: 0,
-                          borderRadius: 2,
+                          borderRadius: '4px',
                           overflow: 'hidden',
                           boxShadow: 3,
                         }}
