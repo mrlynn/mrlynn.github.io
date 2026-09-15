@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Container, Typography, Grid, Paper, List, ListItem, ListItemText, Chip, Stack, Divider, useTheme, useMediaQuery, Link, Button } from '@mui/material';
+import { Box, Container, Typography, Grid, Paper, List, ListItem, ListItemText, Chip, Stack, useTheme, useMediaQuery, Link, Button } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
 import { motion } from 'framer-motion';
 import Certifications from '../../components/Certifications';
@@ -179,16 +179,49 @@ export default function Resume() {
       letterSpacing: '-0.01em',
       fontSize: { xs: '1.35rem', sm: '1.5rem' },
       color: theme.palette.text.primary,
+      mb: 1,
     },
   };
 
+  // Dates, locations and skill groups use the same mono label the blog post
+  // byline and footer column titles use, so the resume reads as part of the site.
+  const metaLabelSx = {
+    fontFamily: 'var(--font-mono), monospace',
+    fontSize: '0.72rem',
+    letterSpacing: '0.08em',
+    textTransform: 'uppercase',
+    color: theme.palette.accent.text,
+  };
+
+  const roleTitleSx = {
+    mt: 2.5,
+    mb: 0.75,
+    fontSize: '1.05rem',
+    fontWeight: 600,
+    lineHeight: 1.35,
+    color: theme.palette.text.primary,
+  };
+
+  // Bullets used to render at 1rem with no marker, larger than the role summary
+  // above them. They now match body copy and carry a small square in the accent.
   const renderListItems = (items) => (
     <List sx={{ py: 0 }}>
       {items.map((item, i) => (
         <ListItem
           key={i}
           sx={{
-            py: { xs: 0.5, sm: 1 },
+            alignItems: 'baseline',
+            gap: 1.5,
+            px: 0,
+            py: 0.5,
+            '&::before': {
+              content: '""',
+              flexShrink: 0,
+              width: 5,
+              height: 5,
+              transform: 'translateY(-2px)',
+              backgroundColor: theme.palette.primary.main,
+            },
             '& .MuiListItemText-root': { m: 0 },
           }}
         >
@@ -196,8 +229,12 @@ export default function Resume() {
             primary={item}
             primaryTypographyProps={{
               sx: {
-                fontSize: { xs: '0.875rem', sm: '1rem' },
+                fontSize: { xs: '0.9rem', sm: '0.95rem' },
+                lineHeight: 1.6,
                 color: theme.palette.text.primary,
+                // The theme gives body1 a 1rem bottom margin; in a list that
+                // doubled the gap between bullets.
+                mb: 0,
               },
             }}
           />
@@ -260,7 +297,7 @@ export default function Resume() {
           >
             Michael Lynn
           </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+          <Typography sx={{ ...metaLabelSx, mb: 1.5 }}>
             Philadelphia, PA
           </Typography>
           <Stack direction="row" spacing={2} flexWrap="wrap" sx={{ gap: 1, mb: 2 }}>
@@ -278,7 +315,7 @@ export default function Resume() {
               </Link>
             ))}
           </Stack>
-          <Typography variant="h6" gutterBottom sx={{ fontWeight: 600, color: theme.palette.text.primary }}>
+          <Typography variant="h6" sx={{ fontWeight: 600, mb: 1, color: theme.palette.text.primary }}>
             AI Adoption Engineer & Developer Productivity Leader
           </Typography>
           <Typography
@@ -303,7 +340,6 @@ export default function Resume() {
               sx={paperStyle}
             >
               <Typography {...sectionTitleProps}>Core Strengths</Typography>
-              <Divider sx={{ my: { xs: 1, sm: 1.5 } }} />
               <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap sx={{ gap: 0.75 }}>
                 {coreStrengths.map((strength, index) => (
                   <Chip
@@ -333,18 +369,14 @@ export default function Resume() {
               sx={paperStyle}
             >
               <Typography {...sectionTitleProps}>Cursor (Anysphere)</Typography>
-              <Typography
-                variant="subtitle1"
-                gutterBottom
-                sx={{ fontSize: { xs: '0.875rem', sm: '1rem' }, color: theme.palette.text.secondary }}
-              >
-                Remote | 2026 - Present
+              <Typography sx={metaLabelSx}>
+                Remote · 2026 – Present
               </Typography>
 
-              <Typography variant="h6" sx={{ mt: 2, mb: 1, fontSize: '1.1rem' }}>
+              <Typography variant="h6" sx={roleTitleSx}>
                 AI Adoption Engineer
               </Typography>
-              <Typography variant="body2" paragraph sx={{ color: theme.palette.text.primary }}>
+              <Typography variant="body2" sx={{ mb: 1, color: theme.palette.text.secondary, lineHeight: 1.6 }}>
                 Create and present workshops and AI education programs that help engineering teams and developers adopt AI-assisted development with Cursor.
               </Typography>
               {renderListItems(cursorResponsibilities)}
@@ -358,33 +390,29 @@ export default function Resume() {
               sx={paperStyle}
             >
               <Typography {...sectionTitleProps}>MongoDB</Typography>
-              <Typography
-                variant="subtitle1"
-                gutterBottom
-                sx={{ fontSize: { xs: '0.875rem', sm: '1rem' }, color: theme.palette.text.secondary }}
-              >
-                Philadelphia, PA | 2016 - 2026 (10 Years)
+              <Typography sx={metaLabelSx}>
+                Philadelphia, PA · 2016 – 2026 · 10 years
               </Typography>
 
-              <Typography variant="h6" sx={{ mt: 2, mb: 1, fontSize: '1.1rem' }}>
+              <Typography variant="h6" sx={roleTitleSx}>
                 Principal Staff Developer Advocate — Manager, Strategic Developer Relations
               </Typography>
-              <Typography variant="body2" paragraph sx={{ color: theme.palette.text.primary }}>
+              <Typography variant="body2" sx={{ mb: 1, color: theme.palette.text.secondary, lineHeight: 1.6 }}>
                 Led AI adoption and developer enablement for MongoDB&apos;s priority enterprise accounts across financial services, healthcare, and retail.
               </Typography>
               {renderListItems(mongodbPrincipalResponsibilities)}
 
-              <Typography variant="h6" sx={{ mt: 2, mb: 1, fontSize: '1rem' }}>
+              <Typography variant="h6" sx={roleTitleSx}>
                 Enterprise AI Rollout & Enablement
               </Typography>
               {renderListItems(enterpriseAiRolloutItems)}
 
-              <Typography variant="h6" sx={{ mt: 2, mb: 1, fontSize: '1rem' }}>
+              <Typography variant="h6" sx={roleTitleSx}>
                 Worldwide Director of Developer Advocacy
               </Typography>
               {renderListItems(worldwideDirectorItems)}
 
-              <Typography variant="h6" sx={{ mt: 2, mb: 1, fontSize: '1rem' }}>
+              <Typography variant="h6" sx={roleTitleSx}>
                 Senior Solutions Architect
               </Typography>
               {renderListItems(seniorSolutionsArchitectItems)}
@@ -398,10 +426,10 @@ export default function Resume() {
               sx={paperStyle}
             >
               <Typography {...sectionTitleProps}>Fortune 50 Financial Services Firm</Typography>
-              <Typography variant="h6" sx={{ mb: 1, fontSize: '1.1rem' }}>
+              <Typography variant="h6" sx={roleTitleSx}>
                 Vice President & Global Head of UNIX Engineering
               </Typography>
-              <Typography variant="body2" paragraph sx={{ color: theme.palette.text.primary }}>
+              <Typography variant="body2" sx={{ mb: 1, color: theme.palette.text.secondary, lineHeight: 1.6 }}>
                 Owned global platform engineering strategy supporting mission-critical financial workloads.
               </Typography>
               {renderListItems(fortune50Responsibilities)}
@@ -415,7 +443,6 @@ export default function Resume() {
               sx={paperStyle}
             >
               <Typography {...sectionTitleProps}>Selected Enterprise Impact</Typography>
-              <Divider sx={{ my: { xs: 1, sm: 1.5 } }} />
               {renderListItems(enterpriseImpact)}
             </MotionPaper>
 
@@ -427,7 +454,6 @@ export default function Resume() {
               sx={paperStyle}
             >
               <Typography {...sectionTitleProps}>Selected Projects</Typography>
-              <Divider sx={{ my: { xs: 1, sm: 1.5 } }} />
               {projects.map((project, index) => (
                 <Box key={index} sx={{ mb: 2 }}>
                   <Typography variant="subtitle1" sx={{ fontWeight: 600, color: theme.palette.text.primary }}>
@@ -451,10 +477,9 @@ export default function Resume() {
                 sx={{ ...paperStyle, mb: { xs: 2, md: 3 } }}
               >
                 <Typography {...sectionTitleProps}>Technical Skills</Typography>
-                <Divider sx={{ my: { xs: 1, sm: 1.5 } }} />
-                {Object.entries(technicalSkills).map(([category, skills]) => (
+                  {Object.entries(technicalSkills).map(([category, skills]) => (
                   <Box key={category} sx={{ mb: 2 }}>
-                    <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 0.5, fontSize: '0.85rem' }}>
+                    <Typography sx={{ ...metaLabelSx, mb: 0.75 }}>
                       {category}
                     </Typography>
                     <Stack direction="row" spacing={0.5} flexWrap="wrap" useFlexGap sx={{ gap: 0.5 }}>
@@ -488,8 +513,7 @@ export default function Resume() {
                 sx={{ ...paperStyle, mb: { xs: 2, md: 3 } }}
               >
                 <Typography {...sectionTitleProps}>Speaking & Publications</Typography>
-                <Divider sx={{ my: { xs: 1, sm: 1.5 } }} />
-                {renderListItems(speakingItems)}
+                  {renderListItems(speakingItems)}
               </MotionPaper>
 
               {/* Education & Professional Development */}
@@ -500,8 +524,7 @@ export default function Resume() {
                 sx={paperStyle}
               >
                 <Typography {...sectionTitleProps}>Education & Professional Development</Typography>
-                <Divider sx={{ my: { xs: 1, sm: 1.5 } }} />
-                <Typography variant="body2" sx={{ color: theme.palette.text.primary, lineHeight: 1.6 }}>
+                  <Typography variant="body2" sx={{ color: theme.palette.text.primary, lineHeight: 1.6 }}>
                   Ongoing professional development in artificial intelligence, machine learning, and modern application architecture. 25+ years of applied experience across enterprise infrastructure, software development, and data engineering.
                 </Typography>
                 <Typography variant="body2" sx={{ mt: 1, color: theme.palette.text.secondary, fontStyle: 'italic' }}>
@@ -513,7 +536,10 @@ export default function Resume() {
         </Grid>
       </Container>
 
-      <Certifications />
+      {/* Certifications brings its own heading but no gutters. */}
+      <Container maxWidth="lg" sx={{ pb: { xs: 8, md: 10 } }}>
+        <Certifications />
+      </Container>
     </Box>
   );
 }
