@@ -1,13 +1,13 @@
 ---
 title: "I Built a Teleprompter Because My Screen Share Kept Showing My Notes"
-description: "Lozenge started as a prompter for live Cursor demos and went through four names in four days. The one thing that never changed was that the audience can't see the window."
+description: "Lozenge started as a prompter for live demos and went through four names before one stuck. The one thing that never changed was that the audience can't see the window."
 date: "2026-09-18T12:00:00"
 author: "Michael Lynn"
 image: "/images/projects/lozenge/prompter.png"
-tags: ["macos", "swift", "swiftui", "public-speaking", "demos", "cursor", "ai"]
+tags: ["macos", "swift", "swiftui", "public-speaking", "demos", "ai"]
 ---
 
-A lot of my job right now is live demos. I share my whole screen, open Cursor, and
+A lot of my job right now is live demos. I share my whole screen, open an editor, and
 talk through something while I build it in front of people. The demo part is fine.
 The part I kept getting wrong was the talk track. I'd have a script in a notes window
 or on a second monitor, and every time I looked over at it the room watched me look
@@ -17,8 +17,7 @@ worse.
 There are teleprompter apps for the Mac. The ones I tried either scrolled at a speed
 I had to guess, or they sat in a normal window that a full-desktop share picked up
 like anything else. I wanted the words right under my camera, moving when I moved,
-and invisible to Zoom. That's a small enough ask that I figured I could build it over
-a weekend.
+and invisible to Zoom.
 
 ## The part that turned out to be easy
 
@@ -52,12 +51,12 @@ The notch prompter came out of the same itch. It hangs a strip of the current be
 from the top of the screen, about a finger's width from the camera, so when I read it
 I'm looking roughly at the lens.
 
-## Four names in four days
+## Four names
 
-The repo started on September 5 as `CursorDemoTeleprompter`, which tells you exactly
-how narrow the idea was. Later that day it picked up a Grok provider and a
-`grokprompter` rename, by the next day it was Demo Prompter, and on September 8 it became
-Lozenge. That last one stuck because of what happened in between.
+The first name on the repo was a long, literal one about demo teleprompting, which
+tells you exactly how narrow the idea was. Then it was `grokprompter`, then Demo
+Prompter, and finally Lozenge. That last one stuck because of what happened in
+between.
 
 Once the prompter worked, I noticed the other half of my calls. In a lot of meetings
 I'm not presenting, I'm listening, and what I want then is a transcript, a nudge when
@@ -69,7 +68,7 @@ question lands, with talking points drawn from a folder of my own docs.
 After that it wasn't a demo tool anymore. Templates for a recruiting interview, a 1:1,
 a discovery call, a postmortem. An interview template that writes your questions from
 the job description and resume you attach. A wrap-up brief when the call ends. The
-people who'd use that are recruiters and managers, not just someone doing a Cursor
+people who'd use that are recruiters and managers, not just someone doing a product
 walkthrough, so the name had to stop saying "demo." A lozenge is what you take before
 you have to talk. I've been told not to explain that in the marketing copy, so I'm
 explaining it here instead.
@@ -96,20 +95,6 @@ template field marked Never send doesn't reach a model by any route. A follow-up
 opens as a draft in your mail app, and a Slack update doesn't post until you press
 Post. There's a Usage page that shows what each model has cost, because I got tired of
 guessing.
-
-## How it got built this fast
-
-It's a native SwiftUI app with a small AppKit layer for the window, keys, speech and
-Keychain. No Electron. As of today the repo has 364 commits over thirteen days.
-
-The first two days were mostly Cursor's background agents. They wrote 76 commits on
-September 5 and 6, each on its own branch with a pull request I reviewed and merged:
-the MVP, Listen mode, PowerPoint import, Google Slides import with a talk track per
-slide. That's the workflow I spend my days teaching, so it was a fair test of whether
-I believe what I say in workshops. From the third day on I did the work at my own desk,
-because the work left was the fiddly kind. Listening Sync alone has 28 commits from me,
-and the only test that meant anything there was reading a script out loud and watching
-where it lost me.
 
 Lozenge is at [lozenge.ai](https://lozenge.ai). It's macOS 14 and up, free while it's
 in early release, and the details on everything above are on the
