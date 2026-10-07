@@ -316,7 +316,7 @@ export default function Resume() {
             ))}
           </Stack>
           <Typography variant="h6" sx={{ fontWeight: 600, mb: 1, color: theme.palette.text.primary }}>
-            AI Adoption Engineer & Developer Productivity Leader
+            Engineer · GTM, Revenue Operations & AI Developer Platforms
           </Typography>
           <Typography
             variant="body1"
@@ -326,7 +326,7 @@ export default function Resume() {
               color: theme.palette.text.primary,
             }}
           >
-            AI Adoption Engineer at Cursor, creating and presenting workshops and AI education programs that help engineering teams adopt AI-assisted development. 25+ years across software engineering, infrastructure, enterprise architecture, and developer platforms — including nearly a decade driving developer enablement and AI adoption at MongoDB. Trusted partner to VP Engineering and CTO stakeholders on rollout strategy, developer enablement, and measurable productivity outcomes.
+            Engineer at SpaceXAI (x.ai), working on GTM, revenue operations, and internal projects for the Customer Success organization. Previously an AI Adoption Engineer at Cursor, running workshops and AI education programs for engineering teams. 25+ years across software engineering, infrastructure, enterprise architecture, and developer platforms — including nearly a decade driving developer enablement and AI adoption at MongoDB. Trusted partner to VP Engineering and CTO stakeholders on rollout strategy, developer enablement, and measurable productivity outcomes.
           </Typography>
         </MotionPaper>
 
@@ -361,6 +361,26 @@ export default function Resume() {
               </Stack>
             </MotionPaper>
 
+            {/* SpaceXAI Experience */}
+            <MotionPaper
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.07 }}
+              sx={paperStyle}
+            >
+              <Typography {...sectionTitleProps}>SpaceXAI (x.ai)</Typography>
+              <Typography sx={metaLabelSx}>
+                Oct 2026 – Present
+              </Typography>
+
+              <Typography variant="h6" sx={roleTitleSx}>
+                Engineer
+              </Typography>
+              <Typography variant="body2" sx={{ mb: 1, color: theme.palette.text.secondary, lineHeight: 1.6 }}>
+                GTM, Revenue Operations, and internal projects for the Customer Success organization.
+              </Typography>
+            </MotionPaper>
+
             {/* Cursor Experience */}
             <MotionPaper
               initial={{ opacity: 0, y: 20 }}
@@ -370,7 +390,7 @@ export default function Resume() {
             >
               <Typography {...sectionTitleProps}>Cursor (Anysphere)</Typography>
               <Typography sx={metaLabelSx}>
-                Remote · 2026 – Present
+                Remote · 2026
               </Typography>
 
               <Typography variant="h6" sx={roleTitleSx}>

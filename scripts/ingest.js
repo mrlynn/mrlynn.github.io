@@ -278,15 +278,16 @@ function buildStructuredDataSources() {
 
     // Extract the personalInfo object content as text
     // We'll build markdown from the known structure
-    const bioText = `# Michael Lynn — AI Adoption Engineer at Cursor
+    const bioText = `# Michael Lynn — Engineer at SpaceXAI
 
-Michael Lynn is an AI Adoption Engineer at Cursor (2026–present). He creates and presents workshops and AI education programs that help engineering teams adopt AI-assisted development. Before Cursor, he spent a decade at MongoDB, most recently as Principal Developer Advocate (2018–2026).
+Michael Lynn is an engineer at SpaceXAI (x.ai), October 2026–present. He works on GTM, revenue operations, and internal projects for the Customer Success organization. Earlier in 2026 he was an AI Adoption Engineer at Cursor, and before that he spent a decade at MongoDB, most recently as Principal Developer Advocate (2018–2026).
 
 ## Current role (authoritative)
-- AI Adoption Engineer at Cursor (2026–present): Creates and presents workshops and AI education programs; helps engineering teams and developers adopt AI-assisted development and get the most out of Cursor.
+- Engineer at SpaceXAI / x.ai (October 2026–present): GTM, revenue operations, and internal projects for the Customer Success organization.
 
 ## Career History
-- AI Adoption Engineer at Cursor (2026–present): Workshops, AI education programs, and adoption enablement for engineering teams.
+- Engineer at SpaceXAI / x.ai (October 2026–present): GTM, revenue operations, and internal projects for Customer Success.
+- AI Adoption Engineer at Cursor (2026): Workshops, AI education programs, and adoption enablement for engineering teams.
 - Principal Developer Advocate at MongoDB (2018–2026): Developer enablement for Data Modeling, AI, MongoDB Atlas, and Vector Search. Labs, workshops, and training programs.
 - Senior Solutions Architect at MongoDB (2016–2018): Guided customers in designing scalable systems, led proof of concepts.
 - Solutions Consultant at Medallia (2013–2015): Led teams in pre-sales and resell partnerships.

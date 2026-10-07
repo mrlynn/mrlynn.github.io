@@ -5,12 +5,12 @@ import { SITE_URL } from '../../lib/siteUrl';
 export const metadata = {
   title: 'About — Michael Lynn',
   description:
-    'Michael Lynn is an AI Adoption Engineer at Cursor. Twenty-five years across UNIX engineering, enterprise architecture, developer platforms, and now AI adoption — plus what he has been building lately.',
+    'Michael Lynn is an engineer at SpaceXAI (x.ai). Twenty-five years across UNIX engineering, enterprise architecture, developer platforms, and AI — plus what he has been building lately.',
   alternates: { canonical: '/about' },
   openGraph: {
     title: 'About — Michael Lynn',
     description:
-      'Twenty-five years across UNIX engineering, enterprise architecture, developer platforms, and now AI adoption.',
+      'Twenty-five years across UNIX engineering, enterprise architecture, developer platforms, and AI.',
     url: '/about',
   },
 };

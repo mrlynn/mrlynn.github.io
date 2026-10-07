@@ -58,13 +58,15 @@ export default function AboutPage() {
                   }}
                 >
                   <Typography component="p">
-                    I&apos;m an AI Adoption Engineer at Cursor. The job is helping
-                    engineering teams actually use AI-assisted development, which in
-                    practice means writing workshops and education programs and then
-                    standing in front of people and running them.
+                    I&apos;m an engineer at SpaceXAI, on the x.ai side, and I started
+                    in October 2026. I work on GTM, revenue operations, and internal
+                    projects for the Customer Success organization.
                   </Typography>
                   <Typography component="p">
-                    Before that I was at MongoDB for ten years, the last eight as a
+                    Earlier in 2026 I was an AI Adoption Engineer at Cursor, writing
+                    workshops and education programs for engineering teams and then
+                    standing in front of people and running them. Before that I was
+                    at MongoDB for ten years, the last eight as a
                     Principal Developer Advocate, working on data modeling, Atlas,
                     vector search, and retrieval. I hosted the MongoDB Podcast from
                     2018 until 2024.

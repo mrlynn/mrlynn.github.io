@@ -25,7 +25,7 @@ export const OG_IMAGE = {
   url: '/opengraph-image',
   width: 1200,
   height: 630,
-  alt: 'Michael Lynn — AI Adoption Engineer, Developer Advocate & Advisor',
+  alt: 'Michael Lynn — Engineer at SpaceXAI, Developer Advocate & Advisor',
 };
 
 /**

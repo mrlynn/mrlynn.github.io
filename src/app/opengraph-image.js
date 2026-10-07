@@ -7,7 +7,7 @@ import path from 'path';
 // does not set its own. Blog and project pages pass explicit images in their
 // generateMetadata, so they keep their own covers and only fall back to here.
 export const runtime = 'nodejs';
-export const alt = 'Michael Lynn — AI Adoption Engineer, Developer Advocate & Advisor';
+export const alt = 'Michael Lynn — Engineer at SpaceXAI, Developer Advocate & Advisor';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -53,7 +53,7 @@ export default async function OpengraphImage() {
             color: ACCENT,
           }}
         >
-          AI Adoption Engineer · Developer Advocate · Advisor
+          Engineer at SpaceXAI · Developer Advocate · Advisor
         </div>
 
         {/* Name + line */}

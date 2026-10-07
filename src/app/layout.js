@@ -31,8 +31,8 @@ export const metadata = {
   // to every page that does not override it — /blog, /projects and /social all
   // shipped declaring themselves duplicates of the homepage. Each route owns its
   // own canonical instead; the homepage sets its own in app/page.js.
-  title: 'Michael Lynn — AI Adoption Engineer, Developer Advocate & Advisor',
-  description: 'AI Adoption Engineer at Cursor. I help developers and teams build with AI and modern data platforms — talks, open-source projects, writing, and hands-on workshops from 15+ years in tech.',
+  title: 'Michael Lynn — Engineer at SpaceXAI, Developer Advocate & Advisor',
+  description: 'Engineer at SpaceXAI (x.ai). I build with AI and modern data platforms — talks, open-source projects, writing, and hands-on workshops from 15+ years in tech.',
   authors: [{ name: 'Michael Lynn' }],
   creator: 'Michael Lynn',
   publisher: 'Michael Lynn',
@@ -46,7 +46,7 @@ export const metadata = {
     locale: 'en_US',
     url: SITE_URL,
     siteName: 'Michael Lynn',
-    title: 'Michael Lynn — AI Adoption Engineer, Developer Advocate & Advisor',
+    title: 'Michael Lynn — Engineer at SpaceXAI, Developer Advocate & Advisor',
     description: 'Writing, open-source projects, talks, and hands-on workshops about building useful AI systems.',
     // No `images` key: app/opengraph-image.js generates the card and Next wires
     // it into og:image and twitter:image for every page that doesn't set its own.
@@ -56,7 +56,7 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Michael Lynn — AI Adoption Engineer, Developer Advocate & Advisor',
+    title: 'Michael Lynn — Engineer at SpaceXAI, Developer Advocate & Advisor',
     description: 'Writing, open-source projects, talks, and hands-on workshops about building useful AI systems.',
     creator: '@mlynn',
   },
