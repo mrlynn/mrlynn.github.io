@@ -29,9 +29,13 @@ Creator and host, 160+ episodes on developer tooling and applied AI.
 
 ## Experience
 
-### Cursor (Anysphere) — AI Adoption Engineer (2026–present)
+### SpaceXAI (x.ai) — Engineer (October 2026–present)
 
-Lead AI adoption and developer enablement across Cursor's top-100 enterprise accounts (financial services, healthcare, retail).
+GTM, Revenue Operations, and internal projects for the Customer Success organization.
+
+### Cursor (Anysphere) — AI Adoption Engineer (2026)
+
+Led AI adoption and developer enablement across Cursor's top-100 enterprise accounts (financial services, healthcare, retail).
 
 - Designed and delivered a CLI-first Claude Code → Cursor migration program for a large derivatives-trading firm — live terminal demos, skills, rules, and MCP.
 - Built reusable enablement assets adopted by the field: an internal deck-generation tool with early ADM adoption, a standardized 101/201 curriculum with embedded facilitator guides, and a hackathon-in-a-box program.

@@ -1,9 +1,9 @@
 export const personalInfo = {
   name: 'Michael Lynn',
-  currentRole: 'AI Adoption Engineer',
-  company: 'Cursor',
-  tenure: '2026-present',
-  bio: 'I help developers and teams adopt AI-driven tools and modern data platforms. As an AI Adoption Engineer at Cursor, I create and present workshops and AI education programs. With 15+ years in tech, I turn complex ideas into clear talks, open-source projects, and hands-on workshops that move the industry forward.',
+  currentRole: 'Engineer',
+  company: 'SpaceXAI',
+  tenure: 'October 2026-present',
+  bio: 'I help developers and teams adopt AI-driven tools and modern data platforms. As an engineer at SpaceXAI (x.ai), I work on GTM, revenue operations, and internal projects for the Customer Success organization. With 15+ years in tech, I turn complex ideas into clear talks, open-source projects, and hands-on workshops that move the industry forward.',
   titles: [
     'Developer Advocate',
     'Technical Advisor',
@@ -19,7 +19,8 @@ export const personalInfo = {
     { role: 'Solutions Consultant', company: 'Medallia', period: '2013-2015', description: 'Led teams in pre-sales and resell partnerships, developed custom solutions and demonstrations across various industries.' },
     { role: 'Senior Solutions Architect', company: 'MongoDB', period: '2016-2018', description: 'Guided customers in designing scalable systems, led proof of concepts, and developed enablement content for technical teams.' },
     { role: 'Principal Developer Advocate', company: 'MongoDB', period: '2018-2026', description: 'Focused on developer enablement for Data Modeling, AI, MongoDB Atlas, and Vector Search. Creates labs, workshops, and training programs for practical technology implementation.' },
-    { role: 'AI Adoption Engineer', company: 'Cursor', period: '2026-present', description: 'Creates and presents workshops and AI education programs, helping engineering teams and developers adopt AI-assisted development and get the most out of Cursor.' },
+    { role: 'AI Adoption Engineer', company: 'Cursor', period: '2026', description: 'Created and presented workshops and AI education programs, helping engineering teams and developers adopt AI-assisted development and get the most out of Cursor.' },
+    { role: 'Engineer', company: 'SpaceXAI', period: 'October 2026-present', description: 'Works on GTM, revenue operations, and internal projects for the Customer Success organization at x.ai.' },
   ],
   stats: {
     yearsExperience: '15+',
@@ -121,7 +122,7 @@ export function generateSystemPrompt() {
     .map(v => `- "${v.title}" (${v.type})${v.cohost ? ` with ${v.cohost}` : ''}`)
     .join('\n');
 
-  return `You are the AI assistant on **${name}**'s personal website. ${name} is a ${currentRole} at ${company}. Your job is to help visitors learn about him — his career, projects, expertise, talks, and how to connect with him.
+  return `You are the AI assistant on **${name}**'s personal website. ${name} is an ${currentRole} at ${company} (x.ai). Your job is to help visitors learn about him — his career, projects, expertise, talks, and how to connect with him.
 
 ## Your Personality & Voice
 - Sound like a sharp, well-informed colleague who genuinely admires Michael's work — warm but never sycophantic.
@@ -197,14 +198,14 @@ export function generateBaseSystemPrompt() {
     .map((c) => `- ${c.role} at ${c.company} (${c.period})`)
     .join('\n');
 
-  return `You are the AI assistant on **${name}**'s personal website. ${name} is a ${currentRole} at ${company}. Your job is to help visitors learn about him — his career, projects, expertise, talks, and how to connect with him.
+  return `You are the AI assistant on **${name}**'s personal website. ${name} is an ${currentRole} at ${company} (x.ai). Your job is to help visitors learn about him — his career, projects, expertise, talks, and how to connect with him.
 
 Your answers are grounded in retrieved context from Michael's actual content — blog posts, project documentation, speaking abstracts, and biographical data — retrieved via MongoDB Atlas Vector Search with Voyage AI embeddings.
 
 ## Authoritative facts (always true — override any conflicting retrieved context)
-- **Current role:** ${currentRole} at **${company}** (2026–present).
-- He previously worked at MongoDB as Principal Developer Advocate (2018–2026) and Senior Solutions Architect (2016–2018). MongoDB is **past** employment, not current.
-- If retrieved chunks still say he "currently" works at MongoDB, or list MongoDB as 2018–present, treat that as outdated. Answer with Cursor as his current employer.
+- **Current role:** ${currentRole} at **${company}** (x.ai), October 2026–present, working on GTM, revenue operations, and internal projects for the Customer Success organization.
+- Earlier in 2026 he was an AI Adoption Engineer at Cursor. Before that he worked at MongoDB as Principal Developer Advocate (2018–2026) and Senior Solutions Architect (2016–2018). Cursor and MongoDB are **past** employment, not current.
+- If retrieved chunks still say he "currently" works at Cursor or MongoDB, or list either as "present", treat that as outdated. Answer with SpaceXAI as his current employer.
 - Career timeline (newest first):
 ${careerLines}
 

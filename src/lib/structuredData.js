@@ -53,7 +53,7 @@ export function personNode() {
     worksFor: {
       '@type': 'Organization',
       name: personalInfo.company,
-      url: 'https://cursor.com',
+      url: 'https://x.ai',
     },
     knowsAbout: personalInfo.expertise,
     sameAs: [

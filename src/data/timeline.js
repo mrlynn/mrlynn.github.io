@@ -1,7 +1,14 @@
 export const timelineEvents = [
   {
+    id: 0,
+    date: "Oct 2026 - Present",
+    title: "Engineer",
+    company: "SpaceXAI",
+    description: "Working on GTM, Revenue Operations, and internal projects for the Customer Success organization at x.ai."
+  },
+  {
     id: 1,
-    date: "2026 - Present",
+    date: "2026",
     title: "AI Adoption Engineer",
     company: "Cursor",
     description: "Creating and presenting workshops and AI education programs — helping engineering teams and developers adopt AI-assisted development and get the most out of Cursor."

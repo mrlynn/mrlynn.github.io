@@ -7,9 +7,9 @@ import { toCardPost } from '../lib/collection';
 import HomeClient from '../components/home/HomeClient';
 
 export const metadata = pageMetadata({
-  title: 'Michael Lynn — AI Adoption Engineer, Developer Advocate & Advisor',
+  title: 'Michael Lynn — Engineer at SpaceXAI, Developer Advocate & Advisor',
   description:
-    'AI Adoption Engineer at Cursor. I help developers and teams build with AI and modern data platforms — talks, open-source projects, writing, and hands-on workshops from 15+ years in tech.',
+    'Engineer at SpaceXAI (x.ai). I build with AI and modern data platforms — talks, open-source projects, writing, and hands-on workshops from 15+ years in tech.',
   path: '/',
   socialDescription:
     'Writing, open-source projects, talks, and hands-on workshops about building useful AI systems.',
@@ -49,9 +49,9 @@ export default async function Home() {
         data={graph(
           webPageNode({
             path: '/',
-            name: 'Michael Lynn — AI Adoption Engineer, Developer Advocate & Advisor',
+            name: 'Michael Lynn — Engineer at SpaceXAI, Developer Advocate & Advisor',
             description:
-              'AI Adoption Engineer at Cursor. I help developers and teams build with AI and modern data platforms — talks, open-source projects, writing, and hands-on workshops from 15+ years in tech.',
+              'Engineer at SpaceXAI (x.ai). I build with AI and modern data platforms — talks, open-source projects, writing, and hands-on workshops from 15+ years in tech.',
           })
         )}
       />

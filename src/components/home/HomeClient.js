@@ -93,7 +93,7 @@ export default function HomeClient({ posts = [], projects = [], talks = [] }) {
           <Grid container spacing={{ xs: 5, md: 8 }} alignItems="center">
             <Grid item xs={12} md={7}>
               <MotionBox initial="hidden" animate="show" variants={fadeUp} custom={0}>
-                <Eyebrow>AI Adoption Engineer · Developer Advocate · Advisor</Eyebrow>
+                <Eyebrow>Engineer at SpaceXAI · Developer Advocate · Advisor</Eyebrow>
               </MotionBox>
 
               {/* One h1 carrying both the name and what I do, so the accessible
@@ -153,7 +153,8 @@ export default function HomeClient({ posts = [], projects = [], talks = [] }) {
                     mb: 4,
                   }}
                 >
-                  I&apos;m an AI Adoption Engineer at Cursor. For fifteen years I&apos;ve
+                  I&apos;m an engineer at SpaceXAI, working on GTM, revenue operations,
+                  and internal tools for Customer Success. For fifteen years I&apos;ve
                   turned complex ideas into clear talks, open-source projects, and
                   hands-on workshops — helping developers and teams adopt AI-driven
                   tools and modern data platforms.

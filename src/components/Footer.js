@@ -64,8 +64,8 @@ export default function Footer() {
                 lineHeight: 1.6,
               }}
             >
-              AI Adoption Engineer at Cursor. I help developers and teams build
-              with AI and modern data platforms.
+              Engineer at SpaceXAI. I build with AI and modern data
+              platforms, and write and talk about it here.
             </Typography>
             <Box sx={{ display: 'flex', gap: 1.5, mt: 2.5 }}>
               <MuiLink
