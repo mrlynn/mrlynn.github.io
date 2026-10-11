@@ -1,0 +1,81 @@
+---
+title: "Fiscal Quarter: The Quarter in Your Menu Bar"
+description: "A Mac menu bar app, with desktop widgets and an iPhone app, that shows which fiscal quarter you're in, how many days are left, and when your customers' quarters end."
+date: "2026-10-11T12:00:00"
+author: "Michael Lynn"
+image: "/images/projects/fiscal-quarter.png"
+tags: ["macOS", "iOS", "SwiftUI", "WidgetKit", "Menu Bar", "Fiscal Calendar", "Productivity"]
+color: "#10B981"
+category: "project"
+private: false
+featured: true
+screenshots: [
+  "/images/projects/fiscal-quarter/mac-panel.webp",
+  "/images/projects/fiscal-quarter/mac-widget.webp",
+  "/images/projects/fiscal-quarter/ios-home-1.webp",
+  "/images/projects/fiscal-quarter/ios-calendars.webp",
+  "/images/projects/fiscal-quarter/ios-appearance-ocean.webp",
+  "/images/projects/fiscal-quarter/mac-panel-dusk.webp"
+]
+technologies: ["Swift / SwiftUI", "AppKit", "WidgetKit", "App Intents", "App Groups", "XcodeGen"]
+demoUrl: "https://fq.mlynn.dev"
+githubUrl: "https://github.com/mrlynn/fq"
+---
+
+# Fiscal Quarter: The Quarter in Your Menu Bar
+
+**Site:** [fq.mlynn.dev](https://fq.mlynn.dev) · **Download:** [version 1.4 for Mac](https://github.com/mrlynn/fq/releases/download/v1.4/FiscalQuarter-1.4.dmg) · **Platform:** macOS 13 and later, widgets on macOS 14 · **Status:** free and open source
+
+Fiscal Quarter puts the quarter in the menu bar. As I write this mine reads `FY26-Q4 · 82d`, which is the quarter and the days left in it, counting today. Click it and a panel drops down with the start and end dates, where you are (day 11 of 92, week 2), the year drawn as a line of months with a ring on today, and when the next quarter starts.
+
+<ScreenshotSlideshow
+  screenshots={[
+    "/images/projects/fiscal-quarter/mac-panel.webp",
+    "/images/projects/fiscal-quarter/mac-widget.webp",
+    "/images/projects/fiscal-quarter/ios-home-1.webp",
+    "/images/projects/fiscal-quarter/ios-calendars.webp",
+    "/images/projects/fiscal-quarter/ios-appearance-ocean.webp",
+    "/images/projects/fiscal-quarter/mac-panel-dusk.webp"
+  ]}
+  title="Fiscal Quarter on the Mac and iPhone"
+/>
+
+## Counting down
+
+The panel counts down to the end of the quarter, the half, and the fiscal year. In October all three end on December 31, so they collapse into one line that reads `FY26-Q4 · H2 · FY26` with 82 days next to it. In May they split into two lines, because the half ends in June and the year doesn't.
+
+Days aren't always the right unit. You can switch to workdays, which today is 59, or weeks, or the number of weekends left. Workdays means Monday through Friday. It doesn't know about your holidays, and I'd rather it say so than guess. Click any countdown and it replaces the default one in the menu bar.
+
+## Other people's calendars
+
+The fiscal year you live in usually isn't your customer's. So you can add theirs by name and the day their year starts. On the same day, a company whose year starts in July is in FY27-Q2 and one starting in April is in FY27-Q3, and the panel lists both next to your own with the days left in each. A row turns amber in that company's last two weeks.
+
+Calendars can also come from a JSON file, for the ones that don't fit "four quarters of three months." The built-in calendar used to be one of those. It had an 11-month FY27 that ran February through December before the year switched to January, and that definition still sits in the repo as `calendars/february-transition.json`.
+
+## Widgets
+
+There are small and medium widgets for the Mac desktop and the iPhone Home Screen, and three Lock Screen sizes on iPhone. The medium one puts the quarter, the half and the year side by side with their own progress bars, since they started on different days even when they end on the same one.
+
+Each widget can follow your calendar or one of the saved ones, and its label fills in with that calendar's name. On the Mac, desktop widgets go monochrome whenever an app is in front of them, which is worth knowing before you decide the green bars are broken.
+
+## Appearance
+
+The look is shared by the app and every widget. You pick a background (the system's own, a color, one of six gradients, or a photo), a typeface out of ten, the weight of the big number, a text size, and an accent color. A photo gets copied into the app and scaled down, because widgets can't read your photo library, and the text over it gets a soft shadow so the labels stay readable over the bright parts.
+
+## In a shell
+
+The app carries a command called `fq` that reads the same calendars, for scripts and status lines.
+
+```
+$ fq --countdown
+FY26-Q4 · H2 · FY26 ends 2026-12-31
+  82 days · 59 workdays · 12 weekends
+```
+
+`fq --all` prints your calendar and every saved one, and `fq --json` gives you all of it as one object.
+
+## How it's built
+
+It's Swift and SwiftUI, with WidgetKit for the widgets and App Intents for their settings. The menu bar app, both widgets and `fq` share one core, and in that core a calendar is data rather than code: a list of eras, each either repeating a rule or listing its quarters outright. That's why a short transition year and a customer whose year starts in July turned out to be the same feature. Settings move between the app and its widgets through an App Group.
+
+The Mac build is signed and notarized, so it opens like any other app. There's no account, and it doesn't talk to the network.
