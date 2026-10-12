@@ -1,6 +1,6 @@
 ---
 title: "Fiscal Quarter: The Quarter in Your Menu Bar"
-description: "A Mac menu bar app, with desktop widgets and an iPhone app, that shows which fiscal quarter you're in, how many days are left, and when your customers' quarters end."
+description: "I do work that's measured by the fiscal quarter, and I built this Mac menu bar app to always know where we are in the quarter and the year. It has desktop widgets and an iPhone app, and it's open source."
 date: "2026-10-11T12:00:00"
 author: "Michael Lynn"
 image: "/images/projects/fiscal-quarter.png"
@@ -26,6 +26,12 @@ githubUrl: "https://github.com/mrlynn/fq"
 
 **Site:** [fq.mlynn.dev](https://fq.mlynn.dev) · **Download:** [version 1.4 for Mac](https://github.com/mrlynn/fq/releases/download/v1.4/FiscalQuarter-1.4.dmg) · **Platform:** macOS 13 and later, widgets on macOS 14 · **Status:** free and open source
 
+Most of my work has been measured by the quarter. Targets come from a plan for the fiscal year, and a quarter that looks fine in week three can be in trouble by week nine, so I need to know at a glance where we are: which quarter it is, how many days are left in it, and how much of the year is already gone.
+
+That has always been harder than it should be, because the fiscal year often doesn't match the calendar. At SpaceXAI it does, and the quarters are the ones on the wall calendar. MongoDB's fiscal year starts on February 1, so the Q1 everyone reported against began a month after the Q1 on my phone, and every customer and partner had their own version again. Before a forecast call I'd find myself counting weeks on my fingers to work out how much runway was left.
+
+I built the first version of this while I was at MongoDB: a menu bar item that showed the quarter and the days left in it. Since then I've added countdowns, other companies' calendars, desktop widgets and an iPhone app, and packaged it up as open source.
+
 Fiscal Quarter puts the quarter in the menu bar. As I write this mine reads `FY26-Q4 · 82d`, which is the quarter and the days left in it, counting today. Click it and a panel drops down with the start and end dates, where you are (day 11 of 92, week 2), the year drawn as a line of months with a ring on today, and when the next quarter starts.
 
 <ScreenshotSlideshow
@@ -48,7 +54,7 @@ Days aren't always the right unit. You can switch to workdays, which today is 59
 
 ## Other people's calendars
 
-The fiscal year you live in usually isn't your customer's. So you can add theirs by name and the day their year starts. On the same day, a company whose year starts in July is in FY27-Q2 and one starting in April is in FY27-Q3, and the panel lists both next to your own with the days left in each. A row turns amber in that company's last two weeks.
+This is the part that came straight out of working at MongoDB, where my own fiscal year was rarely the one my customers used. You can add theirs by name and the day their year starts. On the same day, a company whose year starts in July is in FY27-Q2 and one starting in April is in FY27-Q3, and the panel lists both next to your own with the days left in each. A row turns amber in that company's last two weeks.
 
 Calendars can also come from a JSON file, for the ones that don't fit "four quarters of three months." The built-in calendar used to be one of those. It had an 11-month FY27 that ran February through December before the year switched to January, and that definition still sits in the repo as `calendars/february-transition.json`.
 
