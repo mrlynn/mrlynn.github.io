@@ -46,7 +46,8 @@ function titleSizeFor(title) {
   return 48;
 }
 
-export default async function PostOpengraphImage({ params }) {
+export default async function PostOpengraphImage(props) {
+  const params = await props.params;
   const [post, groteskRegular, groteskSemiBold, mono] = await Promise.all([
     getPostBySlug(params.slug),
     loadFont('FamiljenGrotesk-Regular.ttf'),

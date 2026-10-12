@@ -36,7 +36,8 @@ const MUTED = '#a9a79d';
 const ACCENT = '#e8c547';
 const RULE = '#2d2f2a';
 
-export default async function ProjectOpengraphImage({ params }) {
+export default async function ProjectOpengraphImage(props) {
+  const params = await props.params;
   const [project, groteskRegular, groteskSemiBold, mono] = await Promise.all([
     getPostBySlug(params.slug),
     loadFont('FamiljenGrotesk-Regular.ttf'),

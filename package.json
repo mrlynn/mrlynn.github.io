@@ -16,8 +16,7 @@
     "@mdx-js/react": "^3.0.0",
     "@mui/icons-material": "^5.17.1",
     "@mui/material": "^5.17.1",
-    "@mui/x-date-pickers": "^6.19.6",
-    "@next/mdx": "^14.1.0",
+    "@next/mdx": "^15.5.27",
     "@react-google-maps/api": "^2.20.6",
     "@tiptap/extension-blockquote": "^2.11.5",
     "@tiptap/extension-bullet-list": "^2.11.5",
@@ -41,12 +40,12 @@
     "html-to-image": "^1.11.13",
     "mermaid": "^10.9.3",
     "mongodb": "^6.15.0",
-    "next": "14.1.0",
+    "next": "^15.5.27",
     "next-mdx-remote": "^6.0.0",
     "openai": "^4.90.0",
     "pdfkit": "^0.17.2",
-    "react": "^18",
-    "react-dom": "^18",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
     "react-github-calendar": "^4.5.6",
     "react-markdown": "^10.1.0",
     "rehype-prism-plus": "^1.0.0",
@@ -58,6 +57,6 @@
   "devDependencies": {
     "@types/node": "22.13.11",
     "eslint": "^8",
-    "eslint-config-next": "14.1.0"
+    "eslint-config-next": "^15.5.27"
   }
 }

@@ -62,7 +62,7 @@ const validateMermaidSyntax = (code) => {
 export async function POST(request) {
   try {
     // Get a unique identifier for the user (using a cookie)
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     let userId = cookieStore.get('diagram_user_id')?.value;
 
     // If no user ID exists, create one

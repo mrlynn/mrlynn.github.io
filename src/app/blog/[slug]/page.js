@@ -51,7 +51,8 @@ function postCardImage(post, slug) {
   };
 }
 
-export async function generateMetadata({ params }) {
+export async function generateMetadata(props) {
+  const params = await props.params;
   const post = await getPostBySlug(params.slug);
   if (!post) return {};
 
@@ -91,9 +92,10 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default async function BlogPost({ params }) {
+export default async function BlogPost(props) {
+  const params = await props.params;
   const post = await getPostBySlug(params.slug);
-  
+
   // Unknown slugs used to render this message with a 200, so retired and
   // mistyped URLs looked like real, thin pages to crawlers. notFound()
   // sends a real 404 and renders app/not-found.js.

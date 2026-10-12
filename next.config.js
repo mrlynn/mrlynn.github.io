@@ -38,9 +38,11 @@ const nextConfig = {
     ],
   },
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
-  experimental: {
-    serverComponentsExternalPackages: ['pdfkit'],
-  },
+  serverExternalPackages: ['pdfkit'],
+  // Next 15 treats next-mdx-remote as a server external, which loads the
+  // node_modules copy of React instead of the one Next bundles for the App
+  // Router. Bundling it keeps MDXRemote on the same React as the page.
+  transpilePackages: ['next-mdx-remote'],
   webpack: (config) => {
     config.resolve.extensions = ['.js', '.jsx', '.json'];
     return config;
