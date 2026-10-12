@@ -32,7 +32,7 @@ export async function POST(request) {
     }
 
     // Cookie-based user identification
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     let userId = cookieStore.get('chat_user_id')?.value;
 
     if (!userId) {
