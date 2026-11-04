@@ -6,7 +6,6 @@ import {
   LinkedIn as LinkedInIcon,
   ArrowForward as ArrowForwardIcon,
   AutoAwesome as AutoAwesomeIcon,
-  Storefront as StorefrontIcon,
   PlaceOutlined as PlaceIcon,
 } from '@mui/icons-material';
 import Image from 'next/image';
@@ -285,87 +284,100 @@ export default function HomeClient({ posts = [], projects = [], talks = [] }) {
         </Container>
       </Box>
 
-      {/* ---------- JUST SHIPPED ---------- */}
+      {/* ---------- FEATURED: ARTFRAME ---------- */}
+      {/* The newest project, with its film running silently beside it. The loop is a
+          1 MB, 720p, soundless cut of the article's video, so it costs little to autoplay. */}
       <Box sx={{ borderTop: `1px solid ${hairline}`, borderBottom: `1px solid ${hairline}` }}>
         <Container maxWidth="lg">
-          <MotionBox
-            {...reveal}
-            sx={{
-              py: { xs: 4, md: 4.5 },
-              display: 'flex',
-              flexDirection: { xs: 'column', md: 'row' },
-              alignItems: { xs: 'flex-start', md: 'center' },
-              justifyContent: 'space-between',
-              gap: { xs: 2.5, md: 4 },
-            }}
-          >
-            <Box>
-              <Box sx={{ mb: 1.25 }}>
-                <Eyebrow>Just shipped</Eyebrow>
-              </Box>
-              <Typography
-                sx={{
-                  fontFamily: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
-                  fontWeight: 600,
-                  fontSize: { xs: '1.35rem', md: '1.6rem' },
-                  color: theme.palette.text.primary,
-                  lineHeight: 1.3,
-                  mb: 0.75,
-                }}
-              >
-                The Claude Triage API course is live.
-              </Typography>
-              <Typography sx={{ color: theme.palette.text.secondary, fontSize: '0.98rem', lineHeight: 1.6, maxWidth: 620 }}>
-                A hands-on course on building an AI triage layer with Claude — complete with a
-                sample storefront, an LMS, and a full reference implementation you can pull apart.
-              </Typography>
-            </Box>
-            <Stack direction="row" spacing={1.25} flexWrap="wrap" useFlexGap sx={{ flexShrink: 0 }}>
-              <Button
-                variant="contained"
-                disableElevation
-                endIcon={<ArrowForwardIcon />}
-                href="https://triage.mlynn.dev"
-                target="_blank"
-                rel="noopener noreferrer"
-                sx={{ px: 2.75, fontWeight: 600, fontSize: '0.88rem', borderRadius: '4px', whiteSpace: 'nowrap' }}
-              >
-                Take the course
-              </Button>
-              <Button
-                variant="outlined"
-                startIcon={<StorefrontIcon sx={{ fontSize: '1.05rem !important' }} />}
-                href="https://northwind.mlynn.dev"
-                target="_blank"
-                rel="noopener noreferrer"
-                sx={{
-                  borderColor: theme.palette.border.default,
-                  color: theme.palette.text.primary,
-                  px: 2.5,
-                  fontWeight: 600,
-                  fontSize: '0.88rem',
-                  borderRadius: '4px',
-                  whiteSpace: 'nowrap',
-                  '&:hover': { borderColor: theme.palette.primary.main, backgroundColor: theme.palette.surface.primary },
-                }}
-              >
-                See the demo
-              </Button>
-              <IconButton
-                href="https://github.com/mrlynn/claude-triage-api"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Claude Triage API source on GitHub"
-                sx={{
-                  color: theme.palette.text.secondary,
-                  border: `1px solid ${theme.palette.border.default}`,
-                  borderRadius: '4px',
-                  '&:hover': { color: theme.palette.primary.main, borderColor: theme.palette.primary.main },
-                }}
-              >
-                <GitHubIcon fontSize="small" />
-              </IconButton>
-            </Stack>
+          <MotionBox {...reveal} sx={{ py: { xs: 5, md: 7 } }}>
+            <Grid container spacing={{ xs: 4, md: 6 }} alignItems="center">
+              <Grid item xs={12} md={5}>
+                <Stack direction="row" spacing={1.75} alignItems="center" sx={{ mb: 2 }}>
+                  <Image
+                    src="/images/projects/artframe/icon.png"
+                    alt=""
+                    width={44}
+                    height={44}
+                    style={{ borderRadius: '10px' }}
+                  />
+                  <Eyebrow>Just shipped · Featured</Eyebrow>
+                </Stack>
+                <Typography
+                  component="h2"
+                  sx={{
+                    fontFamily: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
+                    fontWeight: 600,
+                    fontSize: { xs: '1.6rem', md: '2rem' },
+                    color: theme.palette.text.primary,
+                    lineHeight: 1.2,
+                    mb: 1.5,
+                  }}
+                >
+                  ArtFrame turns a Google TV into a gallery.
+                </Typography>
+                <Typography sx={{ color: theme.palette.text.secondary, fontSize: '1rem', lineHeight: 1.7, mb: 3 }}>
+                  Museum paintings in 4K whenever the TV is idle, a glass information screen
+                  between them, and every card on it opens with the remote. A Mac app finds the
+                  TV, installs it and fills it with art.
+                </Typography>
+                <Stack direction="row" spacing={1.25} flexWrap="wrap" useFlexGap>
+                  <Button
+                    variant="contained"
+                    disableElevation
+                    endIcon={<ArrowForwardIcon />}
+                    component={Link}
+                    href="/projects/artframe"
+                    sx={{ px: 2.75, fontWeight: 600, fontSize: '0.88rem', borderRadius: '4px', whiteSpace: 'nowrap' }}
+                  >
+                    Read the story
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    href="https://artframe.mlynn.dev"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    sx={{
+                      borderColor: theme.palette.border.default,
+                      color: theme.palette.text.primary,
+                      px: 2.5,
+                      fontWeight: 600,
+                      fontSize: '0.88rem',
+                      borderRadius: '4px',
+                      whiteSpace: 'nowrap',
+                      '&:hover': { borderColor: theme.palette.primary.main, backgroundColor: theme.palette.surface.primary },
+                    }}
+                  >
+                    artframe.mlynn.dev
+                  </Button>
+                </Stack>
+              </Grid>
+              <Grid item xs={12} md={7}>
+                <Box
+                  sx={{
+                    position: 'relative',
+                    aspectRatio: '16 / 9',
+                    borderRadius: '6px',
+                    overflow: 'hidden',
+                    backgroundColor: '#151B24',
+                    border: '6px solid #0B0E13',
+                    boxShadow: theme.shadows[6],
+                  }}
+                >
+                  <Box
+                    component="video"
+                    src="/images/projects/artframe/brag-loop.mp4"
+                    poster="/images/projects/artframe/brag-poster.jpg"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    aria-label="ArtFrame on a TV: a painting, then the remote opening the information screen's cards"
+                    sx={{ display: 'block', width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                </Box>
+              </Grid>
+            </Grid>
           </MotionBox>
         </Container>
       </Box>
