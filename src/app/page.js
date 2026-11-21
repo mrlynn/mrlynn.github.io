@@ -3,7 +3,7 @@ import JsonLd from '../components/JsonLd';
 import { graph, webPageNode } from '../lib/structuredData';
 import { getAllPosts } from '../lib/blog';
 import { getSpeakingSummaries } from '../lib/speaking';
-import { toCardPost } from '../lib/collection';
+import { toShowcaseItem, pickSpotlight, SHOWCASE_THEMES } from '../lib/showcase';
 import HomeClient from '../components/home/HomeClient';
 
 export const metadata = pageMetadata({
@@ -25,18 +25,13 @@ export const metadata = pageMetadata({
  * three of its six featured cards were href="#" dead ends.
  */
 export default async function Home() {
-  const [articles, projects, talks] = await Promise.all([
-    getAllPosts(null, 'project'),
-    getAllPosts('project'),
-    getSpeakingSummaries(),
-  ]);
+  const [posts, talks] = await Promise.all([getAllPosts(), getSpeakingSummaries()]);
 
-  // Optional `featured: true` in frontmatter pins a project to the homepage;
-  // otherwise it's simply the most recent work.
-  const featuredProjects = [...projects]
-    .sort((a, b) => Boolean(b.featured) - Boolean(a.featured))
-    .slice(0, 6)
-    .map(toCardPost);
+  // Every project and essay, newest first, trimmed to what the showcase draws.
+  // `featured: true` in frontmatter puts a project in the Now Showing reel.
+  const showcase = posts.map(toShowcaseItem);
+  const spotlight = pickSpotlight(showcase);
+  const projectCount = showcase.filter((i) => i.type === 'project').length;
 
   return (
     <>
@@ -56,8 +51,10 @@ export default async function Home() {
         )}
       />
       <HomeClient
-        posts={articles.slice(0, 3).map(toCardPost)}
-        projects={featuredProjects}
+        spotlight={spotlight}
+        showcase={showcase}
+        themes={SHOWCASE_THEMES.map(({ key, label }) => ({ key, label }))}
+        projectCount={projectCount}
         talks={talks.slice(0, 4)}
       />
     </>
