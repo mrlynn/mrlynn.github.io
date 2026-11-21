@@ -284,9 +284,9 @@ export default function HomeClient({ posts = [], projects = [], talks = [] }) {
         </Container>
       </Box>
 
-      {/* ---------- FEATURED: ARTFRAME ---------- */}
+      {/* ---------- FEATURED: FACESWAP ---------- */}
       {/* The newest project, with its film running silently beside it. The loop is a
-          1 MB, 720p, soundless cut of the article's video, so it costs little to autoplay. */}
+          600 KB, 720p, soundless cut of the article's video, so it costs little to autoplay. */}
       <Box sx={{ borderTop: `1px solid ${hairline}`, borderBottom: `1px solid ${hairline}` }}>
         <Container maxWidth="lg">
           <MotionBox {...reveal} sx={{ py: { xs: 5, md: 7 } }}>
@@ -294,7 +294,7 @@ export default function HomeClient({ posts = [], projects = [], talks = [] }) {
               <Grid item xs={12} md={5}>
                 <Stack direction="row" spacing={1.75} alignItems="center" sx={{ mb: 2 }}>
                   <Image
-                    src="/images/projects/artframe/icon.png"
+                    src="/images/projects/faceswap/icon.png"
                     alt=""
                     width={44}
                     height={44}
@@ -313,12 +313,12 @@ export default function HomeClient({ posts = [], projects = [], talks = [] }) {
                     mb: 1.5,
                   }}
                 >
-                  ArtFrame turns a Google TV into a gallery.
+                  FaceSwap hides or swaps your face on any Mac camera.
                 </Typography>
                 <Typography sx={{ color: theme.palette.text.secondary, fontSize: '1rem', lineHeight: 1.7, mb: 3 }}>
-                  Museum paintings in 4K whenever the TV is idle, a glass information screen
-                  between them, and every card on it opens with the remote. A Mac app finds the
-                  TV, installs it and fills it with art.
+                  Blur, pixelate, black out or swap your face live, then show up in Zoom, Meet,
+                  FaceTime and Teams as an ordinary camera. You can even borrow a face from the
+                  call. Every frame is processed on your Mac.
                 </Typography>
                 <Stack direction="row" spacing={1.25} flexWrap="wrap" useFlexGap>
                   <Button
@@ -326,14 +326,14 @@ export default function HomeClient({ posts = [], projects = [], talks = [] }) {
                     disableElevation
                     endIcon={<ArrowForwardIcon />}
                     component={Link}
-                    href="/projects/artframe"
+                    href="/projects/faceswap"
                     sx={{ px: 2.75, fontWeight: 600, fontSize: '0.88rem', borderRadius: '4px', whiteSpace: 'nowrap' }}
                   >
                     Read the story
                   </Button>
                   <Button
                     variant="outlined"
-                    href="https://artframe.mlynn.dev"
+                    href="https://macfaceswap.com"
                     target="_blank"
                     rel="noopener noreferrer"
                     sx={{
@@ -347,7 +347,7 @@ export default function HomeClient({ posts = [], projects = [], talks = [] }) {
                       '&:hover': { borderColor: theme.palette.primary.main, backgroundColor: theme.palette.surface.primary },
                     }}
                   >
-                    artframe.mlynn.dev
+                    macfaceswap.com
                   </Button>
                 </Stack>
               </Grid>
@@ -358,21 +358,21 @@ export default function HomeClient({ posts = [], projects = [], talks = [] }) {
                     aspectRatio: '16 / 9',
                     borderRadius: '6px',
                     overflow: 'hidden',
-                    backgroundColor: '#151B24',
-                    border: '6px solid #0B0E13',
+                    backgroundColor: '#24272b',
+                    border: '6px solid #1d1c1a',
                     boxShadow: theme.shadows[6],
                   }}
                 >
                   <Box
                     component="video"
-                    src="/images/projects/artframe/brag-loop.mp4"
-                    poster="/images/projects/artframe/brag-poster.jpg"
+                    src="/images/projects/faceswap/brag-loop.mp4"
+                    poster="/images/projects/faceswap/brag-poster.jpg"
                     autoPlay
                     muted
                     loop
                     playsInline
                     preload="metadata"
-                    aria-label="ArtFrame on a TV: a painting, then the remote opening the information screen's cards"
+                    aria-label="FaceSwap on a Mac: a face swapped for another, then hidden with blur, pixelate and blackout, then worn in a video call"
                     sx={{ display: 'block', width: '100%', height: '100%', objectFit: 'cover' }}
                   />
                 </Box>
