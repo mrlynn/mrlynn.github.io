@@ -10,7 +10,8 @@ import {
 } from '@mui/icons-material';
 import Image from 'next/image';
 import Link from 'next/link';
-import ProjectCard from '../projects/ProjectCard';
+import Spotlight from './Spotlight';
+import WorkShowcase from './WorkShowcase';
 import Eyebrow from '../common/Eyebrow';
 import SectionHeading from '../common/SectionHeading';
 import { SECTION_RHYTHM } from '../common/Section';
@@ -35,25 +36,14 @@ const focusAreas = [
   },
 ];
 
-const stats = [
+// The project count is real (it's read from content/blog at build time); it
+// used to be a hardcoded "11+" that had fallen well behind.
+const buildStats = (projectCount) => [
   { number: '15+', label: 'Years in tech' },
   { number: '200+', label: 'Talks given' },
   { number: '50K+', label: 'Developers reached' },
-  { number: '11+', label: 'Open projects' },
+  { number: String(projectCount), label: 'Projects shipped' },
 ];
-
-function formatDate(value) {
-  if (!value) return '';
-  try {
-    return new Date(value).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-  } catch {
-    return '';
-  }
-}
 
 function formatTalkDate(value) {
   if (!value) return '';
@@ -71,9 +61,10 @@ const reveal = {
   variants: fadeUp,
 };
 
-export default function HomeClient({ posts = [], projects = [], talks = [] }) {
+export default function HomeClient({ spotlight = [], showcase = [], themes = [], projectCount = 0, talks = [] }) {
   const theme = useTheme();
   const hairline = theme.palette.border.subtle;
+  const stats = buildStats(projectCount);
 
   return (
     <Box sx={{ backgroundColor: theme.palette.background.default }}>
@@ -284,103 +275,8 @@ export default function HomeClient({ posts = [], projects = [], talks = [] }) {
         </Container>
       </Box>
 
-      {/* ---------- FEATURED: FACESWAP ---------- */}
-      {/* The newest project, with its film running silently beside it. The loop is a
-          600 KB, 720p, soundless cut of the article's video, so it costs little to autoplay. */}
-      <Box sx={{ borderTop: `1px solid ${hairline}`, borderBottom: `1px solid ${hairline}` }}>
-        <Container maxWidth="lg">
-          <MotionBox {...reveal} sx={{ py: { xs: 5, md: 7 } }}>
-            <Grid container spacing={{ xs: 4, md: 6 }} alignItems="center">
-              <Grid item xs={12} md={5}>
-                <Stack direction="row" spacing={1.75} alignItems="center" sx={{ mb: 2 }}>
-                  <Image
-                    src="/images/projects/faceswap/icon.png"
-                    alt=""
-                    width={44}
-                    height={44}
-                    style={{ borderRadius: '10px' }}
-                  />
-                  <Eyebrow>Just shipped · Featured</Eyebrow>
-                </Stack>
-                <Typography
-                  component="h2"
-                  sx={{
-                    fontFamily: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
-                    fontWeight: 600,
-                    fontSize: { xs: '1.6rem', md: '2rem' },
-                    color: theme.palette.text.primary,
-                    lineHeight: 1.2,
-                    mb: 1.5,
-                  }}
-                >
-                  FaceSwap hides or swaps your face on any Mac camera.
-                </Typography>
-                <Typography sx={{ color: theme.palette.text.secondary, fontSize: '1rem', lineHeight: 1.7, mb: 3 }}>
-                  Blur, pixelate, black out or swap your face live, then show up in Zoom, Meet,
-                  FaceTime and Teams as an ordinary camera. You can even borrow a face from the
-                  call. Every frame is processed on your Mac.
-                </Typography>
-                <Stack direction="row" spacing={1.25} flexWrap="wrap" useFlexGap>
-                  <Button
-                    variant="contained"
-                    disableElevation
-                    endIcon={<ArrowForwardIcon />}
-                    component={Link}
-                    href="/projects/faceswap"
-                    sx={{ px: 2.75, fontWeight: 600, fontSize: '0.88rem', borderRadius: '4px', whiteSpace: 'nowrap' }}
-                  >
-                    Read the story
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    href="https://macfaceswap.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    sx={{
-                      borderColor: theme.palette.border.default,
-                      color: theme.palette.text.primary,
-                      px: 2.5,
-                      fontWeight: 600,
-                      fontSize: '0.88rem',
-                      borderRadius: '4px',
-                      whiteSpace: 'nowrap',
-                      '&:hover': { borderColor: theme.palette.primary.main, backgroundColor: theme.palette.surface.primary },
-                    }}
-                  >
-                    macfaceswap.com
-                  </Button>
-                </Stack>
-              </Grid>
-              <Grid item xs={12} md={7}>
-                <Box
-                  sx={{
-                    position: 'relative',
-                    aspectRatio: '16 / 9',
-                    borderRadius: '6px',
-                    overflow: 'hidden',
-                    backgroundColor: '#24272b',
-                    border: '6px solid #1d1c1a',
-                    boxShadow: theme.shadows[6],
-                  }}
-                >
-                  <Box
-                    component="video"
-                    src="/images/projects/faceswap/brag-loop.mp4"
-                    poster="/images/projects/faceswap/brag-poster.jpg"
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="metadata"
-                    aria-label="FaceSwap on a Mac: a face swapped for another, then hidden with blur, pixelate and blackout, then worn in a video call"
-                    sx={{ display: 'block', width: '100%', height: '100%', objectFit: 'cover' }}
-                  />
-                </Box>
-              </Grid>
-            </Grid>
-          </MotionBox>
-        </Container>
-      </Box>
+      {/* ---------- NOW SHOWING ---------- */}
+      <Spotlight items={spotlight} />
 
       {/* ---------- STATS ---------- */}
       <Container maxWidth="lg">
@@ -474,137 +370,8 @@ export default function HomeClient({ posts = [], projects = [], talks = [] }) {
         </Grid>
       </Container>
 
-      {/* ---------- SELECTED WORK ---------- */}
-      {projects.length > 0 && (
-        <Box sx={{ borderTop: `1px solid ${hairline}`, backgroundColor: theme.palette.background.paper }}>
-          <Container maxWidth="lg" sx={{ py: SECTION_RHYTHM.normal }}>
-            <Stack
-              direction={{ xs: 'column', sm: 'row' }}
-              justifyContent="space-between"
-              alignItems={{ xs: 'flex-start', sm: 'flex-end' }}
-              gap={2}
-              sx={{ mb: { xs: 4, md: 6 } }}
-            >
-              <SectionHeading eyebrow="Selected work" title="Things I've built" sx={{ mb: 0 }} />
-              <Button
-                component={Link}
-                href="/projects"
-                endIcon={<ArrowForwardIcon />}
-                sx={{
-                  color: theme.palette.text.primary,
-                  fontWeight: 600,
-                  flexShrink: 0,
-                  '&:hover': { color: theme.palette.primary.main, backgroundColor: 'transparent' },
-                }}
-              >
-                All projects
-              </Button>
-            </Stack>
-
-            <Grid container spacing={3}>
-              {projects.map((project, i) => (
-                <Grid item xs={12} sm={6} md={4} key={project.slug}>
-                  <MotionBox {...reveal} custom={i} sx={{ height: '100%' }}>
-                    <ProjectCard project={project} />
-                  </MotionBox>
-                </Grid>
-              ))}
-            </Grid>
-          </Container>
-        </Box>
-      )}
-
-      {/* ---------- LATEST WRITING ---------- */}
-      {posts.length > 0 && (
-        <Box sx={{ borderTop: `1px solid ${hairline}` }}>
-          <Container maxWidth="lg" sx={{ py: SECTION_RHYTHM.normal }}>
-            <Stack
-              direction="row"
-              justifyContent="space-between"
-              alignItems="flex-end"
-              sx={{ mb: { xs: 4, md: 6 } }}
-            >
-              <SectionHeading eyebrow="From the journal" title="Latest writing" sx={{ mb: 0 }} />
-              <Button
-                component={Link}
-                href="/blog"
-                endIcon={<ArrowForwardIcon />}
-                sx={{
-                  color: theme.palette.text.primary,
-                  fontWeight: 600,
-                  flexShrink: 0,
-                  display: { xs: 'none', sm: 'inline-flex' },
-                  '&:hover': { color: theme.palette.primary.main, backgroundColor: 'transparent' },
-                }}
-              >
-                All posts
-              </Button>
-            </Stack>
-
-            <Box>
-              {posts.map((post, i) => (
-                <MotionBox
-                  key={post.slug}
-                  {...reveal}
-                  custom={i}
-                  component={Link}
-                  href={`/blog/${post.slug}`}
-                  sx={{
-                    display: 'grid',
-                    gridTemplateColumns: { xs: '1fr', md: '160px 1fr auto' },
-                    gap: { xs: 1, md: 4 },
-                    alignItems: 'baseline',
-                    py: { xs: 3, md: 3.5 },
-                    px: { xs: 1, md: 2 },
-                    borderTop: `1px solid ${hairline}`,
-                    borderBottom: i === posts.length - 1 ? `1px solid ${hairline}` : 'none',
-                    textDecoration: 'none',
-                    transition: 'background-color 0.25s ease',
-                    '&:hover': { backgroundColor: theme.palette.surface.primary },
-                    '&:hover .post-title': { color: theme.palette.primary.main },
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      fontFamily: 'var(--font-mono), monospace',
-                      fontSize: '0.72rem',
-                      letterSpacing: '0.08em',
-                      textTransform: 'uppercase',
-                      color: theme.palette.text.secondary,
-                    }}
-                  >
-                    {formatDate(post.date)}
-                  </Typography>
-                  <Box>
-                    <Typography
-                      className="post-title"
-                      sx={{
-                        fontFamily: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
-                        fontWeight: 600,
-                        fontSize: { xs: '1.35rem', md: '1.6rem' },
-                        lineHeight: 1.2,
-                        color: theme.palette.text.primary,
-                        mb: post.description ? 1 : 0,
-                        transition: 'color 0.2s ease',
-                      }}
-                    >
-                      {post.title}
-                    </Typography>
-                    {post.description && (
-                      <Typography sx={{ color: theme.palette.text.secondary, lineHeight: 1.6, fontSize: '0.98rem', maxWidth: 620 }}>
-                        {post.description}
-                      </Typography>
-                    )}
-                  </Box>
-                  <ArrowForwardIcon
-                    sx={{ color: theme.palette.text.secondary, display: { xs: 'none', md: 'block' }, fontSize: '1.2rem' }}
-                  />
-                </MotionBox>
-              ))}
-            </Box>
-          </Container>
-        </Box>
-      )}
+      {/* ---------- THE WORK: skyline + mosaic ---------- */}
+      {showcase.length > 0 && <WorkShowcase items={showcase} themes={themes} />}
 
       {/* ---------- SPEAKING ---------- */}
       {talks.length > 0 && (
