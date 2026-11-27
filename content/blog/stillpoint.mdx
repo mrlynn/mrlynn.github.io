@@ -1,0 +1,105 @@
+---
+title: "StillPoint: Meditation for People Who Think They Can't"
+description: "A meditation app that starts with one breath and adds a little each day. Guide voices, bells and rain all run on the Web Audio clock, the sky sets as your sit goes on, and Claude writes you a few lines about your week if you ask it to."
+date: "2026-11-27T12:00:00"
+author: "Michael Lynn"
+image: "/images/projects/stillpoint.jpg"
+tags: ["Next.js", "React", "MongoDB", "Claude", "AI", "Web Audio", "Web Push", "PWA", "Meditation"]
+color: "#2F6F78"
+category: "project"
+private: false
+featured: true
+screenshots: [
+  "/images/projects/stillpoint/hero.jpg",
+  "/images/projects/stillpoint/today.jpg",
+  "/images/projects/stillpoint/session.jpg",
+  "/images/projects/stillpoint/path.jpg",
+  "/images/projects/stillpoint/progress.jpg",
+  "/images/projects/stillpoint/breathe.jpg",
+  "/images/projects/stillpoint/wind-down.jpg"
+]
+technologies: ["Next.js 16", "React 19", "Material UI", "MongoDB Atlas", "Better Auth", "Web Audio API", "Web Push", "AI SDK + AI Gateway", "Claude", "ffmpeg", "Vercel"]
+demoUrl: "https://stillpoint.mlynn.dev"
+---
+
+<img
+  src="/images/projects/stillpoint/icon.png"
+  alt="The StillPoint app icon: a pale sun with thin rings rising over teal hills and still water"
+  width="96"
+  height="96"
+  style={{ borderRadius: '22px', display: 'block', marginBottom: '8px' }}
+/>
+
+# StillPoint: Meditation for People Who Think They Can't
+
+**Site:** [stillpoint.mlynn.dev](https://stillpoint.mlynn.dev) · **Platform:** any browser, and it installs to an iPhone Home Screen like an app · **Status:** free, sign in with Google
+
+Most people I know who've tried meditating have quit, and the reasons they give are always the same handful. I can't stop thinking. I can't sit still. Watching my breath makes me anxious. I'm just bad at it. None of those are true problems, they're signs the first session was too long and aimed at the wrong goal, so StillPoint starts with one breath and nothing else.
+
+![The StillPoint welcome page in its dusk colours: "You're not bad at meditation. You just started too big." beside a sun with thin rings setting over hills and a lake](/images/projects/stillpoint/hero.jpg)
+
+That sun on the front page isn't a picture. It's the logo's world drawn live in SVG, and at rest it breathes on a four-seconds-in, six-seconds-out rhythm. Press "Take one breath now" and it becomes the app's actual first session: the sun lifts as you breathe in, settles as you breathe out, a recorded guide talks you through it, and a ripple crosses the lake at the end. That's day one, finished before you've made an account.
+
+## First Steps
+
+New people start on a ten-day path called First Steps that goes from one breath to five minutes. Each day takes one of the reasons people quit and answers it with a short spoken script and a practice built around it. "I can't sit still" gets a day where you stand, sway or walk slowly around the room. "Watching my breath makes me anxious" gets a day that uses sound as the anchor instead.
+
+![Six cards from the welcome page, each answering a reason people quit, like "I can't stop thinking" and "I'm just bad at this", with a painted sunrise scene and the First Steps day that covers it](/images/projects/stillpoint/sound-familiar.jpg)
+
+Every one of those little paintings comes from a Python script that draws them with Pillow in the logo's style: teal sky, soft sun with thin rings, layered hills, still water. I can change one and regenerate the lot, which mattered because I changed them a lot.
+
+![Ten days from one breath to five minutes: a line rising from 1 minute to 5, with the ten days listed below it, each one paired with the belief it answers](/images/projects/stillpoint/first-steps.jpg)
+
+After that comes Foundations, a 30-day path where sits grow from 5 to 20 minutes while the guidance steps back, so by the end you can sit on your own. There's also a daily check-in that picks today's session, a timer with your own bells, paced breathing, streaks with grace days, a journal and a Progress page with a heatmap. I borrowed shamelessly here. Each of those is the mechanic that makes some leading app sticky, and the README has a table saying which one I took from where.
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', margin: '24px 0' }}>
+  <img src="/images/projects/stillpoint/today.jpg" alt="The Today screen: a check-in of mood, energy and intention, today's Foundations session with a Begin button, and a 28-day streak" style={{ width: '100%', margin: 0, borderRadius: '12px', border: '1px solid #222' }} />
+  <img src="/images/projects/stillpoint/path.jpg" alt="The Foundations path, with the first five days checked off and Day 6, Posture, up next" style={{ width: '100%', margin: 0, borderRadius: '12px', border: '1px solid #222' }} />
+  <img src="/images/projects/stillpoint/progress.jpg" alt="Progress in dark mode: current streak, total time, average sit, mood lift, focus rating and a 20-week heatmap" style={{ width: '100%', margin: 0, borderRadius: '12px', border: '1px solid #222' }} />
+</div>
+
+## The sit itself
+
+The session player keeps time with the Web Audio clock rather than JavaScript timers. Bells are scheduled ahead on that clock, so they ring on time even when the phone throttles the page, and pausing suspends the sound and the time together. Nothing in the app is an audio file except the guide's voice. The bells, the rain, the ocean and the brown noise are all synthesized in the browser.
+
+Behind every sit a sun sinks toward a lake horizon and the sky warms toward dusk as you go. It's below the horizon by the end bell. I added it so you can feel roughly how much is left without looking at a number.
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', margin: '24px 0' }}>
+  <img src="/images/projects/stillpoint/session.jpg" alt="A guided sit in progress: Day 6, Posture, 4:51 remaining, with Sage guiding and the prompt on screen" style={{ width: '100%', margin: 0, borderRadius: '12px', border: '1px solid #222' }} />
+  <img src="/images/projects/stillpoint/breathe.jpg" alt="The Breathe screen: a soft green circle saying Breathe in, 2, with 2:58 left" style={{ width: '100%', margin: 0, borderRadius: '12px', border: '1px solid #222' }} />
+  <img src="/images/projects/stillpoint/wind-down.jpg" alt="A Wind down sit at night: a dark screen, 19:51 remaining, and the line Lie down and let the body get heavy" style={{ width: '100%', margin: 0, borderRadius: '12px', border: '1px solid #222' }} />
+</div>
+
+The idea I like best is the tap. When you notice your mind has wandered, you tap the screen. It plays a soft tone and saves the moment, and afterwards you see how many times you came back and when. Coming back is the whole skill, so I wanted it to be the thing you count instead of something you feel bad about. The guide listens to the taps too. Three taps inside 90 seconds bring a steadying line, and if you haven't tapped in a while it stays quiet and lets the reminders pass, though never for more than four minutes.
+
+Sleep sits work differently. Wind down and Can't sleep dim the screen to nearly black over the first two minutes, the guide speaks at longer and longer gaps and a little softer each time, and goes silent after 60% of the sit. The rain fades out over the last three minutes and no bell rings at the end, because a bell is the last thing you want if it worked.
+
+## Voices
+
+There are six guide voices to pick from, generated ahead of time with OpenAI's text-to-speech from the scripts in the app, one clip per line, named by a hash of the text so an edited line gets a new recording and an unchanged one doesn't. Any line without a clip falls back to the browser's own voice.
+
+I also wanted a real person, so there's an admin page for recording one. It walks through every line the guide says: record, hear it back, keep it or go again. After each take it draws the waveform with a suggested trim that leaves out mouse clicks, which is easy to tell apart from speech because a click rings for under 100 milliseconds. On the server, ffmpeg cleans each kept take: hum notches, noise reduction that learns the room from the quiet before the first word, a gentle gate, de-essing and loudness matched to the other voices. On my noisiest test take it cut the hum by about 12 dB with the speech level unchanged. My own voice is in the list now, recorded that way.
+
+## A few things Claude does
+
+There are two places where a model gets involved, both small and both off the main path. After a sit you can write a journal note and ask for a reply. Claude Haiku gets the note, the day's lesson and how long you sat, and answers in a sentence or two, held to 40 words. And once a week, if you turn it on, Claude Sonnet writes you a short letter about last week from your sits, taps, ratings and notes, compared with the week before. It leaves out missed goals on purpose so the letter never scolds, and weeks with fewer than two sits get a note saying there's no letter this time instead of nothing at all.
+
+Journal notes are the one place in a meditation app where someone might write something that needs a real answer. A note that suggests danger skips the model completely and gets a fixed message pointing to emergency help and 988. Both features go through Vercel's AI Gateway, and the privacy policy says exactly what's sent.
+
+## Being in other people's day
+
+Moments are short prompts tied to things you already do, like "After coffee, 8:00". A Vercel schedule runs every five minutes, sends each moment that's due in your own time zone, and tapping the notification opens a one-minute sit. Getting that tap to open the sit on an iPhone took most of a day. iOS doesn't pass the tap to the service worker, and it resumes a suspended Home Screen app on whatever build it was on, so my fixes weren't even reaching the phone. The version that works checks, when the app comes to the front, whether a prompt arrived in the last three minutes and has since left Notification Center, which is what tapping it does.
+
+While you sit, the app checks in every 30 seconds and shows how many other people are sitting right now. Only the count, never who. "Sit with a friend" shares a link that starts the same sit on the minute, so everyone hears the same opening bell. And if you've been away three days or more, Today leads with a one-minute sit called "One minute counts" and the streak says "Starting fresh" instead of "0-day streak."
+
+One thing didn't survive. I built a mode where you lay the phone on your belly and the circle followed your real breathing, then led it a little slower, 6% longer every 30 seconds. Reading breath from a phone's tilt turned out to be too unreliable to be calming, which is the one thing it had to be, so I took it out the same day.
+
+## How it's built
+
+It's Next.js 16 with React 19 and Material UI, on Vercel, with MongoDB Atlas behind it. Accounts are Google sign-in through Better Auth, which keeps users and sessions in the same database, and every data route checks the session and scopes each query to that user. All the streak, stats and recommendation logic is pure functions in one file with tests next to it. The client sends its local date, so streaks follow your time zone instead of the server's. The recommendation adds two minutes when your focus ratings run high and shortens the next sit when you've been ending early.
+
+It's been three days and about 60 commits. The first one was on Wednesday.
+
+## Trying it
+
+Go to [stillpoint.mlynn.dev](https://stillpoint.mlynn.dev) and press "Take one breath now". That's the first session, no account needed. To keep going, sign in with Google and start First Steps. On an iPhone, open it in Safari, tap Share, then Add to Home Screen, and it runs full screen like any other app, with notifications if you set up moments.
